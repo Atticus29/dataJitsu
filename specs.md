@@ -1,0 +1,75 @@
+- [ ] Users can log in
+- [ ] Users can create an account
+  - [ ] Name
+  - [ ] Email
+  - [ ] Rank
+  - [ ] Affiliation
+  - [ ] Age
+  - [ ] Weight class
+- [ ] Users can view embedded videos that are annotated with moves
+- [ ] Users can sort videos to view by any combination of:
+  - [ ] Belt/rank
+  - [ ] Tournament
+  - [ ] Date (y, m ,d)
+  - [ ] Athlete name
+  - [ ] Second athlete name
+  - [ ] Rule set
+  - [ ] Move executed in the match
+  - [ ] Rating from other users
+- [ ] Users can view summary statistics by athlete:
+  - [ ] Most common points scored
+  - [ ] Most common points lost
+  - [ ] Most effective submission
+  - [ ] Most frequent thing they tap to
+  - [ ] Users can view summary statistics by rank:
+    - [ ] Most common points scored
+    - [ ] Most common points lost
+    - [ ] Most effective submission
+- [ ] Users are required to annotate a video each month or pay $5/yr
+  - [ ] A video is provided for them
+  - [ ] The first time they annotate, a tutorial is provided
+  - [ ] A refresher tutorial is available
+  - [ ] For every annotated video, the user is given more experience Points
+  - [ ] For every time a users' annotated video is flagged as poorly-annotated or edited and then the edit is confirmed, they lose some experience points
+      - [ ] Which annotations were done by which user is known to the database, but not to other users (to avoid personal vendettas)
+- [ ] Experience points are visible by other users
+- [ ] Users are granted more responsibility and more data access if they:
+  - [ ] Rate videos
+  - [ ] Vet other users' new/alternative names of moves
+  - [ ] Confirm dead links
+- [ ] While viewing a video, users can:
+  - [ ] Flag a link as dead
+    - [ ] In which case, it immediately goes into a "is this link dead" pool
+  - [ ] Flag a poorly-annotated video
+  - [ ] Edit details of the video
+    - [ ] In which case, it immediately goes into a "to be reviewed" pool
+- [ ] Users can annotate a video by:
+  - [ ] User clicks "annotate" while the video is in play
+    - [ ] If a move exists in that time point, that move is displayed to user. User is given option to:
+      - [ ] Edit the existing move
+        - [ ] The old move is replaced, but stored in the db but flagged as old
+        - [ ] Immediately goes into a queue to be confirmed by others
+      - [ ] Flag it for removal
+      - [ ] Add a new move overlapping the original
+        - [ ] Beginning time
+        - [ ] End time
+        - [ ] Points scored (if any)
+        - [ ] Name of the performer of the move (which athlete did it)
+        - [ ] Whether it was a submission
+        - [ ] The name of the move
+        - [ ] Users can create a new move name if it doesn't exist
+          - [ ] This name must be vetted by other users
+
+- [ ] Users can add a brand new video with match details:
+  - [ ] Tournament name
+  - [ ] Location
+  - [ ] Date
+  - [ ] Athlete 1 name
+  - [ ] Athlete 2 name
+  - [ ] Weight class
+  - [ ] Rank
+  - [ ] Video url
+    - [ ] Gets validated?
+
+
+A *match* is composed of *match details* and *moves*.
