@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,13 +15,13 @@ export class AppComponent {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     var player;
     var video = 'xnFyujujf_8'
-    video.h: string = '390' //video iframe height
-    video.w = '640' //video iframe width
+    var video_h = '390' //video iframe height
+    var video_w = '640' //video iframe width
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
-        height: video.h,
-        width: video.w,
+        height: video_h,
+        width: video_w,
         videoId: video,
         events: {
           'onStateChange': onPlayerStateChange,
