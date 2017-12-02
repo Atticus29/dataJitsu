@@ -8,6 +8,7 @@ describe('YoutubeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      // providers: [YoutubeComponent],tried this, and it makes no difference
       declarations: [ YoutubeComponent ]
     })
     .compileComponents();
