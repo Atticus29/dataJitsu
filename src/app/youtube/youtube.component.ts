@@ -12,8 +12,8 @@ export class YoutubeComponent implements OnInit {
   ngOnInit() {
     var player;
 
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('video', {
+    window['onYouTubeIframeAPIReady'] = function() {
+      player = new window['YT'].Player('video', {
         events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -22,7 +22,7 @@ export class YoutubeComponent implements OnInit {
     }
 
     function onPlayerStateChange(event){
-      if (event.data == YT.PlayerState.PAUSED) {
+      if (event.data == window['YT'].PlayerState.PAUSED) {
         console.log(player.getCurrentTime());
       }
     }
@@ -36,11 +36,11 @@ export class YoutubeComponent implements OnInit {
       });
     }
 
-    var tag = document.createElement('script');
-    tag.src = "//www.youtube.com/player_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+    if (!window['YT']){
+      var tag = document.createElement('script');
+      tag.src = "//www.youtube.com/player_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
   }
-
 }
