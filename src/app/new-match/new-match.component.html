@@ -7,17 +7,17 @@
   <div class="row">
     <form class="col s12">
       <div class="row">
-        <div class="input-field col s4">
+        <div class="input-field col s12">
           <input type="text" placeholder="e.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
           <label for="matchURL" class="active">Match URL</label>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col s6">
           <input type="text" placeholder="Rafael Mendes" id="athlete1Name" class="validate">
           <label for="athlete1Name" class="active">Athlete 1 (Left) Name</label>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col s6">
           <input type="text" placeholder="Rubens Cobrihna Charles" id="athlete2Name" class="validate">
-          <label for="athlete2Name" class="active">Athlete 1 (Left) Name</label>
+          <label for="athlete2Name" class="active">Athlete 2 (Right) Name</label>
         </div>
       </div>
       <div class="row">
@@ -39,7 +39,7 @@
       </div>
       <div class="row">
         <div class="input-field col s2">
-          <div class="switch" materialize="material_switch">
+          <div class="switch">
             <label>
               Gi
               <input disabled type="checkbox">
@@ -109,8 +109,26 @@
           </select>
           <label for="weight">Weight Class</label>
         </div>
-
       </div>
     </form>
+
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
+    <!-- Modal Trigger -->
+    <button class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit
+      <i class="material-icons right">send</i>
+    </button> <!--(click)="submitForm()" -->
+    <!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Submit <i class="material-icons right">send</i></a> -->
+
   </div>
 </div>
