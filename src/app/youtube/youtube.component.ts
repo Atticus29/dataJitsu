@@ -10,6 +10,6 @@ export class YoutubeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  } 
+  }
 
 }
