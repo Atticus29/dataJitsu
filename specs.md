@@ -67,6 +67,7 @@
   - [ ] Athlete 1 name
   - [ ] Athlete 2 name
   - [ ] Weight class
+  - [ ] Gi status
   - [ ] Rank
   - [ ] Video url
     - [ ] Gets validated?
