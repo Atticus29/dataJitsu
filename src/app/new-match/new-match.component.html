@@ -3,9 +3,17 @@
   <div class="row">
     <form class="col s12">
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s4">
           <input type="text" placeholder="e.g., https://youtu.be/AYdi8oupOcs" id="matchURL" class="validate">
           <label for="matchURL" class="active">Match URL</label>
+        </div>
+        <div class="input-field col s4">
+          <input type="text" placeholder="Rafael Mendes" id="athlete1Name" class="validate">
+          <label for="athlete1Name" class="active">Athlete 1 (Left) Name</label>
+        </div>
+        <div class="input-field col s4">
+          <input type="text" placeholder="Rubens Cobrihna Charles" id="athlete2Name" class="validate">
+          <label for="athlete2Name" class="active">Athlete 1 (Left) Name</label>
         </div>
       </div>
       <div class="row">
@@ -26,20 +34,44 @@
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s3">
-          <input type="text" placeholder="Rafael Mendes" id="athlete1Name" class="validate">
-          <label for="athlete1Name" class="active">Athlete 1 (Left) Name</label>
-        </div>
-        <div class="input-field col s3">
-          <input type="text" placeholder="Rubens Cobrihna Charles" id="athlete2Name" class="validate">
-          <label for="athlete2Name" class="active">Athlete 1 (Left) Name</label>
+        <div class="input-field col s2">
+          <div class="switch">
+            <label>
+              Gi
+              <input disabled type="checkbox">
+              <span class="lever"></span>
+              No Gi
+            </label>
+          </div>
+
         </div>
         <div class="input-field col s2">
-          <input type="text" placeholder="TODO change me to select" id="ageClass" class="validate">
-          <label for="ageClass" class="active">Age Class</label>
+          <select materialize="material_select" id="gender">
+            <option value="" disabled selected>Choose gender</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+          <label for="gender">Gender</label>
         </div>
         <div class="input-field col s2">
-          <select>
+          <select materialize="material_select" id="ageClass">
+            <option value="" disabled selected>Choose age class</option>
+            <option value="youth">Youth</option>
+            <option value="juvenile1">Juvenile1</option>
+            <option value="juvenile2">Juvenile2</option>
+            <option value="adult">Adult</option>
+            <option value="master1">Master 1</option>
+            <option value="master2">Master 2</option>
+            <option value="master3">Master 3</option>
+            <option value="master4">Master 4</option>
+            <option value="master5">Master 5</option>
+            <option value="master6">Master 6</option>
+          </select>
+          <label for="ageClass">Age Class</label>
+        </div>
+        <div class="input-field col s2">
+          <select materialize="material_select" id="rank">
+            <option value="" disabled selected>Choose rank</option>
             <option value="white">White belt</option>
             <option value="grey">Grey belt</option>
             <option value="yellow">Yellow belt</option>
@@ -54,9 +86,24 @@
             <option value="advanced">Advanced</option>
             <option value="elite">Elite</option>
           </select>
-          <label class="active">Rank</label>
+          <label for="rank">Rank</label>
         </div>
-        <div class="input-field col s3">
+        <div class="input-field col s4">
+          <select materialize="material_select" id="weight">
+            <option value="" disabled selected>Choose weight class</option>
+            <option value="rooster">Rooster</option>
+            <option value="bantam">Bantam</option>
+            <option value="lightFeather">Light-feather</option>
+            <option value="feather">Feather</option>
+            <option value="light">Light</option>
+            <option value="middle">Middle</option>
+            <option value="mediumHeavy">Medium-heavy</option>
+            <option value="heavy">Heavy</option>
+            <option value="superHeavy">Super-heavy</option>
+            <option value="ultraHeavy">Ultra-heavy</option>
+            <option value="absolute">Absolute</option>
+          </select>
+          <label for="weight">Weight Class</label>
         </div>
 
       </div>
