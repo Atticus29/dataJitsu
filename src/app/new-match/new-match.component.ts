@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewChild, ElementRef, AfterViewInit} from '@angular/core';
-declare var $:JQueryStatic;
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
+// import { ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+// declare var jQuery:JQueryStatic;
 
 @Component({
   selector: 'app-new-match',
@@ -8,13 +9,37 @@ declare var $:JQueryStatic;
   styleUrls: ['./new-match.component.css']
 })
 export class NewMatchComponent implements OnInit {
-  @ViewChild('selectElem') el:ElementRef;
+  modalActions1 = new EventEmitter<string|MaterializeAction>();
+  modalActions2 = new EventEmitter<string|MaterializeAction>();
 
-  constructor() {
-     $('.modal').modal();
-   }
+  params = []
+
+  model1Params = [
+    {
+      dismissible: false,
+      complete: () => {
+        console.log('Closed');
+        this.openModal2();
+      }
+    }
+  ]
+
+  constructor() {}
 
   ngOnInit() {
+  }
+
+  openModal1() {
+    this.modalActions1.emit({action:"modal",params:['open']});
+  }
+  closeModal1() {
+    this.modalActions1.emit({action:"modal",params:['close']});
+  }
+  openModal2() {
+    this.modalActions2.emit({action:"modal",params:['open']});
+  }
+  closeModal2() {
+    this.modalActions2.emit({action:"modal",params:['close']});
   }
 
   submitForm(){
