@@ -112,23 +112,20 @@
       </div>
     </form>
 
-
-    <!-- Modal Structure -->
     <div id="modal1" class="modal">
       <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
+        <h4>Annotate your submission?</h4>
+        <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        <button (click)="annotateCurrentVideo()" class="modal-action modal-close waves-effect waves-green btn-flat">Annotate</button>
+        <button (click)="addToQueueAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn-flat">Add to Queue</button>
       </div>
     </div>
 
-    <!-- Modal Trigger -->
     <button class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit
       <i class="material-icons right">send</i>
-    </button> <!--(click)="submitForm()" -->
-    <!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Submit <i class="material-icons right">send</i></a> -->
+    </button>
 
   </div>
 </div>
