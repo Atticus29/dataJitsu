@@ -10,39 +10,32 @@ declare var $:any;
 })
 export class NewMatchComponent implements OnInit {
 
-constructor() {
-  $(document).ready(function() {
-    //TODO fix bug where navigating from main to newmatch and then clicking the modal submit sometimes works and sometimes doesn't (depending on whether you've navigated away from the page before??)
+  constructor() {
+    $(document).ready(function() {
+      //TODO fix bug where navigating from main to newmatch and then clicking the modal submit sometimes works and sometimes doesn't (depending on whether you've navigated away from the page before??)
+      $('.modal').modal();
+    });
+  }
 
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    /*$('.view').click(function (){
-    $('#modal1').modal('open');
-    alert('edskjcxnm');
-  });*/
-  /*$('.view').leanModal();*/
-  $('#modal1').modal();
-});
-}
-
-ngOnInit() {
-}
+  ngOnInit() {
+  }
 
 
-submitForm(){
-  console.log("Hi!");
-  //push results to database(match) (as service??) //TODO
-  //send a little dialog box
-  //if they chose to annotate, go to annotation page
-  //else
-  //go back to main page
-}
+  submitForm(){
+    console.log("Hi!");
+    //push results to database(match) (as service??) //TODO
+    //send a little dialog box
+    //if they chose to annotate, go to annotation page
+    //else
+    //go back to main page
+  }
 
-annotateCurrentVideo(){
-  console.log("Annotate"); //TODO flesh out
-}
+  annotateCurrentVideo(){
+    console.log("Annotate"); //TODO flesh out
+  }
 
-addToQueueAndReturnToMain(){
-  console.log("Queue"); //TODO flesh out
-}
+  addToQueueAndReturnToMain(){
+    console.log("Queue"); //TODO flesh out
+  }
 
 }

@@ -8,15 +8,15 @@
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input type="text" placeholder="e.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
+          <input type="text" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
           <label for="matchURL" class="active">Match URL</label>
         </div>
         <div class="input-field col s6">
-          <input type="text" placeholder="Rafael Mendes" id="athlete1Name" class="validate">
+          <input type="text" placeholder="E.g., Rafael Mendes" id="athlete1Name" class="validate">
           <label for="athlete1Name" class="active">Athlete 1 (Left) Name</label>
         </div>
         <div class="input-field col s6">
-          <input type="text" placeholder="Rubens Cobrihna Charles" id="athlete2Name" class="validate">
+          <input type="text" placeholder="E.g., Rubens Cobrihna Charles" id="athlete2Name" class="validate">
           <label for="athlete2Name" class="active">Athlete 2 (Right) Name</label>
         </div>
       </div>
@@ -27,7 +27,7 @@
           <label for="tournamentName" class="active">Tournament Name </label>
         </div>
         <div class="input-field col s4">
-          <input placeholder="Anaheim, CA" id="location" type="text" class="validate">
+          <input placeholder="E.g., Anaheim, CA" id="location" type="text" class="validate">
           <br>
           <label for="location" class="active">Location</label>
         </div>
@@ -118,8 +118,8 @@
         <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
       </div>
       <div class="modal-footer">
-        <button (click)="annotateCurrentVideo()" class="modal-action modal-close waves-effect waves-green btn-flat">Annotate</button>
-        <button (click)="addToQueueAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn-flat">Add to Queue</button>
+        <button (click)="annotateCurrentVideo()" class="modal-action modal-close waves-effect waves-green btn">Annotate</button>
+        <button (click)="addToQueueAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
       </div>
     </div>
 
