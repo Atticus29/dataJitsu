@@ -8,7 +8,9 @@ declare var $:any;
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.css']
 })
+
 export class NewMatchComponent implements OnInit {
+  ranks: Array<string>;
 
   constructor() {
     $(document).ready(function() {
@@ -18,6 +20,8 @@ export class NewMatchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ranks = ["White belt", "Grey belt", "Yellow belt", "Orange belt", "Green belt", "Blue belt", "Purple belt", "Brown belt", "Black belt", "Beginner", "Intermediate", "Advanced", "Elite"];
+    // this.ranks.push("Elite");
   }
 
 

@@ -76,19 +76,7 @@
         <div class="input-field col s2">
           <select materialize="material_select" id="rank">
             <option value="" disabled selected>Choose rank</option>
-            <option value="white">White belt</option>
-            <option value="grey">Grey belt</option>
-            <option value="yellow">Yellow belt</option>
-            <option value="orange">Orange belt</option>
-            <option value="green">Green belt</option>
-            <option value="blue">Blue belt</option>
-            <option value="purple">Purple belt</option>
-            <option value="brown">Brown belt</option>
-            <option value="black">Black belt</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-            <option value="elite">Elite</option>
+            <option *ngFor="let rank of ranks">{{rank}}</option>
           </select>
           <label for="rank">Rank</label>
         </div>
@@ -106,6 +94,7 @@
             <option value="superHeavy">Super-heavy</option>
             <option value="ultraHeavy">Ultra-heavy</option>
             <option value="absolute">Absolute</option>
+            <option value="absolute">Add new weight class</option>
           </select>
           <label for="weight">Weight Class</label>
         </div>
