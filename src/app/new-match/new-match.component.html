@@ -52,24 +52,14 @@
         <div class="input-field col s2">
           <select materialize="material_select" id="gender">
             <option value="" disabled selected>Choose gender</option>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
+            <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
           <label for="gender">Gender</label>
         </div>
         <div class="input-field col s2">
           <select materialize="material_select" id="ageClass">
             <option value="" disabled selected>Choose age class</option>
-            <option value="youth">Youth</option>
-            <option value="juvenile1">Juvenile1</option>
-            <option value="juvenile2">Juvenile2</option>
-            <option value="adult">Adult</option>
-            <option value="master1">Master 1</option>
-            <option value="master2">Master 2</option>
-            <option value="master3">Master 3</option>
-            <option value="master4">Master 4</option>
-            <option value="master5">Master 5</option>
-            <option value="master6">Master 6</option>
+            <option *ngFor="let age of ages">{{age}}</option>
           </select>
           <label for="ageClass">Age Class</label>
         </div>
@@ -83,17 +73,7 @@
         <div class="input-field col s4">
           <select materialize="material_select" id="weight">
             <option value="" disabled selected>Choose weight class</option>
-            <option value="rooster">Rooster</option>
-            <option value="bantam">Bantam</option>
-            <option value="lightFeather">Light-feather</option>
-            <option value="feather">Feather</option>
-            <option value="light">Light</option>
-            <option value="middle">Middle</option>
-            <option value="mediumHeavy">Medium-heavy</option>
-            <option value="heavy">Heavy</option>
-            <option value="superHeavy">Super-heavy</option>
-            <option value="ultraHeavy">Ultra-heavy</option>
-            <option value="absolute">Absolute</option>
+            <option *ngFor="let weight of weightClasses">{{weight}}</option>
             <option value="absolute">Add new weight class</option>
           </select>
           <label for="weight">Weight Class</label>

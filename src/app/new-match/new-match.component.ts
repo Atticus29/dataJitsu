@@ -10,7 +10,10 @@ declare var $:any;
 })
 
 export class NewMatchComponent implements OnInit {
+  ages: Array<string>;
   ranks: Array<string>;
+  genders: Array<string>;
+  weightClasses: Array<string>;
 
   constructor() {
     $(document).ready(function() {
@@ -20,8 +23,11 @@ export class NewMatchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.genders = ["Female", "Male"];
+    this.ages = ["Youth", "Juvenile1", "Juvenile2", "Adult", "Master 1", "Master 2", "Master 3", "Master 4", "Master 5", "Master 6"];
     this.ranks = ["White belt", "Grey belt", "Yellow belt", "Orange belt", "Green belt", "Blue belt", "Purple belt", "Brown belt", "Black belt", "Beginner", "Intermediate", "Advanced", "Elite"];
     // this.ranks.push("Elite");
+    this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute"];
   }
 
 
