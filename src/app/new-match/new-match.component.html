@@ -8,33 +8,33 @@
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input type="text" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
-          <label for="matchURL" class="active">Match URL</label>
+          <input type="url" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
+          <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
         </div>
         <div class="input-field col s6">
           <input type="text" placeholder="E.g., Rafael Mendes" id="athlete1Name" class="validate">
-          <label for="athlete1Name" class="active">Athlete 1 (Left) Name</label>
+          <label for="athlete1Name" class="active" data-error="Not valid" data-success="Valid">Athlete 1 (Left) Name</label>
         </div>
         <div class="input-field col s6">
           <input type="text" placeholder="E.g., Rubens Cobrihna Charles" id="athlete2Name" class="validate">
-          <label for="athlete2Name" class="active">Athlete 2 (Right) Name</label>
+          <label for="athlete2Name" class="active" data-error="Not valid" data-success="Valid">Athlete 2 (Right) Name</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s4">
           <input placeholder="E.g., IBJJF Gi Worlds" id="tournamentName" type="text" class="validate">
           <br>
-          <label for="tournamentName" class="active">Tournament Name </label>
+          <label for="tournamentName" class="active" data-error="Not valid" data-success="Valid">Tournament Name </label>
         </div>
         <div class="input-field col s4">
           <input placeholder="E.g., Anaheim, CA" id="location" type="text" class="validate">
           <br>
-          <label for="location" class="active">Location</label>
+          <label for="location" class="active" data-error="Not valid" data-success="Valid">Location</label>
         </div>
         <div class="input-field col s4">
           <input type="date" class="datepicker validate" id="tournamentDate">
           <br>
-          <label for="tournamentDate" class="active">Date</label>
+          <label for="tournamentDate" class="active" data-error="Not valid" data-success="Valid">Date</label>
         </div>
       </div>
       <div class="row">
@@ -66,7 +66,12 @@
         <div class="input-field col s2">
           <select materialize="material_select" id="rank">
             <option value="" disabled selected>Choose rank</option>
-            <option *ngFor="let rank of ranks">{{rank}}</option>
+            <optgroup label="Gi">
+              <option *ngFor="let rank of giRanks">{{rank}}</option>
+            </optgroup>
+            <optgroup label="No Gi">
+              <option *ngFor="let rank of nogiRanks">{{rank}}</option>
+            </optgroup>
           </select>
           <label for="rank">Rank</label>
         </div>
