@@ -5,10 +5,10 @@
     </div>
   </div>
   <div class="row">
-    <form class="col s12">
+    <form class="col s12" materialize [formGroup]="newMatchForm">
       <div class="row">
         <div class="input-field col s12">
-          <input type="url" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
+          <input formControlName="matchUrlBound" type="url" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
           <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
         </div>
         <div class="input-field col s6">
@@ -84,6 +84,9 @@
           <label for="weight">Weight Class</label>
         </div>
       </div>
+      <button class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
+        <i class="material-icons right">send</i>
+      </button>
     </form>
 
     <div id="modal1" class="modal">
@@ -92,14 +95,10 @@
         <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
       </div>
       <div class="modal-footer">
-        <button (click)="annotateCurrentVideo()" class="modal-action modal-close waves-effect waves-green btn">Annotate</button>
+        <button class="modal-action modal-close waves-effect waves-green btn">Annotate</button>
         <button (click)="addToQueueAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
       </div>
     </div>
-
-    <button class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit
-      <i class="material-icons right">send</i>
-    </button>
 
   </div>
 </div>

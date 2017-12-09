@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterializeModule } from 'angular2-materialize';
 
@@ -20,7 +20,8 @@ import { NewMatchComponent } from './new-match/new-match.component';
     FormsModule,
     HttpModule,
     routing,
-    MaterializeModule
+    MaterializeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
