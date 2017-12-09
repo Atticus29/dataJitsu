@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { matchDetails } from '../matchDetails.model';
 declare var $:any;
 
 @Component({
@@ -31,14 +32,36 @@ export class NewMatchComponent implements OnInit {
     this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute"];
     // console.log("matchURL is " + this.matchURL);
     this.newMatchForm = this.fb.group({
-      matchUrlBound: ['', Validators.required]
+      matchUrlBound: ['', Validators.required],
+      athlete1NameBound: ['', Validators.required],
+      athlete2NameBound: ['', Validators.required],
+      tournamentNameBound: ['', Validators.required],
+      locationBound: ['', Validators.required],
+      tournamentDateBound: ['', Validators.required],
+      giStatusBound: ['', Validators.required],
+      genderBound: ['', Validators.required],
+      ageClassBound: ['', Validators.required],
+      rankBound: ['', Validators.required],
+      weigthBound: ['', Validators.required],
     });
   }
 
+  getValues(){
+    let result = this.newMatchForm.value;
+    return result;
+  }
+
+  createMatchObj(result: any){
+    console.log(result);
+    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
+    let match = new matchDetails("testId", tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
+    console.log(match);
+    return match;
+  }
 
   submitForm() {
-    let test = this.newMatchForm.value;
-    console.log(test);
+    let values = this.getValues();
+    let match = this.createMatchObj(values);
   }
 
   annotateCurrentVideo(){
