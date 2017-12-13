@@ -1,3 +1,19 @@
+# Set up
+
+Create a file in the app subdirectory called, api-keys.ts. In it, place the following code.
+
+```
+export var masterFirebaseConfig = {
+    apiKey: "xxxx",
+    authDomain: "xxxx.firebaseapp.com",
+    databaseURL: "https://xxxx.firebaseio.com",
+    storageBucket: "xxxx.appspot.com",
+    messagingSenderId: "xxxx"
+  };
+```
+
+You can get your on firebase API key and other info. from [here](//TODO)
+
 # DataJitsu
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
