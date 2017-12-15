@@ -1,7 +1,7 @@
-import { matchDetails } from './matchDetails.model';
-import { moveInVideo } from './moveInVideo.model';
-import { user } from './user.model';
+import { MatchDetails } from './matchDetails.model';
+import { MoveInVideo } from './moveInVideo.model';
+import { User } from './user.model';
 
-export class match {
-  constructor(public matchDeets: matchDetails, public originalPoster: user, public movesInTheVideo: Array<moveInVideo>) { }
+export class Match {
+  constructor(public matchDeets: MatchDetails, public originalPoster: User, public movesInTheVideo: Array<MoveInVideo>) { }
 }
