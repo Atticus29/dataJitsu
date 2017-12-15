@@ -11,6 +11,8 @@ describe ('tests for the match class', ()=>{
     let moveArray: Array<moveInVideo> = [move1, move2];
     let user1: user = new user("testUser", "Bob the fake user", "bob@bob.com", "red", "sbg", 33, 155, "light", 100);
     let match1: match = new match(matchDeets, user1, moveArray);
+    let match2: match = new match(matchDeets, moveArray);
     expect(match1 instanceof match).toBe(true);
+    expect(match2 instanceof match).toBe(false); //TODO or to throw an error??
   });
 });
