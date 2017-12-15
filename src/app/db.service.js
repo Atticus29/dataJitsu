@@ -11,24 +11,13 @@ import * as firebase from 'firebase/app';
 //TODO edit this
 @Injectable()
 export class DbService {
-  teams: FirebaseListObservable<any>;
-  positions: any[] = [
-    {short: 'PG', long: 'Point Guard'},
-    {short: 'SG', long: 'Shooting Guard'},
-    {short: 'SF', long: 'Small Forward'},
-    {short: 'PF', long: 'Power Forward'},
-    {short: 'C', long: 'Center'}
-  ];
+  matches: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
-    this.teams = db.list('/teams');
+    this.matches = db.list('/matches');
   }
 
-  getLongPosition(shortPosition: string){
-  let result=this.positions.filter(position=>{
-  return position.short===shortPosition});
-  return result[0].long;
-  }
+  //TODO getters
 
   createTeam(team: Team, players: Player[], currentUserId: string) {
     var teamId = this.teams.push(team).key;
