@@ -1,3 +1,6 @@
+import { matchDetails } from './matchDetails.model';
+import { moveInVideo } from './moveInVideo.model';
+
 export class match {
-  constructor(public name: string, public position: string, public jerseyNumber: number, public height: number, public weight: number, public birthdate: string, public imageURL: string) { }
+  constructor(public matchDeets: matchDetails, public movesInTheVideo: Array<moveInVideo>) { }
 }
