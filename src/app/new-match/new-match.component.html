@@ -83,7 +83,7 @@
           <label for="weight">Weight Class</label>
         </div>
       </div>
-      <button class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
+      <button [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
         <i class="material-icons right">send</i>
       </button>
     </form>

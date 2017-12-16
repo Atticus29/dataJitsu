@@ -51,11 +51,26 @@ export class NewMatchComponent implements OnInit {
     return result;
   }
 
+  allValid(matchForm: FormGroup){
+    let values = matchForm.value;
+    console.log(values);
+    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""){
+      //TODO giStatusBound != null
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  urlValid(url: string){
+    return true; //TODO fix
+  }
+
   createMatchObj(result: any){
-    console.log(result);
+    // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
     let match = new MatchDetails("testId", tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
-    console.log(match);
+    // console.log(match);
     return match;
   }
 
