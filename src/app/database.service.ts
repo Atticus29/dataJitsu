@@ -11,7 +11,7 @@ import { Match } from './match.model';
 
 //TODO edit this
 @Injectable()
-export class DbService {
+export class DatabaseService {
   matches: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
