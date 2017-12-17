@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col s12">
-      <h1 class="subtitle">Submit a New Match</h1>
+      <h1 class="subtitle">{{title}}</h1>
     </div>
   </div>
   <div class="row">
@@ -11,59 +11,60 @@
           <input formControlName="matchUrlBound" type="url" placeholder="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL"  class="validate">
           <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col m6 s12">
           <input formControlName="athlete1NameBound" type="text" placeholder="E.g., Rafael Mendes" id="athlete1Name" class="validate">
           <label for="athlete1Name" class="active" data-error="Not valid" data-success="Valid">Athlete 1 (Left) Name</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col m6 s12">
           <input formControlName="athlete2NameBound" type="text" placeholder="E.g., Rubens Cobrihna Charles" id="athlete2Name" class="validate">
           <label for="athlete2Name" class="active" data-error="Not valid" data-success="Valid">Athlete 2 (Right) Name</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s4">
+        <div class="input-field col m4 s12">
           <input formControlName="tournamentNameBound" placeholder="E.g., IBJJF Gi Worlds" id="tournamentName" type="text" class="validate">
           <br>
           <label for="tournamentName" class="active" data-error="Not valid" data-success="Valid">Tournament Name </label>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col m4 s12">
           <input formControlName="locationBound" placeholder="E.g., Anaheim, CA" id="location" type="text" class="validate">
           <br>
           <label for="location" class="active" data-error="Not valid" data-success="Valid">Location</label>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col m4 s12">
           <input formControlName="tournamentDateBound" type="date" class="datepicker validate" id="tournamentDate">
           <br>
           <label for="tournamentDate" class="active" data-error="Not valid" data-success="Valid">Date</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s2">
+        <div class="col s12 m2 switch">
           <div class="switch">
             <label>
-              Gi
-              <input formControlName="giStatusBound" disabled type="checkbox" id="giStatus">
-              <span class="lever"></span>
               No Gi
+              <input formControlName="giStatusBound" id="giStatus" type="checkbox" [disabled]="isDisabled?true:null">
+              <span class="lever"></span>
+              Gi
             </label>
           </div>
-
         </div>
-        <div class="input-field col s2">
+        <div class="input-field col m2 s12">
+        </div>
+        <div class="input-field col m2 s12">
           <select formControlName="genderBound" materialize="material_select" id="gender">
             <option value="" disabled selected>Choose gender</option>
             <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
           <label for="gender">Gender</label>
         </div>
-        <div class="input-field col s2">
+        <div class="input-field col m2 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
             <option value="" disabled selected>Choose age class</option>
             <option *ngFor="let age of ages">{{age}}</option>
           </select>
           <label for="ageClass">Age Class</label>
         </div>
-        <div class="input-field col s2">
+        <div class="input-field col m2 s12">
           <select formControlName="rankBound" materialize="material_select" id="rank">
             <option value="" disabled selected>Choose rank</option>
             <optgroup label="Gi">
@@ -75,8 +76,8 @@
           </select>
           <label for="rank">Rank</label>
         </div>
-        <div class="input-field col s4">
-          <select formControlName="weigthBound" materialize="material_select" id="weight">
+        <div class="input-field col m2 s12">
+          <select formControlName="weightBound" materialize="material_select" id="weight">
             <option value="" disabled selected>Choose weight class</option>
             <option *ngFor="let weight of weightClasses">{{weight}}</option>
             <option value="absolute">Add new weight class</option>
@@ -84,7 +85,7 @@
           <label for="weight">Weight Class</label>
         </div>
       </div>
-      <button class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
+      <button [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
         <i class="material-icons right">send</i>
       </button>
     </form>
