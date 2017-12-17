@@ -77,7 +77,7 @@
           <label for="rank">Rank</label>
         </div>
         <div class="input-field col m2 s12">
-          <select formControlName="weigthBound" materialize="material_select" id="weight">
+          <select formControlName="weightBound" materialize="material_select" id="weight">
             <option value="" disabled selected>Choose weight class</option>
             <option *ngFor="let weight of weightClasses">{{weight}}</option>
             <option value="absolute">Add new weight class</option>

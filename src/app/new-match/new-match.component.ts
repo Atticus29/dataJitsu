@@ -39,11 +39,11 @@ export class NewMatchComponent implements OnInit {
       tournamentNameBound: ['', Validators.required],
       locationBound: ['', Validators.required],
       tournamentDateBound: ['', Validators.required],
-      giStatusBound: ['true'],
+      giStatusBound: [true],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
       rankBound: ['', Validators.required],
-      weigthBound: ['', Validators.required],
+      weightBound: ['', Validators.required],
     });
   }
 
@@ -55,7 +55,8 @@ export class NewMatchComponent implements OnInit {
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
     console.log(values);
-    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== "" && (values.giStatusBound == true || values.giStatusBound == false )){
+    console.log(values.giStatusBound == true || values.giStatusBound == false);
+    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== "" && (values.giStatusBound == true || values.giStatusBound == false) && values.weightBound !== "" ){
       return true;
     } else{
       return false;
