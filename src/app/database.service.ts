@@ -20,7 +20,7 @@ export class DatabaseService {
 
   //TODO getters
 
-  createMatch(match: Match){
+  addMatchToDb(match: Match){
     let matchId = this.matches.push(match).key;
     let updates = {};
     updates['/users/' + match.originalPoster.id] = true; //TODO check that this works

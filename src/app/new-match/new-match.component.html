@@ -85,7 +85,7 @@
           <label for="weight">Weight Class</label>
         </div>
       </div>
-      <button [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1" (click)="submitForm()">Submit <!---[disabled]="!newMatchForm.valid" -->
+      <button [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newMatchForm.valid" -->
         <i class="material-icons right">send</i>
       </button>
     </form>
@@ -96,8 +96,8 @@
         <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
       </div>
       <div class="modal-footer">
-        <button class="modal-action modal-close waves-effect waves-green btn">Annotate</button>
-        <button (click)="addToQueueAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
+        <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndAnnotate()">Annotate</button>
+        <button (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
       </div>
     </div>
 

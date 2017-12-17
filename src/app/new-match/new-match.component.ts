@@ -2,12 +2,17 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { MatchDetails } from '../matchDetails.model';
+import { Match } from '../match.model';
+import { MoveInVideo } from '../moveInVideo.model';
+import { DatabaseService } from '../database.service';
+import { User } from '../user.model';
 declare var $:any;
 
 @Component({
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
-  styleUrls: ['./new-match.component.css']
+  styleUrls: ['./new-match.component.css'],
+  providers: [DatabaseService]
 })
 
 export class NewMatchComponent implements OnInit {
@@ -19,8 +24,10 @@ export class NewMatchComponent implements OnInit {
   weightClasses: Array<string>;
   // matchUrlBound: string;
   newMatchForm: FormGroup;
+  currentUserId: any;
+  currentUser: User;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private db: DatabaseService) { //TODO add userService
   }
 
   ngOnInit() {
@@ -45,6 +52,8 @@ export class NewMatchComponent implements OnInit {
       rankBound: ['', Validators.required],
       weightBound: ['', Validators.required],
     });
+
+    this.currentUser = this.userService.getUser(this.currentUserId); //TODO mature this
   }
 
   getValues(){
@@ -68,16 +77,28 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
-    let match = new MatchDetails("testId", tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
-    // console.log(match);
+    let matchDeets = new MatchDetails("testId", tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
+    let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
+    let match = new Match(matchDeets, this.currentUser, moves);
     return match;
   }
 
-  submitForm() {
+  submitFormAndAnnotate(){
     let values = this.getValues();
     let match = this.createMatchObj(values);
+    this.db.addMatchToDb(match);
+  }
+
+  submitFormAndReturnToMain(){
+    let values = this.getValues();
+    let match = this.createMatchObj(values);
+    this.db.addMatchToDb(match);
+    //TODO return to main
+  }
+
+  pushToDb(match: Match){
+
   }
 
   annotateCurrentVideo(){

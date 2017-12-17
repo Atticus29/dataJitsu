@@ -24,7 +24,7 @@ export class YoutubeComponent implements OnInit {
     let moveArray: Array<MoveInVideo> = [move1, move2];
     let user1: User = new User("testUser", "Bob the fake user", "bob@bob.com", "red", "sbg", 33, 155, "light", 100);
     let match1: Match = new Match(matchDeets, user1, moveArray);
-    this.db.createMatch(match1);
+    this.db.addMatchToDb(match1);
 
     window['onYouTubeIframeAPIReady'] = function() {
       player = new window['YT'].Player('video', {
