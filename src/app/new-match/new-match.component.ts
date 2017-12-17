@@ -11,6 +11,7 @@ declare var $:any;
 })
 
 export class NewMatchComponent implements OnInit {
+  title: string = "Submit a New Match for Annotation";
   ages: Array<string>;
   giRanks: Array<string>;
   nogiRanks: Array<string>;
@@ -38,7 +39,7 @@ export class NewMatchComponent implements OnInit {
       tournamentNameBound: ['', Validators.required],
       locationBound: ['', Validators.required],
       tournamentDateBound: ['', Validators.required],
-      giStatusBound: ['', Validators.required],
+      giStatusBound: ['true'],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
       rankBound: ['', Validators.required],
@@ -54,8 +55,7 @@ export class NewMatchComponent implements OnInit {
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
     console.log(values);
-    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""){
-      //TODO giStatusBound != null
+    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== "" && (values.giStatusBound == true || values.giStatusBound == false )){
       return true;
     } else{
       return false;
