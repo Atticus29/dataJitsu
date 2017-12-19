@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { routing } from './app.routing';
 import { NewMatchComponent } from './new-match/new-match.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -22,7 +23,8 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     YoutubeComponent,
-    NewMatchComponent
+    NewMatchComponent,
+    CreateAccountComponent
   ],
   imports: [
     BrowserModule,

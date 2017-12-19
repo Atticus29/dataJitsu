@@ -1,7 +1,8 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { YoutubeComponent } from './youtube/youtube.component';
-import { NewMatchComponent } from './new-match/new-match.component'
+import { NewMatchComponent } from './new-match/new-match.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 const appRoutes: Routes = [
   {
@@ -11,6 +12,10 @@ const appRoutes: Routes = [
 },{
   path: 'newmatch',
   component: NewMatchComponent,
+  pathMatch: 'full'
+},{
+  path: 'createaccount',
+  component: CreateAccountComponent,
   pathMatch: 'full'
 }
  ];

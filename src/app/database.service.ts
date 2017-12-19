@@ -12,10 +12,16 @@ import { Match } from './match.model';
 //TODO edit this
 @Injectable()
 export class DatabaseService {
-  matches: FirebaseListObservable<any>;
+  matches: FirebaseListObservable<any[]>;
+  weightClasses: FirebaseListObservable<any>;
+  ranks: FirebaseListObservable<any[]>;
+  ageClasses: FirebaseListObservable<any[]>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
+    this.weightClasses = db.list('/weightClasses');
+    this.ranks = db.list('/ranks');
+    this.ageClasses = db.list('/ageClasses');
   }
 
   //TODO getters
@@ -25,6 +31,30 @@ export class DatabaseService {
     let updates = {};
     updates['/users/' + match.originalPoster.id] = true; //TODO check that this works
     firebase.database().ref().update(updates);
+  }
+
+  addWeightClassToDb(weightClass: string){
+    this.weightClasses.push(weightClass);
+  }
+
+  getWeightClassById(id: string){
+    return this.db.object('/weightClasses/' + id);
+  }
+
+  getWeightClasses(){
+    return this.weightClasses;
+  }
+
+  getPlayerById(playerId: string){
+    return this.db.object('/players/' + playerId);
+  }
+
+  addRankToDb(rank: string){
+    this.ranks.push(rank);
+  }
+
+  addAgeClassToDb(ageClass: string){
+    this.ageClasses.push(ageClass);
   }
 
   // createTeam(team: Team, players: Player[], currentUserId: string) {
