@@ -7,6 +7,7 @@ import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { Subject } from 'rxjs/Subject';
 declare var $:any;
 
 @Component({
@@ -18,12 +19,12 @@ declare var $:any;
 
 export class NewMatchComponent implements OnInit {
   title: string = "Submit a New Match for Annotation";
-  ages: Array<string>;
-  giRanks: Array<string>;
-  nogiRanks: Array<string>;
-  genders: Array<string>;
-  weightClasses = null;
-  // matchUrlBound: string;
+  ageClasses: any[];
+  giRanks: any[];
+  nogiRanks: any[];
+  genders: any[];
+  weightClasses: any[];
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: User;
@@ -35,24 +36,20 @@ export class NewMatchComponent implements OnInit {
     $('.modal').modal();
     this.genders = ["Female", "Male"];
 
-    this.ages = ["Youth", "Juvenile1", "Juvenile2", "Adult", "Master 1", "Master 2", "Master 3", "Master 4", "Master 5", "Master 6"];
-    // this.ages.forEach(ageClass=>{
-    //   this.db.addAgeClassToDb(ageClass);
-    // });
-
-    this.giRanks = ["White belt", "Grey belt", "Yellow belt", "Orange belt", "Green belt", "Blue belt", "Purple belt", "Brown belt", "Black belt"];
-    // this.giRanks.forEach(rank=>{
-    //   this.db.addRankToDb(rank);
-    // });
-
-    this.nogiRanks = ["Beginner", "Intermediate", "Advanced", "Elite"];
-    // this.nogiRanks.forEach(noGiRank=>{
-    //   this.db.addRankToDb(noGiRank);
-    // });
+    this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
+      this.giRanks = giRanks;
+    })
 
 
-    // this.weightClasses = this.db.getWeightClasses().list<string>('weightClasses');
-    this.db.getWeightClasses().subscribe(weightClasses=>{
+    this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
+      this.nogiRanks = noGiRanks;
+    })
+
+    this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
+      this.ageClasses = ageClasses;
+    });
+
+    this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
       this.weightClasses = weightClasses;
       this.weightClasses.forEach(weightClass=>{
         console.log(weightClass.$value);

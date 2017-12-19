@@ -60,7 +60,7 @@
         <div class="input-field col m2 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
             <option value="" disabled selected>Choose age class</option>
-            <option *ngFor="let age of ages">{{age}}</option>
+            <option *ngFor="let age of ageClasses">{{age.$value}}</option>
           </select>
           <label for="ageClass">Age Class</label>
         </div>
@@ -68,10 +68,10 @@
           <select formControlName="rankBound" materialize="material_select" id="rank">
             <option value="" disabled selected>Choose rank</option>
             <optgroup label="Gi">
-              <option *ngFor="let rank of giRanks">{{rank}}</option>
+              <option *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
             </optgroup>
             <optgroup label="No Gi">
-              <option *ngFor="let rank of nogiRanks">{{rank}}</option>
+              <option *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</option>
             </optgroup>
           </select>
           <label for="rank">Rank</label>
