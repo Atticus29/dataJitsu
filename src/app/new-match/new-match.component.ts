@@ -40,7 +40,6 @@ export class NewMatchComponent implements OnInit {
       this.giRanks = giRanks;
     })
 
-
     this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks;
     })
@@ -70,8 +69,6 @@ export class NewMatchComponent implements OnInit {
       weightBound: ['', Validators.required],
     });
 
-
-
     // this.currentUser = this.userService.getUser(this.currentUserId); //TODO mature this
   }
 
@@ -100,6 +97,8 @@ export class NewMatchComponent implements OnInit {
     let match = new Match(matchDeets, this.currentUser, moves);
     return match;
   }
+
+  //TODO have the form listen for giStatusBound and respond dynamically
 
   submitFormAndAnnotate(){
     let values = this.getValues();
