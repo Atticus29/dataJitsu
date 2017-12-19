@@ -9,10 +9,24 @@ import { DatabaseService } from '../database.service';
 })
 export class CreateAccountComponent implements OnInit {
   title: string = "Create an Account";
+  genders: Array<string> = ["Female", "Male"];
+  weightClasses: Array<string>;
+  noGiRanks: Array<string>;
+  giRanks: Array<string>;
+  ages: Array<number>;
+
 
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
+  }
+
+  allValid(){
+    return true; //TODO fix
+  }
+
+  createUser(){
+
   }
 
 }

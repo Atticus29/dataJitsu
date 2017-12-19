@@ -7,6 +7,7 @@ import 'rxjs/add/operator/scan';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Match } from './match.model';
+import { User } from './user.model';
 
 
 //TODO edit this
@@ -14,22 +15,30 @@ import { Match } from './match.model';
 export class DatabaseService {
   matches: FirebaseListObservable<any[]>;
   weightClasses: FirebaseListObservable<any>;
-  ranks: FirebaseListObservable<any[]>;
+  giRanks: FirebaseListObservable<any[]>;
+  noGiRanks: FirebaseListObservable<any[]>;
   ageClasses: FirebaseListObservable<any[]>;
+  users: FirebaseListObservable<any[]>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
     this.weightClasses = db.list('/weightClasses');
-    this.ranks = db.list('/ranks');
+    this.giRanks = db.list('/giRanks');
+    this.noGiRanks = db.list('/noGiRanks');
     this.ageClasses = db.list('/ageClasses');
+    this.users = db.list('/users');
   }
 
   //TODO getters
 
   addMatchToDb(match: Match){
     let matchId = this.matches.push(match).key;
+  }
+
+  addUserToDb(user: User){
+    let userId = this.users.push(user).key;
     let updates = {};
-    updates['/users/' + match.originalPoster.id] = true; //TODO check that this works
+    updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
   }
 
@@ -49,8 +58,12 @@ export class DatabaseService {
     return this.db.object('/players/' + playerId);
   }
 
-  addRankToDb(rank: string){
-    this.ranks.push(rank);
+  addGiRankToDb(rank: string){
+    this.giRanks.push(rank);
+  }
+
+  addNoGiRankToDb(rank:string){
+    this.noGiRanks.push(rank);
   }
 
   addAgeClassToDb(ageClass: string){

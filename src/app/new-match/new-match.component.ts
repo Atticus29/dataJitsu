@@ -59,11 +59,6 @@ export class NewMatchComponent implements OnInit {
       })
     });
 
-    // this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute", "Add new weight class"];
-    // this.weightClasses.forEach(weightClass=>{
-    //   this.db.addWeightClassToDb(weightClass);
-    // });
-
     this.newMatchForm = this.fb.group({
       matchUrlBound: ['', Validators.required],
       athlete1NameBound: ['', Validators.required],
