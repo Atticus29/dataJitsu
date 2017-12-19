@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-create-account',
@@ -18,7 +19,7 @@ export class CreateAccountComponent implements OnInit {
   noGiRanks: any[];
   giRanks: any[];
   ageClasses: any[];
-  ages: Array<number>;
+  ages: Array<number> = new Array<number>();
 
 
   constructor(private fb: FormBuilder, private db: DatabaseService) { }
@@ -27,9 +28,11 @@ export class CreateAccountComponent implements OnInit {
     for (var i = 3; i <= 110; i++) {
        this.ages.push(i);
     }
+    console.log(this.ages);
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
       userEmailBound: ['', Validators.required],
+      userAffiliationBound: ['', Validators.required],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
       giRankBound: ['', Validators.required],
@@ -61,15 +64,15 @@ export class CreateAccountComponent implements OnInit {
   }
 
   createUserObj(result: any){
-    let {userNameBound, userEmailBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightClassBound, ageBound} = result;
-    let newUser = new User()
+    let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightClassBound, ageBound} = result;
+    // let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound)
   }
 
   allValid(){
     console.log("entered allValid");
     let values = this.newUserForm.value;
     console.log(values);
-    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.weightClassBound !== "" && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== ""){
+    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.weightClassBound !== "" && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== "" && values.userAffiliationBound !== ""){
       console.log("allValid valid");
       return true;
     } else{
