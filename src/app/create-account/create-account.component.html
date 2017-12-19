@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="row">
-    <form class="col s12" materialize [formGroup]="newAccountForm">
+    <form class="col s12" materialize [formGroup]="newUserForm">
       <div class="row">
         <div class="input-field cols m6 s12">
           <input formControlName="userNameBound" type="text" placeholder="E.g., Eddie Bravo" id="userName" class="validate">
@@ -42,21 +42,25 @@
             <label for="noGiRank">No Gi Rank</label>
           </div>
           <div class="input-field col m2 s12">
-            <select formControlName="weightBound" materialize="material_select" id="weight">
+            <select formControlName="weightClassBound" materialize="material_select" id="weightClass">
               <option *ngFor="let weight of weightClasses">{{weight.$value}}</option>
             </select>
-            <label for="weight">Weight Class</label>
+            <label for="weightClass">Weight Class</label>
+          </div>
+          <div class="input-field col m2 s12">
+            <select formControlName="ageBound" materialize="material_select" id="age">
+              <option *ngFor="let age of ages">{{age}}</option>
+              <label for="age">Age</label>
+            </select>
           </div>
         </div>
       </div>
-      <!-- giRank -->
-      <!-- noGiRank -->
+
       <!-- affiliation -->
       <!-- age -->
       <!-- weight -->
-      <!-- weightClass -->
       <div class="row">
-        <button [disabled]="!allValid(newAccountForm)"  class="btn waves-effect waves-light" (click)="createUser()">Submit
+        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="createUser()">Create
           <i class="material-icons right">send</i>
         </button>
       </div>
