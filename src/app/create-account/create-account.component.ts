@@ -4,12 +4,13 @@ import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { User } from '../user.model';
 import { Router } from '@angular/router';
+import { ValidationService } from '../validation.service';
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.css'],
-  providers: [DatabaseService]
+  providers: [DatabaseService, ValidationService]
 })
 export class CreateAccountComponent implements OnInit {
 
@@ -25,7 +26,7 @@ export class CreateAccountComponent implements OnInit {
   ages: Array<number> = new Array<number>();
 
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService) { }
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
@@ -86,10 +87,8 @@ export class CreateAccountComponent implements OnInit {
   //TODO add validUserName method that checks whether the username is unique or not
 
   allValid(){
-    console.log("entered allValid");
     let values = this.newUserForm.value;
-    console.log(values);
-    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && this.validWeight(values.weightBound) && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== "" && values.userAffiliationBound !== ""){
+    if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       console.log("allValid valid");
       return true;
     } else{
@@ -98,7 +97,5 @@ export class CreateAccountComponent implements OnInit {
     }
   }
 
-  validWeight(weight: number){
-    return weight > 8 && weight < 1000;
-  }
+
 }
