@@ -39,7 +39,7 @@ export class CreateAccountComponent implements OnInit {
       ageClassBound: ['', Validators.required],
       giRankBound: ['', Validators.required],
       noGiRankBound: ['', Validators.required],
-      weightClassBound: ['', Validators.required],
+      weightBound: ['', Validators.required],
       ageBound: ['', Validators.required]
     });
 
@@ -66,20 +66,24 @@ export class CreateAccountComponent implements OnInit {
   }
 
   createUserObj(result: any){
-    let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightClassBound, ageBound} = result;
-    // let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound)
+    let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
+    let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound);
   }
 
   allValid(){
     console.log("entered allValid");
     let values = this.newUserForm.value;
     console.log(values);
-    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.weightClassBound !== "" && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== "" && values.userAffiliationBound !== ""){
+    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && this.validWeight(values.weightBound) && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== "" && values.userAffiliationBound !== ""){
       console.log("allValid valid");
       return true;
     } else{
       console.log("allValid not valid");
       return false;
     }
+  }
+
+  validWeight(weight: number){
+    return weight > 8 && weight < 1000;
   }
 }
