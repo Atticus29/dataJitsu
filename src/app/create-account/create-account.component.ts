@@ -5,12 +5,13 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angu
 import { User } from '../user.model';
 import { Router } from '@angular/router';
 import { ValidationService } from '../validation.service';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.css'],
-  providers: [DatabaseService, ValidationService]
+  providers: [DatabaseService, ValidationService, AuthorizationService]
 })
 export class CreateAccountComponent implements OnInit {
 
@@ -26,7 +27,7 @@ export class CreateAccountComponent implements OnInit {
   ages: Array<number> = new Array<number>();
 
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
@@ -36,6 +37,7 @@ export class CreateAccountComponent implements OnInit {
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
       userEmailBound: ['', Validators.required],
+      passwordBound: ['', Validators.required],
       userAffiliationBound: ['', Validators.required],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
@@ -68,8 +70,10 @@ export class CreateAccountComponent implements OnInit {
   }
 
   createUserObj(result: any){
-    let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
-    let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound, new Date());
+    let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
+    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound, new Date().toJSON());
+    let user:any = this.as.getCurrentUser();
+    console.log(user);
     return newUser;
   }
 
@@ -78,21 +82,17 @@ export class CreateAccountComponent implements OnInit {
   processFormInputsToDB(){
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
+    this.as.signup(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
     this.router.navigate(['landing']);
     //TODO return to main or login results/welcome page
   }
 
-
-  //TODO add validUserName method that checks whether the username is unique or not
-
   allValid(){
     let values = this.newUserForm.value;
-    if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
-      console.log("allValid valid");
+    if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       return true;
     } else{
-      console.log("allValid not valid");
       return false;
     }
   }

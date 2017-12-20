@@ -2,7 +2,7 @@ export class User {
   private id: string;
   private weightClass: string;
   private ageClass: string;
-  constructor(public name: string, public email: string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: Date, public paidStatus: boolean, public gender: string, public dateCreated: Date) { }
+  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: any, public paidStatus: boolean, public gender: string, public dateCreated: Date) { }
 
   isValidWeight(): boolean{
     return (this.weight<8 || this.weight > 1400);
@@ -18,5 +18,17 @@ export class User {
 
   setAgeClass(ageClass: string){
     this.ageClass = ageClass;
+  }
+
+  getPassword(){
+    return this.password;
+  }
+
+  getUserName(){
+    return this.name;
+  }
+
+  getEmail(){
+    return this.email;
   }
 }

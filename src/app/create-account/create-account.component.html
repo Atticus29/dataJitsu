@@ -16,19 +16,23 @@
           <label for="email" class="active" data-error="Not valid" data-success="Valid">Email Address</label>
         </div>
         <div class="input-field col m4 s12">
-          <input formControlName="userAffiliationBound" type="text" placeholder="E.g., Atos" id="affiliation" class="validate">
-          <label for="affiliation">Gym Affiliation</label>
+          <input formControlName="passwordBound" type="password" placeholder="Password" id="password" class="validate">
+          <label for="password">Password</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col m3 s12">
+        <div class="input-field col m4 s12">
+          <input formControlName="userAffiliationBound" type="text" placeholder="E.g., Atos" id="affiliation" class="validate">
+          <label for="affiliation">Gym Affiliation</label>
+        </div>
+        <div class="input-field col m4 s12">
           <select formControlName="genderBound" materialize="material_select" id="gender">
             <option value="" disabled selected>Choose gender</option>
             <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
           <label for="gender">Gender</label>
         </div>
-        <div class="input-field col m3 s12">
+        <div class="input-field col m4 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
             <option *ngFor="let age of ageClasses">{{age.$value}}</option>
           </select>
