@@ -57,13 +57,8 @@
           <label for="age">Age</label>
         </div>
       </div>
-
-
-      <!-- affiliation -->
-      <!-- age -->
-      <!-- weight -->
       <div class="row">
-        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="createUser()">Create
+        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputsToDB()">Create
           <i class="material-icons right">send</i>
         </button>
       </div>

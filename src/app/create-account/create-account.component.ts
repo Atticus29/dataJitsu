@@ -68,7 +68,18 @@ export class CreateAccountComponent implements OnInit {
   createUserObj(result: any){
     let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
     let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound);
+    return newUser;
   }
+
+  processFormInputsToDB(){
+    let result = this.getValues();
+    let newUser: User = this.createUserObj(result);
+    this.db.addUserToDb(newUser);
+    //TODO return to main or login results/welcome page
+  }
+
+
+  //TODO add validUserName method that checks whether the username is unique or not
 
   allValid(){
     console.log("entered allValid");
