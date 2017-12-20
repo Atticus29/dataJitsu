@@ -27,7 +27,10 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
-  //TODO getters
+  getUserById(userId: string){
+    let retrievedUser = this.db.object('users/' + userId);
+    return retrievedUser;
+  }
 
   addMatchToDb(match: Match){
     let matchId = this.matches.push(match).key;

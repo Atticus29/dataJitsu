@@ -9,6 +9,7 @@ import { User } from '../user.model';
 import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 declare var $:any;
 
 @Component({
@@ -29,13 +30,19 @@ export class NewMatchComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newMatchForm: FormGroup;
   currentUserId: any;
-  currentUser: User;
+  currentUser: any;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router) { //TODO add userService
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private authService: AuthorizationService) { //TODO add userService
   }
 
   ngOnInit() {
     $('.modal').modal();
+
+    this.authService.getCurrentUser()
+      .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
+        console.log(userInfo);
+        this.currentUser = userInfo});
+
     this.genders = ["Female", "Male"];
 
     this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{

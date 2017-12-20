@@ -26,7 +26,7 @@ export class TestDbComponent implements OnInit {
     let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     let move2: MoveInVideo = new MoveInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
     let moveArray: Array<MoveInVideo> = [move1, move2];
-    let user1: User = new User("Bob the fake user", "bob@bob.com", "purple", "advanced", "sbg", 33, 155, 100, new Date(), true, "Male");
+    let user1: User = new User("Bob the fake user", "bob@bob.com", "purple", "advanced", "sbg", 33, 155, 100, new Date(), true, "Male", new Date());
     this.db.addUserToDb(user1);
     let match1: Match = new Match(matchDeets, user1, moveArray);
     this.db.addMatchToDb(match1);
