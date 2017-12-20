@@ -12,6 +12,7 @@ export class AuthorizationService {
       this.user = afAuth.authState;
       this.user.subscribe(user=>{
         if(user){
+          console.log(user);
           var ref = firebase.database().ref('/users');
           ref.once('value', (snapshot)=>{
             if(!snapshot.hasChild(user.uid)){
@@ -25,7 +26,7 @@ export class AuthorizationService {
 
     loginGoogle() {
       this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      console.log("loginGoogle method successfully ran");
+      //TODO handle login errors
     }
 
     logout() {

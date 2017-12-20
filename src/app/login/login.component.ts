@@ -3,17 +3,18 @@ import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ValidationService } from '../validation.service';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [ValidationService]
+  providers: [ValidationService, AuthorizationService]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService) { }
+  constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -42,6 +43,10 @@ export class LoginComponent implements OnInit {
 
   newAccount(){
     this.router.navigate(['createaccount']);
+  }
+
+  loginWithGoogle(){
+    this.as.loginGoogle();
   }
 
 }
