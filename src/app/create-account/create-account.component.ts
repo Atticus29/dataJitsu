@@ -3,6 +3,7 @@ import { DatabaseService } from '../database.service';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { User } from '../user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
@@ -24,7 +25,7 @@ export class CreateAccountComponent implements OnInit {
   ages: Array<number> = new Array<number>();
 
 
-  constructor(private fb: FormBuilder, private db: DatabaseService) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router) { }
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
@@ -75,6 +76,7 @@ export class CreateAccountComponent implements OnInit {
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
     this.db.addUserToDb(newUser);
+    this.router.navigate(['landing']);
     //TODO return to main or login results/welcome page
   }
 

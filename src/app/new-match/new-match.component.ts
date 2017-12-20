@@ -8,6 +8,7 @@ import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -30,7 +31,7 @@ export class NewMatchComponent implements OnInit {
   currentUserId: any;
   currentUser: User;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService) { //TODO add userService
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router) { //TODO add userService
   }
 
   ngOnInit() {
@@ -111,7 +112,7 @@ export class NewMatchComponent implements OnInit {
     let values = this.getValues();
     let match = this.createMatchObj(values);
     this.db.addMatchToDb(match);
-    //TODO return to main
+    this.router.navigate(['landing']);
   }
 
   pushToDb(match: Match){
