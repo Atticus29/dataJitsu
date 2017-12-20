@@ -36,5 +36,9 @@ export class AppComponent implements OnInit {
     this.authService.loginGoogle();
   }
 
+  logout(){
+    this.authService.logout();
+  }
+
 
 }

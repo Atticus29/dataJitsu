@@ -72,6 +72,8 @@ export class CreateAccountComponent implements OnInit {
     return newUser;
   }
 
+  //TODO see whether you can get it to re-direct from here if you're logged in
+
   processFormInputsToDB(){
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);

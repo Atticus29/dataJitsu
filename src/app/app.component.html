@@ -1,6 +1,9 @@
 <!-- TODO add navbar here -->
 <router-outlet></router-outlet>
+<br>
 <a routerLink="newmatch" *ngIf="user">New Match</a>
 <br>
-<a routerLink="createaccount">Create Account</a>
-<a (click)="loginGoogleComponent()">Log In</a>
+<a *ngIf="!user" routerLink="createaccount">Create Account</a>
+<br>
+<a *ngIf="!user" (click)="loginGoogleComponent()">Log In</a>
+<a *ngIf="user" (click)="logout()">Log Out</a>
