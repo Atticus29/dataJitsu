@@ -11,6 +11,8 @@ import { User } from '../user.model';
   providers: [DatabaseService]
 })
 export class CreateAccountComponent implements OnInit {
+
+  //TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newUserForm: FormGroup;
   title: string = "Create an Account";

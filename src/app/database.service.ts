@@ -9,8 +9,6 @@ import * as firebase from 'firebase/app';
 import { Match } from './match.model';
 import { User } from './user.model';
 
-
-//TODO edit this
 @Injectable()
 export class DatabaseService {
   matches: FirebaseListObservable<any>;
