@@ -17,6 +17,7 @@ import { MatchDisplayComponent } from './match-display/match-display.component';
 import { AuthorizationService } from './authorization.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
+import { LoginComponent } from './login/login.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -33,7 +34,8 @@ export const firebaseConfig = {
     CreateAccountComponent,
     TestDbComponent,
     LandingComponent,
-    MatchDisplayComponent
+    MatchDisplayComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
