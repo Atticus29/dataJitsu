@@ -2,10 +2,16 @@
 - [ ] Users can create an account
   - [ ] Name
   - [ ] Email
-  - [ ] Rank
+  - [ ] Rank (gi)
+  - [ ] Rank (no gi)
   - [ ] Affiliation
   - [ ] Age
   - [ ] Weight class
+  - [ ] Gender
+  - [ ] Date last annotated
+  - [ ] paidStatus
+  - [ ] Weight (find a way for the input to be in kilos or lbs.)
+  - [ ] Reputation points
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:
   - [ ] Belt/rank

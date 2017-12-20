@@ -6,6 +6,8 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
+import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { Subject } from 'rxjs/Subject';
 declare var $:any;
 
 @Component({
@@ -16,13 +18,14 @@ declare var $:any;
 })
 
 export class NewMatchComponent implements OnInit {
+    //TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   title: string = "Submit a New Match for Annotation";
-  ages: Array<string>;
-  giRanks: Array<string>;
-  nogiRanks: Array<string>;
-  genders: Array<string>;
-  weightClasses: Array<string>;
-  // matchUrlBound: string;
+  ageClasses: any[];
+  giRanks: any[];
+  nogiRanks: any[];
+  genders: any[];
+  weightClasses: any[];
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: User;
@@ -33,12 +36,26 @@ export class NewMatchComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     this.genders = ["Female", "Male"];
-    this.ages = ["Youth", "Juvenile1", "Juvenile2", "Adult", "Master 1", "Master 2", "Master 3", "Master 4", "Master 5", "Master 6"];
-    this.giRanks = ["White belt", "Grey belt", "Yellow belt", "Orange belt", "Green belt", "Blue belt", "Purple belt", "Brown belt", "Black belt"];
-    this.nogiRanks = ["Beginner", "Intermediate", "Advanced", "Elite"];
-    // this.ranks.push("Elite");
-    this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute"];
-    // console.log("matchURL is " + this.matchURL);
+
+    this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
+      this.giRanks = giRanks;
+    })
+
+    this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
+      this.nogiRanks = noGiRanks;
+    })
+
+    this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
+      this.ageClasses = ageClasses;
+    });
+
+    this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
+      this.weightClasses = weightClasses;
+      this.weightClasses.forEach(weightClass=>{
+        console.log(weightClass.$value);
+      })
+    });
+
     this.newMatchForm = this.fb.group({
       matchUrlBound: ['', Validators.required],
       athlete1NameBound: ['', Validators.required],
@@ -53,7 +70,7 @@ export class NewMatchComponent implements OnInit {
       weightBound: ['', Validators.required],
     });
 
-    this.currentUser = this.userService.getUser(this.currentUserId); //TODO mature this
+    // this.currentUser = this.userService.getUser(this.currentUserId); //TODO mature this
   }
 
   getValues(){
@@ -63,8 +80,6 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    console.log(values);
-    console.log(values.giStatusBound == true || values.giStatusBound == false);
     if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== "" && (values.giStatusBound == true || values.giStatusBound == false) && values.weightBound !== "" ){
       return true;
     } else{
@@ -73,7 +88,7 @@ export class NewMatchComponent implements OnInit {
   }
 
   urlValid(url: string){
-    return true; //TODO fix
+    return true; //TODO make sure youtube only for now
   }
 
   createMatchObj(result: any){
@@ -83,6 +98,8 @@ export class NewMatchComponent implements OnInit {
     let match = new Match(matchDeets, this.currentUser, moves);
     return match;
   }
+
+  //TODO have the form listen for giStatusBound and respond dynamically
 
   submitFormAndAnnotate(){
     let values = this.getValues();

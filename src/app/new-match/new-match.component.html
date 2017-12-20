@@ -52,35 +52,28 @@
         </div>
         <div class="input-field col m2 s12">
           <select formControlName="genderBound" materialize="material_select" id="gender">
-            <option value="" disabled selected>Choose gender</option>
             <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
           <label for="gender">Gender</label>
         </div>
         <div class="input-field col m2 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
-            <option value="" disabled selected>Choose age class</option>
-            <option *ngFor="let age of ages">{{age}}</option>
+            <option *ngFor="let age of ageClasses">{{age.$value}}</option>
           </select>
           <label for="ageClass">Age Class</label>
         </div>
         <div class="input-field col m2 s12">
-          <select formControlName="rankBound" materialize="material_select" id="rank">
-            <option value="" disabled selected>Choose rank</option>
-            <optgroup label="Gi">
-              <option *ngFor="let rank of giRanks">{{rank}}</option>
-            </optgroup>
-            <optgroup label="No Gi">
-              <option *ngFor="let rank of nogiRanks">{{rank}}</option>
-            </optgroup>
+          <select *ngIf="giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+            <option  *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
+          </select>
+          <select *ngIf="!giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+            <option  *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</option>
           </select>
           <label for="rank">Rank</label>
         </div>
         <div class="input-field col m2 s12">
           <select formControlName="weightBound" materialize="material_select" id="weight">
-            <option value="" disabled selected>Choose weight class</option>
-            <option *ngFor="let weight of weightClasses">{{weight}}</option>
-            <option value="absolute">Add new weight class</option>
+            <option *ngFor="let weight of weightClasses">{{weight.$value}}</option>
           </select>
           <label for="weight">Weight Class</label>
         </div>
