@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m12">
+      <h1 class="subtitle">{{title}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <form class="col s12" materialize [formGroup]="newUserForm">
+      <div class="row">
+        <div class="input-field col m4 s12">
+          <input formControlName="userNameBound" type="text" placeholder="E.g., Eddie Bravo" id="userName" class="validate">
+          <label for="userName" class="active" data-error="Not valid" data-success="Valid">User Name</label>
+        </div>
+        <div class="input-field col m4 s12">
+          <input formControlName="userEmailBound" type="email" placeholder="E.g., Eddie.bravo@gmail.com" id="email" class="validate">
+          <label for="email" class="active" data-error="Not valid" data-success="Valid">Email Address</label>
+        </div>
+        <div class="input-field col m4 s12">
+          <input formControlName="userAffiliationBound" type="text" placeholder="E.g., Atos" id="affiliation" class="validate">
+          <label for="affiliation">Gym Affiliation</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col m3 s12">
+          <select formControlName="genderBound" materialize="material_select" id="gender">
+            <option value="" disabled selected>Choose gender</option>
+            <option *ngFor="let gender of genders">{{gender}}</option>
+          </select>
+          <label for="gender">Gender</label>
+        </div>
+        <div class="input-field col m3 s12">
+          <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
+            <option *ngFor="let age of ageClasses">{{age.$value}}</option>
+          </select>
+          <label for="ageClass">Age Class</label>
+        </div>
+        <div class="input-field col m3 s12">
+          <select formControlName="giRankBound" materialize="material_select" id="giRank">
+            <option *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
+          </select>
+          <label for="giRank">Gi Rank</label>
+        </div>
+        <div class="input-field col m3 s12">
+          <select formControlName="noGiRankBound" materialize="material_select" id="noGiRank">
+            <option *ngFor="let noGiRank of noGiRanks">{{noGiRank.$value}}</option>
+          </select>
+          <label for="noGiRank">No Gi Rank</label>
+        </div>
+        <div class="input-field col m3 s12">
+          <input formControlName="weightBound" type="number" id="weight" placeholder="E.g., 156">
+          <label for="weight">Weight (in lbs.)</label>
+        </div>
+        <div class="input-field col m3 s12">
+          <select formControlName="ageBound" materialize="material_select" id="age">
+            <option *ngFor="let age of ages">{{age}}</option>
+          </select>
+          <label for="age">Age</label>
+        </div>
+      </div>
+      <div class="row">
+        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputsToDB()">Create
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
