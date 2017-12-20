@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angu
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -40,6 +41,10 @@ export class LoginComponent implements OnInit {
   validateEmail(email: string) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email.toLowerCase());
+  }
+
+  newAccount(){
+    this.router.navigate(['createaccount']);
   }
 
 }
