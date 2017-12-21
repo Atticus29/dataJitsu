@@ -6,10 +6,11 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
+import { LoginComponent } from './login/login.component';
 const appRoutes: Routes = [
   {
   path: '',
-  component: YoutubeComponent,
+  component: LoginComponent,
   pathMatch: 'full'
 },{
   path: 'newmatch',

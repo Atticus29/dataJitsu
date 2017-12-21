@@ -27,7 +27,23 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
-  //TODO getters
+  getUserByUid(uid: string){
+    let ref = firebase.database().ref('users/');
+    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
+      console.log("got to snapshot in getUserByUid");
+      console.log(snapshot);
+    });
+  }
+
+  getNodeIdFromEmail(email: string){
+    let ref = firebase.database().ref('users/');
+    return ref.orderByChild('email').equalTo(email).limitToFirst(1);
+  }
+
+  getUserById(userId: string){
+    let retrievedUser = this.db.object('users/' + userId);
+    return retrievedUser;
+  }
 
   addMatchToDb(match: Match){
     let matchId = this.matches.push(match).key;
@@ -37,6 +53,13 @@ export class DatabaseService {
     let userId = this.users.push(user).key;
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
+    firebase.database().ref().update(updates);
+  }
+
+  updateUserInDb(user: User){
+    console.log(user.getId());
+    let updates = {};
+    updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);
   }
 

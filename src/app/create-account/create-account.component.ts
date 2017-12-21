@@ -4,12 +4,14 @@ import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { User } from '../user.model';
 import { Router } from '@angular/router';
+import { ValidationService } from '../validation.service';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.css'],
-  providers: [DatabaseService]
+  providers: [DatabaseService, ValidationService, AuthorizationService]
 })
 export class CreateAccountComponent implements OnInit {
 
@@ -25,16 +27,16 @@ export class CreateAccountComponent implements OnInit {
   ages: Array<number> = new Array<number>();
 
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
        this.ages.push(i);
     }
-    console.log(this.ages);
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
       userEmailBound: ['', Validators.required],
+      passwordBound: ['', Validators.required],
       userAffiliationBound: ['', Validators.required],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
@@ -67,36 +69,62 @@ export class CreateAccountComponent implements OnInit {
   }
 
   createUserObj(result: any){
-    let {userNameBound, userEmailBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
-    let newUser = new User(userNameBound, userEmailBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound);
+    let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
+    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, null, false, genderBound, new Date().toJSON());
     return newUser;
   }
+
+  //TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
+
+    //The signup and db add HAVE to happen before the subscription. You've made this mistake before
+    this.as.signup(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
-    this.router.navigate(['landing']);
+
+
+    let user:any = this.as.getCurrentUser().subscribe(user=>{
+      newUser.setUid(user.uid);
+      this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
+        console.log("got to snapshot in getNodeIdFromEmail");
+        console.log(snapshot.val().id);
+        newUser.setId(snapshot.val().id);
+        this.db.updateUserInDb(newUser);
+      });
+
+      //TODO test whether trying to create a second account under the same email messes up
+    });
+
+    // this.router.navigate(['landing']);
+
+    // let newUser: any = this.createUserObj(result);
+    // this.as.signup(newUser.getEmail(), newUser.getPassword());
+    // let user:any = this.as.getCurrentUser().subscribe(user=>{
+    //   console.log(user);
+    //   console.log(user.uid);
+    //   console.log(newUser);
+    //   try{
+    //     newUser.setUid(user.uid);
+    //     console.log(newUser);
+    //     this.db.addUserToDb(newUser);
+    //     this.router.navigate(['landing']);
+    //   }catch(err){
+    //     console.log(err);
+    //   }
+    // });
     //TODO return to main or login results/welcome page
   }
 
-
-  //TODO add validUserName method that checks whether the username is unique or not
-
   allValid(){
-    console.log("entered allValid");
     let values = this.newUserForm.value;
-    console.log(values);
-    if(values.userNameBound !== "" && values.userEmailBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && this.validWeight(values.weightBound) && values.giRankBound !== "" && values.noGiRankBound !== "" && values.ageBound !== "" && values.userAffiliationBound !== ""){
-      console.log("allValid valid");
+    if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       return true;
     } else{
-      console.log("allValid not valid");
       return false;
     }
   }
 
-  validWeight(weight: number){
-    return weight > 8 && weight < 1000;
-  }
+
 }

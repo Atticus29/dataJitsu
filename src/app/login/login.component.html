@@ -1,0 +1,48 @@
+<div class="container login-container">
+  <div class="row">
+    <h1 class="subtitle">Log In To Your Account</h1>
+  </div>
+  <div class="row">
+    <form class="col s12" materialize [formGroup]="loginForm">
+      <div class="row">
+        <div class="col s1">
+        </div>
+        <div class="input-field col s9">
+          <input formControlName="emailBound" type="email" placeholder="Email address" id="userEmail">
+        </div>
+        <div class="col s1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s1">
+        </div>
+        <div class="input-field col s9">
+          <input formControlName="passwordBound" type="text" placeholder="Password" id="password">
+        </div>
+        <div class="col s1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s1">
+        </div>
+        <button type="submit" (click)="submitLoginForm()" [disabled]="!allValid()" class="btn col s9 waves-effect waves-light">Login <i class="material-icons right"></i></button>
+        <div class="col s1">
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col s1">
+        </div>
+        <button type="submit" (click)="loginWithGoogle()" class="btn col s9 waves-effect blue">Login with Google</button>
+        <div class="col s1">
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col s1">
+        </div>
+        <button type="button" (click)="newAccount()" class="btn col s9 waves-effect blue">Create New Account</button>
+        <div class="col s1">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

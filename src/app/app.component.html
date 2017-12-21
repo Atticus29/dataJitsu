@@ -1,5 +1,6 @@
 <!-- TODO add navbar here -->
 <router-outlet></router-outlet>
-<a routerLink="newmatch">New Match</a>
 <br>
-<a routerLink="createaccount">Create Account</a>
+<a routerLink="newmatch" *ngIf="user">New Match</a>
+<br>
+<a *ngIf="user" (click)="logout()">Log Out</a>

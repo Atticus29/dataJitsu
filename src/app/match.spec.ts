@@ -5,7 +5,7 @@ import { User } from './user.model';
 
 describe ('tests for the match class', ()=>{
   it('can create a match', ()=>{
-    let matchDeets: matchDetails = new matchDetails("testId", "worlds", "california", new Date(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
+    let matchDeets: matchDetails = new matchDetails("testId", "worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     let move2: MoveInVideo = new MoveInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
     let moveArray: Array<MoveInVideo> = [move1, move2];

@@ -16,7 +16,6 @@ export class YoutubeComponent implements OnInit {
   constructor(private db:DatabaseService) { }
 
   ngOnInit() {
-    console.log("YoutubeComponent initialized");
     var player;
 
     window['onYouTubeIframeAPIReady'] = function() {

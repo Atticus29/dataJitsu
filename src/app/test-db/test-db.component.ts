@@ -22,11 +22,12 @@ export class TestDbComponent implements OnInit {
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
-    let matchDeets: MatchDetails = new MatchDetails("testId", "worlds", "california", new Date(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
+    let matchDeets: MatchDetails = new MatchDetails("testId", "worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     let move2: MoveInVideo = new MoveInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
     let moveArray: Array<MoveInVideo> = [move1, move2];
-    let user1: User = new User("Bob the fake user", "bob@bob.com", "purple", "advanced", "sbg", 33, 155, 100, new Date(), true, "Male");
+    let user1: User = new User("Bob the fake user", "bob@bob.com","1234567", "purple", "advanced", "sbg", 33, 155, 100, new Date().toJSON(), true, "Male", new Date().toJSON());
+    //TODO register in auth and add uid and then log out
     this.db.addUserToDb(user1);
     let match1: Match = new Match(matchDeets, user1, moveArray);
     this.db.addMatchToDb(match1);

@@ -14,6 +14,10 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
+import { AuthorizationService } from './authorization.service';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { DatabaseService } from './database.service';
+import { LoginComponent } from './login/login.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -30,7 +34,8 @@ export const firebaseConfig = {
     CreateAccountComponent,
     TestDbComponent,
     LandingComponent,
-    MatchDisplayComponent
+    MatchDisplayComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +45,10 @@ export const firebaseConfig = {
     MaterializeModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
-  providers: [],
+  providers: [AuthorizationService, DatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
