@@ -83,15 +83,18 @@ export class CreateAccountComponent implements OnInit {
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.signup(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
-    this.db.getNodeIdFromEmail(newUser.getEmail()).on("child_added", snapshot=>{
-      console.log("got to snapshot in getNodeIdFromEmail");
-      console.log(snapshot);
-    });
+
 
     let user:any = this.as.getCurrentUser().subscribe(user=>{
       newUser.setUid(user.uid);
-      // console.log(newUser);
-      this.db.updateUserInDb(newUser);
+      this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
+        console.log("got to snapshot in getNodeIdFromEmail");
+        console.log(snapshot.val().id);
+        newUser.setId(snapshot.val().id);
+        this.db.updateUserInDb(newUser);
+      });
+
+      //TODO test whether trying to create a second account under the same email messes up
     });
 
     // this.router.navigate(['landing']);
