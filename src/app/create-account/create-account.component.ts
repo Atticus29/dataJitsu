@@ -70,12 +70,8 @@ export class CreateAccountComponent implements OnInit {
 
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
-    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound, new Date().toJSON());
-    let user:any = this.as.getCurrentUser().subscribe(user=>{
-      console.log(user.uid);
-      newUser.setUid(user.uid);
-      return newUser;
-    });
+    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, null, false, genderBound, new Date().toJSON());
+    return newUser;
   }
 
   //TODO see whether you can get it to re-direct from here if you're logged in
@@ -83,9 +79,38 @@ export class CreateAccountComponent implements OnInit {
   processFormInputsToDB(){
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
+
+    //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.signup(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
-    this.router.navigate(['landing']);
+    this.db.getNodeIdFromEmail(newUser.getEmail()).on("child_added", snapshot=>{
+      console.log("got to snapshot in getNodeIdFromEmail");
+      console.log(snapshot);
+    });
+
+    let user:any = this.as.getCurrentUser().subscribe(user=>{
+      newUser.setUid(user.uid);
+      // console.log(newUser);
+      this.db.updateUserInDb(newUser);
+    });
+
+    // this.router.navigate(['landing']);
+
+    // let newUser: any = this.createUserObj(result);
+    // this.as.signup(newUser.getEmail(), newUser.getPassword());
+    // let user:any = this.as.getCurrentUser().subscribe(user=>{
+    //   console.log(user);
+    //   console.log(user.uid);
+    //   console.log(newUser);
+    //   try{
+    //     newUser.setUid(user.uid);
+    //     console.log(newUser);
+    //     this.db.addUserToDb(newUser);
+    //     this.router.navigate(['landing']);
+    //   }catch(err){
+    //     console.log(err);
+    //   }
+    // });
     //TODO return to main or login results/welcome page
   }
 
