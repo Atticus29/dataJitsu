@@ -16,7 +16,7 @@ declare var $:any;
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.css'],
-  providers: [DatabaseService]
+  providers: [DatabaseService, AuthorizationService]
 })
 
 export class NewMatchComponent implements OnInit {
@@ -40,7 +40,7 @@ export class NewMatchComponent implements OnInit {
 
     this.authService.getCurrentUser()
       .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
-        console.log(userInfo);
+        console.log(userInfo.uid);
         this.currentUser = userInfo});
 
     this.genders = ["Female", "Male"];
@@ -59,9 +59,6 @@ export class NewMatchComponent implements OnInit {
 
     this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
       this.weightClasses = weightClasses;
-      this.weightClasses.forEach(weightClass=>{
-        console.log(weightClass.$value);
-      })
     });
 
     this.newMatchForm = this.fb.group({

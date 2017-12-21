@@ -27,6 +27,13 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
+  getUserByUid(uid: string){
+    let ref = firebase.database.ref('users/');
+    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
+      console.log(snapshot);
+    });
+  }
+
   getUserById(userId: string){
     let retrievedUser = this.db.object('users/' + userId);
     return retrievedUser;
@@ -41,6 +48,12 @@ export class DatabaseService {
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
+  }
+
+  updateUserInDB(user: User){
+    let update = {};
+    updates['/users/' + user.getId()] = user;
+    firebase.database().ref.update(updates);
   }
 
   addWeightClassToDb(weightClass: string){

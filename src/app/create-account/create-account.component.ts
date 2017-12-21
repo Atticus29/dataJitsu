@@ -33,7 +33,6 @@ export class CreateAccountComponent implements OnInit {
     for (var i = 3; i <= 110; i++) {
        this.ages.push(i);
     }
-    console.log(this.ages);
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
       userEmailBound: ['', Validators.required],
@@ -72,9 +71,11 @@ export class CreateAccountComponent implements OnInit {
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
     let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, ageBound, weightBound, 100, null, false, genderBound, new Date().toJSON());
-    let user:any = this.as.getCurrentUser();
-    console.log(user);
-    return newUser;
+    let user:any = this.as.getCurrentUser().subscribe(user=>{
+      console.log(user.uid);
+      newUser.setUid(user.uid);
+      return newUser;
+    });
   }
 
   //TODO see whether you can get it to re-direct from here if you're logged in

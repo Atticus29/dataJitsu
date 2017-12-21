@@ -15,7 +15,7 @@ export class AuthorizationService {
         var ref = firebase.database().ref('/users');
         ref.once('value', (snapshot)=>{
           if(!snapshot.hasChild(user.uid)){
-            let newUser = new User(snapshot.child('name').val(), snapshot.child('email').val(), snapshot.child('giRank').val(), snapshot.child('noGiRank').val(), snapshot.child('affiliation').val(), snapshot.child('age').val(), snapshot.child('weight').val(), snapshot.child('reputationPoints').val(), snapshot.child('dateLastAnnotated').val(), snapshot.child('paidStatus').val(), snapshot.child('gender').val(), snapshot.child('dateCreated').val());
+            let newUser = new User(snapshot.child('name').val(), snapshot.child('email').val(), snapshot.child('password').val(), snapshot.child('giRank').val(), snapshot.child('noGiRank').val(), snapshot.child('affiliation').val(), snapshot.child('age').val(), snapshot.child('weight').val(), snapshot.child('reputationPoints').val(), snapshot.child('dateLastAnnotated').val(), snapshot.child('paidStatus').val(), snapshot.child('gender').val(), snapshot.child('dateCreated').val());
             ref.child(user.uid).set(newUser);
             //TODO this does not work right now
           }
