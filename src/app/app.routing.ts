@@ -7,6 +7,7 @@ import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
 import { LoginComponent } from './login/login.component';
+import { ProtectionGuard } from './protection.guard';
 const appRoutes: Routes = [
   {
   path: '',
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
 },{
   path: 'newmatch',
   component: NewMatchComponent,
+  canActivate: [ProtectionGuard],
   pathMatch: 'full'
 },{
   path: 'createaccount',

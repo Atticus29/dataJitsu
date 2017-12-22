@@ -13,6 +13,6 @@ describe ('tests for the match class', ()=>{
     let match1: Match = new Match(matchDeets, user1, moveArray);
     let match2: Match = new Match(matchDeets, moveArray);
     expect(match1 instanceof Match).toBe(true);
-    expect(match2 instanceof Match).toBe(false); //TODO or to throw an error??
+    expect(match2 instanceof Match).toBe(false); //@TODO or to throw an error??
   });
 });

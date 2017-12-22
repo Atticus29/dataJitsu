@@ -12,7 +12,7 @@ export var masterFirebaseConfig = {
   };
 ```
 
-You can get your on firebase API key and other info. from [here](//TODO)
+You can get your on firebase API key and other info. from [here](//@TODO)
 
 # DataJitsu
 

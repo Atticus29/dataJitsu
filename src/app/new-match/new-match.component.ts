@@ -10,17 +10,20 @@ import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } 
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
+import {Location} from "@angular/common";
+import { ProtectionGuard } from '../protection.guard';
 declare var $:any;
 
 @Component({
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.css'],
-  providers: [DatabaseService, AuthorizationService]
+  providers: [DatabaseService, AuthorizationService, ProtectionGuard]
 })
 
 export class NewMatchComponent implements OnInit {
-    //TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
+    //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
+  private sub: any;
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
   giRanks: any[];
@@ -32,13 +35,24 @@ export class NewMatchComponent implements OnInit {
   currentUserId: any;
   currentUser: any;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private authService: AuthorizationService) { //TODO add userService
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
+    if(!as.isAuthenticated()){
+      this.location.replaceState('/');
+      this.router.navigate(['']);
+    }
+
+    this.sub = this.as.subscribe(val => {
+      if(!val.athenticated){
+        this.location.replaceState('/');
+        this.router.navigate(['']);
+      }
+    });
   }
 
   ngOnInit() {
     $('.modal').modal();
 
-    this.authService.getCurrentUser()
+    this.as.getCurrentUser()
       .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
         console.log(userInfo.uid);
         this.currentUser = userInfo});
@@ -75,7 +89,7 @@ export class NewMatchComponent implements OnInit {
       weightBound: ['', Validators.required],
     });
 
-    // this.currentUser = this.userService.getUser(this.currentUserId); //TODO mature this
+    // this.currentUser = this.userService.getUser(this.currentUserId); //@TODO mature this
   }
 
   getValues(){
@@ -93,7 +107,7 @@ export class NewMatchComponent implements OnInit {
   }
 
   urlValid(url: string){
-    return true; //TODO make sure youtube only for now
+    return true; //@TODO make sure youtube only for now
   }
 
   createMatchObj(result: any){
@@ -104,7 +118,7 @@ export class NewMatchComponent implements OnInit {
     return match;
   }
 
-  //TODO have the form listen for giStatusBound and respond dynamically
+  //@TODO have the form listen for giStatusBound and respond dynamically
 
   submitFormAndAnnotate(){
     let values = this.getValues();
@@ -124,11 +138,11 @@ export class NewMatchComponent implements OnInit {
   }
 
   annotateCurrentVideo(){
-    console.log("Annotate"); //TODO flesh out
+    console.log("Annotate"); //@TODO flesh out
   }
 
   addToQueueAndReturnToMain(){
-    console.log("Queue"); //TODO flesh out
+    console.log("Queue"); //@TODO flesh out
   }
 
 }

@@ -19,6 +19,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectedDirective } from './protected.directive';
+import { ProtectionGuard } from './protection.guard';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -50,7 +51,7 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [AuthorizationService, DatabaseService],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

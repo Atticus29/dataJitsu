@@ -5,12 +5,13 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
+import { ProtectionGuard } from './protection.guard';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers:[AuthorizationService]
+  providers:[AuthorizationService, ProtectionGuard]
 })
 export class AppComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -38,6 +39,9 @@ export class AppComponent implements OnInit {
 
   logout(){
     this.authService.logout();
+    this.authService.user = null;
+    this.authService.setAuthenticated(false);
+    console.log(this.authService.user);
   }
 
 
