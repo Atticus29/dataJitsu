@@ -44,6 +44,8 @@ export class AuthorizationService {
       this.afAuth.auth.signOut();
       this.authenticated = false;
       //@TODO test whether authenticated changes at appropriate times for protected directive to work
+      //@TODO navigate to root
+      this.router.navigate(['']);
     }
   }
 
