@@ -5,7 +5,6 @@ import { AuthorizationService } from './authorization.service';
 
 @Injectable()
 export class ProtectionGuard implements CanActivate {
-  private sub: any;
   constructor(private as: AuthorizationService){}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.as.isAuthenticated();

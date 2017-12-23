@@ -20,6 +20,7 @@ export class ProtectedDirective implements OnDestroy{
     }
 
     this.sub = this.as.subscribe(val => {
+      console.log("got into the subscribe");
       if(!val.athenticated){
         this.location.replaceState('/');
         this.router.navigate(['']);
