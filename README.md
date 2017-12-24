@@ -1,3 +1,7 @@
+# Known issues
+
+- [ ] Creating a new account doesn't immediately at the uid to the associated user node in firebase
+
 # Set up
 
 Create a file in the app subdirectory called, api-keys.ts. In it, place the following code.
