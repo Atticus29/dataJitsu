@@ -36,17 +36,11 @@ export class NewMatchComponent implements OnInit {
   currentUser: any;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
-    if(!as.isAuthenticated()){
-      this.location.replaceState('/');
-      this.router.navigate(['']);
-    }
-
-    this.sub = this.as.subscribe(val => {
-      if(!val.athenticated){
-        this.location.replaceState('/');
-        this.router.navigate(['']);
-      }
-    });
+    console.log("hi!");
+    // let temp = this.as.isAuthenticated();
+    // temp.subscribe(result =>{
+    //   console.log(result);
+    // });
   }
 
   ngOnInit() {

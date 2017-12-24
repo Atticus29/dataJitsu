@@ -15,6 +15,7 @@ import { AuthorizationService } from '../authorization.service';
 })
 export class CreateAccountComponent implements OnInit {
 
+  //@TODO add the opposite of protection guard in the routing for this component (swap true and false), because otherwise a user currently logged in will be able to "create a new account" that will override their existing user specs
   //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newUserForm: FormGroup;
@@ -81,15 +82,10 @@ export class CreateAccountComponent implements OnInit {
     let newUser: User = this.createUserObj(result);
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
-    this.as.signup(newUser.getEmail(), newUser.getPassword()).subscribe(value =>{
-      console.log(value);
-      this.db.addUserToDb(newUser);
-    });
-    ;
-
+    this.as.signup(newUser.getEmail(), newUser.getPassword());
+    this.db.addUserToDb(newUser);
 
     let user:any = this.as.getCurrentUser().subscribe(user=>{
-      console.log(user);
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
         // console.log("got to snapshot in getNodeIdFromEmail");
@@ -101,7 +97,7 @@ export class CreateAccountComponent implements OnInit {
       //@TODO test whether trying to create a second account under the same email messes up
     });
 
-    // this.router.navigate(['landing']);
+    this.router.navigate(['landing']);
 
     //@TODO return to main or login results/welcome page
   }

@@ -14,7 +14,9 @@ export class AuthorizationService {
   constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase, private router: Router) {
     this.user = afAuth.authState;
     this.user.subscribe(user=>{
+      console.log(user);
       if(user){
+        console.log("got into user existing");
         this.authenticated = Observable.of(true);
         var ref = firebase.database().ref('/users');
         ref.once('value', (snapshot)=>{
@@ -36,7 +38,7 @@ export class AuthorizationService {
   }
 
   isAuthenticated() {
-    return this.authenticated;
+    // return this.afAuth.authState.map(user => Boolean(user));
   }
 
   logout() {
@@ -69,7 +71,6 @@ export class AuthorizationService {
     .catch(err => {
       console.log('Something went wrong:',err.message);
     });
-    return Observable.of(true);
   }
 
   setAuthenticated(newStatus: boolean){
