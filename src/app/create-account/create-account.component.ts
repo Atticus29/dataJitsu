@@ -15,7 +15,8 @@ import { AuthorizationService } from '../authorization.service';
 })
 export class CreateAccountComponent implements OnInit {
 
-  //TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
+  //@TODO add the opposite of protection guard in the routing for this component (swap true and false), because otherwise a user currently logged in will be able to "create a new account" that will override their existing user specs
+  //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newUserForm: FormGroup;
   title: string = "Create an Account";
@@ -31,7 +32,7 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
-       this.ages.push(i);
+      this.ages.push(i);
     }
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
@@ -74,7 +75,7 @@ export class CreateAccountComponent implements OnInit {
     return newUser;
   }
 
-  //TODO see whether you can get it to re-direct from here if you're logged in
+  //@TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
     let result = this.getValues();
@@ -84,37 +85,21 @@ export class CreateAccountComponent implements OnInit {
     this.as.signup(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
 
-
     let user:any = this.as.getCurrentUser().subscribe(user=>{
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-        console.log("got to snapshot in getNodeIdFromEmail");
-        console.log(snapshot.val().id);
+        // console.log("got to snapshot in getNodeIdFromEmail");
+        // console.log(snapshot.val().id);
         newUser.setId(snapshot.val().id);
         this.db.updateUserInDb(newUser);
       });
 
-      //TODO test whether trying to create a second account under the same email messes up
+      //@TODO test whether trying to create a second account under the same email messes up
     });
 
-    // this.router.navigate(['landing']);
+    this.router.navigate(['landing']);
 
-    // let newUser: any = this.createUserObj(result);
-    // this.as.signup(newUser.getEmail(), newUser.getPassword());
-    // let user:any = this.as.getCurrentUser().subscribe(user=>{
-    //   console.log(user);
-    //   console.log(user.uid);
-    //   console.log(newUser);
-    //   try{
-    //     newUser.setUid(user.uid);
-    //     console.log(newUser);
-    //     this.db.addUserToDb(newUser);
-    //     this.router.navigate(['landing']);
-    //   }catch(err){
-    //     console.log(err);
-    //   }
-    // });
-    //TODO return to main or login results/welcome page
+    //@TODO return to main or login results/welcome page
   }
 
   allValid(){

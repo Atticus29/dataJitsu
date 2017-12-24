@@ -4,12 +4,13 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angu
 import { Router } from '@angular/router';
 import { ValidationService } from '../validation.service';
 import { AuthorizationService } from '../authorization.service';
+import { ProtectionGuard } from '../protection.guard';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [ValidationService, AuthorizationService]
+  providers: [ValidationService, AuthorizationService, ProtectionGuard]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -24,7 +25,9 @@ export class LoginComponent implements OnInit {
   }
 
   submitLoginForm(){
-    //TODO flesh me out
+    let values = this.getValues();
+    this.as.login(values.emailBound, values.passwordBound);
+    //@TODO flesh me out
   }
 
   getValues(){

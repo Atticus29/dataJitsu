@@ -15,9 +15,9 @@ export class ValidationService {
   }
 
   validateWeight(weight: number){
-    return weight > 8 && weight < 1000; //TODO extend as kilos and lbs accommodated
+    return weight > 8 && weight < 1000; //@TODO extend as kilos and lbs accommodated
   }
 
-  //TODO add validUserName method that checks whether the username is unique or not
+  //@TODO add validUserName method that checks whether the username is unique or not
 
 }
