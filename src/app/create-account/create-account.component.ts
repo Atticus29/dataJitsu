@@ -86,6 +86,7 @@ export class CreateAccountComponent implements OnInit {
 
 
     let user:any = this.as.getCurrentUser().subscribe(user=>{
+      console.log(user.uid);
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
         // console.log("got to snapshot in getNodeIdFromEmail");
