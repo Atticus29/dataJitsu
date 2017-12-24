@@ -18,7 +18,6 @@ import { AuthorizationService } from './authorization.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
 import { LoginComponent } from './login/login.component';
-import { ProtectedDirective } from './protected.directive';
 import { ProtectionGuard } from './protection.guard';
 
 export const firebaseConfig = {
@@ -37,8 +36,7 @@ export const firebaseConfig = {
     TestDbComponent,
     LandingComponent,
     MatchDisplayComponent,
-    LoginComponent,
-    ProtectedDirective
+    LoginComponent
   ],
   imports: [
     BrowserModule,
