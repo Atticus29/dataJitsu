@@ -31,7 +31,7 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
-       this.ages.push(i);
+      this.ages.push(i);
     }
     this.newUserForm = this.fb.group({
       userNameBound: ['', Validators.required],
@@ -81,12 +81,15 @@ export class CreateAccountComponent implements OnInit {
     let newUser: User = this.createUserObj(result);
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
-    this.as.signup(newUser.getEmail(), newUser.getPassword());
-    this.db.addUserToDb(newUser);
+    this.as.signup(newUser.getEmail(), newUser.getPassword()).subscribe(value =>{
+      console.log(value);
+      this.db.addUserToDb(newUser);
+    });
+    ;
 
 
     let user:any = this.as.getCurrentUser().subscribe(user=>{
-      console.log(user.uid);
+      console.log(user);
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
         // console.log("got to snapshot in getNodeIdFromEmail");

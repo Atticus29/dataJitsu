@@ -69,6 +69,7 @@ export class AuthorizationService {
     .catch(err => {
       console.log('Something went wrong:',err.message);
     });
+    return Observable.of(true);
   }
 
   setAuthenticated(newStatus: boolean){
