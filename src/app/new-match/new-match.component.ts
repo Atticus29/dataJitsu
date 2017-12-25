@@ -22,6 +22,7 @@ declare var $:any;
 })
 
 export class NewMatchComponent implements OnInit {
+    //@TODO add matchID key inside match node
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
   title: string = "Submit a New Match for Annotation";

@@ -27,6 +27,8 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
+  //@TODO add matchID key inside match node
+
   getUserByUid(uid: string){
     let ref = firebase.database().ref('users/');
     ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
