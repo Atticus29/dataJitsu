@@ -34,6 +34,7 @@
         </div>
         <div class="input-field col m4 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
+            <option disabled selected="true">This disappears</option>
             <option *ngFor="let age of ageClasses">{{age.$value}}</option>
           </select>
           <label for="ageClass">Age Class</label>
