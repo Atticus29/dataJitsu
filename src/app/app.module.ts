@@ -19,6 +19,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
+import { AllMatchesComponent } from './all-matches/all-matches.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -36,7 +37,8 @@ export const firebaseConfig = {
     TestDbComponent,
     LandingComponent,
     MatchDisplayComponent,
-    LoginComponent
+    LoginComponent,
+    AllMatchesComponent
   ],
   imports: [
     BrowserModule,

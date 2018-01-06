@@ -31,10 +31,19 @@ export class DatabaseService {
 
   getUserByUid(uid: string){
     let ref = firebase.database().ref('users/');
+    let user: User = null;
     ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
       console.log("got to snapshot in getUserByUid");
       console.log(snapshot);
+      //@TODO fix this
+      user = new User("Bob the fake user", "bob@bob.com","1234567", "purple", "advanced", "sbg", 33, 155, 100, new Date().toJSON(), true, "Male", new Date().toJSON());
+      // return Observable.of(user);
     });
+    // if (user != null){
+    //   return Observable.of(user);
+    // } else{
+    //   throw new TypeError("user was null in getUserByUid in database.service");
+    // }
   }
 
   getNodeIdFromEmail(email: string){
@@ -49,6 +58,9 @@ export class DatabaseService {
 
   addMatchToDb(match: Match){
     let matchId = this.matches.push(match).key;
+    let updates = {};
+    updates['/matches/' + matchId + '/id'] = matchId;
+    firebase.database().ref().update(updates);
   }
 
   addUserToDb(user: User){
@@ -56,6 +68,14 @@ export class DatabaseService {
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
+  }
+
+  addUserToDbAndReturnUserId(user: User){
+    let userId = this.users.push(user).key;
+    let updates = {};
+    updates['/users/'+userId + '/id'] = userId;
+    firebase.database().ref().update(updates);
+    return userId;
   }
 
   updateUserInDb(user: User){

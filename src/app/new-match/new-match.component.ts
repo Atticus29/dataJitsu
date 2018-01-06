@@ -34,7 +34,7 @@ export class NewMatchComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newMatchForm: FormGroup;
   currentUserId: any;
-  currentUser: any;
+  currentUser: any = null;
   disabledGender: boolean = true;
   disabledAgeClass: boolean = false;
   disabledGiRank: boolean = false;
@@ -42,7 +42,6 @@ export class NewMatchComponent implements OnInit {
   disabledWeightClass: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
-    console.log("hi!");
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);
@@ -55,7 +54,10 @@ export class NewMatchComponent implements OnInit {
     this.as.getCurrentUser()
       .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
         console.log(userInfo.uid);
-        this.currentUser = userInfo});
+        this.db.getUserByUid(userInfo.uid)//.subscribe(results =>{
+        //   this.currentUser = results;
+        // });
+      });
 
     this.genders = ["Female", "Male"];
 
@@ -127,12 +129,14 @@ export class NewMatchComponent implements OnInit {
   submitFormAndAnnotate(){
     let values = this.getValues();
     let match = this.createMatchObj(values);
+    console.log(match);
     this.db.addMatchToDb(match);
   }
 
   submitFormAndReturnToMain(){
     let values = this.getValues();
     let match = this.createMatchObj(values);
+    console.log(match);
     this.db.addMatchToDb(match);
     this.router.navigate(['landing']);
   }

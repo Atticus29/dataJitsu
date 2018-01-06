@@ -28,7 +28,9 @@ export class TestDbComponent implements OnInit {
     let moveArray: Array<MoveInVideo> = [move1, move2];
     let user1: User = new User("Bob the fake user", "bob@bob.com","1234567", "purple", "advanced", "sbg", 33, 155, 100, new Date().toJSON(), true, "Male", new Date().toJSON());
     //@TODO register in auth and add uid and then log out
-    this.db.addUserToDb(user1);
+    let uid = this.db.addUserToDbAndReturnUserId(user1);
+    user1.setUid(uid);
+
     let match1: Match = new Match(matchDeets, user1, moveArray);
     this.db.addMatchToDb(match1);
 

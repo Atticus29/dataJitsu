@@ -31,7 +31,7 @@ const appRoutes: Routes = [
   component: LandingComponent,
   pathMatch: 'full'
 },{
-  path: 'match/:matchId',
+  path: 'matches/:matchId',
   component: MatchDisplayComponent,
   pathMatch: 'full'
 }
