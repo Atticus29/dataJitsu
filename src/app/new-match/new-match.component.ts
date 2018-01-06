@@ -35,6 +35,11 @@ export class NewMatchComponent implements OnInit {
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: any;
+  disabledGender: boolean = true;
+  disabledAgeClass: boolean = false;
+  disabledGiRank: boolean = false;
+  disabledNoGiRank: boolean = false;
+  disabledWeightClass: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
     console.log("hi!");
@@ -56,18 +61,22 @@ export class NewMatchComponent implements OnInit {
 
     this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
       this.giRanks = giRanks;
+      this.disabledGiRank = true;
     })
 
     this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks;
+      this.disabledNoGiRank = true;
     })
 
     this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
+      this.disabledAgeClass = true;
     });
 
     this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
       this.weightClasses = weightClasses;
+      this.disabledWeightClass = true;
     });
 
     this.newMatchForm = this.fb.group({

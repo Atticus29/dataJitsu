@@ -1,6 +1,8 @@
 # Known issues
 
 - [ ] Creating a new account doesn't immediately at the uid to the associated user node in firebase
+- [ ] Some of the dropdown menu items don't work correctly in Safari
+- [ ] API key is currently public. Reset this.
 
 # Set up
 

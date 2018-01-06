@@ -26,6 +26,11 @@ export class CreateAccountComponent implements OnInit {
   giRanks: any[];
   ageClasses: any[];
   ages: Array<number> = new Array<number>();
+  disabledAge: boolean = true;
+  disabledNoGiRank: boolean = false;
+  disabledGiRank: boolean = false;
+  disabledAgeClass: boolean = false;
+  // disabledWeightClass: boolean = false;
 
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
@@ -49,19 +54,23 @@ export class CreateAccountComponent implements OnInit {
 
     this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
       this.giRanks = giRanks;
+      this.disabledGiRank = true;
     })
 
     this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
       this.noGiRanks = noGiRanks;
+      this.disabledNoGiRank = true;
     })
 
     this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
+      this.disabledAgeClass = true;
     });
 
-    this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
-      this.weightClasses = weightClasses;
-    });
+    // this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
+    //   this.weightClasses = weightClasses;
+    //   this.disabledWeightClass = true;
+    // });
   }
 
   getValues(){
