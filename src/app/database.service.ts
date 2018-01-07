@@ -29,16 +29,18 @@ export class DatabaseService {
 
   //@TODO add matchID key inside match node
 
+  //@TODO fix getUserByUid below
   getUserByUid(uid: string){
+    console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
     let user: User = null;
-    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
+    return Observable.of(ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
       console.log("got to snapshot in getUserByUid");
       console.log(snapshot);
       //@TODO fix this
       user = new User("Bob the fake user", "bob@bob.com","1234567", "purple", "advanced", "sbg", 33, 155, 100, new Date().toJSON(), true, "Male", new Date().toJSON());
       // return Observable.of(user);
-    });
+    }));
     // if (user != null){
     //   return Observable.of(user);
     // } else{
@@ -46,9 +48,16 @@ export class DatabaseService {
     // }
   }
 
+  //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
     let ref = firebase.database().ref('users/');
     return ref.orderByChild('email').equalTo(email).limitToFirst(1);
+  }
+
+  addUidToUser(uid: string, userKey: string){
+    let updates = {};
+    updates['/users/' + userKey + '/uid'] = uid;
+    firebase.database().ref().update(updates);
   }
 
   getUserById(userId: string){

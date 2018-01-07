@@ -22,6 +22,7 @@
   - [ ] Rule set
   - [ ] Move executed in the match
   - [ ] Rating from other users
+  - [ ] Annotation Rating
 - [ ] Users can view summary statistics by athlete:
   - [ ] Most common points scored
   - [ ] Most common points lost

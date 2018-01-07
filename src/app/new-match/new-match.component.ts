@@ -53,9 +53,10 @@ export class NewMatchComponent implements OnInit {
 
     this.as.getCurrentUser()
       .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
-        console.log(userInfo.uid);
-        this.db.getUserByUid(userInfo.uid)//.subscribe(results =>{
-        //   this.currentUser = results;
+        // console.log(userInfo.uid);
+        // this.db.getUserByUid(userInfo.uid).subscribe(results =>{
+        //   console.log(results);
+        //   // this.currentUser = results;
         // });
       });
 
