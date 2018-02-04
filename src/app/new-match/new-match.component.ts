@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 import {Location} from "@angular/common";
 import { ProtectionGuard } from '../protection.guard';
+import { Observable } from 'rxjs/Observable';
 declare var $:any;
 
 @Component({
@@ -50,15 +51,6 @@ export class NewMatchComponent implements OnInit {
 
   ngOnInit() {
     $('.modal').modal();
-
-    this.as.getCurrentUser()
-      .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
-        // console.log(userInfo.uid);
-        // this.db.getUserByUid(userInfo.uid).subscribe(results =>{
-        //   console.log(results);
-        //   // this.currentUser = results;
-        // });
-      });
 
     this.genders = ["Female", "Male"];
 
@@ -119,27 +111,57 @@ export class NewMatchComponent implements OnInit {
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
-    let matchDeets = new MatchDetails("testId", tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    let match = new Match(matchDeets, this.currentUser, moves);
-    return match;
+    let userObservable = this.as.getCurrentUser();
+    let higherOrder = userObservable.map(userInfo =>{
+      this.db.getNodeIdFromEmail(userInfo.email);
+    });
+    return Observable.create(obs =>{
+      higherOrder.on("child_added", snapshot =>{
+        let match = new Match(matchDeets, snapshot.key, moves);
+        obs.next(match);
+      });
+    });
+
+    // return Observable.switchMap(obs=>{
+    //   this.as.getCurrentUser().switchMap(userInfo =>{
+    //     this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot =>{
+    //       let match = new Match(matchDeets, snapshot.key, moves);
+    //       obs.next(match);
+    //     });
+    //   });
+    // });
+
+    // this.as.getCurrentUser()
+    //   .switchMap(userInfo => {
+    //     console.log("got into getCurrentUser");
+    //     return Observable.create(obs =>{
+    //       this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
+    //         let match = new Match(matchDeets, snapshot.key, moves);
+    //         obs.next(match);
+    //       });
+    //     });
+    //   });
   }
 
   //@TODO have the form listen for giStatusBound and respond dynamically
 
   submitFormAndAnnotate(){
     let values = this.getValues();
-    let match = this.createMatchObj(values);
-    console.log(match);
-    this.db.addMatchToDb(match);
+    let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
+      console.log(match);
+      this.db.addMatchToDb(match);
+    });
   }
 
   submitFormAndReturnToMain(){
     let values = this.getValues();
-    let match = this.createMatchObj(values);
-    console.log(match);
-    this.db.addMatchToDb(match);
-    this.router.navigate(['landing']);
+    let match = this.createMatchObj(values).subscribe(result=>{
+      console.log(match);
+      this.db.addMatchToDb(match);
+      this.router.navigate(['landing']);
+    });
   }
 
   pushToDb(match: Match){

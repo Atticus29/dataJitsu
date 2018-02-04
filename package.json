@@ -30,7 +30,7 @@
     "jquery": "^2.2.4",
     "materialize-css": "^0.100.2",
     "ngx-youtube-player": "0.0.41",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.6",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

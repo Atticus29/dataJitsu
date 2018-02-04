@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 export class MatchDisplayComponent implements OnInit {
   matchId : string;
   matchDetails: MatchDetails;
+  match: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute) { }
@@ -20,6 +21,10 @@ export class MatchDisplayComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
       console.log(this.matchId);
+      this.db.getMatchFromNodeKey(this.matchId).takeUntil(this.ngUnsubscribe).subscribe(match =>{
+        this.match = match;
+        console.log(this.match);
+      })
       // this.db.getTeamById(this.teamId)
       //   .takeUntil(this.ngUnsubscribe).subscribe(team => this.team = team);
       // this.db.getPlayersOnTeam(this.teamId)

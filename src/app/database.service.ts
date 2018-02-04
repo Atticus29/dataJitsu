@@ -34,18 +34,20 @@ export class DatabaseService {
     console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
     let user: User = null;
-    return Observable.of(ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
-      console.log("got to snapshot in getUserByUid");
-      console.log(snapshot);
-      //@TODO fix this
-      user = new User("Bob the fake user", "bob@bob.com","1234567", "purple", "advanced", "sbg", 33, 155, 100, new Date().toJSON(), true, "Male", new Date().toJSON());
-      // return Observable.of(user);
-    }));
+    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
+      console.log(snapshot.key);
+    });
     // if (user != null){
     //   return Observable.of(user);
     // } else{
     //   throw new TypeError("user was null in getUserByUid in database.service");
     // }
+  }
+
+  getMatchFromNodeKey(key: string){
+    let retrievedMatch = this.db.object('matches/' + key);
+    return retrievedMatch;
+
   }
 
   //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
