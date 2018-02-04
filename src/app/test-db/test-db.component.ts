@@ -22,7 +22,7 @@ export class TestDbComponent implements OnInit {
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
-    let matchDeets: MatchDetails = new MatchDetails("testId", "worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
+    let matchDeets: MatchDetails = new MatchDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     let move2: MoveInVideo = new MoveInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
     let moveArray: Array<MoveInVideo> = [move1, move2];
@@ -31,7 +31,7 @@ export class TestDbComponent implements OnInit {
     let uid = this.db.addUserToDbAndReturnUserId(user1);
     user1.setUid(uid);
 
-    let match1: Match = new Match(matchDeets, user1, moveArray);
+    let match1: Match = new Match(matchDeets, uid, moveArray);
     this.db.addMatchToDb(match1);
 
     this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute", "Add new weight class"];

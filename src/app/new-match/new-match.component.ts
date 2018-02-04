@@ -113,16 +113,27 @@ export class NewMatchComponent implements OnInit {
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    let userObservable = this.as.getCurrentUser();
-    let higherOrder = userObservable.map(userInfo =>{
-      this.db.getNodeIdFromEmail(userInfo.email);
-    });
-    return Observable.create(obs =>{
-      higherOrder.on("child_added", snapshot =>{
-        let match = new Match(matchDeets, snapshot.key, moves);
-        obs.next(match);
+    return this.as.getCurrentUser().switchMap(userInfo => {
+        console.log("got into getCurrentUser");
+        return Observable.create(obs=>{
+        this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
+          let match = new Match(matchDeets, snapshot.key, moves);
+          console.log(match);
+          obs.next(match);
+        });
+        });
       });
-    });
+    //
+    // let userObservable = this.as.getCurrentUser();
+    // let higherOrder = userObservable.map(userInfo =>{
+    //   this.db.getNodeIdFromEmail(userInfo.email);
+    // });
+    // return Observable.create(obs =>{
+    //   higherOrder.on("child_added", snapshot =>{
+    //     let match = new Match(matchDeets, snapshot.key, moves);
+    //     obs.next(match);
+    //   });
+    // });
 
     // return Observable.switchMap(obs=>{
     //   this.as.getCurrentUser().switchMap(userInfo =>{
@@ -150,16 +161,16 @@ export class NewMatchComponent implements OnInit {
   submitFormAndAnnotate(){
     let values = this.getValues();
     let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
-      console.log(match);
-      this.db.addMatchToDb(match);
+      console.log(result);
+      this.db.addMatchToDb(result);
     });
   }
 
   submitFormAndReturnToMain(){
     let values = this.getValues();
-    let match = this.createMatchObj(values).subscribe(result=>{
-      console.log(match);
-      this.db.addMatchToDb(match);
+    let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
+      console.log(result);
+      this.db.addMatchToDb(result);
       this.router.navigate(['landing']);
     });
   }

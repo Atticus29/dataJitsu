@@ -67,7 +67,7 @@ export class DatabaseService {
     return retrievedUser;
   }
 
-  addMatchToDb(match: Match){
+  addMatchToDb(match: any){
     let matchId = this.matches.push(match).key;
     let updates = {};
     updates['/matches/' + matchId + '/id'] = matchId;
