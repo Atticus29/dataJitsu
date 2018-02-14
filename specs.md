@@ -1,4 +1,5 @@
 - [ ] Users can log in
+- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
 - [ ] Users can create an account
   - [ ] Name
   - [ ] Email
