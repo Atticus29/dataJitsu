@@ -1,3 +1,7 @@
-<p>
-  match-display works!
-</p>
+<div class="container">
+  <p>Match: {{match?.matchDeets?.athlete1Name}} vs. {{match?.matchDeets?.athlete2Name}}</p>
+  <iframe id="video" src=matchUrl frameborder="0" allowfullscreen="0"></iframe>
+  <br>
+  <input id="pause" type="submit" value="pause" />
+  <input id="play" type="submit" value="play" />
+</div>

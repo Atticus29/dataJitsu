@@ -29,10 +29,16 @@ const appRoutes: Routes = [
 },{
   path: 'landing',
   component: LandingComponent,
+  canActivate: [ProtectionGuard],
   pathMatch: 'full'
 },{
   path: 'matches/:matchId',
   component: MatchDisplayComponent,
+  canActivate: [ProtectionGuard],
+  pathMatch: 'full'
+},{
+  path: 'youtube',
+  component: YoutubeComponent,
   pathMatch: 'full'
 }
  ];

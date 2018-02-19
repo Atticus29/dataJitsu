@@ -15,4 +15,17 @@ export class Match {
   markAsAnnotated(){
     this.isAnnotated = true;
   }
+
+  getMatchDetails(){
+    // console.log(this.matchDeets);
+    return this.matchDeets;
+  }
+
+  getOriginalPosterId(){
+    return this.originalPosterId;
+  }
+
+  getMovesInTheVideo(){
+    return this.movesInTheVideo;
+  }
 }
