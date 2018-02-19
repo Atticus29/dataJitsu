@@ -8,6 +8,7 @@ import { LandingComponent } from './landing/landing.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
+import { AllMatchesComponent } from './all-matches/all-matches.component';
 const appRoutes: Routes = [
   {
   path: '',
@@ -29,10 +30,21 @@ const appRoutes: Routes = [
 },{
   path: 'landing',
   component: LandingComponent,
+  canActivate: [ProtectionGuard],
   pathMatch: 'full'
 },{
-  path: 'matchdisplay',
+  path: 'matches',
+  component: AllMatchesComponent,
+  canActivate: [ProtectionGuard],
+  pathMatch: 'full'
+},{
+  path: 'matches/:matchId',
   component: MatchDisplayComponent,
+  canActivate: [ProtectionGuard],
+  pathMatch: 'full'
+},{
+  path: 'youtube',
+  component: YoutubeComponent,
   pathMatch: 'full'
 }
  ];

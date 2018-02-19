@@ -1,3 +1,23 @@
-<p>
-  match-display works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card">
+        <span class="card-title">Match: {{match?.matchDeets?.athlete1Name}} vs. {{match?.matchDeets?.athlete2Name}}</span>
+        <div class="card-image">
+          <div class="video-container">
+            <iframe id="video" src="https://youtube.com/embed/dzVF_uXk3EY?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
+          </div>
+          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" data-tooltip="Play">
+            <i class="material-icons">play_arrow</i>
+          </a>
+          <a id="pause" type="submit" value="pause" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate">
+            <i class="material-icons">edit</i>
+          </a>
+        </div>
+        <div class="card-content">
+          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

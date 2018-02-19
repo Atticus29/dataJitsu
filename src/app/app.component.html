@@ -1,6 +1,11 @@
-<!-- TODO add navbar here -->
+<nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo center">DataJitsu</a>
+    <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <li><a routerLink="matches" *ngIf="user">All Matches</a></li>
+      <li><a routerLink="newmatch" *ngIf="user">New Match</a></li>
+      <li><a *ngIf="user" (click)="logout()">Log Out</a></li>
+    </ul>
+  </div>
+</nav>
 <router-outlet></router-outlet>
-<br>
-<a routerLink="newmatch" *ngIf="user">New Match</a>
-<br>
-<a *ngIf="user" (click)="logout()">Log Out</a>

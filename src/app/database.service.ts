@@ -27,17 +27,39 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
+  //@TODO add matchID key inside match node
+
+  //@TODO fix getUserByUid below
   getUserByUid(uid: string){
+    console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
-    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
-      console.log("got to snapshot in getUserByUid");
-      console.log(snapshot);
+    let user: User = null;
+    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
+      console.log(snapshot.key);
     });
+    // if (user != null){
+    //   return Observable.of(user);
+    // } else{
+    //   throw new TypeError("user was null in getUserByUid in database.service");
+    // }
   }
 
+  getMatchFromNodeKey(key: string){
+    let retrievedMatch = this.db.object('matches/' + key);
+    return retrievedMatch;
+
+  }
+
+  //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
     let ref = firebase.database().ref('users/');
     return ref.orderByChild('email').equalTo(email).limitToFirst(1);
+  }
+
+  addUidToUser(uid: string, userKey: string){
+    let updates = {};
+    updates['/users/' + userKey + '/uid'] = uid;
+    firebase.database().ref().update(updates);
   }
 
   getUserById(userId: string){
@@ -45,8 +67,11 @@ export class DatabaseService {
     return retrievedUser;
   }
 
-  addMatchToDb(match: Match){
+  addMatchToDb(match: any){
     let matchId = this.matches.push(match).key;
+    let updates = {};
+    updates['/matches/' + matchId + '/id'] = matchId;
+    firebase.database().ref().update(updates);
   }
 
   addUserToDb(user: User){
@@ -54,6 +79,14 @@ export class DatabaseService {
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
+  }
+
+  addUserToDbAndReturnUserId(user: User){
+    let userId = this.users.push(user).key;
+    let updates = {};
+    updates['/users/'+userId + '/id'] = userId;
+    firebase.database().ref().update(updates);
+    return userId;
   }
 
   updateUserInDb(user: User){

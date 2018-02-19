@@ -13,13 +13,9 @@ export class ProtectionGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     return this.afAuth.authState.map((auth) => {
         if (!auth) {
-          // this.AuthService.loggedIn = false;
           this.router.navigateByUrl('');
-          console.log("got into false");
           return false;
         }
-        // this.AuthService.loggedIn = true;
-        console.log("got into true");
         return true;
     });
   }
