@@ -30,23 +30,10 @@ export class MatchDisplayComponent implements OnInit {
         // this.matchUrl = match.matchDeets.videoUrl;
         // console.log(this.matchUrl);
         this.matchUrl = "https://youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        console.log(this.matchUrl);
+        console.log("Match Url is: " + this.matchUrl);
         // this.matchDetails = this.match.getMatchDetails();
         // console.log(this.matchDetails);
       })
-      // this.db.getTeamById(this.teamId)
-      //   .takeUntil(this.ngUnsubscribe).subscribe(team => this.team = team);
-      // this.db.getPlayersOnTeam(this.teamId)
-      //   .takeUntil(this.ngUnsubscribe).subscribe(players => this.players = players);
-      // this.db.getGamesPlayedByTeam(this.teamId)
-      // .takeUntil(this.ngUnsubscribe).subscribe(games => this.games = games);
-      // this.authService.getCurrentUser()
-      // .takeUntil(this.ngUnsubscribe).subscribe(userInfo => {
-      //   this.user = userInfo});
-      // this.db.getUserIdAssociatedWithTeam(this.teamId)
-      // .takeUntil(this.ngUnsubscribe).subscribe(userId =>{
-      //     this.db.getUserById(Object.keys(userId)[0]).takeUntil(this.ngUnsubscribe).subscribe(userInfo => this.userAssociatedWithTeam = userInfo);
-      // });
     });
   }
 
