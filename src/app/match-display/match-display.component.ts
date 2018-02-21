@@ -31,6 +31,7 @@ export class MatchDisplayComponent implements OnInit {
         // console.log(this.matchUrl);
         this.matchUrl = "https://youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
         console.log("Match Url is: " + this.matchUrl);
+        document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
         // this.matchDetails = this.match.getMatchDetails();
         // console.log(this.matchDetails);
       })
