@@ -10,7 +10,7 @@ import { AuthorizationService } from '../authorization.service';
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
-  styleUrls: ['./create-account.component.css'],
+  styleUrls: ['./create-account.component.scss'],
   providers: [DatabaseService, ValidationService, AuthorizationService]
 })
 export class CreateAccountComponent implements OnInit {

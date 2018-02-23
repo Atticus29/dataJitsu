@@ -10,7 +10,7 @@ import { ProtectionGuard } from './protection.guard';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   providers:[AuthorizationService, ProtectionGuard]
 })
 export class AppComponent implements OnInit {

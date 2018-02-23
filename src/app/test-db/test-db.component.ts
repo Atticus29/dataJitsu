@@ -9,7 +9,7 @@ import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } 
 @Component({
   selector: 'app-test-db',
   templateUrl: './test-db.component.html',
-  styleUrls: ['./test-db.component.css'],
+  styleUrls: ['./test-db.component.scss'],
   providers: [DatabaseService]
 })
 export class TestDbComponent implements OnInit {

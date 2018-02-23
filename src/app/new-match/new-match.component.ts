@@ -18,7 +18,7 @@ declare var $:any;
 @Component({
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
-  styleUrls: ['./new-match.component.css'],
+  styleUrls: ['./new-match.component.scss'],
   providers: [DatabaseService, AuthorizationService, ProtectionGuard]
 })
 

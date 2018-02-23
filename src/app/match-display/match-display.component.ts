@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-match-display',
   templateUrl: './match-display.component.html',
-  styleUrls: ['./match-display.component.css']
+  styleUrls: ['./match-display.component.scss']
 })
 export class MatchDisplayComponent implements OnInit {
   matchId : string;

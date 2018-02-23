@@ -4,7 +4,7 @@ import * as firebase from 'firebase/app';
 @Component({
   selector: 'app-all-matches',
   templateUrl: './all-matches.component.html',
-  styleUrls: ['./all-matches.component.css']
+  styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit {
 

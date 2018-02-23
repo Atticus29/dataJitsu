@@ -9,7 +9,7 @@ import { ProtectionGuard } from '../protection.guard';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss'],
   providers: [ValidationService, AuthorizationService, ProtectionGuard]
 })
 export class LoginComponent implements OnInit {

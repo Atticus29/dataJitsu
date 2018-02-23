@@ -8,7 +8,7 @@ import { DatabaseService } from '../database.service';
 @Component({
   selector: 'app-youtube',
   templateUrl: './youtube.component.html',
-  styleUrls: ['./youtube.component.css'],
+  styleUrls: ['./youtube.component.scss'],
   providers: [DatabaseService]
 })
 export class YoutubeComponent implements OnInit {
