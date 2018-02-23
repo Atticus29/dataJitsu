@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
-    <div class="col s12 m6">
+    <div class="col s12 m12">
       <div class="card">
-        <span class="card-title">Match: {{match?.matchDeets?.athlete1Name}} vs. {{match?.matchDeets?.athlete2Name}}</span>
+        <span class="card-title" id="match-display-name"><h5 class="centered">Match: {{match?.matchDeets?.athlete1Name}} vs. {{match?.matchDeets?.athlete2Name}}</h5></span>
         <div class="card-image">
           <div class="video-container">
             <iframe id="videoIframe" src="https://youtube.com/embed/ldw9ee7UtLo?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
@@ -15,8 +15,25 @@
           </a>
         </div>
         <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+          <h5>Age Class: </h5>
+          <p>{{match?.matchDeets?.ageClass}}</p>
+          <h5>Weight Class: </h5>
+          <p>{{match?.matchDeets?.weightClass}}</p>
+          <h5>Gi/Nogi: </h5>
+          <p>{{match?.matchDeets?.giStatus}}</p>
+          <h5>Tournament: </h5>
+          <p>{{match?.matchDeets?.tournamentName}}</p>
+          <h5>Location: </h5>
+          <p>{{match?.matchDeets?.location}}</p>
+          <h5>Rank: </h5>
+          <p>{{match?.matchDeets?.rank}}</p>
+
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m12" id="annotation-display">
+        <app-annotation-display></app-annotation-display>
       </div>
     </div>
   </div>

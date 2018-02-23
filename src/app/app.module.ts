@@ -20,6 +20,7 @@ import { DatabaseService } from './database.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
+import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -38,7 +39,8 @@ export const firebaseConfig = {
     LandingComponent,
     MatchDisplayComponent,
     LoginComponent,
-    AllMatchesComponent
+    AllMatchesComponent,
+    AnnotationDisplayComponent
   ],
   imports: [
     BrowserModule,
