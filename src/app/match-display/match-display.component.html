@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col s12 m12">
-      <div class="card">
-        <span class="card-title" id="match-display-name"><h5 class="centered">Match: {{match?.matchDeets?.athlete1Name}} vs. {{match?.matchDeets?.athlete2Name}}</h5></span>
+      <div class="card title-buffer">
+        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
           <div class="video-container">
             <iframe id="videoIframe" src="https://youtube.com/embed/ldw9ee7UtLo?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
@@ -13,20 +13,20 @@
           <a id="pause" type="submit" value="pause" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate">
             <i class="material-icons">edit</i>
           </a>
+          <p>TODO: Add stars based on rating here</p>
         </div>
         <div class="card-content">
-          <h5>Age Class: </h5>
-          <p>{{match?.matchDeets?.ageClass}}</p>
-          <h5>Weight Class: </h5>
-          <p>{{match?.matchDeets?.weightClass}}</p>
-          <h5>Gi/Nogi: </h5>
-          <p>{{match?.matchDeets?.giStatus}}</p>
-          <h5>Tournament: </h5>
-          <p>{{match?.matchDeets?.tournamentName}}</p>
-          <h5>Location: </h5>
-          <p>{{match?.matchDeets?.location}}</p>
-          <h5>Rank: </h5>
-          <p>{{match?.matchDeets?.rank}}</p>
+          <span><span class="match-label">Age Class: </span>{{match?.matchDeets?.ageClass}}</span>
+          <br>
+          <span class="match-label">Weight Class: </span>{{match?.matchDeets?.weightClass}}
+          <br>
+          <span class="match-label">Gi/Nogi: </span>{{match?.matchDeets?.giStatus}}
+          <br>
+          <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
+          <br>
+          <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
+          <br>
+          <span class="match-label">Rank: </span>{{match?.matchDeets?.rank}}
 
         </div>
       </div>
