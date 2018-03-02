@@ -46,6 +46,10 @@ const appRoutes: Routes = [
   path: 'youtube',
   component: YoutubeComponent,
   pathMatch: 'full'
+},{
+  path: '**',
+  component: NotfoundComponent,
+  pathMatch: 'full'
 }
  ];
 

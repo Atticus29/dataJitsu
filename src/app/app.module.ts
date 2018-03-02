@@ -21,6 +21,8 @@ import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
+import { D3Service } from './d3.service';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -40,7 +42,8 @@ export const firebaseConfig = {
     MatchDisplayComponent,
     LoginComponent,
     AllMatchesComponent,
-    AnnotationDisplayComponent
+    AnnotationDisplayComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,7 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
