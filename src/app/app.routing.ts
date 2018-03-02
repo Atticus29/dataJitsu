@@ -9,6 +9,7 @@ import { MatchDisplayComponent } from './match-display/match-display.component';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
+import { NotfoundComponent } from './notfound/notfound.component';
 const appRoutes: Routes = [
   {
   path: '',
