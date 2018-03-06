@@ -8,9 +8,9 @@ export class D3Service {
 
   loadTable() {
     console.log("got into loadTable call");
-    // d3.json("https://datajitsu.firebaseio.com/matches", function(data){
-    //   console.log(data);
-    // });
+    d3.json("https://datajitsu.firebaseio.com/matches", function(data){
+      console.log(data);
+    });
 
     // d3.select('svg').firebase(
     // 'https://datajitsu.firebaseio.com/',
