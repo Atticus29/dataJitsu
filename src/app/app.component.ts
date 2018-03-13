@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: any = null;
   userObjFromDb;
+  paidStatus: any = null;
 
   constructor(private authService: AuthorizationService, private db: DatabaseService){}
 
@@ -25,8 +26,9 @@ export class AppComponent implements OnInit {
     .takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
       if (this.user) {
-        this.db.getUserById(this.user.uid)
+        this.db.getUserByUid(this.user.uid)
         .takeUntil(this.ngUnsubscribe).subscribe(dbuser=>{
+          console.log(dbuser);
           this.userObjFromDb = dbuser;
         });
       }

@@ -10,10 +10,16 @@
   </div>
 </nav>
 <div class="row">
-  <div class="col s8 m10">
+  <div class="col s12 m1" *ngIf="user">
+    <app-user-status-report></app-user-status-report>
+  </div>
+  <div class="col s12 m1" *ngIf="!user">
+    <!-- empty -->
+  </div>
+  <div class="col s12 m10">
     <router-outlet></router-outlet>
   </div>
-  <div class="col s4 m2">
-    <app-user-status-report></app-user-status-report>
+  <div class="col s12 m1" *ngIf="!user">
+    <!-- empty -->
   </div>
 </div>
