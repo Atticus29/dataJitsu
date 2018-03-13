@@ -1,9 +1,19 @@
+$primary-color: #000000;
+
+.primary{
+  background-color: $primary-color;
+}
+
 .subtitle{
   text-align: center;
 }
 
 .nav-wrapper{
-  background-color: black;
+  background-color: $primary-color;
+}
+
+.input-field{
+  background-color: $primary-color;
 }
 
 .centered{
