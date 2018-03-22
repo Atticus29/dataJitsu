@@ -6,7 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
-
+import { constants } from './constants'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,6 +31,23 @@ export class AppComponent implements OnInit {
         // .takeUntil(this.ngUnsubscribe)
         //remove subscribe??
         .then(dbuser=>{
+          //TODO check whether user has paid or has annotated in the past x days
+          this.db.hasUserPaid(dbuser).takeUntil(this.ngUnsubscribe).subscribe(status =>{
+            if(status){
+              togglePaid();
+            } else{
+              togglePayMentPrompt();
+            }
+          });
+          this.db.getDaysSinceAnnotated(dbuser).takeUntil(this.ngUnsubscribe).subscribe(days =>{
+            if(days <= constants.numDaysBeforeNewAnnotationNeeded){
+              togglePaid();
+            } else{
+              toggleAnnotationPrompt();
+            }
+          })
+
+          }
           console.log("about to print dbuser");
           console.log(dbuser);
           this.userObjFromDb = dbuser;

@@ -1,18 +1,18 @@
-- [ ] Users can log in
+- [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
-- [ ] Users can create an account
-  - [ ] Name
-  - [ ] Email
-  - [ ] Rank (gi)
-  - [ ] Rank (no gi)
-  - [ ] Affiliation
-  - [ ] Age
-  - [ ] Weight class
-  - [ ] Gender
-  - [ ] Date last annotated
-  - [ ] paidStatus
-  - [ ] Weight (find a way for the input to be in kilos or lbs.)
-  - [ ] Reputation points
+- [x] Users can create an account
+  - [x] Name
+  - [x] Email
+  - [x] Rank (gi)
+  - [x] Rank (no gi)
+  - [x] Affiliation
+  - [x] Age
+  - [x] Gender
+  - [x] Date last annotated (defaults to null)
+  - [x] paidStatus
+  - [x] Weight (find a way for the input to be in kilos or lbs.)
+  - [x] Reputation points (defaults to 100)
+- [ ] Set up unit testing, especially for database stuff
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:
   - [ ] Belt/rank
@@ -33,7 +33,7 @@
     - [ ] Most common points scored
     - [ ] Most common points lost
     - [ ] Most effective submission
-- [ ] Users are required to annotate a video each month or pay $5/yr
+- [ ] Users are required to annotate a video each month or pay $2/month or $6/6 months or $10/yr.
   - [ ] A video is provided for them
   - [ ] The first time they annotate, a tutorial is provided
   - [ ] A refresher tutorial is available
@@ -68,18 +68,18 @@
         - [ ] Users can create a new move name if it doesn't exist
           - [ ] This name must be vetted by other users
 
-- [ ] Users can add a brand new video with match details:
-  - [ ] Tournament name
-  - [ ] Location
-  - [ ] Date
-  - [ ] Athlete 1 name
-  - [ ] Athlete 2 name
-  - [ ] Weight class
-  - [ ] Gender
-  - [ ] Age class
-  - [ ] Gi status
-  - [ ] Rank
-  - [ ] Video url
+- [x] Users can add a brand new video with match details:
+  - [x] Tournament name
+  - [x] Location
+  - [x] Date
+  - [x] Athlete 1 name
+  - [x] Athlete 2 name
+  - [x] Weight class
+  - [x] Gender
+  - [x] Age class
+  - [x] Gi status
+  - [x] Rank
+  - [x] Video url
     - [ ] Gets validated?
 
 

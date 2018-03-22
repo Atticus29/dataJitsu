@@ -28,6 +28,18 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
+  hasUserPaid(userId: string){
+    return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+  }
+
+  getDaysSinceAnnotated(userId: string){
+    return this.db.object('/users/' + userId + '/dateLastAnnotated');  //TODO check that there is an annotation status and that this is the firebase path to it
+  }
+
+  hasBeenAnnotated(videoId: string){
+    return this.db.object('/matches/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+  }
+
   //@TODO add matchID key inside match node
 
   //@TODO fix getUserByUid below
