@@ -18,10 +18,12 @@ export class AppComponent implements OnInit {
   user: any = null;
   userObjFromDb;
   paidStatus: any = null;
+  shouldAnnotate: boolean = false;
 
   constructor(private authService: AuthorizationService, private db: DatabaseService){}
 
   ngOnInit() {
+    this.paidStatus = false;
     this.authService.getCurrentUser()
     .takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
@@ -34,20 +36,18 @@ export class AppComponent implements OnInit {
           //TODO check whether user has paid or has annotated in the past x days
           this.db.hasUserPaid(dbuser).takeUntil(this.ngUnsubscribe).subscribe(status =>{
             if(status){
-              togglePaid();
+              this.togglePaid(dbuser);
             } else{
-              togglePayMentPrompt();
+              this.togglePayMentPrompt();
             }
           });
           this.db.getDaysSinceAnnotated(dbuser).takeUntil(this.ngUnsubscribe).subscribe(days =>{
             if(days <= constants.numDaysBeforeNewAnnotationNeeded){
-              togglePaid();
+              this.togglePaid(dbuser);
             } else{
-              toggleAnnotationPrompt();
+              this.toggleAnnotationPrompt();
             }
-          })
-
-          }
+          });
           console.log("about to print dbuser");
           console.log(dbuser);
           this.userObjFromDb = dbuser;
@@ -58,6 +58,20 @@ export class AppComponent implements OnInit {
 
   loginGoogleComponent(){
     this.authService.loginGoogle();
+  }
+
+  toggleAnnotationPrompt(){
+    //TODO flesh out
+    this.shouldAnnotate = true;
+  }
+
+  togglePaid(userId: string){
+    this.db.updateUserPaymentStatus(userId, true);
+    this.paidStatus = true;
+  }
+
+  togglePayMentPrompt(){
+    //TODO flesh out
   }
 
   logout(){

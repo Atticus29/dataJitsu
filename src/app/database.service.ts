@@ -28,6 +28,11 @@ export class DatabaseService {
     this.users = db.list('/users');
   }
 
+  updateUserPaymentStatus(userId: string, newStatus: boolean){
+    this.db.list('/users' + userId).update(paidStatus, newStatus); //TODO fix
+    //TODO flesh this out
+  }
+
   hasUserPaid(userId: string){
     return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }

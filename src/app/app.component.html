@@ -12,6 +12,7 @@
 <div class="row">
   <div class="col s12 m1" *ngIf="user">
     <app-user-status-report></app-user-status-report>
+    <a routerLink="annotate" *ngIf="shouldAnnotate">Annotate a video</a>
   </div>
   <div class="col s12 m1" *ngIf="!user">
     <!-- empty -->
