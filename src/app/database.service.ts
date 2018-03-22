@@ -17,6 +17,7 @@ export class DatabaseService {
   noGiRanks: FirebaseListObservable<any>;
   ageClasses: FirebaseListObservable<any>;
   users: FirebaseListObservable<any>;
+  // user: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
@@ -34,9 +35,14 @@ export class DatabaseService {
     console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
     let user: User = null;
-    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot=>{
-      console.log(snapshot.key);
-    });
+    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1).once('value');
+    // });
+    // return Observable.of(ref.orderByChild('uid').equalTo(uid).limitToFirst(1));
+    // .on("child_added", snapshot=>{
+    //   console.log(snapshot.key);
+    //   user = snapshot;
+    //   return this.user;
+    // });
     // if (user != null){
     //   return Observable.of(user);
     // } else{

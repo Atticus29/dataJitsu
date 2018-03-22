@@ -25,9 +25,13 @@ export class AppComponent implements OnInit {
     this.authService.getCurrentUser()
     .takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
+      console.log(this.user.uid);
       if (this.user) {
         this.db.getUserByUid(this.user.uid)
-        .takeUntil(this.ngUnsubscribe).subscribe(dbuser=>{
+        // .takeUntil(this.ngUnsubscribe)
+        //remove subscribe??
+        .then(dbuser=>{
+          console.log("about to print dbuser");
           console.log(dbuser);
           this.userObjFromDb = dbuser;
         });
@@ -43,7 +47,7 @@ export class AppComponent implements OnInit {
     this.authService.logout();
     this.authService.user = null;
     this.authService.setAuthenticated(false);
-    console.log(this.authService.user);
+    // console.log(this.authService.user);
   }
 
 
