@@ -29,7 +29,7 @@ export class DatabaseService {
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
-    this.db.list('/users' + userId).update(paidStatus, newStatus); //TODO fix
+    this.db.list('/users' + userId).update('paidStatus', newStatus); //TODO fix
     //TODO flesh this out
   }
 

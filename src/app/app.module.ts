@@ -24,6 +24,7 @@ import { AnnotationDisplayComponent } from './annotation-display/annotation-disp
 import { D3Service } from './d3.service';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { UserStatusReportComponent } from './user-status-report/user-status-report.component';
+import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-details/payment-or-annotation-details.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -45,7 +46,8 @@ export const firebaseConfig = {
     AllMatchesComponent,
     AnnotationDisplayComponent,
     NotfoundComponent,
-    UserStatusReportComponent
+    UserStatusReportComponent,
+    PaymentOrAnnotationDetailsComponent
   ],
   imports: [
     BrowserModule,

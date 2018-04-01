@@ -13,7 +13,7 @@ export class ProtectionGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     return this.afAuth.authState.map((auth) => {
         if (!auth) {
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('login');
           return false;
         }
         return true;

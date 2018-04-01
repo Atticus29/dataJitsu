@@ -13,7 +13,12 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 const appRoutes: Routes = [
   {
-  path: '',
+    path: '',
+    component: AllMatchesComponent,
+    canActivate: [ProtectionGuard],
+    pathMatch: 'full'
+  },{
+  path: 'login',
   component: LoginComponent,
   pathMatch: 'full'
 },{

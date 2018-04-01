@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.paidStatus = false;
+    //TODO put this in a try catch and send to error page upon catch
     this.authService.getCurrentUser()
     .takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
