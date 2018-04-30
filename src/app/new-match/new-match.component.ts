@@ -41,6 +41,8 @@ export class NewMatchComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
   disabledWeightClass: boolean = false;
+  giStatusBound: boolean = true;
+  checked: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
     // let temp = this.as.isAuthenticated();
@@ -157,6 +159,13 @@ export class NewMatchComponent implements OnInit {
   }
 
   //@TODO have the form listen for giStatusBound and respond dynamically
+  changed(){
+    console.log(this.checked);
+    this.giStatusBound = this.checked;
+  }
+  // toggleSwitch(){
+  //   console.log("Toggle switched!");
+  // }
 
   submitFormAndAnnotate(){
     let values = this.getValues();

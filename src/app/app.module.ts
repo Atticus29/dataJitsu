@@ -25,6 +25,9 @@ import { D3Service } from './d3.service';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { UserStatusReportComponent } from './user-status-report/user-status-report.component';
 import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-details/payment-or-annotation-details.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -58,7 +61,9 @@ export const firebaseConfig = {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
   bootstrap: [AppComponent]

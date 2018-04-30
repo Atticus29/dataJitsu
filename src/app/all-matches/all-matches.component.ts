@@ -13,6 +13,7 @@ export class AllMatchesComponent implements OnInit {
 
   ngOnInit() {
     var ref = firebase.database().ref('matches');
+    console.log(ref);
 
 
     this.d3Service.loadTable();

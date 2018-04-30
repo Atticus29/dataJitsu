@@ -39,14 +39,15 @@
       </div>
       <div class="row">
         <div class="col s12 m2 switch">
-          <div class="switch">
-            <label>
-              No Gi
-              <input formControlName="giStatusBound" id="giStatus" type="checkbox" [disabled]="isDisabled?true:null">
-              <span class="lever"></span>
-              Gi
-            </label>
-          </div>
+          <mat-slide-toggle
+            formControlName="giStatusBound"
+            id="giStatus"
+            [color]="$primary-color"
+            (change)="changed()"
+            [(ngModel)]="checked"
+            >
+            Gi
+          </mat-slide-toggle>
         </div>
         <div class="input-field col m2 s12">
         </div>
@@ -65,14 +66,14 @@
           <label for="ageClass">Age Class</label>
         </div>
         <div class="input-field col m2 s12">
-          <select *ngIf="giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
-            <option value="(choose)" [disabled]="disabledGiRank" >Choose gi rank</option>
-            <option  *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
-          </select>
-          <select *ngIf="!giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
-            <option value="(choose)" [disabled]="disabledNoGiRank">Choose no gi rank</option>
-            <option  *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</option>
-          </select>
+          <mat-select [disabled]="giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+            <mat-option value="(choose)" >Choose gi rank</mat-option>
+            <mat-option  *ngFor="let giRank of giRanks">{{giRank.$value}}</mat-option>
+          </mat-select>
+          <mat-select [disabled]="!giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+            <mat-option value="(choose)" [disabled]="disabledNoGiRank">Choose no gi rank</mat-option>
+            <mat-option  *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</mat-option>
+          </mat-select>
           <label for="rank">Rank</label>
         </div>
         <div class="input-field col m2 s12">

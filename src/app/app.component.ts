@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     this.authService.getCurrentUser()
     .takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
-      console.log(this.user.uid);
+      // console.log(this.user.uid);
       if (this.user) {
         this.db.getUserByUid(this.user.uid)
         // .takeUntil(this.ngUnsubscribe)
