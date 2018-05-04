@@ -66,15 +66,17 @@
           <label for="ageClass">Age Class</label>
         </div>
         <div class="input-field col m2 s12">
-          <mat-select [disabled]="giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
-            <mat-option value="(choose)" >Choose gi rank</mat-option>
-            <mat-option  *ngFor="let giRank of giRanks">{{giRank.$value}}</mat-option>
-          </mat-select>
-          <mat-select [disabled]="!giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
-            <mat-option value="(choose)" [disabled]="disabledNoGiRank">Choose no gi rank</mat-option>
-            <mat-option  *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</mat-option>
-          </mat-select>
-          <label for="rank">Rank</label>
+          <mat-form-field>
+            <mat-select [disabled]="giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+              <option value="(choose)" >Choose gi rank</option>
+              <option  *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
+            </mat-select>
+            <mat-select [disabled]="!giStatusBound" formControlName="rankBound" materialize="material_select" id="rank">
+              <option value="(choose)" [disabled]="disabledNoGiRank">Choose no gi rank</option>
+              <option  *ngFor="let noGiRank of nogiRanks">{{noGiRank.$value}}</option>
+            </mat-select>
+            <label for="rank">Rank</label>
+          </mat-form-field>
         </div>
         <div class="input-field col m2 s12">
           <select formControlName="weightBound" materialize="material_select" id="weight">

@@ -25,8 +25,10 @@ import { D3Service } from './d3.service';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { UserStatusReportComponent } from './user-status-report/user-status-report.component';
 import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-details/payment-or-annotation-details.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+// import { MatOptionModule } from '@angular/material/slide-toggle';
 
 
 export const firebaseConfig = {
@@ -63,7 +65,8 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
   bootstrap: [AppComponent]
