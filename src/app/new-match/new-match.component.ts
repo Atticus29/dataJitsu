@@ -163,9 +163,9 @@ export class NewMatchComponent implements OnInit {
   //@TODO have the form listen for giStatusBound and respond dynamically
   changed(){
     console.log(this.checked);
-    if(this.rankType.equals("Gi")){
+    if(this.rankType === "Gi"){
       this.rankType = "No gi";
-    } else if(this.rankType.equals("No gi")){
+    } else if(this.rankType === "No gi"){
       this.rankType = "Gi";
     } else {
       console.log ("Something went wrong when toggling between gi and nogi");
