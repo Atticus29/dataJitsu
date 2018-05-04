@@ -30,6 +30,7 @@ export class NewMatchComponent implements OnInit {
   ageClasses: any[];
   giRanks: any[];
   nogiRanks: any[];
+  rankType: string = "Gi";
   genders: any[];
   weightClasses: any[];
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -41,7 +42,7 @@ export class NewMatchComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
   disabledWeightClass: boolean = false;
-  giStatusBound: boolean = true;
+  giStatusBound: boolean = false;
   checked: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
@@ -83,7 +84,7 @@ export class NewMatchComponent implements OnInit {
       tournamentNameBound: ['', Validators.required],
       locationBound: ['', Validators.required],
       tournamentDateBound: ['', Validators.required],
-      giStatusBound: [true],
+      giStatusBound: new FormControl({value: null}, Validators.required),
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
       rankBound: ['', Validators.required],
@@ -161,7 +162,14 @@ export class NewMatchComponent implements OnInit {
   //@TODO have the form listen for giStatusBound and respond dynamically
   changed(){
     console.log(this.checked);
-    this.giStatusBound = this.checked;
+    if(this.rankType.equals("Gi")){
+      this.rankType = "No gi";
+    } else if(this.rankType.equals("No gi")){
+      this.rankType = "Gi";
+    } else {
+      console.log ("Something went wrong when toggling between gi and nogi");
+    }
+    // this.giStatusBound = this.checked;
   }
   // toggleSwitch(){
   //   console.log("Toggle switched!");
