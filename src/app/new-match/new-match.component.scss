@@ -6,10 +6,7 @@
   width: 100%;
 }
 
-.mat-form-field-underline {
-  visibility: hidden;
-}
-
-.mat-form-field-subscript-wrapper {
-  visibility: hidden;
+input:not([read-only]) {
+	border-bottom: none!important;
+	box-shadow: none!important;
 }
