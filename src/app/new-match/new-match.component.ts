@@ -114,6 +114,7 @@ export class NewMatchComponent implements OnInit {
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
+    console.log("gender bound is " + genderBound);
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {

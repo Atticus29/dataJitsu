@@ -51,18 +51,17 @@
         </div>
         <div class="input-field col m2 s12">
         </div>
+        <mat-form-field class="col m2 s12">
+          <mat-select formControlName="genderBound" placeholder="Gender">
+            <mat-option value="(choose)" [disabled]="disabledGender" >Choose gender</mat-option>
+            <mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
+          </mat-select>
+        </mat-form-field>
         <div class="input-field col m2 s12">
-          <select formControlName="genderBound" materialize="material_select" id="gender">
-            <option value="(choose)" [disabled]="disabledGender" >Choose gender</option>
-            <option *ngFor="let gender of genders">{{gender}}</option>
-          </select>
-          <label for="gender">Gender</label>
-        </div>
-        <div class="input-field col m2 s12">
-          <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
-            <option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</option>
-            <option *ngFor="let age of ageClasses">{{age.$value}}</option>
-          </select>
+          <mat-select formControlName="ageClassBound" materialize="material_select" id="ageClass">
+            <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
+            <mat-option *ngFor="let age of ageClasses">{{age.$value}}</mat-option>
+          </mat-select>
           <label for="ageClass">Age Class</label>
         </div>
         <div class="input-field col m2 s12">
@@ -73,10 +72,10 @@
             <label for="rank">{{rankType}} Rank</label>
         </div>
         <div class="input-field col m2 s12">
-          <select formControlName="weightBound" materialize="material_select" id="weight">
-            <option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</option>
-            <option *ngFor="let weight of weightClasses">{{weight.$value}}</option>
-          </select>
+          <mat-select formControlName="weightBound" materialize="material_select" id="weight">
+            <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
+            <mat-option *ngFor="let weight of weightClasses">{{weight.$value}}</mat-option>
+          </mat-select>
           <label for="weight">Weight Class</label>
         </div>
       </div>
