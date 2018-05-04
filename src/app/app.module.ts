@@ -28,6 +28,7 @@ import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-det
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 // import { MatOptionModule } from '@angular/material/slide-toggle';
 
 
@@ -66,7 +67,8 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    MatOptionModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
   bootstrap: [AppComponent]
