@@ -28,6 +28,7 @@ export class NewMatchComponent implements OnInit {
   private sub: any;
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
+  ranks: any[];
   giRanks: any[];
   nogiRanks: any[];
   rankType: string = "Gi";
@@ -59,6 +60,7 @@ export class NewMatchComponent implements OnInit {
 
     this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
       this.giRanks = giRanks;
+      this.ranks = giRanks;
       this.disabledGiRank = true;
     })
 
@@ -165,8 +167,10 @@ export class NewMatchComponent implements OnInit {
     console.log(this.checked);
     if(this.rankType === "Gi"){
       this.rankType = "No gi";
+      this.ranks = this.nogiRanks;
     } else if(this.rankType === "No gi"){
       this.rankType = "Gi";
+      this.ranks = this.giRanks;
     } else {
       console.log ("Something went wrong when toggling between gi and nogi");
     }

@@ -29,7 +29,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 
 export const firebaseConfig = {
@@ -69,7 +71,9 @@ export const firebaseConfig = {
     MatSlideToggleModule,
     MatSelectModule,
     MatOptionModule,
-    MatInputModule
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
   bootstrap: [AppComponent]
