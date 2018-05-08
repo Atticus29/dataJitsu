@@ -43,7 +43,7 @@ export class NewMatchComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
   disabledWeightClass: boolean = false;
-  giStatusBound: boolean = false;
+  giStatus: boolean = false;
   checked: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
@@ -86,11 +86,11 @@ export class NewMatchComponent implements OnInit {
       tournamentNameBound: ['', Validators.required],
       locationBound: ['', Validators.required],
       tournamentDateBound: ['', Validators.required],
-      giStatusBound: new FormControl({value: null}, Validators.required),
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
       rankBound: ['', Validators.required],
       weightBound: ['', Validators.required],
+      giStatusBound: ['', Validators.required]
     });
 
     // this.currentUser = this.userService.getUser(this.currentUserId); //@TODO mature this
@@ -103,7 +103,7 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== "" && (values.giStatusBound == true || values.giStatusBound == false) && values.weightBound !== "" ){
+    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
       return true;
     } else{
       return false;
@@ -115,9 +115,8 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, giStatusBound, genderBound, ageClassBound, rankBound, weightBound} = result;
-    console.log("gender bound is " + genderBound);
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, giStatusBound === 'true', ageClassBound);
+    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound.$value, matchUrlBound, genderBound, this.giStatus, ageClassBound.$value);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {
         console.log("got into getCurrentUser");
@@ -168,8 +167,10 @@ export class NewMatchComponent implements OnInit {
     if(this.rankType === "Gi"){
       this.rankType = "No gi";
       this.ranks = this.nogiRanks;
+      this.giStatus = false;
     } else if(this.rankType === "No gi"){
       this.rankType = "Gi";
+      this.giStatus = true;
       this.ranks = this.giRanks;
     } else {
       console.log ("Something went wrong when toggling between gi and nogi");
