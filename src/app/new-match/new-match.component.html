@@ -27,23 +27,29 @@
           <br>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="tournamentDateBound" [matDatepicker]="picker" placeholder="Match Date">
+          <input matInput formControlName="tournamentDateBound" [matDatepicker]="picker" placeholder="Match Date (m/d/yyyy)">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker required="" id="test"></mat-datepicker>
+          <!-- <div class="validation-messages" ng-messages="newMatchForm.test.$error">
+            <div ng-message="valid">The entered value is not a date!</div>
+            <div ng-message="required">This date is required!</div>
+          </div> -->
         </mat-form-field>
       </div>
       <div class="row">
-        <div class="col s12 m2 switch">
-          Gi
-          <mat-slide-toggle
-            formControlName="giStatusBound"
-            id="giStatus"
-            [color]="$primary-color"
-            (change)="changed()"
-            [(ngModel)]="checked"
-            >
-            No Gi
-          </mat-slide-toggle>
+        <div id="TODO">
+          <div class="col s12 m2 switch">
+            Gi
+            <mat-slide-toggle
+              formControlName="giStatusBound"
+              id="giStatus"
+              [color]="$primary-color"
+              (change)="changed()"
+              [(ngModel)]="checked"
+              >
+              No Gi
+            </mat-slide-toggle>
+          </div>
         </div>
         <mat-form-field class="col m2 s12">
           <mat-select formControlName="genderBound" placeholder="Gender">
@@ -54,13 +60,14 @@
         <mat-form-field>
           <mat-select formControlName="ageClassBound" id="ageClass" placeholder="Age Class">
             <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
-            <mat-option *ngFor="let age of ageClasses" [value]="age">{{age.$value}}</mat-option>
+            <mat-option *ngFor="let age of ageClasses" [value]="age.$value">{{age.$value}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select formControlName="rankBound" id="rank" placeholder="{{rankType}} Rank">
-              <mat-option value="(choose)" >Choose {{rankType}} rank</mat-option>
-              <mat-option  *ngFor="let rank of ranks" [value]="rank">{{rank.$value}}</mat-option>
+            <mat-select formControlName="rankBound" id="rank" placeholder="{{rankType}} Rank" [ngModel]="rankSelection" (ngModelChange)="onChange($event)">
+              <mat-option value="(choose)" disabled="true">Choose {{rankType}} rank</mat-option>
+              <mat-option  *ngFor="let rank of ranks" [value]="rank.$value">{{rank.$value}}</mat-option>
+              <mat-option  value="addNew" >Add new {{rankType}} rank</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
@@ -83,6 +90,22 @@
       <div class="modal-footer">
         <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndAnnotate()">Annotate</button>
         <button (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
+      </div>
+    </div>
+
+    <div id="modal2" class="modal">
+      <div class="modal-content">
+        <h4>Create new rank</h4>
+        <form [formGroup]="newRankForm">
+          <div class="row">
+            <mat-form-field class="example-full-width col s12">
+              <input matInput formControlName="newRankBound" placeholder="Rank name" value="E.g., pink belt" id="newRank">
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch()">Add</button>
       </div>
     </div>
 

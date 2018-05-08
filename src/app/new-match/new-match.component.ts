@@ -23,7 +23,6 @@ declare var $:any;
 })
 
 export class NewMatchComponent implements OnInit {
-    //@TODO add matchID key inside match node
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
   title: string = "Submit a New Match for Annotation";
@@ -45,6 +44,7 @@ export class NewMatchComponent implements OnInit {
   disabledWeightClass: boolean = false;
   giStatus: boolean = false;
   checked: boolean = false;
+  rankSelection: string;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
     // let temp = this.as.isAuthenticated();
@@ -116,7 +116,7 @@ export class NewMatchComponent implements OnInit {
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound.$value, matchUrlBound, genderBound, this.giStatus, ageClassBound.$value);
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {
         // TODO fix this/make sure it's working
@@ -162,6 +162,15 @@ export class NewMatchComponent implements OnInit {
     //   });
   }
 
+  onChange(val){
+    console.log(val);
+    if(val === "addNew"){
+      console.log("contains add new!");
+    } else{
+      //do nothing
+    }
+  }
+
   changed(){
     if(this.rankType === "Gi"){
       this.rankType = "No gi";
@@ -204,6 +213,10 @@ export class NewMatchComponent implements OnInit {
 
   addToQueueAndReturnToMain(){
     console.log("Queue"); //@TODO flesh out
+  }
+
+  submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch(){
+    //TODO flesh out 
   }
 
 }
