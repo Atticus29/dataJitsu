@@ -119,11 +119,12 @@ export class NewMatchComponent implements OnInit {
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound.$value, matchUrlBound, genderBound, this.giStatus, ageClassBound.$value);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {
-        console.log("got into getCurrentUser");
+        // TODO fix this/make sure it's working
+        // console.log("got into getCurrentUser");
         return Observable.create(obs=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
           let match = new Match(matchDeets, snapshot.key, moves);
-          console.log(match);
+          // console.log(match);
           obs.next(match);
         });
         });
@@ -161,9 +162,7 @@ export class NewMatchComponent implements OnInit {
     //   });
   }
 
-  //@TODO have the form listen for giStatusBound and respond dynamically
   changed(){
-    console.log(this.checked);
     if(this.rankType === "Gi"){
       this.rankType = "No gi";
       this.ranks = this.nogiRanks;
@@ -175,11 +174,7 @@ export class NewMatchComponent implements OnInit {
     } else {
       console.log ("Something went wrong when toggling between gi and nogi");
     }
-    // this.giStatusBound = this.checked;
   }
-  // toggleSwitch(){
-  //   console.log("Toggle switched!");
-  // }
 
   submitFormAndAnnotate(){
     let values = this.getValues();
@@ -191,8 +186,9 @@ export class NewMatchComponent implements OnInit {
 
   submitFormAndReturnToMain(){
     let values = this.getValues();
+    // console.log(values);
     let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
-      console.log(result);
+      // console.log(result);
       this.db.addMatchToDb(result);
       this.router.navigate(['landing']);
     });
