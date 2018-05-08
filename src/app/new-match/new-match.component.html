@@ -27,14 +27,14 @@
           <br>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="tournamentDateBound" type="date" class="validate" id="tournamentDate" [matDatepicker]="picker" placeholder="Date">
+          <input matInput formControlName="tournamentDateBound" [matDatepicker]="picker" placeholder="Match Date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
       <div class="row">
         <div class="col s12 m2 switch">
-          No Gi
+          Gi
           <mat-slide-toggle
             formControlName="giStatusBound"
             id="giStatus"
@@ -42,7 +42,7 @@
             (change)="changed()"
             [(ngModel)]="checked"
             >
-            Gi
+            No Gi
           </mat-slide-toggle>
         </div>
         <mat-form-field class="col m2 s12">
@@ -60,7 +60,7 @@
         <mat-form-field>
             <mat-select formControlName="rankBound" id="rank" placeholder="{{rankType}} Rank">
               <mat-option value="(choose)" >Choose {{rankType}} rank</mat-option>
-              <mat-option  *ngFor="let rank of rank" [value]="rank">{{rank}}</mat-option>
+              <mat-option  *ngFor="let rank of ranks" [value]="rank">{{rank.$value}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
