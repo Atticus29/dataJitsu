@@ -18,6 +18,17 @@ export class ValidationService {
     return weight > 8 && weight < 1000; //@TODO extend as kilos and lbs accommodated
   }
 
+  validateDate(date: string){
+    let re = /^\w*\s\w*\s\d*\s\d*.*?$/;
+    let re2 = /^\d+\/\d+\/\d+$/;
+    return (re.test(date.toLowerCase())|| re2.test(date.toLowerCase())) && date;
+  }
+
+  validateUrl(url: string){
+    let re = /^https:\/\/youtu.*?$/;
+    return re.test(url.toLowerCase()) && url;
+  }
+
   //@TODO add validUserName method that checks whether the username is unique or not
 
 }

@@ -5,6 +5,7 @@ import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
+import { ValidationService } from '../validation.service';
 import { User } from '../user.model';
 import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
@@ -48,7 +49,7 @@ export class NewMatchComponent implements OnInit {
 
   newRankForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService) {
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);
@@ -116,15 +117,15 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    if(this.urlValid(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && values.tournamentNameBound !== "" && values.locationBound !== "" && values.tournamentDateBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
+    console.log(values.matchUrlBound);
+    console.log(values.tournamentDateBound);
+    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound.toString()) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
+      console.log("true happened");
       return true;
     } else{
+      console.log("false happened");
       return false;
     }
-  }
-
-  urlValid(url: string){
-    return true; //@TODO make sure youtube only for now
   }
 
   createMatchObj(result: any){

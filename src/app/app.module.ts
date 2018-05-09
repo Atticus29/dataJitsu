@@ -17,6 +17,7 @@ import { MatchDisplayComponent } from './match-display/match-display.component';
 import { AuthorizationService } from './authorization.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
+import { ValidationService } from './validation.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
@@ -75,7 +76,7 @@ export const firebaseConfig = {
     MatNativeDateModule,
     MatDatepickerModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
