@@ -18,10 +18,17 @@ export class ValidationService {
     return weight > 8 && weight < 1000; //@TODO extend as kilos and lbs accommodated
   }
 
-  validateDate(date: string){
+  validateDate(date: any){
+    let dateString = '';
+    try{
+      dateString = date.toString();
+    } catch(err){
+      console.log(err);
+    }
+
     let re = /^\w*\s\w*\s\d*\s\d*.*?$/;
     let re2 = /^\d+\/\d+\/\d+$/;
-    return (re.test(date.toLowerCase())|| re2.test(date.toLowerCase())) && date;
+    return (re.test(dateString.toLowerCase())|| re2.test(dateString.toLowerCase())) && dateString;
   }
 
   validateUrl(url: string){

@@ -119,7 +119,7 @@ export class NewMatchComponent implements OnInit {
     let values = matchForm.value;
     console.log(values.matchUrlBound);
     console.log(values.tournamentDateBound);
-    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound.toString()) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
+    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
       console.log("true happened");
       return true;
     } else{
