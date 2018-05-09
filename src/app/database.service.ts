@@ -94,7 +94,7 @@ export class DatabaseService {
     let matchId = this.matches.push(match).key;
     let updates = {};
     updates['/matches/' + matchId + '/id'] = matchId;
-    updates['/matches/' + matchId + '/matchDeets/date'] = firebase.database.ServerValue.TIMESTAMP;
+    updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
   }
 

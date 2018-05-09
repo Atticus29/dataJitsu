@@ -46,6 +46,8 @@ export class NewMatchComponent implements OnInit {
   checked: boolean = false;
   rankSelection: string;
 
+  newRankForm: FormGroup;
+
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location) {
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
@@ -93,7 +95,18 @@ export class NewMatchComponent implements OnInit {
       giStatusBound: ['', Validators.required]
     });
 
+    this.newRankForm = this.fb.group({
+      newRankBound: ['', Validators.required]
+    });
+
+
+
     // this.currentUser = this.userService.getUser(this.currentUserId); //@TODO mature this
+  }
+
+  getNewRankValues(){
+      let result = this.newRankForm.value;
+      return result;
   }
 
   getValues(){
@@ -116,7 +129,8 @@ export class NewMatchComponent implements OnInit {
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, new Date(tournamentDateBound), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
+    console.log("Date " + tournamentDateBound.toString());
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {
         // TODO fix this/make sure it's working
@@ -216,7 +230,8 @@ export class NewMatchComponent implements OnInit {
   }
 
   submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch(){
-    //TODO flesh out 
+    //TODO flesh out
+    console.log("entered submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch");
   }
 
 }
