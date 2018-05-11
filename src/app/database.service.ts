@@ -17,7 +17,7 @@ export class DatabaseService {
   noGiRanks: FirebaseListObservable<any>;
   ageClasses: FirebaseListObservable<any>;
   users: FirebaseListObservable<any>;
-  // user: FirebaseListObservable<any>;
+  currentUser: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
@@ -47,12 +47,20 @@ export class DatabaseService {
 
   //@TODO add matchID key inside match node
 
-  //@TODO fix getUserByUid below
+  //@TODO fix getUserByUid below low priority 05/11/2018 only would get used in app.component
   getUserByUid(uid: string){
-    console.log("got to getUserByUid call");
+    // console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
     let user: User = null;
-    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1).once('value');
+    // let temp = ref.orderByChild('uid').equalTo(uid).limitToFirst(1).once('value').then(function(snapshot){
+    //   this.currentUser = snapshot.val();
+    //   console.log(this.currentUser);
+    // });
+    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
+      // console.log(snapshot.key);
+      return this.getUserById(snapshot.key);
+    });
+    // return true;
     // });
     // return Observable.of(ref.orderByChild('uid').equalTo(uid).limitToFirst(1));
     // .on("child_added", snapshot=>{
@@ -114,7 +122,6 @@ export class DatabaseService {
   }
 
   updateUserInDb(user: User){
-    console.log(user.getId());
     let updates = {};
     updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);

@@ -18,18 +18,18 @@ export class UserStatusReportComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService) { }
 
   ngOnInit() {
-    this.authService.getCurrentUser()
-    .takeUntil(this.ngUnsubscribe).subscribe(user=>{
-      this.user = user;
-      if (this.user) {
-        this.db.getUserById(this.user.uid)
-        .takeUntil(this.ngUnsubscribe).subscribe(dbuser=>{
-          console.log(dbuser);
-          this.userObjFromDb = dbuser;
-          // console.log(this.userObjFromDb);
-        });
-      }
-    });
+    // this.authService.getCurrentUser()
+    // .takeUntil(this.ngUnsubscribe).subscribe(user=>{
+    //   this.user = user;
+    //   if (this.user) {
+    //     this.db.getUserById(this.user.uid)
+    //     .takeUntil(this.ngUnsubscribe).subscribe(dbuser=>{
+    //       // console.log(dbuser);
+    //       this.userObjFromDb = dbuser;
+    //       // console.log(this.userObjFromDb);
+    //     });
+    //   }
+    // });
   }
 
 }

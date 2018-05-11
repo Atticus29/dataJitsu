@@ -7,7 +7,7 @@ export class D3Service {
   constructor() { }
 
   loadTable() {
-    console.log("got into loadTable call");
+    // console.log("got into loadTable call");
     // d3.json("https://datajitsu.firebaseio.com/matches", function(data){
     //   console.log(data);
     // });

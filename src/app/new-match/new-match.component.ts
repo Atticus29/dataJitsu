@@ -117,20 +117,15 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    console.log(values.matchUrlBound);
-    console.log(values.tournamentDateBound);
     if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
-      console.log("true happened");
       return true;
     } else{
-      console.log("false happened");
       return false;
     }
   }
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    console.log("Date " + tournamentDateBound.toString());
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {
@@ -181,6 +176,7 @@ export class NewMatchComponent implements OnInit {
     console.log(val);
     if(val === "addNew"){
       console.log("contains add new!");
+      
     } else{
       //do nothing
     }

@@ -2,7 +2,7 @@
   <div class="nav-wrapper">
     <a href="#" class="brand-logo center">DataJitsu</a>
     <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li><a routerLink="matches" *ngIf="user && paidStatus">All Matches</a></li>
+      <li><a routerLink="matches" *ngIf="user && paidStatus"><i class="material-icons">home</i></a></li>
       <li><a routerLink="newmatch" *ngIf="user">New Match</a></li>
       <li><a routerLink="annotate" *ngIf="user">Annotate a video</a></li>
       <li><a *ngIf="user" (click)="logout()">Log Out</a></li>
