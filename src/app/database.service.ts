@@ -29,15 +29,16 @@ export class DatabaseService {
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
-    this.db.list('/users' + userId).update('paidStatus', newStatus); //TODO fix
-    //TODO flesh this out
+    let updates = {};
+    updates['/matches/' + userId + '/paidStatus'] = newStatus;
+    firebase.database().ref().update(updates);
   }
 
   hasUserPaid(userId: string){
     return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  getDaysSinceAnnotated(userId: string){
+  getDateSinceAnnotated(userId: string){
     return this.db.object('/users/' + userId + '/dateLastAnnotated');  //TODO check that there is an annotation status and that this is the firebase path to it
   }
 

@@ -80,7 +80,7 @@ export class CreateAccountComponent implements OnInit {
 
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
-    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, null, false, genderBound, new Date().toJSON());
+    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", false, genderBound, new Date().toJSON());
     return newUser;
   }
 
