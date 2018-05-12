@@ -6,8 +6,6 @@ import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
-import { constants } from './constants';
-import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
