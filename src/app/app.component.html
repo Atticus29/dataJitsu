@@ -2,18 +2,15 @@
   <div class="nav-wrapper">
     <a href="#" class="brand-logo center">DataJitsu</a>
     <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li><a routerLink="matches" *ngIf="user && paidStatus"><i class="material-icons">home</i></a></li>
-      <li><a routerLink="newmatch" *ngIf="user">New Match</a></li>
-      <li><a routerLink="annotate" *ngIf="user">Annotate a video</a></li>
-      <li><a *ngIf="user" (click)="logout()">Log Out</a></li>
+      <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
+      <li><a routerLink="newmatch" >New Match</a></li>
+      <li><a routerLink="annotate" >Annotate a video</a></li>
+      <li><a  (click)="logout()">Log Out</a></li>
     </ul>
   </div>
 </nav>
 <div class="row">
-  <div class="col s12 m1" *ngIf="user">
-    <app-user-status-report></app-user-status-report>
-    <!-- TODO add this to the subcomponent -->
-  </div>
+  <app-user-status-report></app-user-status-report>
   <div class="col s12 m1" *ngIf="!user">
     <!-- empty -->
   </div>

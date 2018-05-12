@@ -1,4 +1,6 @@
-<p>Status stuff here</p>
-<div *ngIf="shouldAnnotate">
-    It's time to<a routerLink="annotate" > annotate a video</a>
+<div class="col s12 m1" *ngIf="user">
+  <p>Status stuff here</p>
+  <div  class="attention-draw" *ngIf="shouldAnnotate">
+      <span>It's time to</span><a routerLink="annotate" > annotate a video</a>
+  </div>
 </div>

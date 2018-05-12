@@ -46,8 +46,6 @@ export class DatabaseService {
     return this.db.object('/matches/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  //@TODO add matchID key inside match node
-
   //@TODO fix getUserByUid below low priority 05/11/2018 only would get used in app.component
   getUserByUid(uid: string){
     // console.log("got to getUserByUid call");
