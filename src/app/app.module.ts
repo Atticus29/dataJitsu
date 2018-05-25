@@ -33,6 +33,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material';
+import {MatTableModule} from '@angular/material/table';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 
@@ -75,7 +76,8 @@ export const firebaseConfig = {
     MatOptionModule,
     MatInputModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatTableModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService],
   bootstrap: [AppComponent]

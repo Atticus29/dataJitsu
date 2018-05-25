@@ -10,6 +10,9 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit {
+  dataSource: any;
+  columnsToDisplay: string[];
+  myRowData: any;
 
   constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
@@ -22,8 +25,12 @@ export class AllMatchesComponent implements OnInit {
             result.push([i, json_data[i].matchDeets][1]);
         }
       }
-      let headers = Object.keys(result[0]).map(header => this.textTransformationService.convertCamelCaseToSentenceCase(header));
-      console.log(headers);
+      let rawHeaders = Object.keys(result[0]);
+      let headers = rawHeaders.map(header => this.textTransformationService.convertCamelCaseToSentenceCase(header));
+      this.dataSource = result;
+      this.columnsToDisplay = headers;
+      console.log(result);
+      this.myRowData = result;
 
       // console.log(matches);
       // let parsed = JSON.parse(matches);
