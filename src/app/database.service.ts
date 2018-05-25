@@ -30,8 +30,12 @@ export class DatabaseService {
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
     let updates = {};
-    updates['/matches/' + userId + '/paidStatus'] = newStatus;
+    updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
+  }
+
+  getMatches(){
+    return this.db.object('/matches');
   }
 
   hasUserPaid(userId: string){
