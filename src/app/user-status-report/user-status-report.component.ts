@@ -30,7 +30,6 @@ export class UserStatusReportComponent implements OnInit {
         let ref = firebase.database().ref('users/');
         ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
           this.db.getUserById(snapshot.key).subscribe(result => {
-            console.log(result);
             this.userObjFromDb = result;
             this.db.hasUserPaid(this.userObjFromDb.id).takeUntil(this.ngUnsubscribe).subscribe(status =>{
               if(status.$value){

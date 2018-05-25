@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { D3Service } from '../d3.service';
 import { DatabaseService } from '../database.service';
+import { TextTransformationService } from '../text-transformation.service';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -10,7 +11,7 @@ import * as firebase from 'firebase/app';
 })
 export class AllMatchesComponent implements OnInit {
 
-  constructor(private d3Service: D3Service, private dbService: DatabaseService) { }
+  constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
   ngOnInit() {
     let allMatches = this.dbService.getMatches().subscribe(matches => {
@@ -21,7 +22,8 @@ export class AllMatchesComponent implements OnInit {
             result.push([i, json_data[i].matchDeets][1]);
         }
       }
-      console.log(result);
+      let headers = Object.keys(result[0]).map(header => this.textTransformationService.convertCamelCaseToSentenceCase(header));
+      console.log(headers);
 
       // console.log(matches);
       // let parsed = JSON.parse(matches);
