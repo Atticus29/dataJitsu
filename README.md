@@ -3,6 +3,7 @@
 - [ ] Some of the dropdown menu items don't work correctly in Safari
 - [ ] API key is currently public. Reset this.
 - [ ] Video doesn't load because it has to wait for asynchronous matchUrl
+- [ ] The title in the tab doesn't load
 
 # Set up
 

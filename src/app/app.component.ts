@@ -6,6 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
+import { constants } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: any = null;
   userObjFromDb;
+  title: string = constants.title;
 
   shouldAnnotate: boolean = false;
 

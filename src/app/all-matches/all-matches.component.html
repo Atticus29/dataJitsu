@@ -18,7 +18,7 @@
 </nav> -->
 <div class="">
   <div class="spinner-container" *ngIf="loading">
-        <mat-spinner></mat-spinner>
+        <mat-spinner id="spinner"></mat-spinner>
   </div>
   <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!loading">
     <ng-container matColumnDef="ageClass">
