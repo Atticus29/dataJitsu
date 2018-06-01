@@ -4,7 +4,7 @@
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"></script>
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.js?2.1.3"></script>
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
-<p>main stuff here</p>
+<br>
 <!-- <nav>
   <div class="nav-wrapper primary">
     <form class="primary">
@@ -18,10 +18,10 @@
 </nav> -->
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="ageClass">
-    <th mat-header-cell *matHeaderCellDef> Age Class </th>
-    <td mat-cell *matCellDef="let entry"> {{entry.ageClass}} </td>
+    <mat-header-cell *matHeaderCellDef> Age Class </mat-header-cell>
+    <mat-cell *matCellDef="let entry"> {{entry.ageClass}} </mat-cell>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
 </mat-table>

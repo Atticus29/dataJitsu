@@ -12,16 +12,15 @@ import { DataSource } from '@angular/cdk/table';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit {
-  dataSource;
-  // columnsToDisplay: string[];
+  private tableArr = [{ageClass: 'test'}, {ageClass:'test2'}];
+  private dataSource = new MatTableDataSource(this.tableArr);
+  private columnsToDisplay = ['ageClass'];
   // myRowData: any;
 
   constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
   ngOnInit() {
-    let tableArr = [{ageClass: 'test'}, {ageClass:'test2'}];
-    this.dataSource = new MatTableDataSource(tableArr);
-    let columnsToDisplay = ['ageClass']; //TODO
+    // let columnsToDisplay = ['ageClass']; //TODO
     let allMatches = this.dbService.getMatches().subscribe(matches => {
       var json_data = matches;
       var results = [];
