@@ -16,7 +16,7 @@
     </form>
   </div>
 </nav> -->
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="ageClass">
     <th mat-header-cell *matHeaderCellDef> Age Class </th>
     <td mat-cell *matCellDef="let entry"> {{entry.ageClass}} </td>
