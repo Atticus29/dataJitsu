@@ -5,6 +5,7 @@ import { TextTransformationService } from '../text-transformation.service';
 import * as firebase from 'firebase/app';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-all-matches',
@@ -12,15 +13,18 @@ import { DataSource } from '@angular/cdk/table';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit {
-  private tableArr = [{ageClass: 'test'}, {ageClass:'test2'}];
-  private dataSource = new MatTableDataSource(this.tableArr);
-  private columnsToDisplay = ['ageClass'];
+  private tableArr;
+  private dataSource;
+  private columnsToDisplay;
+  private loading = true;
   // myRowData: any;
 
   constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
   ngOnInit() {
-    // let columnsToDisplay = ['ageClass']; //TODO
+    this.tableArr = [{ageClass: 'test'}, {ageClass:'test2'}, {ageClass:'test3'}];
+    this.dataSource = new MatTableDataSource(this.tableArr);
+    this.columnsToDisplay = ['ageClass'];
     let allMatches = this.dbService.getMatches().subscribe(matches => {
       var json_data = matches;
       var results = [];
