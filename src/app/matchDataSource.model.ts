@@ -3,23 +3,46 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Match } from './match.model';
 import { DatabaseService } from './database.service';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { catchError, finalize } from 'rxjs/operators';
 
 export class MatchDataSource implements DataSource<Match> {
 
-    private lessonsSubject = new BehaviorSubject<Match[]>([]);
+    private matchesSubject = new BehaviorSubject<Match[]>([]);
+    private loadingMatches = new BehaviorSubject<boolean>(false);
+    public loading$ = this.loadingMatches.asObservable();
 
     constructor(private dbService: DatabaseService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<Match[]> {
-      //TODO flesh out
+      return this.matchesSubject.asObservable();
     }
 
     disconnect(collectionViewer: CollectionViewer): void {
-      //TODO flesh out
+      this.matchesSubject.complete();
+      this.loadingMatches.complete();
     }
 
-    loadMatches(courseId: number, filter: string,
-                sortDirection: string, pageIndex: number, pageSize: number) {
-      //TODO flesh out
+    loadMatches(matchId: string, filter = '',
+                sortDirection='asc') {
+                  this.loadingMatches.next(true);
+                  this.dbService.getMatchesFiltered(matchId, filter, sortDirection).pipe(
+                    catchError(()=> of([])),
+                    finalize(()=>this.loadingMatches.next(false))
+                  )
+                  .subscribe(matches => {
+                    console.log(matches);
+                    let results = [];
+                    let json_data = matches;
+                    for(var i in json_data){
+                      if(json_data[i].matchDeets){
+                          results.push([i, json_data[i].matchDeets][1]);
+                      }
+                    }
+                    // let matchDeets = matches.map(function(match){
+                    //   return match.matchCreated;
+                    // });
+                    this.matchesSubject.next(results);
+                  });
     }
 }

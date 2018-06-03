@@ -38,6 +38,10 @@ export class DatabaseService {
     return this.db.object('/matches');
   }
 
+  getMatchesFiltered(matchId: string, filter: string, sortDirection: string){
+    return this.db.object('/matches');
+  }
+
   hasUserPaid(userId: string){
     return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }

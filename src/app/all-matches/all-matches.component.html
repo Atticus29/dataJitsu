@@ -17,10 +17,10 @@
   </div>
 </nav> -->
 <div class="">
-  <div class="spinner-container" *ngIf="loading">
+  <div class="spinner-container" *ngIf="loading$">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!loading">
+  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!loading$">
     <ng-container matColumnDef="ageClass">
       <mat-header-cell *matHeaderCellDef> Age Class </mat-header-cell>
       <mat-cell *matCellDef="let entry"> {{entry.ageClass}} </mat-cell>
