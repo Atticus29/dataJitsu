@@ -32,7 +32,7 @@ export class AuthorizationService {
   }
 
   isAuthenticated() {
-    // return this.afAuth.authState.map(user => Boolean(user));
+    return this.afAuth.authState;
     //@TODO Not yet clear whether moving this into the now-defunct isAuthenticated method of authorization service would work
   }
 

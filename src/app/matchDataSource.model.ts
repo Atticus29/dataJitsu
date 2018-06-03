@@ -31,14 +31,16 @@ export class MatchDataSource implements DataSource<Match> {
                     finalize(()=>this.loadingMatches.next(false))
                   )
                   .subscribe(matches => {
-                    console.log(matches);
+                    // console.log(matches);
                     let results = [];
                     let json_data = matches;
                     for(var i in json_data){
                       if(json_data[i].matchDeets){
-                          results.push([i, json_data[i].matchDeets][1]);
+                        // console.log(json_data[i].matchDeets);
+                        results.push([i, json_data[i].matchDeets][1]);
                       }
                     }
+                    console.log(results);
                     // let matchDeets = matches.map(function(match){
                     //   return match.matchCreated;
                     // });

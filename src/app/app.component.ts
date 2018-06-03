@@ -25,7 +25,11 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService){}
 
   ngOnInit() {
-
+    this.authService.isAuthenticated().subscribe(user =>{
+      let status = Boolean(user);
+      console.log("got here");
+      console.log(status);
+    })
   }
 
   loginGoogleComponent(){

@@ -16,7 +16,7 @@ import { MatchDataSource } from '../matchDataSource.model';
 export class AllMatchesComponent implements OnInit {
   // private tableArr;
   private dataSource: MatchDataSource;
-  private columnsToDisplay = ['ageClass'];
+  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   // myRowData: any;
 
@@ -67,8 +67,6 @@ export class AllMatchesComponent implements OnInit {
       // console.log(parsed);
       // let matchesWithDeets = matches.filter(match => match.matchDeets);
       // console.log(matchesWithDeets);
-    })
+    }
     // console.log(ref);
-  }
-
 }
