@@ -78,7 +78,7 @@ export class AuthorizationService {
     .signInWithEmailAndPassword(email, password)
     .then(value => {
       this.authenticated = Observable.of(true);
-      this.router.navigate(['landing']);
+      this.router.navigate(['']);
     })
     .catch(err => {
       console.log('Something went wrong:',err.message);

@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
 import { constants } from './constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +23,12 @@ export class AppComponent implements OnInit {
 
   shouldAnnotate: boolean = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService){}
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router){}
 
   ngOnInit() {
-    this.authService.isAuthenticated().subscribe(user =>{
-      let status = Boolean(user);
-      console.log("got here");
-      console.log(status);
-    })
+    this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
+      this.user = user;
+    });
   }
 
   loginGoogleComponent(){
@@ -40,6 +39,7 @@ export class AppComponent implements OnInit {
     this.authService.logout();
     this.authService.user = null;
     this.authService.setAuthenticated(false);
+    this.router.navigate(['login']);
     // console.log(this.authService.user);
   }
 
