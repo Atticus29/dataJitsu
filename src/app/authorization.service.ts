@@ -53,6 +53,7 @@ export class AuthorizationService {
 
   getCurrentUser(){
     return this.user;
+    // .catch(()=>Observable.of(false));
   }
 
   signup(email: string, password: string) {

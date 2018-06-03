@@ -25,8 +25,10 @@ export class AllMatchesComponent implements OnInit {
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
   ngOnInit() {
-    this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
+    this.authService.getCurrentUser().subscribe(user=>{
       this.user = user;
+    },err=>{
+      console.log(err);
     });
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '');

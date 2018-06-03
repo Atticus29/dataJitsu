@@ -4,7 +4,7 @@
 - [ ] API key is currently public. Reset this.
 - [ ] Video doesn't load because it has to wait for asynchronous matchUrl
 - [ ] The title in the tab doesn't load
-- [ ] Logout option appears in nav menu even if you're logged out already
+- [ ] If you log out and then log in immediately without refreshing, something goes wrong with subscribing to null in AllMatchesComponent but not in status component.
 - [ ] Video icon not displaying on main window
 
 # Set up
