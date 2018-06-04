@@ -26,6 +26,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log("ngOnInit all-matches is called");
+    console.log(this.authService);
     this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
     },err=>{
@@ -36,6 +37,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(){
+      console.log("onDestroy is called");
       this.ngUnsubscribe.next();
       this.ngUnsubscribe.complete();
     }

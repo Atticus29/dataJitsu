@@ -52,6 +52,7 @@ export class AuthorizationService {
   }
 
   getCurrentUser(){
+    this.user = this.afAuth.authState; //TODO not sure whether will fix
     return this.user;
     // .catch(()=>Observable.of(false));
   }
