@@ -22,6 +22,7 @@ export class UserStatusReportComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService) { }
 
   ngOnInit() {
+    console.log("ngOnInit user-status-report is called");
     this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
     this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
@@ -57,11 +58,13 @@ export class UserStatusReportComponent implements OnInit {
             });
           });
         });
-
-
       }
     });
   }
+
+  // ngOnDestroy(){
+  //   this.authService.unsubscribe();
+  // }
 
   calculateDaysSinceLastAnnotation(date: Date){
     let today: Date = new Date();

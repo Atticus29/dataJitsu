@@ -7,7 +7,6 @@ import { Subject } from 'rxjs/Subject';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
 import { constants } from './constants';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
