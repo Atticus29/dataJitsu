@@ -38,7 +38,7 @@ export class DatabaseService {
     return this.db.object('/matches');
   }
 
-  getMatchesFiltered(matchId: string, filter: string, sortDirection: string){
+  getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){
     return this.db.object('/matches');
   }
 

@@ -24,9 +24,9 @@ export class MatchDataSource implements DataSource<Match> {
     }
 
     loadMatches(matchId: string, filter = '',
-                sortDirection='asc') {
+                sortDirection='asc', pageIndex: number, pageSize: number) {
                   this.loadingMatches.next(true);
-                  this.dbService.getMatchesFiltered(matchId, filter, sortDirection).pipe(
+                  this.dbService.getMatchesFiltered(matchId, filter, sortDirection, pageIndex, pageSize).pipe(
                     catchError(()=> of([])),
                     finalize(()=>this.loadingMatches.next(false))
                   )
