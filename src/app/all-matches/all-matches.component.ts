@@ -11,6 +11,7 @@ import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'app-all-matches',
