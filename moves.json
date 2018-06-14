@@ -1,7 +1,7 @@
 {
 "Moves":[
     {"Guard Passes":[
-      "X Pass": true,
+      {"X Pass": true},
       "Leg Drag": true,
       "Knee Slice": true,
       "Back Step": true,
