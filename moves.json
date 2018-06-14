@@ -2,9 +2,9 @@
 "Moves":[
     {"Guard Passes":[
       {"X Pass": true},
-      "Leg Drag": true,
-      "Knee Slice": true,
-      "Back Step": true,
+      {"Leg Drag": true},
+      {"Knee Slice": true},
+      {"Back Step": true},
       ]},
     {"Take Down":[
       "Single Leg": true,
@@ -81,64 +81,64 @@
       "Sode Tsurikomi Goshi": true
       ]},
     {"Submissions":[
-        "Choke/ Cervical Submissions":[
-          "Bow and Arrow": true,
-          "Cross Collar Choke": true,
-          "Ezekiel": true,
-          "North South/Munson choke": true,
-          "Anaconda": true,
-          "D'arce/Brabo": true,
-          "Guillotine": true,
-          "Paper Cutter": true,
-          "Loop Choke": true,
-          "Can Opener": true,
-          "Arm Triangle": true,
-          "Triangle": true,
-        ],
-        "Elbow":[
-          "Arm Bar/Straight Arm Lock": true,
-          "Biceps Slicer": true,
-          "Dead Orchard": true,
-        ],
-        "Shoulder":[
-          "Americana": true,
-          "Kimura": true,
-          "Omoplata": true,
-          "Baratoplata": true,
-        ],
-        "Knee Ligaments":[
-          "Knee Bar": true,
-          "Inside Heel Hook": true,
-          "Outside Heel Hook": true,
-          "Calf Slicer": true,
-        ],
-        "Back":[
-          "Twister": true,
-        ],
-        "Ankle Ligaments":[
-          "Ankle Lock": true,
-          "Toe Hold": true,
-        ],
-        "Groin":[
-          "Banana Split": true,
-        ],
-        "Wrist Lock":true
+        {"Choke/ Cervical Submissions":[
+          {"Bow and Arrow": true},
+          {"Cross Collar Choke": true},
+          {"Ezekiel": true},
+          {"North South/Munson choke": true},
+          {"Anaconda": true},
+          {"D'arce/Brabo": true},
+          {"Guillotine": true},
+          {"Paper Cutter": true},
+          {"Loop Choke": true},
+          {"Can Opener": true},
+          {"Arm Triangle": true},
+          {"Triangle": true},
+        ]},
+        {"Elbow":[
+          {"Arm Bar/Straight Arm Lock": true},
+          {"Biceps Slicer": true},
+          {"Dead Orchard": true},
+        ]},
+        {"Shoulder":[
+          {"Americana": true},
+          {"Kimura": true},
+          {"Omoplata": true},
+          {"Baratoplata": true},
+        ]},
+        {"Knee Ligaments":[
+          {"Knee Bar": true},
+          {"Inside Heel Hook": true},
+          {"Outside Heel Hook": true},
+          {"Calf Slicer": true},
+        ]},
+        {"Back":[
+          {"Twister": true},
+        ]},
+        {"Ankle Ligaments":[
+          {"Ankle Lock": true},
+          {"Toe Hold": true},
+        ]},
+        {"Groin":[
+          {"Banana Split": true},
+        ]},
+        {"Wrist Lock":true}
       ]},
     {"Sweeps":[
-      "Scissor Sweep": true,
-      "Flower Sweep": true,
+      {"Scissor Sweep": true},
+      {"Flower Sweep": true},
       ]},
     {"Positional Changes":[
-      "Back Mount": true,
-      "Back Control": true,
-      "Mount": true,
-      "Knee on Belly": true
+      {"Back Mount": true},
+      {"Back Control": true},
+      {"Mount": true},
+      {"Knee on Belly": true}
       ]},
     {"Discliplinary Action":[
-      "Severe Foul": true,
-      "Serious Foul": true,
-      "Combatitiveness Foul/Stalling": true,
-      "Disqualification": true,
+      {"Severe Foul": true},
+      {"Serious Foul": true},
+      {"Combatitiveness Foul/Stalling": true},
+      {"Disqualification": true},
       ]},
 ]
 }
