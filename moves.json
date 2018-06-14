@@ -1,10 +1,10 @@
 {
 "Moves":[
     {"Guard Passes":[
-      {"X Pass": true},
-      {"Leg Drag": true},
-      {"Knee Slice": true},
-      {"Back Step": true},
+      "X Pass",
+      "Leg Drag",
+      "Knee Slice",
+      "Back Step"
       ]},
     {"Take Down":[
       "Single Leg": true,
