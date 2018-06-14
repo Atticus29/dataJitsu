@@ -93,39 +93,39 @@
           "Loop Choke",
           "Can Opener",
           "Arm Triangle",
-          "Triangle",
+          "Triangle"
         ]},
         {"Elbow":["Arm Bar/Straight Arm Lock",
           "Biceps Slicer",
-          "Dead Orchard",
+          "Dead Orchard"
         ]},
         {"Shoulder":[
           "Americana",
           "Kimura",
           "Omoplata",
-          "Baratoplata",
+          "Baratoplata"
         ]},
         {"Knee Ligaments":[
           "Knee Bar",
           "Inside Heel Hook",
           "Outside Heel Hook",
-          "Calf Slicer",
+          "Calf Slicer"
         ]},
         {"Back":[
           "Twister",
         ]},
         {"Ankle Ligaments":[
           "Ankle Lock",
-          "Toe Hold",
+          "Toe Hold"
         ]},
         {"Groin":[
-          "Banana Split",
+          "Banana Split"
         ]},
         "Wrist Lock"
       ]},
     {"Sweeps":[
       "Scissor Sweep",
-      "Flower Sweep",
+      "Flower Sweep"
       ]},
     {"Positional Changes":[
       "Back Mount",
@@ -137,7 +137,7 @@
       "Severe Foul",
       "Serious Foul",
       "Combatitiveness Foul/Stalling",
-      "Disqualification",
+      "Disqualification"
       ]},
 ]
 }
