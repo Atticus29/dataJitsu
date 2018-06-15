@@ -54,7 +54,7 @@ const appRoutes: Routes = [
   component: YoutubeComponent,
   pathMatch: 'full'
 },{
-  path: 'annotate',
+  path: 'matches/:matchId/annotate',
   component: AnnotationDisplayComponent,
   pathMatch: 'full'
 },{

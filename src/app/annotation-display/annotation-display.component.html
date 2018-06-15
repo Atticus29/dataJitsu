@@ -1,3 +1,11 @@
-<p>
-  annotation-display works!
-</p>
+
+<div id="annotationModal" class="modal">
+  <div class="modal-content">
+    <h4>Add an annotation to the match</h4>
+    <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()">Done</button>
+    <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
+  </div>
+</div>

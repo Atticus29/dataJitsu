@@ -18,6 +18,7 @@ export class DatabaseService {
   ageClasses: FirebaseListObservable<any>;
   users: FirebaseListObservable<any>;
   currentUser: FirebaseListObservable<any>;
+  moves: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
@@ -26,12 +27,17 @@ export class DatabaseService {
     this.noGiRanks = db.list('/noGiRanks');
     this.ageClasses = db.list('/ageClasses');
     this.users = db.list('/users');
+    this.moves = db.list('/moves');
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
     let updates = {};
     updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
+  }
+
+  getMoves(){
+    return this.db.object('/moves');
   }
 
   getMatches(){
@@ -98,6 +104,10 @@ export class DatabaseService {
     let updates = {};
     updates['/users/' + userKey + '/uid'] = uid;
     firebase.database().ref().update(updates);
+  }
+
+  addMovesListToDb(moves: any){
+      this.moves.push(moves);
   }
 
   getUserById(userId: string){
