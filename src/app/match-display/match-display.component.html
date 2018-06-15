@@ -5,14 +5,15 @@
         <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
           <div class="video-container">
-            <iframe id="videoIframe" src="https://youtube.com/embed/ldw9ee7UtLo?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
+            <iframe id="videoIframe" src="{{matchUrl}}" frameborder="0" allowfullscreen="0"></iframe>
           </div>
           <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" data-tooltip="Play">
             <i class="material-icons">play_arrow</i>
           </a>
-          <a id="pause" type="submit" value="pause" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate">
+          <a id="pause" type="submit" value="pause" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate" (click)="pauseAndAnnotate()">
             <i class="material-icons">edit</i>
           </a>
+          <!-- <input id="pause" type="submit" value="pause" /> -->
           <p>TODO: Add stars based on rating here</p>
         </div>
         <div class="card-content">
