@@ -24,11 +24,9 @@ export class MatchDisplayComponent implements OnInit {
     let player;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
-      console.log(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).takeUntil(this.ngUnsubscribe).subscribe(match =>{
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        console.log("Match Url is: " + this.matchUrl);
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
         window['onYouTubeIframeAPIReady'] = function() {
           player = new window['YT'].Player('videoIframe', {
@@ -41,7 +39,6 @@ export class MatchDisplayComponent implements OnInit {
 
         function onPlayerReady(event) {
           let pause = document.getElementById("pause").addEventListener("click", function() {
-            console.log("pause clicked")
             player.pauseVideo();
           });
           document.getElementById("play").addEventListener("click", function() {
@@ -67,10 +64,8 @@ export class MatchDisplayComponent implements OnInit {
 
 
   parseVideoUrl(url: string){ //@TODO seems hacky
-    // console.log("url entering parseVideoUrl is: " + url);
     var re = /.*youtu.+?be\/(.+)/ig;
     var result = re.exec(url);
-    // console.log(result[1]);
     return result[1];
   }
 

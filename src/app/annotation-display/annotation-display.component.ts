@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
+import { Subject } from 'rxjs/Subject';
 declare var $:any;
 
 @Component({
@@ -8,14 +9,16 @@ declare var $:any;
   styleUrls: ['./annotation-display.component.scss']
 })
 export class AnnotationDisplayComponent implements OnInit {
-
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
     $('.modal').modal();
-    this.db.getMoves().subscribe(moves=>{
-      console.log(moves);
+    let results = this.db.getMoves().subscribe(stuff=>{
+      console.log(stuff);
+      for(let index in stuff){
+      console.log(stuff[index]);
+    }
     });
   }
-
 }
