@@ -38,6 +38,16 @@ export class DatabaseService {
     return this.db.object('/matches');
   }
 
+  getMatchCount(){
+    let ref = firebase.database().ref('matches/');
+    let queryObservable = Observable.create(function(observer){
+      ref.once('value').then(function(snapshot){
+        observer.next(snapshot.numChildren());
+      });
+    });
+    return queryObservable;
+  }
+
   getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){

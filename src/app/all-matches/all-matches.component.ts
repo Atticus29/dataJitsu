@@ -24,6 +24,8 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   private loading = true;
   user: any = null;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private matchCount: number;
+  private pageSize: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -35,8 +37,12 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     },err=>{
       console.log(err);
     });
+    this.pageSize = 2;
     this.dataSource = new MatchDataSource(this.dbService);
-    this.dataSource.loadMatches('test', '', '', 0, 2);
+    this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
+    this.dbService.getMatchCount().subscribe(results=>{
+      this.matchCount = results;
+    });
     }
 
     ngAfterViewInit(){
