@@ -31,7 +31,7 @@ export class MatchDataSource implements DataSource<Match> {
                     finalize(()=>this.loadingMatches.next(false))
                   )
                   .subscribe(matches => {
-                    // console.log(matches);
+                    console.log(matches);
                     let results = [];
                     let json_data = matches;
                     for(var i in json_data){

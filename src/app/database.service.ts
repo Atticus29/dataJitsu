@@ -4,7 +4,7 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/scan';
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Match } from './match.model';
 import { User } from './user.model';
@@ -38,8 +38,13 @@ export class DatabaseService {
     return this.db.object('/matches');
   }
 
-  getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number): AngularFireList<Match[]>{
-    let queryObservable = this.db.list('/matches', ref => ref.orderByKey(true).limitToFirst(2).valueChanges());
+  getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){
+    let ref = firebase.database().ref('matches/');
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByKey().limitToFirst(pageSize).on("value", snapshot =>{
+        observer.next(snapshot.val());
+      });
+    });
     return queryObservable;
   }
 
