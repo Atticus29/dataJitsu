@@ -48,15 +48,54 @@ export class DatabaseService {
     return queryObservable;
   }
 
-  getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){
+  getMatchesFilteredPaginator(keyToStartWith: string, pageSize:number){
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
-      ref.orderByKey().limitToFirst(pageSize).on("value", snapshot =>{
+      ref.orderByKey().startAt(keyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
         observer.next(snapshot.val());
       });
     });
     return queryObservable;
   }
+
+  getKeyOfMatchToStartWith(pageIndex: number, pageSize: number){
+    let firstKeyToStartWith = null;
+    let ref = firebase.database().ref('matches/');
+    let startNumber = (pageIndex)*pageSize+1;
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByKey().limitToFirst(startNumber).once('value', function(snapshot) {
+        snapshot.forEach((childSnapshot) => {
+          firstKeyToStartWith = childSnapshot.key;
+          return true; //TODO Why do I need to return a boolean here?
+        });
+        observer.next(firstKeyToStartWith);
+      });
+    });
+    return queryObservable;
+  }
+
+  // getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){ //TODO remove or fix
+  //   let ref = firebase.database().ref('matches/');
+  //   let startNumber = (pageIndex)*pageSize+1;
+  //   let firstKeyToStartWith = null;
+  //   var queryToGetKeyToStartWith = ref.orderByKey().limitToFirst(startNumber);
+  //   queryToGetKeyToStartWith.once('value', function(snapshot) {
+  //     // console.log(snapshot.val());
+  //     // console.log(snapshot.numChildren());
+  //       snapshot.forEach((childSnapshot) => {
+  //         firstKeyToStartWith = childSnapshot.key;
+  //         return true; //TODO wtf? Why do I need to return a boolean here?
+  //       });
+  //       // console.log(firstKeyToStartWith);
+  //   });
+  //   console.log(firstKeyToStartWith);
+  //   let queryObservable = Observable.create(function(observer){
+  //     ref.orderByKey().startAt(firstKeyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
+  //       observer.next(snapshot.val());
+  //     });
+  //   });
+  //   return queryObservable;
+  // }
 
   hasUserPaid(userId: string){
     return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it

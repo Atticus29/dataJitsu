@@ -46,6 +46,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(){
+      console.log(this.paginator);
       this.paginator.page
         .pipe(
           tap(()=> this.loadMatchesPage())
