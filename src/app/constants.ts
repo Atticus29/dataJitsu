@@ -1,5 +1,5 @@
 export var constants = {
-    title: "JitsLab",
+    title: "Match Annotator",
     numDaysBeforeNewAnnotationNeeded: 30,
     temp: "hi, Mark",
     monthlyCost: 2,

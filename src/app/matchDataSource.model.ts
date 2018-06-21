@@ -8,44 +8,47 @@ import { catchError, finalize } from 'rxjs/operators';
 
 export class MatchDataSource implements DataSource<Match> {
 
-    private matchesSubject = new BehaviorSubject<Match[]>([]);
-    private loadingMatches = new BehaviorSubject<boolean>(false);
-    public loading$ = this.loadingMatches.asObservable();
+  private matchesSubject = new BehaviorSubject<Match[]>([]);
+  private loadingMatches = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingMatches.asObservable();
 
-    constructor(private dbService: DatabaseService) {}
+  constructor(private dbService: DatabaseService) {}
 
-    connect(collectionViewer: CollectionViewer): Observable<Match[]> {
-      return this.matchesSubject.asObservable();
+  connect(collectionViewer: CollectionViewer): Observable<Match[]> {
+    return this.matchesSubject.asObservable();
+  }
+
+  disconnect(collectionViewer: CollectionViewer): void {
+    this.matchesSubject.complete();
+    this.loadingMatches.complete();
+  }
+
+  loadMatches(matchId: string, filter = '',
+  sortDirection='asc', pageIndex: number, pageSize: number) {
+    this.loadingMatches.next(true);
+    this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
+      this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
+        catchError(()=> of([])),
+        finalize(()=>this.loadingMatches.next(false))
+      )
+      .subscribe(matches => {
+        let results = this.makeIntoArray(matches);
+        this.matchesSubject.next(results);
+      });
+    });
+  }
+
+  makeIntoArray(matches: any){
+    let results = []; //TODO there should be a way to tighten the below up
+    for(var i in matches){
+      let obj1 = {id:matches[i].id};
+      if(matches[i].matchDeets){
+        let obj2 = matches[i].matchDeets;
+        obj1 = Object.assign({}, obj1, obj2);
+      }
+      results.push(obj1);
     }
-
-    disconnect(collectionViewer: CollectionViewer): void {
-      this.matchesSubject.complete();
-      this.loadingMatches.complete();
-    }
-
-    loadMatches(matchId: string, filter = '',
-                sortDirection='asc', pageIndex: number, pageSize: number) {
-                  // console.log(pageIndex);
-                  // console.log(pageSize);
-                  this.loadingMatches.next(true);
-                  this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
-                    // console.log(keyIndex);
-                    this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
-                      catchError(()=> of([])),
-                      finalize(()=>this.loadingMatches.next(false))
-                    )
-                    .subscribe(matches => {
-                      // console.log(matches);
-                      let results = []; //TODO there should be a way to tighten the below up
-                      let json_data = matches;
-                      for(var i in json_data){
-                        if(json_data[i].matchDeets){
-                          results.push([i, json_data[i].matchDeets][1]);
-                        }
-                      }
-                      this.matchesSubject.next(results);
-                    });
-                  });
-
-    }
+    console.log(results);
+    return results;
+  }
 }
