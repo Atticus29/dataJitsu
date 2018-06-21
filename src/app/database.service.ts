@@ -18,6 +18,7 @@ export class DatabaseService {
   ageClasses: FirebaseListObservable<any>;
   users: FirebaseListObservable<any>;
   currentUser: FirebaseListObservable<any>;
+  moves: FirebaseListObservable<any>;
 
   constructor(private db: AngularFireDatabase) {
     this.matches = db.list('/matches');
@@ -26,12 +27,27 @@ export class DatabaseService {
     this.noGiRanks = db.list('/noGiRanks');
     this.ageClasses = db.list('/ageClasses');
     this.users = db.list('/users');
+    this.moves = db.list('/moves');
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
     let updates = {};
     updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
+  }
+
+  getKeyOfMovesEntry(){
+
+  }
+
+  getMoves(){
+    let ref = firebase.database().ref('moves/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByKey().limitToFirst(1).on("child_added", snapshot=>{
+        observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
   }
 
   getMatches(){
@@ -49,11 +65,9 @@ export class DatabaseService {
   }
 
   getMatchesFilteredPaginator(keyToStartWith: string, pageSize:number){
-    // console.log(keyToStartWith);
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
       ref.orderByKey().startAt(keyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
-        console.log(snapshot.val());
         observer.next(snapshot.val());
       });
     });
@@ -64,17 +78,12 @@ export class DatabaseService {
     let firstKeyToStartWith = null;
     let ref = firebase.database().ref('matches/');
     let startNumber = (pageIndex)*pageSize+1;
-    console.log(startNumber);
     let queryObservable = Observable.create(function(observer){
       ref.orderByKey().limitToFirst(startNumber).once('value', function(snapshot) {
-        console.log(snapshot.key);
         snapshot.forEach((childSnapshot) => {
-          console.log(childSnapshot.key);
           firstKeyToStartWith = childSnapshot.key;
-          // console.log(firstKeyToStartWith);
-          return false; //TODO Why do I need to return a boolean here?
+          return false;
         });
-        // console.log(firstKeyToStartWith);
         observer.next(firstKeyToStartWith);
       });
     });
@@ -82,26 +91,6 @@ export class DatabaseService {
   }
 
   // getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){ //TODO remove or fix
-  //   let ref = firebase.database().ref('matches/');
-  //   let startNumber = (pageIndex)*pageSize+1;
-  //   let firstKeyToStartWith = null;
-  //   var queryToGetKeyToStartWith = ref.orderByKey().limitToFirst(startNumber);
-  //   queryToGetKeyToStartWith.once('value', function(snapshot) {
-  //     // console.log(snapshot.val());
-  //     // console.log(snapshot.numChildren());
-  //       snapshot.forEach((childSnapshot) => {
-  //         firstKeyToStartWith = childSnapshot.key;
-  //         return true; //TODO wtf? Why do I need to return a boolean here?
-  //       });
-  //       // console.log(firstKeyToStartWith);
-  //   });
-  //   console.log(firstKeyToStartWith);
-  //   let queryObservable = Observable.create(function(observer){
-  //     ref.orderByKey().startAt(firstKeyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
-  //       observer.next(snapshot.val());
-  //     });
-  //   });
-  //   return queryObservable;
   // }
 
   hasUserPaid(userId: string){
@@ -160,6 +149,10 @@ export class DatabaseService {
     let updates = {};
     updates['/users/' + userKey + '/uid'] = uid;
     firebase.database().ref().update(updates);
+  }
+
+  addMovesListToDb(moves: any){
+      this.moves.push(moves);
   }
 
   getUserById(userId: string){

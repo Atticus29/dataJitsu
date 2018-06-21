@@ -37,7 +37,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     },err=>{
       console.log(err);
     });
-    this.pageSize = 2;
+    this.pageSize = 10; //TODO increase me to something reasonable
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
@@ -46,7 +46,6 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(){
-      // console.log(this.paginator);
       this.paginator.page
         .pipe(
           tap(()=> this.loadMatchesPage())
