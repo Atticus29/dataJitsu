@@ -61,6 +61,5 @@
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
     <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
   </mat-table>
-
-  <mat-paginator [length]='matchCount' [pageSize]="2" [pageSizeOptions]="[2, 5, 10]"></mat-paginator>
 </div>
+<mat-paginator [length]='matchCount' [pageSize]="2" [pageSizeOptions]="[2, 5, 10]"></mat-paginator>

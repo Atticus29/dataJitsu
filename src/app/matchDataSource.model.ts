@@ -25,14 +25,17 @@ export class MatchDataSource implements DataSource<Match> {
 
     loadMatches(matchId: string, filter = '',
                 sortDirection='asc', pageIndex: number, pageSize: number) {
+                  // console.log(pageIndex);
+                  // console.log(pageSize);
                   this.loadingMatches.next(true);
                   this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
+                    // console.log(keyIndex);
                     this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
                       catchError(()=> of([])),
                       finalize(()=>this.loadingMatches.next(false))
                     )
                     .subscribe(matches => {
-                      console.log(matches);
+                      // console.log(matches);
                       let results = []; //TODO there should be a way to tighten the below up
                       let json_data = matches;
                       for(var i in json_data){

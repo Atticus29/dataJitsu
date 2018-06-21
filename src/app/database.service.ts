@@ -49,9 +49,11 @@ export class DatabaseService {
   }
 
   getMatchesFilteredPaginator(keyToStartWith: string, pageSize:number){
+    // console.log(keyToStartWith);
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
       ref.orderByKey().startAt(keyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
+        console.log(snapshot.val());
         observer.next(snapshot.val());
       });
     });
@@ -62,12 +64,17 @@ export class DatabaseService {
     let firstKeyToStartWith = null;
     let ref = firebase.database().ref('matches/');
     let startNumber = (pageIndex)*pageSize+1;
+    console.log(startNumber);
     let queryObservable = Observable.create(function(observer){
       ref.orderByKey().limitToFirst(startNumber).once('value', function(snapshot) {
+        console.log(snapshot.key);
         snapshot.forEach((childSnapshot) => {
+          console.log(childSnapshot.key);
           firstKeyToStartWith = childSnapshot.key;
-          return true; //TODO Why do I need to return a boolean here?
+          // console.log(firstKeyToStartWith);
+          return false; //TODO Why do I need to return a boolean here?
         });
+        // console.log(firstKeyToStartWith);
         observer.next(firstKeyToStartWith);
       });
     });
