@@ -50,28 +50,48 @@ export class DatabaseService {
     return obsRet;
   }
 
-  Object.byString = function(o, s) {
-    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-    s = s.replace(/^\./, '');           // strip a leading dot
-    var a = s.split('.');
-    for (var i = 0, n = a.length; i < n; ++i) {
-        var k = a[i];
-        if (k in o) {
-            o = o[k];
-        } else {
-            return;
-        }
-    }
-    return o;
-  }
-
   getMatches(){
     return this.db.object('/matches');
   }
 
-  getMatchesFiltered(matchId: string, filter: string, sortDirection: string){
-    return this.db.object('/matches');
+  getMatchCount(){ //TODO this is very inefficient. Some not-great leads here: https://stackoverflow.com/questions/15148803/in-firebase-is-there-a-way-to-get-the-number-of-children-of-a-node-without-load
+    let ref = firebase.database().ref('matches/');
+    let queryObservable = Observable.create(function(observer){
+      ref.once('value').then(function(snapshot){
+        observer.next(snapshot.numChildren());
+      });
+    });
+    return queryObservable;
   }
+
+  getMatchesFilteredPaginator(keyToStartWith: string, pageSize:number){
+    let ref = firebase.database().ref('matches/');
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByKey().startAt(keyToStartWith).limitToFirst(pageSize).on("value", snapshot =>{
+        observer.next(snapshot.val());
+      });
+    });
+    return queryObservable;
+  }
+
+  getKeyOfMatchToStartWith(pageIndex: number, pageSize: number){
+    let firstKeyToStartWith = null;
+    let ref = firebase.database().ref('matches/');
+    let startNumber = (pageIndex)*pageSize+1;
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByKey().limitToFirst(startNumber).once('value', function(snapshot) {
+        snapshot.forEach((childSnapshot) => {
+          firstKeyToStartWith = childSnapshot.key;
+          return false;
+        });
+        observer.next(firstKeyToStartWith);
+      });
+    });
+    return queryObservable;
+  }
+
+  // getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){ //TODO remove or fix
+  // }
 
   hasUserPaid(userId: string){
     return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it

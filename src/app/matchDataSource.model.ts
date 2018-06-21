@@ -24,27 +24,28 @@ export class MatchDataSource implements DataSource<Match> {
     }
 
     loadMatches(matchId: string, filter = '',
-                sortDirection='asc') {
+                sortDirection='asc', pageIndex: number, pageSize: number) {
+                  // console.log(pageIndex);
+                  // console.log(pageSize);
                   this.loadingMatches.next(true);
-                  this.dbService.getMatchesFiltered(matchId, filter, sortDirection).pipe(
-                    catchError(()=> of([])),
-                    finalize(()=>this.loadingMatches.next(false))
-                  )
-                  .subscribe(matches => {
-                    // console.log(matches);
-                    let results = [];
-                    let json_data = matches;
-                    for(var i in json_data){
-                      if(json_data[i].matchDeets){
-                        // console.log(json_data[i].matchDeets);
-                        results.push([i, json_data[i].matchDeets][1]);
+                  this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
+                    // console.log(keyIndex);
+                    this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
+                      catchError(()=> of([])),
+                      finalize(()=>this.loadingMatches.next(false))
+                    )
+                    .subscribe(matches => {
+                      // console.log(matches);
+                      let results = []; //TODO there should be a way to tighten the below up
+                      let json_data = matches;
+                      for(var i in json_data){
+                        if(json_data[i].matchDeets){
+                          results.push([i, json_data[i].matchDeets][1]);
+                        }
                       }
-                    }
-                    console.log(results);
-                    // let matchDeets = matches.map(function(match){
-                    //   return match.matchCreated;
-                    // });
-                    this.matchesSubject.next(results);
+                      this.matchesSubject.next(results);
+                    });
                   });
+
     }
 }
