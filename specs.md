@@ -91,6 +91,8 @@
   - [x] Rank
   - [x] Video url
     - [ ] Gets validated?
+- [ ] Submissions of new videos are checked against the database for redundant video URLs; redundant videos are prevented from being added
+  - [ ] Users are instead encouraged to annotate the video if it hasn't been annotated
 
 
 A *match* is composed of *match details* and *moves*.
