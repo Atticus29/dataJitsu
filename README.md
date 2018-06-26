@@ -1,11 +1,10 @@
 # Known issues
 
-- [ ] Some of the dropdown menu items don't work correctly in Safari
 - [ ] API key is currently public. Reset this.
-- [ ] Video doesn't load because it has to wait for asynchronous matchUrl
 - [ ] The title in the tab doesn't load
-- [ ] If you log out and then log in immediately without refreshing, something goes wrong with subscribing to null in AllMatchesComponent but not in status component.
+- [ ] If you log out and then try to click on annotate a video, it takes you to the lost page.
 - [ ] Video icon not displaying on main window
+- [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
 
 # Set up
 
