@@ -30,6 +30,7 @@ export class MatchDataSource implements DataSource<Match> {
       this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
         catchError(()=> of([])),
         finalize(()=>{
+          this.loadingMatches.next(false);
           //TODO the tutorial here https://blog.angular-university.io/angular-material-data-table/ toggled the loading spinner off here, but it seemed to work better below for me?
         })
       )
