@@ -6,10 +6,10 @@
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
 <br>
 <div class="" *ngIf='user'>
-  <div class="spinner-container" *ngIf="loading$">
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!loading$">
+  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- TODO add paidStatus to ngIf -->
     <ng-container matColumnDef="rank">
       <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>

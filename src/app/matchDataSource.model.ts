@@ -29,11 +29,15 @@ export class MatchDataSource implements DataSource<Match> {
     this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
       this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
         catchError(()=> of([])),
-        finalize(()=>this.loadingMatches.next(false))
+        finalize(()=>{
+          //TODO the tutorial here https://blog.angular-university.io/angular-material-data-table/ toggled the loading spinner off here, but it seemed to work better below for me?
+        })
       )
       .subscribe(matches => {
         let results = this.makeIntoArray(matches);
         this.matchesSubject.next(results);
+        console.log("loading done");
+        this.loadingMatches.next(false);
       });
     });
   }
