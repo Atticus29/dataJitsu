@@ -176,7 +176,7 @@ export class NewMatchComponent implements OnInit {
     console.log(val);
     if(val === "addNew"){
       console.log("contains add new!");
-      
+
     } else{
       //do nothing
     }
@@ -201,6 +201,7 @@ export class NewMatchComponent implements OnInit {
     let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
       console.log(result);
       this.db.addMatchToDb(result);
+      //TODO got to annotation page
     });
   }
 
@@ -210,7 +211,7 @@ export class NewMatchComponent implements OnInit {
     let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
       // console.log(result);
       this.db.addMatchToDb(result);
-      this.router.navigate(['landing']);
+      this.router.navigate(['']);
     });
   }
 

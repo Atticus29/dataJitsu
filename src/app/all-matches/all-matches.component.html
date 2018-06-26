@@ -9,7 +9,7 @@
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="rank" matSortDirection="asc" matSortDisableClear>
     <!-- TODO add paidStatus to ngIf -->
     <ng-container matColumnDef="rank">
       <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>

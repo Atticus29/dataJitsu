@@ -37,7 +37,6 @@ export class MatchDataSource implements DataSource<Match> {
       .subscribe(matches => {
         let results = this.makeIntoArray(matches);
         this.matchesSubject.next(results);
-        console.log("loading done");
         this.loadingMatches.next(false);
       });
     });

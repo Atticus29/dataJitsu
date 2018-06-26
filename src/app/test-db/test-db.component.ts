@@ -23,8 +23,8 @@ export class TestDbComponent implements OnInit {
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
-    console.log(allCurrentMoves);
-    this.db.addMovesListToDb(allCurrentMoves);
+    // console.log(allCurrentMoves);
+    // this.db.addMovesListToDb(allCurrentMoves);
 
     // let matchDeets: MatchDetails = new MatchDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     // let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
@@ -38,7 +38,7 @@ export class TestDbComponent implements OnInit {
     // let match1: Match = new Match(matchDeets, uid, moveArray);
     // this.db.addMatchToDb(match1);
     //
-    // this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute", "Add new weight class"];
+    // this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute;Open Class","-66kg","-77kg","-88kg","-99kg","+99kg","-60kg","+60kg", "Add new weight class"];
     // this.weightClasses.forEach(weightClass=>{
     //   this.db.addWeightClassToDb(weightClass);
     // });
