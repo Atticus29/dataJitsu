@@ -24,6 +24,16 @@
   - [ ] Move executed in the match
   - [ ] Rating from other users
   - [ ] Annotation Rating
+- [ ] Users can filter videos to view by any combination of:
+  - [ ] Belt/rank
+  - [ ] Tournament
+  - [ ] Date (y, m ,d)
+  - [ ] Athlete name
+  - [ ] Second athlete name
+  - [ ] Rule set
+  - [ ] Move executed in the match
+  - [ ] Rating from other users
+  - [ ] Annotation Rating
 - [ ] Users can view summary statistics by athlete:
   - [ ] Most common points scored
   - [ ] Most common points lost

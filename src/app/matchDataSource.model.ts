@@ -52,7 +52,7 @@ export class MatchDataSource implements DataSource<Match> {
       }
       results.push(obj1);
     }
-    console.log(results);
+    // console.log(results);
     return results;
   }
 }
