@@ -6,6 +6,7 @@
 - [ ] Video icon not displaying on main window
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
 - [ ] The total count of videos doesn't listen automatically for additions or removals to the db
+- [ ] Under, "it's time to annotate a new video, it takes you to a /annotate page that doesn't exist (yet?)"
 
 # Set up
 
