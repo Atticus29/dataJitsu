@@ -11,10 +11,10 @@
           <input matInput formControlName="matchUrlBound" type="url" placeholder="Match URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL">
         </mat-form-field>
         <mat-form-field class="example-full-width col m6 s12">
-          <input matInput formControlName="athlete1NameBound" type="text" placeholder="Athlete 1 (Left) Name" value="E.g., Rafael Mendes" id="athlete1Name" class="validate">
+          <input matInput formControlName="athlete1NameBound" type="text" placeholder="Athlete 1 (Left) Name" value="E.g., Rubens Cobrihna Charles" id="athlete1Name" class="validate">
         </mat-form-field>
         <mat-form-field class="example-full-width col m6 s12">
-          <input matInput formControlName="athlete2NameBound" type="text" placeholder="Athlete 2 (Right) Name" value="E.g., Rubens Cobrihna Charles" id="athlete2Name" class="validate">
+          <input matInput formControlName="athlete2NameBound" type="text" placeholder="Athlete 2 (Right) Name" value="E.g., Rafael Mendes" id="athlete2Name" class="validate">
         </mat-form-field>
       </div>
       <div class="row">
@@ -73,7 +73,7 @@
         <mat-form-field>
           <mat-select formControlName="weightBound" id="weight" placeholder="Weight Class">
             <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
-            <mat-option *ngFor="let weight of weightClasses" value="weight">{{weight.$value}}</mat-option>
+            <mat-option *ngFor="let weight of weightClasses" [value]="weight.$value">{{weight.$value}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

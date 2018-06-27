@@ -64,7 +64,7 @@ export class DatabaseService {
     return queryObservable;
   }
 
-  getMatchesFilteredPaginator(keyToStartWith: string, pageSize:number){
+  getMatchesPaginator(keyToStartWith: string, pageSize:number){
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
       ref.orderByKey().startAt(keyToStartWith).limitToFirst(pageSize).once("value", snapshot =>{

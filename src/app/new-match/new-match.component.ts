@@ -117,7 +117,7 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
+    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.weightBound !== "" && values.ageClassBound !== "" && values.rankBound !=="" ){
       return true;
     } else{
       return false;
@@ -126,6 +126,7 @@ export class NewMatchComponent implements OnInit {
 
   createMatchObj(result: any){
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
+    console.log(weightBound);
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().switchMap(userInfo => {

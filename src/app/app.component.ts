@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router){}
 
   ngOnInit() {
+    console.log(this.title);
     this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
       this.user = user;
     });

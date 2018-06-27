@@ -3,15 +3,13 @@ import { D3Service } from '../d3.service';
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
 import * as firebase from 'firebase/app';
-import { MatTableDataSource, MatSort } from '@angular/material';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatSort, MatPaginator, MatSortModule, MatPaginatorModule, MatProgressSpinnerModule } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material';
+import { merge } from 'rxjs/observable/merge';
 
 @Component({
   selector: 'app-all-matches',
@@ -28,6 +26,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   private pageSize: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
@@ -39,22 +38,31 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.pageSize = 10; //TODO increase me to something reasonable
     this.dataSource = new MatchDataSource(this.dbService);
-    this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
+    this.dataSource.loadMatches('test', '', 'asc', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
       this.matchCount = results;
     });
     }
 
     ngAfterViewInit(){
-      this.paginator.page
-        .pipe(
-          tap(()=> this.loadMatchesPage())
-        )
-        .subscribe();
+      this.sort.sortChange.subscribe(()=>{
+        this.paginator.pageIndex = 0;
+      });
+
+      merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        tap(()=>this.loadMatchesPage())
+      )
+      .subscribe();
+      // this.paginator.page
+      //   .pipe(
+      //     tap(()=> this.loadMatchesPage())
+      //   )
+      //   .subscribe();
     }
 
     loadMatchesPage(){
-      this.dataSource.loadMatches('TODO', '', 'asc', this.paginator.pageIndex, this.paginator.pageSize);
+      this.dataSource.loadMatches('TODO', '', this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
     }
 
     ngOnDestroy(){

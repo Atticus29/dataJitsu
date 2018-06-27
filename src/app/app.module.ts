@@ -37,6 +37,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material';
 import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -82,7 +83,7 @@ export const firebaseConfig = {
     MatSelectModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService],
   bootstrap: [AppComponent]

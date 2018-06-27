@@ -5,6 +5,7 @@
 - [ ] If you log out and then try to click on annotate a video, it takes you to the lost page.
 - [ ] Video icon not displaying on main window
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
+- [ ] The total count of videos doesn't listen automatically for additions or removals to the db
 
 # Set up
 

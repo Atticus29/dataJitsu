@@ -27,7 +27,7 @@ export class MatchDataSource implements DataSource<Match> {
   sortDirection='asc', pageIndex: number, pageSize: number) {
     this.loadingMatches.next(true);
     this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
-      this.dbService.getMatchesFilteredPaginator(keyIndex, pageSize).pipe(
+      this.dbService.getMatchesPaginator(keyIndex, pageSize).pipe(
         catchError(()=> of([])),
         finalize(()=>{
           this.loadingMatches.next(false);
