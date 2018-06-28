@@ -64,6 +64,16 @@ export class DatabaseService {
     return queryObservable;
   }
 
+  getMatchesFilter(nodeToFilterBy: string){
+    let ref = firebase.database().ref('matches/');
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByChild(nodeToFilterBy).once("value", snapshot =>{
+        observer.next(snapshot.val());
+      });
+    });
+    return queryObservable;
+  }
+
   getMatchesPaginator(keyToStartWith: string, pageSize:number){
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){

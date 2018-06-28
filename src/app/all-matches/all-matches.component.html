@@ -12,7 +12,7 @@
   <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="rank" matSortDirection="asc" matSortDisableClear>
     <!-- TODO add paidStatus to ngIf -->
     <ng-container matColumnDef="rank">
-      <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sorter-head> rank </mat-header-cell>
       <mat-cell *matCellDef="let entry"> {{entry.rank}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="weightClass">
@@ -62,4 +62,4 @@
     <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
   </mat-table>
 </div>
-<mat-paginator [length]='matchCount' [pageSize]="10" [pageSizeOptions]="[10, 20, 50]"></mat-paginator>
+<mat-paginator [length]='matchCount' [pageSize]="10" [pageSizeOptions]="[2, 10, 20, 50]"></mat-paginator>

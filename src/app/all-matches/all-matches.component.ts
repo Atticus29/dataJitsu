@@ -3,7 +3,7 @@ import { D3Service } from '../d3.service';
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
 import * as firebase from 'firebase/app';
-import { MatTableDataSource, MatSort, MatPaginator, MatSortModule, MatPaginatorModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatSortModule, MatPaginatorModule, MatProgressSpinnerModule, MatSortHeader } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
 import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
@@ -38,7 +38,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.pageSize = 10; //TODO increase me to something reasonable
     this.dataSource = new MatchDataSource(this.dbService);
-    this.dataSource.loadMatches('test', '', 'asc', 0, this.pageSize);
+    this.dataSource.loadMatches('', 'rank', 'asc', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
       this.matchCount = results;
     });

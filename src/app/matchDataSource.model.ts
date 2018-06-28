@@ -23,8 +23,7 @@ export class MatchDataSource implements DataSource<Match> {
     this.loadingMatches.complete();
   }
 
-  loadMatches(matchId: string, filter = '',
-  sortDirection='asc', pageIndex: number, pageSize: number) {
+  loadMatches(filter = '', sortCol: string, sortDirection='asc', pageIndex: number, pageSize: number) {
     this.loadingMatches.next(true);
     this.dbService.getKeyOfMatchToStartWith(pageIndex, pageSize).subscribe(keyIndex=>{
       this.dbService.getMatchesPaginator(keyIndex, pageSize).pipe(
@@ -36,10 +35,28 @@ export class MatchDataSource implements DataSource<Match> {
       )
       .subscribe(matches => {
         let results = this.makeIntoArray(matches);
+        results = results.sort(this.sort_array_by(sortCol, false, function(a){ //TODO need to sort before paginating
+          return a;
+        }));
         this.matchesSubject.next(results);
         this.loadingMatches.next(false);
       });
     });
+  }
+
+  sort_array_by = function(field, reverse, pr){
+    reverse = (reverse) ? -1 : 1;
+    return function(a,b){
+      a = a[field];
+      b = b[field];
+      if (typeof(pr) != 'undefined'){
+        a = pr(a);
+        b = pr(b);
+      }
+      if (a<b) return reverse * -1;
+      if (a>b) return reverse * 1;
+      return 0;
+    }
   }
 
   makeIntoArray(matches: any){
