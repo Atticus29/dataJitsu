@@ -19,7 +19,7 @@ export class UserStatusReportComponent implements OnInit {
   shouldAnnotate: boolean = false;
   paidStatus: any = null;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router) { }
 
   ngOnInit() {
     console.log("ngOnInit user-status-report is called");
@@ -99,6 +99,12 @@ export class UserStatusReportComponent implements OnInit {
   togglePayMentPrompt(){
     console.log("bitch better have my money");
     //TODO flesh out
+  }
+
+  sendToMatchToAnnotate(){
+    this.db.getLowRatedMatch().subscribe(result =>{
+      this.router.navigate(['matches/'+result.id]);
+    });
   }
 
 

@@ -30,6 +30,16 @@ export class DatabaseService {
     this.moves = db.list('/moves');
   }
 
+  getLowRatedMatch(){
+    let ref = firebase.database().ref('matches/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('/matchDeets/annotationRating').limitToFirst(1).on("child_added", snapshot=>{
+        observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
+  }
+
   updateUserPaymentStatus(userId: string, newStatus: boolean){
     let updates = {};
     updates['/users/' + userId + '/paidStatus'] = newStatus;

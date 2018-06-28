@@ -1,6 +1,6 @@
 <div class="col s12 m1" *ngIf="user">
   <p>Status stuff here</p>
   <div  class="attention-draw" *ngIf="shouldAnnotate">
-      <span>It's time to</span><a routerLink="annotate" > annotate a video</a>
+      <span>It's time to</span><a (click)="sendToMatchToAnnotate()"> annotate a video</a>
   </div>
 </div>
