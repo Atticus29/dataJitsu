@@ -40,6 +40,8 @@
   - [ ] For every annotated video, the user is given more experience Points
   - [ ] For every time a users' annotated video is flagged as poorly-annotated or edited and then the edit is confirmed, they lose some experience points
       - [ ] Which annotations were done by which user is known to the database, but not to other users (to avoid personal vendettas)
+  - [ ] while a user is annotating a video, that video is "locked" for annotation by other users?
+  - [ ] alternatively, there is some way of dealing with two users simultaneously annotating the same video
 - [ ] Experience points are visible by other users
 - [ ] Users are granted more responsibility and more data access if they:
   - [ ] Rate videos
