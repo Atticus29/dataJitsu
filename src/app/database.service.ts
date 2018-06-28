@@ -162,7 +162,10 @@ export class DatabaseService {
   }
 
   addMovesListToDb(moves: any){
-      this.moves.push(moves);
+    let updates = {};
+    updates['/moves'] = moves;
+    firebase.database().ref().update(updates);
+      // this.moves.push(moves);
   }
 
   getUserById(userId: string){

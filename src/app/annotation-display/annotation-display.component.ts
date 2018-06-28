@@ -15,9 +15,9 @@ export class AnnotationDisplayComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     let results = this.db.getMoves().subscribe(stuff=>{
-      console.log(stuff);
+      console.log(Object.keys(stuff));
       for(let index in stuff){
-      console.log(stuff[index]);
+      // console.log(stuff[index].key());
     }
     });
   }
