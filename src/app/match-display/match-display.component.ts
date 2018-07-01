@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-match-display',

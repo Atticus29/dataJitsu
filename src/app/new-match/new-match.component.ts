@@ -8,12 +8,11 @@ import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
 import { User } from '../user.model';
 import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
-import { Subject } from 'rxjs/Subject';
+import { Subject ,  Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 import {Location} from "@angular/common";
 import { ProtectionGuard } from '../protection.guard';
-import { Observable } from 'rxjs/Observable';
 declare var $:any;
 
 @Component({

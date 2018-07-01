@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { User } from '../user.model';
 import { Router } from '@angular/router';

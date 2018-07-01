@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Router, NavigationEnd } from '@angular/router';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 import { AuthorizationService } from '../authorization.service';
 import * as firebase from 'firebase/app';
 import { constants } from '../constants';

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthorizationService } from './authorization.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class ProtectionGuard implements CanActivate {

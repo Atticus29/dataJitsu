@@ -9,7 +9,7 @@ import { DataSource } from '@angular/cdk/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material';
 

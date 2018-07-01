@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { TextTransformationService } from '../text-transformation.service';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';

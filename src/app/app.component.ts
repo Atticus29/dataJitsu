@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { Router, NavigationEnd } from '@angular/router';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+
+import { Subject } from 'rxjs';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
 import { constants } from './constants';
