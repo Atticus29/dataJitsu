@@ -58,7 +58,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(){
-      console.log("onDestroy is called");
+      // console.log("onDestroy is called");
       this.ngUnsubscribe.next();
       this.ngUnsubscribe.complete();
     }

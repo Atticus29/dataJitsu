@@ -8,6 +8,7 @@ import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable }
 import * as firebase from 'firebase/app';
 import { Match } from './match.model';
 import { User } from './user.model';
+import { TextTransformationService } from './text-transformation.service';
 
 @Injectable()
 export class DatabaseService {
@@ -20,7 +21,7 @@ export class DatabaseService {
   currentUser: FirebaseListObservable<any>;
   moves: FirebaseListObservable<any>;
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
     this.matches = db.list('/matches');
     this.weightClasses = db.list('/weightClasses');
     this.giRanks = db.list('/giRanks');
@@ -53,8 +54,26 @@ export class DatabaseService {
   getMoves(){
     let ref = firebase.database().ref('moves/');
     let obsRet = Observable.create(function(observer){
-      ref.orderByKey().limitToFirst(1).on("child_added", snapshot=>{
+      ref.orderByKey().on("child_added", snapshot=>{
         observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
+  }
+
+  getMovesKeys(){
+    let ref = firebase.database().ref('moves/');
+    let textTransformationService: TextTransformationService = new TextTransformationService();
+    // return ref;
+    let obsRet = Observable.create(function(observer){
+      ref.orderByKey().on("value", snapshot=>{
+        let childKeys = [];
+        snapshot.forEach(function(childSnapshot){
+          let category = textTransformationService.convertCamelCaseToSentenceCase(childSnapshot.key);
+          childKeys.push(category);
+          return false;
+        });
+        observer.next(childKeys);
       });
     });
     return obsRet;

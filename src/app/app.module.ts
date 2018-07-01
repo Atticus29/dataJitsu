@@ -34,9 +34,13 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
+// import { MatTreeModule } from '@angular/material';
+import { MatTreeModule } from '@angular/material/tree';
 import { MatSortModule } from '@angular/material';
 import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CdkTreeModule } from '@angular/cdk/tree';
+
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -73,6 +77,7 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
+    CdkTreeModule,
     MatSelectModule,
     MatOptionModule,
     MatInputModule,
@@ -82,7 +87,8 @@ export const firebaseConfig = {
     MatSelectModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTreeModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService],
   bootstrap: [AppComponent]
