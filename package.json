@@ -12,17 +12,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "6.0.0",
+    "@angular/animations": "6.0.7",
     "@angular/cdk": "^6.3.1",
-    "@angular/common": "6.0.0",
-    "@angular/compiler": "6.0.0",
-    "@angular/core": "6.0.0",
-    "@angular/forms": "6.0.0",
-    "@angular/http": "6.0.0",
+    "@angular/common": "6.0.7",
+    "@angular/compiler": "6.0.7",
+    "@angular/core": "6.0.7",
+    "@angular/forms": "6.0.7",
+    "@angular/http": "6.0.7",
     "@angular/material": "^6.2.0",
-    "@angular/platform-browser": "6.0.0",
-    "@angular/platform-browser-dynamic": "6.0.0",
-    "@angular/router": "6.0.0",
+    "@angular/platform-browser": "6.0.7",
+    "@angular/platform-browser-dynamic": "6.0.7",
+    "@angular/router": "6.0.7",
     "@types/youtube": "0.0.29",
     "angular-froala-wysiwyg": "^2.7.2-1",
     "angular2-materialize": "^15.1.10",
@@ -35,11 +35,11 @@
     "materialize-css": "^0.100.2",
     "ngx-youtube-player": "0.0.41",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
-    "@angular/compiler-cli": "6.0.0",
+    "@angular/cli": "6.0.8",
+    "@angular/compiler-cli": "6.0.7",
     "@types/bootstrap": "^3.3.36",
     "@types/d3": "^4.13.0",
     "@types/jasmine": "2.5.38",
@@ -56,6 +56,6 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "2.6.2"
+    "typescript": "2.7.2"
   }
 }
