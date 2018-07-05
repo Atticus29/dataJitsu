@@ -1,3 +1,4 @@
+- [ ] Migrate to firestore
 - [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
 - [x] Users can create an account

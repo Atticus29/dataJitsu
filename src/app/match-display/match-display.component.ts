@@ -27,17 +27,17 @@ export class MatchDisplayComponent implements OnInit {
       this.matchId = params['matchId'];
       this.db.getMatchFromNodeKey(this.matchId).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         console.log(this.match);
-        this.match = match;
-        this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
-        window['onYouTubeIframeAPIReady'] = function() {
-          player = new window['YT'].Player('videoIframe', {
-            events: {
-              'onReady': onPlayerReady,
-              'onStateChange': onPlayerStateChange
-            }
-          });
-        }
+        // this.match = match;
+        // this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
+        // document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
+        // window['onYouTubeIframeAPIReady'] = function() {
+        //   player = new window['YT'].Player('videoIframe', {
+        //     events: {
+        //       'onReady': onPlayerReady,
+        //       'onStateChange': onPlayerStateChange
+        //     }
+        //   });
+        // }
 
         function onPlayerReady(event) {
           let pause = document.getElementById("pause").addEventListener("click", function() {
