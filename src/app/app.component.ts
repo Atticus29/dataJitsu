@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { Router, NavigationEnd } from '@angular/router';
-
-
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
 import { constants } from './constants';
@@ -25,7 +24,7 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router){}
 
   ngOnInit() {
-    this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
+    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
     });
   }

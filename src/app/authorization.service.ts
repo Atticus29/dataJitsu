@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
@@ -16,7 +16,7 @@ export class AuthorizationService {
     this.user = afAuth.authState;
     this.user.subscribe(user=>{
       if(user){
-        this.authenticated = Observable.of(true);
+        this.authenticated = of(true);
         this.dbService.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
           this.dbService.addUidToUser(user.uid, snapshot.key);
         });
@@ -26,7 +26,7 @@ export class AuthorizationService {
 
   loginGoogle() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    this.authenticated = Observable.of(true);
+    this.authenticated = of(true);
     //@TODO handle login errors
     //@TODO handle userCreation when they log in with google (associating the userID with the uuid)
   }
@@ -39,7 +39,7 @@ export class AuthorizationService {
   logout() {
     if(confirm("Are you sure you want to sign out?")){
       this.afAuth.auth.signOut();
-      this.authenticated = Observable.of(false);
+      this.authenticated = of(false);
       //@TODO test whether authenticated changes at appropriate times for protected directive to work
       //@TODO navigate to root
       this.router.navigate(['']);
@@ -54,7 +54,7 @@ export class AuthorizationService {
   getCurrentUser(){
     this.user = this.afAuth.authState; //TODO not sure whether will fix
     return this.user;
-    // .catch(()=>Observable.of(false));
+    // .catch(()=>of(false));
   }
 
   signup(email: string, password: string) {
@@ -63,7 +63,7 @@ export class AuthorizationService {
     .createUserWithEmailAndPassword(email, password)
     .then(value => {
       // console.log('Success!', value);
-      this.authenticated = Observable.of(true);
+      this.authenticated = of(true);
     })
     .catch(err => {
       console.log('Something went wrong:',err.message);
@@ -71,7 +71,7 @@ export class AuthorizationService {
   }
 
   setAuthenticated(newStatus: boolean){
-    this.authenticated = Observable.of(newStatus);
+    this.authenticated = of(newStatus);
   }
 
   login(email: string, password: string) {
@@ -79,7 +79,7 @@ export class AuthorizationService {
     .auth
     .signInWithEmailAndPassword(email, password)
     .then(value => {
-      this.authenticated = Observable.of(true);
+      this.authenticated = of(true);
       this.router.navigate(['']);
     })
     .catch(err => {

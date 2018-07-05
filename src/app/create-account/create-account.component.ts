@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { User } from '../user.model';
 import { Router } from '@angular/router';
@@ -52,17 +53,17 @@ export class CreateAccountComponent implements OnInit {
       ageBound: ['', Validators.required]
     });
 
-    this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
+    this.db.getGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
       this.disabledGiRank = true;
     })
 
-    this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
+    this.db.getNoGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.noGiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
-    this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
+    this.db.getAgeClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });

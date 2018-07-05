@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-
-
-
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { Match } from './match.model';
 import { User } from './user.model';
@@ -12,14 +8,14 @@ import { TextTransformationService } from './text-transformation.service';
 
 @Injectable()
 export class DatabaseService {
-  matches: FirebaseListObservable<any>;
-  weightClasses: FirebaseListObservable<any>;
-  giRanks: FirebaseListObservable<any>;
-  noGiRanks: FirebaseListObservable<any>;
-  ageClasses: FirebaseListObservable<any>;
-  users: FirebaseListObservable<any>;
-  currentUser: FirebaseListObservable<any>;
-  moves: FirebaseListObservable<any>;
+  matches: AngularFireList<any>;
+  weightClasses: AngularFireList<any>;
+  giRanks: AngularFireList<any>;
+  noGiRanks: AngularFireList<any>;
+  ageClasses: AngularFireList<any>;
+  users: AngularFireList<any>;
+  currentUser: AngularFireList<any>;
+  moves: AngularFireList<any>;
 
   constructor(private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
     this.matches = db.list('/matches');

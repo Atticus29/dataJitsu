@@ -4,7 +4,7 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
-import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { allCurrentMoves } from '../moves';
 
 @Component({
@@ -23,9 +23,9 @@ export class TestDbComponent implements OnInit {
   constructor(private db: DatabaseService) { }
 
   ngOnInit() {
-    console.log(allCurrentMoves);
-    this.db.addMovesListToDb(allCurrentMoves);
-
+    // console.log(allCurrentMoves);
+    // this.db.addMovesListToDb(allCurrentMoves);
+    // 
     // let matchDeets: MatchDetails = new MatchDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     // let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     // let move2: MoveInVideo = new MoveInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);

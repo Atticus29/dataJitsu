@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Router, NavigationEnd } from '@angular/router';
-
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from '../authorization.service';
 import * as firebase from 'firebase/app';
 import { constants } from '../constants';
@@ -25,23 +25,23 @@ export class UserStatusReportComponent implements OnInit {
     console.log("ngOnInit user-status-report is called");
     this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
-    this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
+    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       if (this.user) {
         let ref = firebase.database().ref('users/');
         ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
-          this.db.getUserById(snapshot.key).subscribe(result => {
+          this.db.getUserById(snapshot.key).valueChanges().subscribe(result => {
             this.userObjFromDb = result;
-            this.db.hasUserPaid(this.userObjFromDb.id).takeUntil(this.ngUnsubscribe).subscribe(status =>{
-              if(status.$value){
+            this.db.hasUserPaid(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+              if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
                 this.togglePaid(this.userObjFromDb.id);
               } else{
                 this.togglePayMentPrompt();
               }
             });
 
-            this.db.getDateSinceAnnotated(this.userObjFromDb.id).takeUntil(this.ngUnsubscribe).subscribe(date =>{
-              let dateLastAnnotated: Date = new Date(date.$value);
+            this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
+              let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
               if(dateLastAnnotated.toString() != "Invalid Date"){
                 console.log("yes");
                 let daysSinceLastAnnotation: number = this.calculateDaysSinceLastAnnotation(dateLastAnnotated);

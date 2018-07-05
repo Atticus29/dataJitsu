@@ -4,6 +4,7 @@ import { DatabaseService } from '../database.service';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-match-display',
@@ -24,7 +25,8 @@ export class MatchDisplayComponent implements OnInit {
     let player;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
-      this.db.getMatchFromNodeKey(this.matchId).takeUntil(this.ngUnsubscribe).subscribe(match =>{
+      this.db.getMatchFromNodeKey(this.matchId).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+        console.log(this.match);
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);

@@ -10,7 +10,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material';
 
 @Component({
@@ -32,7 +32,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
 
   ngOnInit() {
-    this.authService.getCurrentUser().takeUntil(this.ngUnsubscribe).subscribe(user=>{
+    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
     },err=>{
       console.log(err);

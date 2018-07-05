@@ -1,8 +1,8 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
-import { BehaviorSubject ,  Observable ,  of } from 'rxjs';
+import { BehaviorSubject ,  Observable , of } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { Match } from './match.model';
 import { DatabaseService } from './database.service';
-import { catchError, finalize } from 'rxjs/operators';
 
 export class MatchDataSource implements DataSource<Match> {
 

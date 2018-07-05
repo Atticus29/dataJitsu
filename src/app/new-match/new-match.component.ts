@@ -7,8 +7,9 @@ import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
 import { User } from '../user.model';
-import { AngularFireDatabase,FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { Subject ,  Observable } from 'rxjs';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 import {Location} from "@angular/common";
@@ -60,23 +61,23 @@ export class NewMatchComponent implements OnInit {
 
     this.genders = ["Female", "Male"];
 
-    this.db.getGiRanks().takeUntil(this.ngUnsubscribe).subscribe(giRanks=>{
+    this.db.getGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
       this.ranks = giRanks;
       this.disabledGiRank = true;
     })
 
-    this.db.getNoGiRanks().takeUntil(this.ngUnsubscribe).subscribe(noGiRanks=>{
+    this.db.getNoGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
-    this.db.getAgeClasses().takeUntil(this.ngUnsubscribe).subscribe(ageClasses=>{
+    this.db.getAgeClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });
 
-    this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
+    this.db.getWeightClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
       this.weightClasses = weightClasses;
       this.disabledWeightClass = true;
     });
@@ -127,7 +128,7 @@ export class NewMatchComponent implements OnInit {
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.as.getCurrentUser().switchMap(userInfo => {
+    return this.as.getCurrentUser().pipe(switchMap(userInfo => {
         // TODO fix this/make sure it's working
         // console.log("got into getCurrentUser");
         return Observable.create(obs=>{
@@ -137,7 +138,7 @@ export class NewMatchComponent implements OnInit {
           obs.next(match);
         });
         });
-      });
+      }));
     //
     // let userObservable = this.as.getCurrentUser();
     // let higherOrder = userObservable.map(userInfo =>{
@@ -175,7 +176,7 @@ export class NewMatchComponent implements OnInit {
     console.log(val);
     if(val === "addNew"){
       console.log("contains add new!");
-      
+
     } else{
       //do nothing
     }
@@ -197,7 +198,7 @@ export class NewMatchComponent implements OnInit {
 
   submitFormAndAnnotate(){
     let values = this.getValues();
-    let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
+    let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
       console.log(result);
       this.db.addMatchToDb(result);
     });
@@ -206,7 +207,7 @@ export class NewMatchComponent implements OnInit {
   submitFormAndReturnToMain(){
     let values = this.getValues();
     // console.log(values);
-    let match = this.createMatchObj(values).takeUntil(this.ngUnsubscribe).subscribe(result=>{
+    let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
       // console.log(result);
       this.db.addMatchToDb(result);
       this.router.navigate(['landing']);
