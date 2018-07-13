@@ -8,23 +8,24 @@ import { TextTransformationService } from './text-transformation.service';
 
 @Injectable()
 export class DatabaseService {
-  matches: AngularFireList<any>;
-  weightClasses: AngularFireList<any>;
-  giRanks: AngularFireList<any>;
-  noGiRanks: AngularFireList<any>;
-  ageClasses: AngularFireList<any>;
-  users: AngularFireList<any>;
-  currentUser: AngularFireList<any>;
-  moves: AngularFireList<any>;
+  matches:Observable<any>;
+  weightClasses:Observable<any>;
+  giRanks:Observable<any>;
+  noGiRanks:Observable<any>;
+  ageClasses:Observable<any>;
+  users:Observable<any>;
+  currentUser:Observable<any>;
+  moves:Observable<any>;
+  retrievedMatch:Observable<any>;
 
   constructor(private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
-    this.matches = db.list('/matches');
-    this.weightClasses = db.list('/weightClasses');
-    this.giRanks = db.list('/giRanks');
-    this.noGiRanks = db.list('/noGiRanks');
-    this.ageClasses = db.list('/ageClasses');
-    this.users = db.list('/users');
-    this.moves = db.list('/moves');
+    this.matches = db.list<Match>('/matches').valueChanges();
+    this.weightClasses = db.list<String>('/weightClasses').valueChanges();
+    this.giRanks = db.list<String>('/giRanks').valueChanges();
+    this.noGiRanks = db.list<String>('/noGiRanks').valueChanges();
+    this.ageClasses = db.list<String>('/ageClasses').valueChanges();
+    this.users = db.list<User>('/users').valueChanges();
+    this.moves = db.list<String>('/moves').valueChanges(); //TODO maybe JSON?
   }
 
   getLowRatedMatch(){
@@ -159,9 +160,8 @@ export class DatabaseService {
   }
 
   getMatchFromNodeKey(key: string){
-    let retrievedMatch = this.db.object('matches/' + key);
-    return retrievedMatch;
-
+    this.retrievedMatch = this.db.object('matches/' + key).valueChanges();
+    return this.retrievedMatch;
   }
 
   //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
@@ -189,7 +189,8 @@ export class DatabaseService {
   }
 
   addMatchToDb(match: any){
-    let matchId = this.matches.push(match).key;
+    let ref = this.db.list<Match>('/matches');
+    let matchId = ref.push(match).key;
     let updates = {};
     updates['/matches/' + matchId + '/id'] = matchId;
     updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
@@ -197,14 +198,16 @@ export class DatabaseService {
   }
 
   addUserToDb(user: User){
-    let userId = this.users.push(user).key;
+    let ref = this.db.list<User>('/users');
+    let userId = ref.push(user).key;
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
   }
 
   addUserToDbAndReturnUserId(user: User){
-    let userId = this.users.push(user).key;
+    let ref = this.db.list<User>('/users');
+    let userId = ref.push(user).key;
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
@@ -218,7 +221,8 @@ export class DatabaseService {
   }
 
   addWeightClassToDb(weightClass: string){
-    this.weightClasses.push(weightClass);
+    let ref = this.db.list<String>('/weightClasses');
+    ref.push(weightClass);
   }
 
   getWeightClassById(id: string){
@@ -242,14 +246,17 @@ export class DatabaseService {
   }
 
   addGiRankToDb(rank: string){
-    this.giRanks.push(rank);
+    let ref = this.db.list<String>('/giRanks');
+    ref.push(rank);
   }
 
   addNoGiRankToDb(rank:string){
-    this.noGiRanks.push(rank);
+    let ref = this.db.list<String>('/noGiRanks');
+    ref.push(rank);
   }
 
   addAgeClassToDb(ageClass: string){
-    this.ageClasses.push(ageClass);
+    let ref = this.db.list<String>('/ageClasses');
+    ref.push(ageClass);
   }
 }

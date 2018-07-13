@@ -61,23 +61,23 @@ export class NewMatchComponent implements OnInit {
 
     this.genders = ["Female", "Male"];
 
-    this.db.getGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
+    this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
       this.ranks = giRanks;
       this.disabledGiRank = true;
     })
 
-    this.db.getNoGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
+    this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
-    this.db.getAgeClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
+    this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });
 
-    this.db.getWeightClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
+    this.db.getWeightClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
       this.weightClasses = weightClasses;
       this.disabledWeightClass = true;
     });
@@ -99,9 +99,6 @@ export class NewMatchComponent implements OnInit {
     this.newRankForm = this.fb.group({
       newRankBound: ['', Validators.required]
     });
-
-
-
     // this.currentUser = this.userService.getUser(this.currentUserId); //@TODO mature this
   }
 
@@ -201,6 +198,7 @@ export class NewMatchComponent implements OnInit {
     let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
       console.log(result);
       this.db.addMatchToDb(result);
+      //TODO navigate to annotation page??
     });
   }
 
@@ -210,7 +208,7 @@ export class NewMatchComponent implements OnInit {
     let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
       // console.log(result);
       this.db.addMatchToDb(result);
-      this.router.navigate(['landing']);
+      this.router.navigate(['']);
     });
   }
 

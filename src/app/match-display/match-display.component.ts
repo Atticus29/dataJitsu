@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 export class MatchDisplayComponent implements OnInit {
   matchId : string;
   matchDetails: MatchDetails;
-  match: Match;
+  match: Observable<Match>;
   matchUrl: string;
   // player: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -25,19 +25,19 @@ export class MatchDisplayComponent implements OnInit {
     let player;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
-      this.db.getMatchFromNodeKey(this.matchId).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        console.log(this.match);
-        // this.match = match;
-        // this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        // document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
-        // window['onYouTubeIframeAPIReady'] = function() {
-        //   player = new window['YT'].Player('videoIframe', {
-        //     events: {
-        //       'onReady': onPlayerReady,
-        //       'onStateChange': onPlayerStateChange
-        //     }
-        //   });
-        // }
+      this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+        console.log("got to getMatchFromNodeKey");
+        this.match = match;
+        this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
+        document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
+        window['onYouTubeIframeAPIReady'] = function() {
+          player = new window['YT'].Player('videoIframe', {
+            events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+            }
+          });
+        }
 
         function onPlayerReady(event) {
           let pause = document.getElementById("pause").addEventListener("click", function() {

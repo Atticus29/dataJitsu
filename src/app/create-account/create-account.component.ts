@@ -53,17 +53,17 @@ export class CreateAccountComponent implements OnInit {
       ageBound: ['', Validators.required]
     });
 
-    this.db.getGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
+    this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
       this.disabledGiRank = true;
     })
 
-    this.db.getNoGiRanks().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
+    this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.noGiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
-    this.db.getAgeClasses().valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
+    this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });

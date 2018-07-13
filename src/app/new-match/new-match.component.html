@@ -60,20 +60,20 @@
         <mat-form-field>
           <mat-select formControlName="ageClassBound" id="ageClass" placeholder="Age Class">
             <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
-            <mat-option *ngFor="let age of ageClasses" [value]="age.$value">{{age.$value}}</mat-option>
+            <mat-option *ngFor="let age of ageClasses" [value]="age">{{age}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field>
             <mat-select formControlName="rankBound" id="rank" placeholder="{{rankType}} Rank" [ngModel]="rankSelection" (ngModelChange)="onChange($event)">
               <mat-option value="(choose)" disabled="true">Choose {{rankType}} rank</mat-option>
-              <mat-option  *ngFor="let rank of ranks" [value]="rank.$value">{{rank.$value}}</mat-option>
+              <mat-option  *ngFor="let rank of ranks" [value]="rank">{{rank}}</mat-option>
               <mat-option  value="addNew" >Add new {{rankType}} rank</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="weightBound" id="weight" placeholder="Weight Class">
             <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
-            <mat-option *ngFor="let weight of weightClasses" value="weight">{{weight.$value}}</mat-option>
+            <mat-option *ngFor="let weight of weightClasses" value="weight">{{weight}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
