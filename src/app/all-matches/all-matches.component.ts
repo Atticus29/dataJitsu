@@ -19,7 +19,7 @@ import { MatPaginator } from '@angular/material';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
-  private dataSource: MatchDataSource;
+  // private dataSource: MatchDataSource;
   private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   user: any = null;
@@ -29,7 +29,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService) { }
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource) { }
 
   ngOnInit() {
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
@@ -37,12 +37,16 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     },err=>{
       console.log(err);
     });
-    this.pageSize = 10; //TODO increase me to something reasonable
+    this.pageSize = 2; //TODO increase me to something reasonable
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
       this.matchCount = results;
     });
+    console.log(this.dataSource);
+    // this.dataSource.loading$.subscribe(result =>{
+    //   console.log(result);
+    // });
     }
 
     ngAfterViewInit(){
@@ -58,7 +62,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(){
-      // console.log("onDestroy is called");
+      console.log("onDestroy is called");
       this.ngUnsubscribe.next();
       this.ngUnsubscribe.complete();
     }

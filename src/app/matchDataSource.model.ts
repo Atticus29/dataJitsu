@@ -3,7 +3,9 @@ import { BehaviorSubject ,  Observable , of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { Match } from './match.model';
 import { DatabaseService } from './database.service';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class MatchDataSource implements DataSource<Match> {
 
   private matchesSubject = new BehaviorSubject<Match[]>([]);

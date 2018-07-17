@@ -40,6 +40,7 @@ import { MatSortModule } from '@angular/material';
 import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CdkTreeModule } from '@angular/cdk/tree';
+import { MatchDataSource } from './matchDataSource.model';
 
 
 export const firebaseConfig = {
@@ -90,7 +91,7 @@ export const firebaseConfig = {
     MatPaginatorModule,
     MatTreeModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

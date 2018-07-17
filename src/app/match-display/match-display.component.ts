@@ -21,7 +21,12 @@ export class MatchDisplayComponent implements OnInit {
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute) { }
 
+  ngOnDestroy(){
+
+  }
+
   ngOnInit() {
+    console.log("ngOnInit for match-display called");
     let player;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
