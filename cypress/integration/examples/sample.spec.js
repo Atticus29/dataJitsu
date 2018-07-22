@@ -25,12 +25,12 @@ describe ('Firestarter', () =>{
 
   it('signs up a new user', () =>{
     cy.get('button[id=new-account-button]').click();
+    cy.get('[name="test"]').click();
     cy.get('select[id=ageClass]').select(ageClass);
     cy.get('input[id=weight]').type(weight);
     cy.get('select[id=noGiRank]').select(noGiRank);
     cy.get('select[id=giRank]').select(giRank);
     cy.get('select[id=ageClass]').select(ageClass);
-    cy.get('select[id=gender]').select(gender);
     cy.get('input[id=affiliation]').type(affiliation);
     cy.get('input[id=password]').type(pass);
     cy.get('input[id=userName]').type(name);

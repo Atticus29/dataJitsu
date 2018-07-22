@@ -26,7 +26,7 @@
           <label for="affiliation">Gym Affiliation</label>
         </div>
         <div class="input-field col m4 s12">
-          <select formControlName="genderBound" materialize="material_select" id="gender">
+          <select formControlName="genderBound" materialize="material_select" id="gender" name="test">
             <option value="" disabled selected>Choose gender</option>
             <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
