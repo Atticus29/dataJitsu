@@ -5,7 +5,14 @@ import { TextTransformationService } from '../text-transformation.service';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {NestedTreeControl} from '@angular/cdk/tree';
+import { allCurrentMoves } from '../moves';
 declare var $:any;
+
+export class FileNode {
+  children: FileNode[];
+  filename: string;
+  type: any;
+}
 
 @Component({
   selector: 'app-annotation-display',
@@ -13,9 +20,15 @@ declare var $:any;
   styleUrls: ['./annotation-display.component.scss']
 })
 export class AnnotationDisplayComponent implements OnInit {
+  private treeData = JSON.stringify(allCurrentMoves);
+  nestedTreeControl: NestedTreeControl<FileNode>;
+  nestedDataSource: MatTreeNestedDataSource<FileNode>;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private moveCategories: string[];
-  constructor(private db: DatabaseService, textTransformationService: TextTransformationService) { }
+  constructor(private db: DatabaseService, textTransformationService: TextTransformationService) {
+    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
+    this.nestedDataSource = new MatTreeNestedDataSource();
+  }
 
   ngOnInit() {
     $('.modal').modal();
