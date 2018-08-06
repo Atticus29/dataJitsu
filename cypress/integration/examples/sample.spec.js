@@ -34,8 +34,8 @@ describe ('Firestarter', () =>{
     cy.get('[name="chooseGender"]').click({force: true});
     cy.get('option').contains("Female").then(option =>{
       cy.wrap(option).contains("Female");
-      console.log(option);
-      // option[1].click();
+      // console.log(option);
+      option[0].click();
     });
 
     cy.get('[name=chooseAgeClass]').click({force: true});
