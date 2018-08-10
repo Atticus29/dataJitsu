@@ -31,18 +31,19 @@ describe ('Firestarter', () =>{
     cy.get('input[id=email]').type(email);
 
     //Now the options
-    cy.get('[name="chooseGender"]').click({force: true});
-    cy.get('option').contains("Female").then(option =>{
-      cy.wrap(option).contains("Female");
-      // console.log(option);
-      option[0].click();
-    });
+    cy.get('#gender').select('Female', {force: true});
+    cy.get('#gender').contains('Female');
+    // cy.get('[name="chooseGender"]').click({force: true});
+    // cy.get('option').contains("Female").then(option =>{
+    //   cy.wrap(option).contains("Female");
+    //   // console.log(option);
+    //   option[0].click();
+    // });
 
-    cy.get('[name=chooseAgeClass]').click({force: true});
-    cy.get('option').contains("Adult").then(option =>{
-      cy.wrap(option).contains("Adult");
-      option[0].click();
-    });
+    cy.get('#ageClass').select('Adult', {force:true});
+    cy.get('#ageClass').contains('Adult');
+
+    //TODO fix all of the below to be like the above
     cy.get('input[id=weight]').type(weight);
     cy.get('[name=chooseNoGiRank]').click({force: true});
     cy.get('option').contains("Elite").then(option =>{
