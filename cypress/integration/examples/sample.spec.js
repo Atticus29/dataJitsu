@@ -29,38 +29,27 @@ describe ('Firestarter', () =>{
     cy.get('input[id=password]').type(pass);
     cy.get('input[id=userName]').type(name);
     cy.get('input[id=email]').type(email);
-
+    cy.get('input[id=weight]').type(weight);
     //Now the options
     cy.get('#gender').select('Female', {force: true});
     cy.get('#gender').contains('Female');
-    // cy.get('[name="chooseGender"]').click({force: true});
-    // cy.get('option').contains("Female").then(option =>{
-    //   cy.wrap(option).contains("Female");
-    //   // console.log(option);
-    //   option[0].click();
-    // });
 
     cy.get('#ageClass').select('Adult', {force:true});
     cy.get('#ageClass').contains('Adult');
 
     //TODO fix all of the below to be like the above
-    cy.get('input[id=weight]').type(weight);
-    cy.get('[name=chooseNoGiRank]').click({force: true});
-    cy.get('option').contains("Elite").then(option =>{
-      cy.wrap(option).contains("Elite");
-      option[0].click();
-    });
+    cy.get('#noGiRank').select('Elite',{force: true});
+    cy.get('#noGiRank').contains('Elite');
 
-    cy.get('[name=chooseGiRank]').click({force: true});
-    cy.get('option').contains("Black belt").then(option =>{
-      cy.wrap(option).contains("Black belt");
-      option[0].click();
-    })
-    cy.get('[name="chooseAge"]').click({force: true});
-    cy.get('option').contains("27").then(option =>{
-      cy.wrap(option).contains("27");
-      option[0].click();
-    });
+    cy.get('#giRank').select('Black belt',{force: true});
+    cy.get('#giRank').contains('Black belt');
+
+    cy.get('#age').select('27',{force: true});
+    cy.get('#age').contains('27');
+
+    cy.get('#age').select('27',{force: true});
+    cy.get('#age').contains('27');
+
     cy.get('button[id=create-button]').click();
     // cy.contains('Rank'); //TODO make this something more permanent and inside the fixtures directory
   })
