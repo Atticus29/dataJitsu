@@ -6,7 +6,7 @@
 - [ ] Video icon not displaying on main window
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
 - [ ] If you reload, the matches don't display on the main page
-- [ ] If you hit log out and then cancel, it still takes you to the log in page
+- [ ] If you logout, the app-user-status-report still displays
 
 # Set up
 
