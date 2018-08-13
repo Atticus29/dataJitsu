@@ -51,7 +51,6 @@ describe ('Firestarter', () =>{
     cy.get('#age').contains('27');
 
     cy.get('button[id=create-button]').click();
-    // cy.contains('Rank'); //TODO make this something more permanent and inside the fixtures directory
   })
 
   it('blocks protected routes', () =>{
