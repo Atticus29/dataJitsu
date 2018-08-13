@@ -35,9 +35,14 @@ export class AppComponent implements OnInit {
 
   logout(){
     this.authService.logout();
-    this.authService.user = null;
-    this.authService.setAuthenticated(false);
-    this.router.navigate(['login']);
+    this.authService.isAuthenticated().subscribe(authStatus =>{
+      if(authStatus==false){
+        console.log("got here");
+        this.authService.user = null;
+        this.authService.setAuthenticated(false);
+        this.router.navigate(['login']);
+      }
+    })
     // console.log(this.authService.user);
   }
 
