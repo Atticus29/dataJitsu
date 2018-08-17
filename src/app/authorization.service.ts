@@ -32,7 +32,8 @@ export class AuthorizationService {
   }
 
   isAuthenticated() {
-    return this.afAuth.authState;
+    return this.authenticated;
+    // return this.afAuth.authState;
     //@TODO Not yet clear whether moving this into the now-defunct isAuthenticated method of authorization service would work
   }
 
@@ -42,7 +43,7 @@ export class AuthorizationService {
       this.authenticated = of(false);
       //@TODO test whether authenticated changes at appropriate times for protected directive to work
       //@TODO navigate to root
-      this.router.navigate(['']);
+      // this.router.navigate(['login']);
     }
   }
 
