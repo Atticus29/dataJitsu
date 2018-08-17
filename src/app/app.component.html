@@ -5,7 +5,7 @@
       <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
       <li><a routerLink="newmatch" >New Match</a></li>
       <li><a routerLink="annotate" >Annotate a video</a></li>
-      <li *ngIf="user"><a  (click)="logout()">Log Out</a></li>
+      <li *ngIf="user"><a  (click)="logout()" id="logOutLink">Log Out</a></li>
     </ul>
   </div>
 </nav>
