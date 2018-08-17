@@ -56,4 +56,11 @@ describe ('Firestarter', () =>{
   it('blocks protected routes', () =>{
 
   });
+
+  it('logs in', ()=>{
+    cy.get('input[id=userEmail]').type(email);
+    cy.get('input[id=password]').type(pass);
+    cy.get('button[id=loginSubmit]').click();
+    cy.contains('Match Rating');
+  });
 });
