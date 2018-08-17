@@ -25,7 +25,7 @@
       <div class="row">
         <div class="col s1">
         </div>
-        <button type="submit" (click)="submitLoginForm()" [disabled]="!allValid()" class="btn col s9 waves-effect waves-light">Login <i class="material-icons right"></i></button>
+        <button id="loginSubmit" type="submit" (click)="submitLoginForm()" [disabled]="!allValid()" class="btn col s9 waves-effect waves-light">Login <i class="material-icons right"></i></button>
         <div class="col s1">
         </div>
       </div>
@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col s1">
         </div>
-        <button type="button" (click)="newAccount()" class="btn col s9 waves-effect blue">Create New Account</button>
+        <button id="new-account-button" type="button" (click)="newAccount()" class="btn col s9 waves-effect blue">Create New Account</button>
         <div class="col s1">
         </div>
       </div>

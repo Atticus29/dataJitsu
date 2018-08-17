@@ -26,30 +26,30 @@
           <label for="affiliation">Gym Affiliation</label>
         </div>
         <div class="input-field col m4 s12">
-          <select formControlName="genderBound" materialize="material_select" id="gender">
-            <option value="" disabled selected>Choose gender</option>
+          <select formControlName="genderBound" materialize="material_select" id="gender" name="test">
+            <option value="" disabled selected name="chooseGender">Choose gender</option>
             <option *ngFor="let gender of genders">{{gender}}</option>
           </select>
           <label for="gender">Gender</label>
         </div>
         <div class="input-field col m4 s12">
           <select formControlName="ageClassBound" materialize="material_select" id="ageClass">
-            <option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</option>
-            <option *ngFor="let age of ageClasses">{{age.$value}}</option>
+            <option value="(choose)" [disabled]="disabledAgeClass" name="chooseAgeClass">Choose age class</option>
+            <option *ngFor="let age of ageClasses">{{age}}</option>
           </select>
           <label for="ageClass">Age Class</label>
         </div>
         <div class="input-field col m3 s12">
           <select formControlName="giRankBound" materialize="material_select" id="giRank">
-            <option value="(choose)" [disabled]="disabledGiRank" >Choose gi rank</option>
-            <option *ngFor="let giRank of giRanks">{{giRank.$value}}</option>
+            <option value="(choose)" [disabled]="disabledGiRank" name="chooseGiRank">Choose gi rank</option>
+            <option *ngFor="let giRank of giRanks">{{giRank}}</option>
           </select>
           <label for="giRank">Gi Rank</label>
         </div>
         <div class="input-field col m3 s12">
           <select formControlName="noGiRankBound" materialize="material_select" id="noGiRank">
-            <option value="(choose)" [disabled]="disabledNoGiRank" >Choose no gi rank</option>
-            <option *ngFor="let noGiRank of noGiRanks">{{noGiRank.$value}}</option>
+            <option value="(choose)" [disabled]="disabledNoGiRank" name="chooseNoGiRank">Choose no gi rank</option>
+            <option *ngFor="let noGiRank of noGiRanks">{{noGiRank}}</option>
           </select>
           <label for="noGiRank">No Gi Rank</label>
         </div>
@@ -59,14 +59,14 @@
         </div>
         <div class="input-field col m3 s12">
           <select formControlName="ageBound" materialize="material_select" id="age">
-            <option value="(choose)" [disabled]="disabledAge" >Choose age</option>
+            <option value="(choose)" [disabled]="disabledAge" name="chooseAge">Choose age</option>
             <option *ngFor="let age of ages">{{age}}</option>
           </select>
           <label for="age">Age</label>
         </div>
       </div>
       <div class="row">
-        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputsToDB()">Create
+        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputsToDB()" id="create-button">Create
           <i class="material-icons right">send</i>
         </button>
       </div>

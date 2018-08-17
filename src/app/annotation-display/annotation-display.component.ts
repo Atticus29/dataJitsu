@@ -26,8 +26,9 @@ export class AnnotationDisplayComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private moveCategories: string[];
   constructor(private db: DatabaseService, textTransformationService: TextTransformationService) {
-    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
-    this.nestedDataSource = new MatTreeNestedDataSource();
+    //TODO fix this after mat-tree SO branch gets resolved
+    // this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
+    // this.nestedDataSource = new MatTreeNestedDataSource();
   }
 
   ngOnInit() {
