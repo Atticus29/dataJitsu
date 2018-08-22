@@ -19,6 +19,12 @@ describe ('Firestarter', () =>{
     cy.visit('http://localhost:4200');
   });
 
+  it('logs out intially might fails', ()=>{
+    cy.visit('http://localhost:4200');
+    cy.get('a[id=logOutLink]').click();
+    cy.contains('Log In');
+  });
+
   it('has a title', () =>{
     cy.contains('Match Annotator');
   });
@@ -73,5 +79,19 @@ describe ('Firestarter', () =>{
     cy.contains('Match Rating');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
+  });
+
+
+  it('logs back in and clicks on a match', ()=>{
+    cy.visit('http://localhost:4200/login');
+    cy.get('input[id=userEmail]').type(email);
+    cy.get('input[id=password]').type(pass);
+    cy.get('button[id=loginSubmit]').click();
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.contains('vs.');
+    cy.contains('Age Class');
+    cy.contains('Location');
   });
 });
