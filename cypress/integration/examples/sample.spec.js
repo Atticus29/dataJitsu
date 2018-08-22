@@ -94,4 +94,22 @@ describe ('Firestarter', () =>{
     cy.contains('Age Class');
     cy.contains('Location');
   });
+
+  it('plays and pauses a match', ()=>{
+    cy.visit('http://localhost:4200');
+    cy.get('a[id=logOutLink]').click();
+    cy.contains('Log In');
+    cy.visit('http://localhost:4200/login');
+    cy.get('input[id=userEmail]').type(email);
+    cy.get('input[id=password]').type(pass);
+    cy.get('button[id=loginSubmit]').click();
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.contains('vs.');
+    cy.get('a[id=play]').click({force:true});
+    cy.wait(5000);
+    cy.get('a[id=pause]').click({force:true});
+    cy.contains('Add an annotation to the match');
+  });
 });
