@@ -36,7 +36,7 @@ import { MatFormFieldModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 // import { MatTreeModule } from '@angular/material';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatSortModule } from '@angular/material';
+import { MatSortModule, MatIconModule } from '@angular/material';
 import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CdkTreeModule } from '@angular/cdk/tree';
@@ -89,7 +89,8 @@ export const firebaseConfig = {
     MatSortModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatTreeModule
+    MatTreeModule,
+    MatIconModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
   bootstrap: [AppComponent]

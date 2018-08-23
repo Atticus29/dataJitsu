@@ -2,16 +2,33 @@
 <div id="annotationModal" class="modal">
   <div class="modal-content">
     <h4>Add an annotation to the match</h4>
-    <mat-tree [treeControl]="nestedTreeControl">
-      <mat-nested-tree-node>
-        parent node
-        <mat-nested-tree-node> -- child node1 </mat-nested-tree-node>
-        <mat-nested-tree-node> -- child node2 </mat-nested-tree-node>
-      </mat-nested-tree-node>
-    </mat-tree>
-  </div>
-  <div class="modal-footer">
-    <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()">Done</button>
-    <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
-  </div>
+    <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+        <li class="mat-tree-node">
+          <button mat-icon-button disabled></button>
+          {{node.filename}}:  {{node.type}}
+        </li>
+      </mat-tree-node>
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+        <li>
+          <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.filename">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          {{node.filename}}
+        </div>
+        <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </li>
+    </mat-nested-tree-node>
+  </mat-tree>
+</div>
+<div class="modal-footer">
+  <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()">Done</button>
+  <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
+</div>
 </div>
