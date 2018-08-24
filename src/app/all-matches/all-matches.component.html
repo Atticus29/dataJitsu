@@ -6,7 +6,7 @@
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
 <br>
 <div class="" *ngIf='user'>
-  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+  <div class="spinner-container" *ngIf="showLoader">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
   <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
