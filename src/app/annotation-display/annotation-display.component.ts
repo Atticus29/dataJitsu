@@ -140,4 +140,9 @@ export class AnnotationDisplayComponent implements OnInit {
     }
     });
   }
+
+  submitFormAndClose(){
+    console.log("got to submitFormAndClose");
+    //TODO add some way to resume the youtube player from here...
+  }
 }
