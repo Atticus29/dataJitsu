@@ -56,7 +56,7 @@
   - [ ] Edit details of the video
     - [ ] In which case, it immediately goes into a "to be reviewed" pool
 - [ ] Users can annotate a video by:
-  - [ ] User clicks "annotate" while the video is in play
+  - [x] User clicks "annotate" while the video is in play
     - [ ] If a move exists in that time point, that move is displayed to user. User is given option to:
       - [ ] Edit the existing move
         - [ ] The old move is replaced, but stored in the db but flagged as old

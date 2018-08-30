@@ -16,6 +16,8 @@ export class MatchDisplayComponent implements OnInit {
   matchDetails: MatchDetails;
   match: Observable<Match>;
   matchUrl: string;
+  currentTime: string;
+  playCount: number = 0;
   // player: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -45,10 +47,15 @@ export class MatchDisplayComponent implements OnInit {
         }
 
         function onPlayerReady(event) {
-          let pause = document.getElementById("pause").addEventListener("click", function() {
+          let pause = document.getElementById("begin-move").addEventListener("click", function() {
             player.pauseVideo();
           });
           document.getElementById("play").addEventListener("click", function() {
+            player.playVideo();
+          });
+          document.getElementById("end-move").addEventListener("click", function() {
+            player.pauseVideo();
+            //TODO add 1 second delay
             player.playVideo();
           });
         }
@@ -56,6 +63,18 @@ export class MatchDisplayComponent implements OnInit {
         function onPlayerStateChange(event){
           if (event.data == window['YT'].PlayerState.PAUSED) {
             console.log(player.getCurrentTime());
+            this.currentTime = player.getCurrentTime();
+            this.pauseAndAnnotate(this.currentTime);
+            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+          };
+          if(event.data==window['YT'].PlayerState.PLAYING){
+            this.playCount = this.playCount + 1;
+          }
+          if (event.data == window['YT'].PlayerState.PLAYING && this.playCount >= 1) {
+            console.log(player.getCurrentTime());
+            this.currentTime = player.getCurrentTime();
+            this.resumeAndFinishAnnotation(this.currentTime);
+            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           }
         }
 
@@ -76,8 +95,14 @@ export class MatchDisplayComponent implements OnInit {
     return result[1];
   }
 
-  pauseAndAnnotate(){
-    console.log("pause clicked method!");
+  pauseAndAnnotate(currentTime: string){
+    console.log("pause beginning of move");
+    console.log(currentTime);
+  }
+
+  resumeAndFinishAnnotation(currentTime: string){
+    console.log("resume end of move");
+    console.log(currentTime);
   }
 
 
