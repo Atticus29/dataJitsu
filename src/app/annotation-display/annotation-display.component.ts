@@ -93,7 +93,6 @@ export class FileDatabase {
           node.type = value;
         }
       }
-
       return accumulator.concat(node);
     }, []);
   }
