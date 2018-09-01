@@ -6,6 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from './authorization.service';
 import { ProtectionGuard } from './protection.guard';
 import { constants } from './constants';
+import { ChangeDetectorRef } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +20,22 @@ export class AppComponent implements OnInit {
   user: any = null;
   userObjFromDb;
   title: string = constants.title;
+  authenticationStatus: boolean;
 
   shouldAnnotate: boolean = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router){}
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth){}
 
   ngOnInit() {
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
+    });
+    this.afAuth.authState.subscribe(user =>{
+      // console.log(user);
+      if(user){
+        // console.log("user exists");
+        this.authenticationStatus = true;
+      }
     });
   }
 
@@ -35,15 +45,16 @@ export class AppComponent implements OnInit {
 
   logout(){
     this.authService.logout();
-    this.authService.isAuthenticated().subscribe(authStatus =>{
-      if(authStatus==false){
+    this.afAuth.authState.subscribe(user =>{
+      if(!user){
         console.log("got here");
         this.authService.user = null;
         this.authService.setAuthenticated(false);
         this.router.navigate(['login']);
+        this.authenticationStatus = false;
+        // this.cdr.detectChanges();
       }
-    })
-    // console.log(this.authService.user);
+    });
   }
 
 

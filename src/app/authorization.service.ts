@@ -31,11 +31,11 @@ export class AuthorizationService {
     //@TODO handle userCreation when they log in with google (associating the userID with the uuid)
   }
 
-  isAuthenticated() {
-    return this.authenticated;
-    // return this.afAuth.authState;
-    //@TODO Not yet clear whether moving this into the now-defunct isAuthenticated method of authorization service would work
-  }
+  // isAuthenticated() { //TODO I can't figure out how to get this to work, so I'm just using this.afAuth.authState.subscribe (user) if(user)
+  //   return this.authenticated;
+  //   //old // return this.afAuth.authState;
+  //   //@TODO Not yet clear whether moving this into the now-defunct isAuthenticated method of authorization service would work
+  // }
 
   logout() {
     if(confirm("Are you sure you want to sign out?")){
@@ -71,7 +71,7 @@ export class AuthorizationService {
     });
   }
 
-  setAuthenticated(newStatus: boolean){
+  setAuthenticated(newStatus: boolean){ //TODO this.authenticated isn't working as expected. Might get rid of this
     this.authenticated = of(newStatus);
   }
 
