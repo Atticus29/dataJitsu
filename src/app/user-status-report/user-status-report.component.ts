@@ -7,7 +7,6 @@ import { AuthorizationService } from '../authorization.service';
 import * as firebase from 'firebase/app';
 import { constants } from '../constants';
 import { ChangeDetectorRef } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-user-status-report',
@@ -20,9 +19,8 @@ export class UserStatusReportComponent implements OnInit {
   userObjFromDb;
   shouldAnnotate: boolean = false;
   paidStatus: any = null;
-  authenticationStatus: boolean;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     // console.log("ngOnInit user-status-report is called");
@@ -63,30 +61,10 @@ export class UserStatusReportComponent implements OnInit {
         });
       }
     });
-    this.afAuth.authState.subscribe(user =>{
-      if(user){
-        this.authenticationStatus = true;
-        console.log(this.authenticationStatus);
-      } else {
-        this.authenticationStatus = false;
-        console.log(this.authenticationStatus);
-      }
-    });
   }
 
   ngOnDestroy(){
     // this.authService.unsubscribe();
-
-    //TODO delete after 9.1.2018
-    // this.afAuth.authState.subscribe(user =>{
-    //   if(user){
-    //     this.authenticationStatus = true;
-    //     console.log(this.authenticationStatus);
-    //   } else {
-    //     this.authenticationStatus = false;
-    //     console.log(this.authenticationStatus);
-    //   }
-    // });
   }
 
   calculateDaysSinceLastAnnotation(date: Date){ //TODO move to service
