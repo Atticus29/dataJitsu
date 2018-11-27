@@ -28,19 +28,47 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { UserStatusReportComponent } from './user-status-report/user-status-report.component';
 import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-details/payment-or-annotation-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material';
-import { MatTableModule } from '@angular/material/table';
-// import { MatTreeModule } from '@angular/material';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatSortModule, MatIconModule } from '@angular/material';
-import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
+import {
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheetModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+} from '@angular/material';
 
 
 export const firebaseConfig = {
@@ -90,7 +118,8 @@ export const firebaseConfig = {
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
   bootstrap: [AppComponent]

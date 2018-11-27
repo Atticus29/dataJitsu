@@ -47,11 +47,11 @@ export class MatchDisplayComponent implements OnInit {
         }
 
         function onPlayerReady(event) {
-          let pause = document.getElementById("begin-move").addEventListener("click", function() {
-            player.pauseVideo();
-          });
           document.getElementById("play").addEventListener("click", function() {
             player.playVideo();
+          });
+          let pause = document.getElementById("begin-move").addEventListener("click", function() {
+            player.pauseVideo();
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();

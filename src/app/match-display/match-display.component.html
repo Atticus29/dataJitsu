@@ -7,13 +7,13 @@
           <div class="video-container">
             <iframe id="videoIframe" src="https://www.youtube.com/embed/dzVF_uXk3EY?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
           </div>
-          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" data-tooltip="Play">
+          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
-          <a id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate" (click)="pauseAndAnnotate()">
-            <i class="material-icons">pause</i><i class="material-icons">edit</i>
+          <a id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" (click)="pauseAndAnnotate()">
+            <i class="material-icons">pause</i>
           </a>
-          <a id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped"  data-position="bottom" data-tooltip="Pause and annotate" (click)="resumeAndFinishAnnotation()">
+          <a id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" (click)="resumeAndFinishAnnotation()">
             <i class="material-icons">done</i>
           </a>
           <!-- <input id="pause" type="submit" value="pause" /> -->
