@@ -1,9 +1,9 @@
 
 # Bugs
-- [ ] 
+- [ ] Gi/Nogi on match-display says false
+- [ ] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
 
 # Specs
-- [ ] Migrate to firestore
 - [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
 - [x] Users can create an account
@@ -93,3 +93,6 @@
 
 
 A *match* is composed of *match details* and *moves*.
+
+# Low priority specs
+- [ ] Migrate to firestore?
