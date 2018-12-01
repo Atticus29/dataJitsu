@@ -10,11 +10,14 @@
           <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
-          <a id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" (click)="pauseAndAnnotate()">
-            <i class="material-icons">pause</i>
+          <a id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move">
+            <i class="material-icons">arrow_drop_up</i>
           </a>
           <a id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" (click)="resumeAndFinishAnnotation()">
-            <i class="material-icons">done</i>
+            <i class="material-icons">arrow_drop_down</i>
+          </a>
+          <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
+            <i class="material-icons">pause</i>
           </a>
           <!-- <input id="pause" type="submit" value="pause" /> -->
           <p>TODO: Add stars based on rating here</p>
@@ -37,7 +40,7 @@
     </div>
     <div class="row">
       <div class="col s12 m12" id="annotation-display">
-        <app-annotation-display></app-annotation-display>
+        <app-annotation-display (moveSelected)="onMoveSelected($event)"></app-annotation-display>
       </div>
     </div>
   </div>

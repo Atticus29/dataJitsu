@@ -1,9 +1,13 @@
 
-# Bugs
-- [ ] Gi/Nogi on match-display says false
+# Bugs High Priority
+- [ ] //TODO createMoveInVideo from form submission
 - [ ] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
+- [ ] Gi/Nogi on match-display says false
+
+# Bugs Low Priority
 
 # Specs
+- [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
 - [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
 - [x] Users can create an account

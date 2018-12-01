@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DatabaseService } from '../database.service';
-import { MatchDetails } from '../matchDetails.model';
-import { Match } from '../match.model';
+
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { DatabaseService } from '../database.service';
+
+import { MatchDetails } from '../matchDetails.model';
+import { Match } from '../match.model';
+import { MoveInVideo } from '../moveInVideo.model';
 
 @Component({
   selector: 'app-match-display',
@@ -30,6 +34,7 @@ export class MatchDisplayComponent implements OnInit {
   ngOnInit() {
     console.log("ngOnInit for match-display called");
     let player;
+    let self = this;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
@@ -52,28 +57,38 @@ export class MatchDisplayComponent implements OnInit {
           });
           let pause = document.getElementById("begin-move").addEventListener("click", function() {
             player.pauseVideo();
+            console.log("pause beginning of move");
+            let currentTime = player.getCurrentTime();
+            self.pauseAndAnnotate(currentTime);
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();
+            let currentTime = player.getCurrentTime();
+            self.resumeAndFinishAnnotation(currentTime);
             //TODO add 1 second delay
             player.playVideo();
+          });
+          document.getElementById("pause-vid").addEventListener("click", function() {
+            player.pauseVideo();
+            //TODO add 1 second delay
+            // player.playVideo();
           });
         }
 
         function onPlayerStateChange(event){
           if (event.data == window['YT'].PlayerState.PAUSED) {
-            console.log(player.getCurrentTime());
-            this.currentTime = player.getCurrentTime();
-            this.pauseAndAnnotate(this.currentTime);
+            // console.log(player.getCurrentTime());
+            // this.currentTime = player.getCurrentTime();
+            // this.pauseAndAnnotate(this.currentTime);
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           };
           if(event.data==window['YT'].PlayerState.PLAYING){
-            this.playCount = this.playCount + 1;
+            self.playCount = self.playCount + 1;
           }
-          if (event.data == window['YT'].PlayerState.PLAYING && this.playCount >= 1) {
-            console.log(player.getCurrentTime());
-            this.currentTime = player.getCurrentTime();
-            this.resumeAndFinishAnnotation(this.currentTime);
+          if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
+            // console.log(player.getCurrentTime());
+            // this.currentTime = player.getCurrentTime();
+            // this.resumeAndFinishAnnotation(this.currentTime);
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           }
         }
@@ -96,13 +111,18 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   pauseAndAnnotate(currentTime: string){
-    console.log("pause beginning of move");
+    console.log("got into pauseAndAnnotate method");
     console.log(currentTime);
   }
 
   resumeAndFinishAnnotation(currentTime: string){
     console.log("resume end of move");
     console.log(currentTime);
+  }
+
+  onMoveSelected(moveSelected: MoveInVideo){
+    console.log("got into onMoveSelected");
+    console.log(moveSelected);
   }
 
 

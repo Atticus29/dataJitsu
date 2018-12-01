@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../database.service';
-import { Subject } from 'rxjs';
-import { TextTransformationService } from '../text-transformation.service';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
+import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { MatIconModule } from '@angular/material';
 import {NestedTreeControl} from '@angular/cdk/tree';
+
+import { Subject, of, BehaviorSubject, Observable } from 'rxjs';
+
+import { DatabaseService } from '../database.service';
+import { TextTransformationService } from '../text-transformation.service';
+
 import { allCurrentMoves } from '../moves';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { of } from 'rxjs';
-import { Injectable } from '@angular/core';
+
+import { MoveInVideo } from '../moveInVideo.model';
+
 declare var $:any;
 
 export class FileNode {
@@ -106,6 +108,7 @@ export class FileDatabase {
 })
 export class AnnotationDisplayComponent implements OnInit {
   // private treeData = JSON.stringify(allCurrentMoves);
+  @Output() moveSelected = new EventEmitter<MoveInVideo>();
 
   nestedTreeControl: NestedTreeControl<FileNode>;
   nestedDataSource: MatTreeNestedDataSource<FileNode>;
@@ -143,6 +146,9 @@ export class AnnotationDisplayComponent implements OnInit {
 
   submitFormAndClose(){
     console.log("got to submitFormAndClose");
+    //TODO createMoveInVideo from form submission
+    let tempMove = new MoveInVideo('0', 'armbar', 'me', 'you', 1, 2, 0, '12345', true);
+    this.moveSelected.emit(tempMove);
     //TODO add some way to resume the youtube player from here...
   }
 }
