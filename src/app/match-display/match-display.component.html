@@ -10,12 +10,12 @@
           <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
-          <a id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move">
+          <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled">
             <i class="material-icons">arrow_drop_up</i>
-          </a>
-          <a id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" (click)="resumeAndFinishAnnotation()">
+          </button>
+          <button id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" [disabled]="annotationFinishButtonDisabled">
             <i class="material-icons">arrow_drop_down</i>
-          </a>
+          </button>
           <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
             <i class="material-icons">pause</i>
           </a>
