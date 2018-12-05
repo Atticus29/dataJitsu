@@ -1,7 +1,10 @@
+# TODO high priority
+- [ ] Add test for starting and stopping an annotation
+- [ ] Fix test for clicking pause?
 
 # Bugs High Priority
 - [ ] //TODO createMoveInVideo from form submission
-- [ ] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
+- [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
 - [ ] Gi/Nogi on match-display says false
 
 # Bugs Low Priority
