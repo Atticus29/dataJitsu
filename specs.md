@@ -1,4 +1,13 @@
-- [ ] Migrate to firestore
+
+# Bugs High Priority
+- [ ] //TODO createMoveInVideo from form submission
+- [ ] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
+- [ ] Gi/Nogi on match-display says false
+
+# Bugs Low Priority
+
+# Specs
+- [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
 - [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
 - [x] Users can create an account
@@ -56,7 +65,7 @@
   - [ ] Edit details of the video
     - [ ] In which case, it immediately goes into a "to be reviewed" pool
 - [ ] Users can annotate a video by:
-  - [ ] User clicks "annotate" while the video is in play
+  - [x] User clicks "annotate" while the video is in play
     - [ ] If a move exists in that time point, that move is displayed to user. User is given option to:
       - [ ] Edit the existing move
         - [ ] The old move is replaced, but stored in the db but flagged as old
@@ -88,3 +97,6 @@
 
 
 A *match* is composed of *match details* and *moves*.
+
+# Low priority specs
+- [ ] Migrate to firestore?

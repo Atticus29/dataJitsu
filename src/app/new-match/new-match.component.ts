@@ -26,6 +26,7 @@ declare var $:any;
 export class NewMatchComponent implements OnInit {
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
+  private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
   ranks: any[];
@@ -47,7 +48,7 @@ export class NewMatchComponent implements OnInit {
   checked: boolean = false;
   rankSelection: string;
 
-  newRankForm: FormGroup;
+  newRankForm: FormGroup; //TODO what is this?
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService) {
     // let temp = this.as.isAuthenticated();
@@ -84,16 +85,16 @@ export class NewMatchComponent implements OnInit {
 
     this.newMatchForm = this.fb.group({
       matchUrlBound: ['', Validators.required],
-      athlete1NameBound: ['', Validators.required],
-      athlete2NameBound: ['', Validators.required],
-      tournamentNameBound: ['', Validators.required],
-      locationBound: ['', Validators.required],
-      tournamentDateBound: ['', Validators.required],
-      genderBound: ['', Validators.required],
-      ageClassBound: ['', Validators.required],
-      rankBound: ['', Validators.required],
-      weightBound: ['', Validators.required],
-      giStatusBound: ['', Validators.required]
+      athlete1NameBound: [''],
+      athlete2NameBound: [''],
+      tournamentNameBound: [''],
+      locationBound: [''],
+      tournamentDateBound: [''],
+      genderBound: [''],
+      ageClassBound: [''],
+      rankBound: [''],
+      weightBound: [''],
+      giStatusBound: ['']
     });
 
     this.newRankForm = this.fb.group({
@@ -114,7 +115,7 @@ export class NewMatchComponent implements OnInit {
 
   allValid(matchForm: FormGroup){
     let values = matchForm.value;
-    if(this.vs.validateUrl(values.matchUrlBound) && values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== "" ){
+    if(this.vs.validateUrl(values.matchUrlBound)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
       return true;
     } else{
       return false;
@@ -122,51 +123,23 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
+    console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
+    this.rankBound = rankBound==undefined ? "" : rankBound;
+    // athlete1NameBound = athlete1NameBound==undefined ? "" : athlete1NameBound;
+    // console.log(athlete1NameBound);
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().pipe(switchMap(userInfo => {
         // TODO fix this/make sure it's working
-        // console.log("got into getCurrentUser");
         return Observable.create(obs=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
           let match = new Match(matchDeets, snapshot.key, moves);
-          // console.log(match);
+          console.log("this happened");
           obs.next(match);
         });
         });
       }));
-    //
-    // let userObservable = this.as.getCurrentUser();
-    // let higherOrder = userObservable.map(userInfo =>{
-    //   this.db.getNodeIdFromEmail(userInfo.email);
-    // });
-    // return Observable.create(obs =>{
-    //   higherOrder.on("child_added", snapshot =>{
-    //     let match = new Match(matchDeets, snapshot.key, moves);
-    //     obs.next(match);
-    //   });
-    // });
-
-    // return Observable.switchMap(obs=>{
-    //   this.as.getCurrentUser().switchMap(userInfo =>{
-    //     this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot =>{
-    //       let match = new Match(matchDeets, snapshot.key, moves);
-    //       obs.next(match);
-    //     });
-    //   });
-    // });
-
-    // this.as.getCurrentUser()
-    //   .switchMap(userInfo => {
-    //     console.log("got into getCurrentUser");
-    //     return Observable.create(obs =>{
-    //       this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
-    //         let match = new Match(matchDeets, snapshot.key, moves);
-    //         obs.next(match);
-    //       });
-    //     });
-    //   });
   }
 
   onChange(val){

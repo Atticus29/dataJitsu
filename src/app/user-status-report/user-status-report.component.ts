@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from '../authorization.service';
 import * as firebase from 'firebase/app';
 import { constants } from '../constants';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-user-status-report',
@@ -19,10 +20,10 @@ export class UserStatusReportComponent implements OnInit {
   shouldAnnotate: boolean = false;
   paidStatus: any = null;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    console.log("ngOnInit user-status-report is called");
+    // console.log("ngOnInit user-status-report is called");
     this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
@@ -62,11 +63,11 @@ export class UserStatusReportComponent implements OnInit {
     });
   }
 
-  // ngOnDestroy(){
-  //   this.authService.unsubscribe();
-  // }
+  ngOnDestroy(){
+    // this.authService.unsubscribe();
+  }
 
-  calculateDaysSinceLastAnnotation(date: Date){
+  calculateDaysSinceLastAnnotation(date: Date){ //TODO move to service
     let today: Date = new Date();
     let parsedToday = this.parseDate(today);
     let parsedAnnotationDate = this.parseDate(date);
@@ -74,12 +75,12 @@ export class UserStatusReportComponent implements OnInit {
     return numDays;
   }
 
-  parseDate(str) {
+  parseDate(str) { //TODO move to service
     var mdy = str.split('/');
     return new Date(mdy[2], mdy[0]-1, mdy[1]);
   }
 
-  datediff(first, second) {
+  datediff(first, second) { //TODO move to service
     // Take the difference between the dates and divide by milliseconds per day.
     // Round to nearest whole number to deal with DST.
     return Math.round((second-first)/(1000*60*60*24));

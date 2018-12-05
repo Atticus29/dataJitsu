@@ -1,25 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DatabaseService } from '../database.service';
-import { MatchDetails } from '../matchDetails.model';
-import { Match } from '../match.model';
+
+import {MatSnackBar} from '@angular/material';
+
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { DatabaseService } from '../database.service';
+
+import { MatchDetails } from '../matchDetails.model';
+import { Match } from '../match.model';
+import { MoveInVideo } from '../moveInVideo.model';
+var player;
 
 @Component({
   selector: 'app-match-display',
   templateUrl: './match-display.component.html',
   styleUrls: ['./match-display.component.scss']
 })
+
 export class MatchDisplayComponent implements OnInit {
   matchId : string;
   matchDetails: MatchDetails;
   match: Observable<Match>;
   matchUrl: string;
+  currentTime: string;
+  playCount: number = 0;
+  private annotationFinishButtonDisabled: boolean = true;
   // player: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar) { }
 
   ngOnDestroy(){
 
@@ -27,11 +38,11 @@ export class MatchDisplayComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit for match-display called");
-    let player;
+
+    let self = this;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        console.log("got to getMatchFromNodeKey");
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
@@ -44,18 +55,40 @@ export class MatchDisplayComponent implements OnInit {
           });
         }
 
-        function onPlayerReady(event) {
-          let pause = document.getElementById("pause").addEventListener("click", function() {
-            player.pauseVideo();
-          });
+        let onPlayerReady = (event) => {
           document.getElementById("play").addEventListener("click", function() {
             player.playVideo();
+          });
+          let pause = document.getElementById("begin-move").addEventListener("click", function() {
+            //TODO add 1 second rewind?
+            player.pauseVideo();
+            console.log("pause beginning of move");
+            let currentTime = player.getCurrentTime();
+            self.beginAnnotation(currentTime);
+          });
+          document.getElementById("end-move").addEventListener("click", function() {
+            player.pauseVideo();
+            let currentTime = player.getCurrentTime();
+            self.finishAnnotation(currentTime);
+            self.openSnackBar("Move Recorded");
+            self.annotationFinishButtonDisabled = true;
+            //TODO add 1 second delay
+            player.playVideo();
+          });
+          document.getElementById("pause-vid").addEventListener("click", function() {
+            player.pauseVideo();
           });
         }
 
         function onPlayerStateChange(event){
           if (event.data == window['YT'].PlayerState.PAUSED) {
-            console.log(player.getCurrentTime());
+            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+          };
+          if(event.data==window['YT'].PlayerState.PLAYING){
+            self.playCount = self.playCount + 1;
+          }
+          if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
+            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           }
         }
 
@@ -76,8 +109,23 @@ export class MatchDisplayComponent implements OnInit {
     return result[1];
   }
 
-  pauseAndAnnotate(){
-    console.log("pause clicked method!");
+  beginAnnotation(currentTime: string){
+    console.log(currentTime);
+    this.annotationFinishButtonDisabled = false;
+  }
+
+  finishAnnotation(currentTime: string){
+    console.log(currentTime);
+  }
+
+  onMoveSelected(moveSelected: MoveInVideo){
+    console.log(moveSelected);
+    player.playVideo();
+  }
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 3000,
+    });
   }
 
 

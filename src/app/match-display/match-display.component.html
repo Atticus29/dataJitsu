@@ -7,11 +7,17 @@
           <div class="video-container">
             <iframe id="videoIframe" src="https://www.youtube.com/embed/dzVF_uXk3EY?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
           </div>
-          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" data-tooltip="Play">
+          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
-          <a id="pause" type="submit" value="pause" class="btn-floating halfwary-fab waves-effect waves-light red tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" data-tooltip="Pause and annotate" (click)="pauseAndAnnotate()">
-            <i class="material-icons">edit</i>
+          <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled">
+            <i class="material-icons">arrow_drop_up</i>
+          </button>
+          <button id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" [disabled]="annotationFinishButtonDisabled">
+            <i class="material-icons">arrow_drop_down</i>
+          </button>
+          <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
+            <i class="material-icons">pause</i>
           </a>
           <!-- <input id="pause" type="submit" value="pause" /> -->
           <p>TODO: Add stars based on rating here</p>
@@ -34,7 +40,7 @@
     </div>
     <div class="row">
       <div class="col s12 m12" id="annotation-display">
-        <app-annotation-display></app-annotation-display>
+        <app-annotation-display (moveSelected)="onMoveSelected($event)"></app-annotation-display>
       </div>
     </div>
   </div>
