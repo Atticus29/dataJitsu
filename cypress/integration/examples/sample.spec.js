@@ -109,7 +109,7 @@ describe ('Firestarter', () =>{
     cy.contains('vs.');
     cy.get('a[id=play]').click({force:true});
     cy.wait(5000);
-    cy.get('a[id=pause]').click({force:true});
+    cy.get('a[id=pause-vid]').click({force:true});
     cy.contains('Add an annotation to the match');
   });
 

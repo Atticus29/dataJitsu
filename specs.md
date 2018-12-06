@@ -1,6 +1,6 @@
 # TODO high priority
 - [ ] Add test for starting and stopping an annotation
-- [ ] Fix test for clicking pause?
+- [x] Fix test for clicking pause
 
 # Bugs High Priority
 - [ ] //TODO createMoveInVideo from form submission
