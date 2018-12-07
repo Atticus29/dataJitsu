@@ -2,7 +2,7 @@
   <div class="modal-content">
     <h4>Add an annotation to the match</h4>
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
           <button mat-icon-button disabled></button>
           {{node.item}}
       </mat-tree-node>

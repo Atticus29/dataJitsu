@@ -173,4 +173,8 @@ export class AnnotationDisplayComponent implements OnInit {
     this.moveSelected.emit(tempMove);
     //TODO add some way to resume the youtube player from here...
   }
+
+  selectItem(item: string){
+    console.log("clicked!" + item);
+  }
 }
