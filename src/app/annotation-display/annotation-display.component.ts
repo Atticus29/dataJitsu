@@ -1,9 +1,11 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { MatIconModule } from '@angular/material';
-import {NestedTreeControl} from '@angular/cdk/tree';
+import {NestedTreeControl, FlatTreeControl} from '@angular/cdk/tree';
+import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
 
-import { Subject, of, BehaviorSubject, Observable } from 'rxjs';
+import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
@@ -14,89 +16,110 @@ import { MoveInVideo } from '../moveInVideo.model';
 
 declare var $:any;
 
-export class FileNode {
-  children: FileNode[];
-  filename: string;
-  type: any;
+
+/** Flat node with expandable and level information */
+export class DynamicFlatNode {
+  constructor(public item: string, public level = 1, public expandable = false,
+              public isLoading = false) {}
 }
 
-const treeData = JSON.stringify({
-Applications: {
-  Calendar: 'app',
-  Chrome: 'app',
-  Webstorm: 'app'
-},
-Documents: {
-  angular: {
-    src: {
-      compiler: 'ts',
-      core: 'ts'
-    }
-  },
-  material2: {
-    src: {
-      button: 'ts',
-      checkbox: 'ts',
-      input: 'ts'
-    }
+/**
+ * Database for dynamic data. When expanding a node in the tree, the data source will need to fetch
+ * the descendants data from the database.
+ */
+export class DynamicDatabase {
+  dataMap = new Map<string, string[]>([
+    ['Fruits', ['Apple', 'Orange', 'Banana']],
+    ['Vegetables', ['Tomato', 'Potato', 'Onion']],
+    ['Apple', ['Fuji', 'Macintosh']],
+    ['Onion', ['Yellow', 'White', 'Purple']]
+  ]);
+
+  rootLevelNodes: string[] = ['Fruits', 'Vegetables'];
+
+  /** Initial data from database */
+  initialData(): DynamicFlatNode[] {
+    return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
-},
-Downloads: {
-  October: 'pdf',
-  November: 'pdf',
-  Tutorial: 'html'
-},
-Pictures: {
-  'Photo Booth Library': {
-    Contents: 'dir',
-    Pictures: 'dir'
-  },
-  Sun: 'png',
-  Woods: 'jpg'
-}
-});
 
+  getChildren(node: string): string[] | undefined {
+    return this.dataMap.get(node);
+  }
+
+  isExpandable(node: string): boolean {
+    return this.dataMap.has(node);
+  }
+}
+/**
+ * File database, it can build a tree structured Json object from string.
+ * Each node in Json object represents a file or a directory. For a file, it has filename and type.
+ * For a directory, it has filename and children (a list of files or directories).
+ * The input will be a json object string, and the output is a list of `FileNode` with nested
+ * structure.
+ */
 @Injectable()
-export class FileDatabase {
-  dataChange = new BehaviorSubject<FileNode[]>([]);
+export class DynamicDataSource {
 
-  get data(): FileNode[] { return this.dataChange.value; }
+  dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
-  constructor() {
-    this.initialize();
+  get data(): DynamicFlatNode[] { return this.dataChange.value; }
+  set data(value: DynamicFlatNode[]) {
+    this.treeControl.dataNodes = value;
+    this.dataChange.next(value);
   }
 
-  initialize() {
-    // Parse the string to json object.
-    const dataObject = JSON.parse(treeData);
+  constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
+              private database: DynamicDatabase) {}
 
-    // Build the tree nodes from Json object. The result is a list of `FileNode` with nested
-    //     file node as children.
-    const data = this.buildFileTree(dataObject, 0);
+  connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
+    this.treeControl.expansionModel.onChange.subscribe(change => {
+      if ((change as SelectionChange<DynamicFlatNode>).added ||
+        (change as SelectionChange<DynamicFlatNode>).removed) {
+        this.handleTreeControl(change as SelectionChange<DynamicFlatNode>);
+      }
+    });
 
-    // Notify the change.
-    this.dataChange.next(data);
+    return merge(collectionViewer.viewChange, this.dataChange).pipe(map(() => this.data));
+  }
+
+  /** Handle expand/collapse behaviors */
+  handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
+    if (change.added) {
+      change.added.forEach(node => this.toggleNode(node, true));
+    }
+    if (change.removed) {
+      change.removed.slice().reverse().forEach(node => this.toggleNode(node, false));
+    }
   }
 
   /**
-   * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
-   * The return value is the list of `FileNode`.
+   * Toggle the node, remove from display list
    */
-  buildFileTree(obj: object, level: number): FileNode[] {
-    return Object.keys(obj).reduce<FileNode[]>((accumulator, key) => {
-      const value = obj[key];
-      const node = new FileNode();
-      node.filename = key;
+  toggleNode(node: DynamicFlatNode, expand: boolean) {
+    const children = this.database.getChildren(node.item);
+    const index = this.data.indexOf(node);
+    if (!children || index < 0) { // If no children, or cannot find the node, no op
+      return;
+    }
 
-      if (value != null) {
-        if (typeof value === 'object') {
-          node.children = this.buildFileTree(value, level + 1);
-        } else {
-          node.type = value;
-        }
+    node.isLoading = true;
+
+    setTimeout(() => {
+      if (expand) {
+        const nodes = children.map(name =>
+          new DynamicFlatNode(name, node.level + 1, this.database.isExpandable(name)));
+        this.data.splice(index + 1, 0, ...nodes);
+      } else {
+        let count = 0;
+        for (let i = index + 1; i < this.data.length
+          && this.data[i].level > node.level; i++, count++) {}
+        this.data.splice(index + 1, count);
       }
-      return accumulator.concat(node);
-    }, []);
+
+      // notify the change
+      this.dataChange.next(this.data);
+      node.isLoading = false;
+    }, 1000);
   }
 }
 
@@ -104,31 +127,30 @@ export class FileDatabase {
   selector: 'app-annotation-display',
   templateUrl: './annotation-display.component.html',
   styleUrls: ['./annotation-display.component.scss'],
-  providers: [FileDatabase]
+  providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent implements OnInit {
   // private treeData = JSON.stringify(allCurrentMoves);
   @Output() moveSelected = new EventEmitter<MoveInVideo>();
 
-  nestedTreeControl: NestedTreeControl<FileNode>;
-  nestedDataSource: MatTreeNestedDataSource<FileNode>;
+  treeControl: FlatTreeControl<DynamicFlatNode>;
+  dataSource: DynamicDataSource;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private moveCategories: string[];
-  hasNestedChild = (_: number, nodeData: FileNode) => !nodeData.type;
-  // private _getChildren = (node: FileNode) => node.children;
-  private _getChildren(node: FileNode): Observable<FileNode[]> {
-    const observable = of(node.children);
-    return observable;
-  };
+  isExpandable = (node: DynamicFlatNode) => node.expandable;
+  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
+  getLevel = (node: DynamicFlatNode) => node.level;
 
-  constructor(private db: DatabaseService, textTransformationService: TextTransformationService, database: FileDatabase) {
+  constructor(private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase) {
     //TODO fix this after mat-tree SO branch gets resolved
-    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
-    this.nestedDataSource = new MatTreeNestedDataSource();
+    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new DynamicDataSource(this.treeControl, database);
 
-    database.dataChange.subscribe(data =>{
-      this.nestedDataSource.data = data;
-    });
+    this.dataSource.data = database.initialData();
+
+    // database.dataChange.subscribe(data =>{
+    //   this.nestedDataSource.data = data;
+    // });
   }
 
   ngOnInit() {
