@@ -3,9 +3,10 @@ orbs:
   cypress: cypress-io/cypress@1.0.1
 workflows:
   build:
+    environment:
+      masterFirebaseConfig: $masterFirebaseConfig
     jobs:
       - cypress/install:
-          context: masterFirebaseConfig
           build: 'npm run build'
       - cypress/run:
           requires:
