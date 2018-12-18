@@ -5,9 +5,9 @@ workflows:
   build:
     jobs:
       - cypress/install:
+          environment: masterFirebaseConfig: $masterFirebaseConfig
           build: 'npm run build'
       - cypress/run:
           requires:
             - cypress/install
           start: 'npm start'
-      environment: masterFirebaseConfig: $masterFirebaseConfig
