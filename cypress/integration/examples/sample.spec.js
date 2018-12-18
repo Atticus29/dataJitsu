@@ -20,7 +20,7 @@ describe ('Firestarter', () =>{
   });
 
   it('logs out intially might fails', ()=>{
-    cy.visit('http://localhost:4200');
+    // cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
   });
