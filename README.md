@@ -1,3 +1,10 @@
+# Integration Testing
+
+DataJitsu implements [Cypress](https://www.cypress.io/) for integration tests.
+It implements CI using [CircleCI](https://circleci.com/)
+
+[![CircleCI](https://circleci.com/gh/Atticus29/dataJitsu/tree/master.svg?style=svg)](https://circleci.com/gh/Atticus29/dataJitsu/tree/master)
+
 # Known issues
 
 - [ ] API key is currently public. Reset this.
