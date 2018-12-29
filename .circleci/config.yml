@@ -1,10 +1,19 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1.0.1
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+     - run:
+        name: Make api keys file
+        command: |
+          touch api-keys.ts
+          echo "export var masterFirebaseConfig = {apiKey: $fireBaseApiKey,authDomain: 'dataJitsu.firebaseapp.com',databaseURL: 'https://datajitsu.firebaseio.com',storageBucket: '',messagingSenderId: '495992924984'};" >> api-keys.ts
+          echo "export var masterStripeConfig = {publicApiTestKey: $masterStripePublicApiKey, secretApiTestKey: $masterStripeSecretApiKey, publicApiKey: '',secretApiKey: ''};" >> api-keys.ts
 workflows:
   build:
-    environment:
-      masterFirebaseConfig: $masterFirebaseConfig
     jobs:
       - cypress/install:
           build: 'npm run build'
