@@ -9,7 +9,7 @@ jobs:
      - run:
         name: Make api keys file
         command: |
-          touch ./api-keys
+          touch ./src/app/api-keys.ts
           echo "export var masterFirebaseConfig = {apiKey: $fireBaseApiKey,authDomain: 'dataJitsu.firebaseapp.com',databaseURL: 'https://datajitsu.firebaseio.com',storageBucket: '',messagingSenderId: '495992924984'};" >> api-keys.ts
           echo "export var masterStripeConfig = {publicApiTestKey: $masterStripePublicApiKey, secretApiTestKey: $masterStripeSecretApiKey, publicApiKey: '',secretApiKey: ''};" >> api-keys.ts
 workflows:
