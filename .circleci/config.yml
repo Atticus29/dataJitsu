@@ -1,6 +1,11 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1.0.1
+steps:
+  - run:
+      name: Setup Environment Variables
+      command: |
+        echo '$fireBaseApiKey $masterStripePublicApiKey $masterStripeSecretApiKey'
 workflows:
   build:
     jobs:
