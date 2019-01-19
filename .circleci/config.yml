@@ -11,11 +11,9 @@ workflows:
     jobs:
       - cypress/install:
           build: 'npm run build'
+          context: fireBaseApiKey
       - cypress/run:
           requires:
             - cypress/install
           start: 'npm start'
-    environment:
-      fireBaseApiKey: $fireBaseApiKey
-      masterStripePublicApiKey: $masterStripePublicApiKey
-      masterStripeSecretApiKey: $masterStripeSecretApiKey
+          context: fireBaseApiKey
