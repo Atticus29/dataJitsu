@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-// import { masterFirebaseConfig } from './api-keys';
+import { masterFirebaseConfig } from './api-keys';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AppComponent } from './app.component';
@@ -72,7 +72,7 @@ import {
 
 
 export const firebaseConfig = {
-  apiKey: $fireBaseApiKey, //masterFirebaseConfig.apiKey,
+  apiKey: apiKey, //masterFirebaseConfig.apiKey,
   authDomain: 'dataJitsu.firebaseapp.com', //masterFirebaseConfig.authDomain,
   databaseURL: 'https://datajitsu.firebaseio.com',//masterFirebaseConfig.databaseURL,
   storageBucket: '', //masterFirebaseConfig.storageBucket
