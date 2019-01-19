@@ -5,7 +5,7 @@ steps:
   - run:
       name: Setup Environment Variables
       command: |
-        echo '$aTest $fireBaseApiKey $masterStripePublicApiKey $masterStripeSecretApiKey'
+        echo '$fireBaseApiKey'
 workflows:
   build:
     jobs:
