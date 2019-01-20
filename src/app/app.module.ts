@@ -72,7 +72,7 @@ import {
 
 
 export const firebaseConfig = {
-  apiKey: apiKey, //masterFirebaseConfig.apiKey,
+  apiKey: masterFirebaseConfig.apiKey,
   authDomain: 'dataJitsu.firebaseapp.com', //masterFirebaseConfig.authDomain,
   databaseURL: 'https://datajitsu.firebaseio.com',//masterFirebaseConfig.databaseURL,
   storageBucket: '', //masterFirebaseConfig.storageBucket
