@@ -73,9 +73,9 @@ import {
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
-  authDomain: 'dataJitsu.firebaseapp.com', //masterFirebaseConfig.authDomain,
-  databaseURL: 'https://datajitsu.firebaseio.com',//masterFirebaseConfig.databaseURL,
-  storageBucket: '', //masterFirebaseConfig.storageBucket
+  authDomain: masterFirebaseConfig.authDomain,
+  databaseURL: masterFirebaseConfig.databaseURL,
+  storageBucket: masterFirebaseConfig.storageBucket
 };
 
 @NgModule({

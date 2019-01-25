@@ -16,7 +16,7 @@ describe ('Firestarter', () =>{
   const affiliation = 'Straight Blast Gym';
 
   beforeEach(()=>{
-    cy.visit('localhost:4200');
+    cy.visit('/');
   });
 
   it('logs out intially might fails', ()=>{
