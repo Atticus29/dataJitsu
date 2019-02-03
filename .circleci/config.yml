@@ -14,32 +14,32 @@ jobs:
             echo ${CIRCLE_BRANCH}
             echo $fireBaseApiKey
       - restore_cache:
-        keys:
-          - v1-dependencies-{{checksum "package.json"}}
-          - v1-dependencies-
+          keys:
+            - v1-dependencies-{{checksum "package.json"}}
+            - v1-dependencies-
       - run:
-        name: Install local dependencies
-        command: |
-          npm install
-          ng serve
+          name: Install local dependencies
+          command: |
+            npm install
+            ng serve
       - save_cache:
-        key: v1-dependencies-{{checksum "package.json"}}
-        paths:
-          - node_modules
+          key: v1-dependencies-{{checksum "package.json"}}
+          paths:
+            - node_modules
       - run:
-        name: Linting
-        command: npm run lint
+          name: Linting
+          command: npm run lint
       - run:
-        name: Building
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-            npm run build-qa
-          elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-            npm run build-prod
-          else
-            npm run build-dev
-          fi
+          name: Building
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              npm run build-qa
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm run build-prod
+            else
+              npm run build-dev
+            fi
       - save_cache:
-        key: v1-dist-{{ .Environment.CIRCLE_BRANCH}}-{{ .Environment.CIRCLE_SHA1}}
-        paths:
-          - dist
+          key: v1-dist-{{ .Environment.CIRCLE_BRANCH}}-{{ .Environment.CIRCLE_SHA1}}
+          paths:
+            - dist
