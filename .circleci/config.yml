@@ -45,5 +45,6 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+            - build
           start: 'npm start'
           context: fireBaseApiKey
