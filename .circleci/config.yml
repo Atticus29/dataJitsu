@@ -32,3 +32,18 @@ jobs:
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH}}-{{ .Environment.CIRCLE_SHA1}}
           paths:
             - dist
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build
+      - cypress/install:
+          requires:
+            - build
+          build: 'npm run build'
+          context: fireBaseApiKey
+      - cypress/run:
+          requires:
+            - cypress/install
+          start: 'npm start'
+          context: fireBaseApiKey
