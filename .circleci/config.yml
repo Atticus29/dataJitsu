@@ -21,7 +21,6 @@ jobs:
           name: Install local dependencies
           command: |
             npm install
-            ng serve
       - save_cache:
           key: v1-dependencies-{{checksum "package.json"}}
           paths:
