@@ -9,7 +9,16 @@
 // ***********************************************
 //
 //
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    logout(): Chainable<MyCustomType>;
+    login(): Chainable<MyCustomType>;
+  }
+}
 // -- This is a parent command --
+Cypress.Commands.add("logout",() =>{
+  cy.get('a[id=logOutLink]').click();
+})
 // Cypress.Commands.add("login", (email, password) => { ... })
 //
 //
