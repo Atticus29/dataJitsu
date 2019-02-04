@@ -5,7 +5,7 @@ jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: angular/ngcontainer
+      - image: circleci/node:6.10-browsers
     steps:
       - checkout
       - run:
