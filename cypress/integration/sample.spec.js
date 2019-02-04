@@ -26,7 +26,7 @@ describe ('Firestarter', () =>{
   });
 
   it('has a title', () =>{
-    cy.contains('Match Annotator');
+    cy.contains('Match Annotator').should('exist');
   });
 
   it('signs up a new user', () =>{
