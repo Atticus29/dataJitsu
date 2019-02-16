@@ -16,7 +16,9 @@ jobs:
             echo ${CIRCLE_BRANCH}
             ls -larth
             echo $fireBaseApiKey
-            sed -i '' 's/circleCiApiKey/$fireBaseApiKey/g' src/app/api-keys.ts
+            cat src/app/api-keys.ts
+            sed -i 's/circleCiApiKey/$fireBaseApiKey/g' src/app/api-keys.ts
+            cat src/app/api-keys.ts
       - restore_cache:
           keys:
             - v1-dependencies-{{checksum "package.json"}}
