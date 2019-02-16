@@ -47,7 +47,6 @@ workflows:
           requires:
             - build
           build: 'npm run build'
-          context: fireBaseApiKey
       - cypress/run:
           requires:
             - cypress/install
@@ -55,4 +54,3 @@ workflows:
           start: 'npm start'
           store_artifacts: true
           wait-on: 'http-get://localhost:4200'
-          context: fireBaseApiKey
