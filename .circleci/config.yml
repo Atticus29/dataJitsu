@@ -6,6 +6,8 @@ jobs:
     working_directory: ~/project
     docker:
       - image: circleci/node:9.6.1-browsers
+    environment:
+      circleCiApiKey: $fireBaseApiKey
     steps:
       - checkout
       - run:

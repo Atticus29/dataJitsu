@@ -1,5 +1,5 @@
 export var masterFirebaseConfig = {
-    apiKey: "AIzaSyCaYbzcG2lcWg9InMZdb10pL_3d1LBqE1A",
+    apiKey: circleCiApiKey,
     authDomain: "dataJitsu.firebaseapp.com",
     databaseURL: "https://datajitsu.firebaseio.com",
     storageBucket: "",
