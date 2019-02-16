@@ -29,7 +29,7 @@ describe ('Firestarter', () =>{
     cy.contains('Match Annotator').should('exist');
   });
 
-  it('signs up a new user', () =>{
+  it.skip('signs up a new user', () =>{
     cy.contains("Log Out").should("not.exist");
     cy.contains("Rank").should("not.exist");
     cy.contains("Tournament").should("not.exist");
