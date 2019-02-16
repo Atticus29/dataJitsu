@@ -16,20 +16,23 @@ describe ('Firestarter', () =>{
   const affiliation = 'Straight Blast Gym';
 
   beforeEach(()=>{
-    cy.visit('http://localhost:4200');
+    cy.visit('/');
   });
 
-  it('logs out intially might fails', ()=>{
+  it.skip('logs out intially might fails', ()=>{
     // cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
   });
 
   it('has a title', () =>{
-    cy.contains('Match Annotator');
+    cy.contains('Match Annotator').should('exist');
   });
 
   it('signs up a new user', () =>{
+    cy.contains("Log Out").should("not.exist");
+    cy.contains("Rank").should("not.exist");
+    cy.contains("Tournament").should("not.exist");
     cy.get('button[id=new-account-button]').click();
     cy.get('input[id=affiliation]').type(affiliation);
     cy.get('input[id=password]').type(pass);
@@ -57,13 +60,22 @@ describe ('Firestarter', () =>{
     cy.get('#age').contains('27');
 
     cy.get('button[id=create-button]').click();
+
+    cy.url().should('match',/login/);
+    cy.get('input[id=userEmail]').type(email);
+    cy.get('input[id=password]').type(pass);
+    cy.get('button[id=loginSubmit]').click({force:true});
+    cy.contains("Log Out");
+    cy.contains("Rank");
+    cy.contains("Tournament");
+
   })
 
   it('blocks protected routes', () =>{
 
   });
 
-  it('logs in', ()=>{
+  it.skip('logs in', ()=>{
     cy.visit('http://localhost:4200/login');
     cy.get('input[id=userEmail]').type(email);
     cy.get('input[id=password]').type(pass);
@@ -71,7 +83,7 @@ describe ('Firestarter', () =>{
     cy.contains('Match Rating');
   });
 
-  it('logs out', ()=>{
+  it.skip('logs out', ()=>{
     cy.visit('http://localhost:4200/login');
     cy.get('input[id=userEmail]').type(email);
     cy.get('input[id=password]').type(pass);
@@ -82,7 +94,7 @@ describe ('Firestarter', () =>{
   });
 
 
-  it('logs back in and clicks on a match', ()=>{
+  it.skip('logs back in and clicks on a match', ()=>{
     cy.visit('http://localhost:4200/login');
     cy.get('input[id=userEmail]').type(email);
     cy.get('input[id=password]').type(pass);
@@ -95,7 +107,7 @@ describe ('Firestarter', () =>{
     cy.contains('Location');
   });
 
-  it('plays and pauses a match', ()=>{
+  it.skip('plays and pauses a match', ()=>{
     cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
@@ -113,7 +125,7 @@ describe ('Firestarter', () =>{
     cy.contains('Add an annotation to the match');
   });
 
-  it('still sees the table upon reload of the all-matches page', ()=>{
+  it.skip('still sees the table upon reload of the all-matches page', ()=>{
     cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
@@ -127,4 +139,5 @@ describe ('Firestarter', () =>{
     cy.contains('Match Rating');
     cy.contains('Adult'); //TODO improve
   });
+
 });
