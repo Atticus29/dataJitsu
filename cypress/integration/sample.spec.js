@@ -3,7 +3,7 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-describe ('Firestarter', () =>{
+describe ('Sequential login and logout tests', () =>{
   const email = chance.email();
   const name = chance.name();
   const pass = 'ValidPassword23';
@@ -15,21 +15,21 @@ describe ('Firestarter', () =>{
   const gender = 'Male';
   const affiliation = 'Straight Blast Gym';
 
-  beforeEach(()=>{
+  before(()=>{
     cy.visit('/');
   });
 
-  it.skip('logs out intially might fails', ()=>{
-    // cy.visit('http://localhost:4200');
-    cy.get('a[id=logOutLink]').click();
-    cy.contains('Log In');
-  });
+  // it('logs out intially might fails', ()=>{
+  //   // cy.visit('http://localhost:4200');
+  //   cy.get('a[id=logOutLink]').click();
+  //   cy.contains('Log In');
+  // });
 
   it('has a title', () =>{
     cy.contains('Match Annotator').should('exist');
   });
 
-  it.skip('signs up a new user', () =>{
+  it('signs up a new user', () =>{
     cy.contains("Log Out").should("not.exist");
     cy.contains("Rank").should("not.exist");
     cy.contains("Tournament").should("not.exist");
@@ -62,70 +62,63 @@ describe ('Firestarter', () =>{
     cy.get('button[id=create-button]').click();
 
     cy.url().should('match',/login/);
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click({force:true});
-    cy.contains("Log Out");
-    cy.contains("Rank");
-    cy.contains("Tournament");
+    cy.login(email,pass);
+    // cy.get('input[id=userEmail]').type(email);
+    // cy.get('input[id=password]').type(pass);
+    // cy.get('button[id=loginSubmit]').click({force:true});
+    cy.contains("Log Out").should("exist");
+    cy.contains("Rank").should("exist");
+    cy.contains("Tournament").should("exist");
 
   })
 
   it('blocks protected routes', () =>{
-
+    cy.logout();
+    cy.visit('/matches');
+    cy.url().should('match',/login/);
+    //TODO check whether this works
   });
 
-  it.skip('logs in', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
-    cy.contains('Match Rating');
+  it('logs in', ()=>{
+    cy.login(email, pass);
+    cy.contains('Match Rating').should('exist');
   });
 
-  it.skip('logs out', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
-    cy.contains('Match Rating');
+  it('logs out', ()=>{
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
   });
 
 
-  it.skip('logs back in and clicks on a match', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
-    cy.contains('Match Rating');
-    cy.contains('Click');
+  it('logs back in and clicks on a match', ()=>{
+    cy.login(email, pass);
+    // cy.contains('Match Rating');
+    // cy.contains('Click');
     cy.get('a[name=videoClick]').first().click();
-    cy.contains('vs.');
-    cy.contains('Age Class');
-    cy.contains('Location');
+    cy.contains('vs.').should('exist');
+    cy.contains('Age Class').should('exist');
+    cy.contains('Location').should('exist');
   });
 
-  it.skip('plays and pauses a match', ()=>{
-    cy.visit('http://localhost:4200');
-    cy.get('a[id=logOutLink]').click();
-    cy.contains('Log In');
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
-    cy.contains('Match Rating');
-    cy.contains('Click');
-    cy.get('a[name=videoClick]').first().click();
-    cy.contains('vs.');
+  it('plays and pauses a match', ()=>{
+    // cy.visit('http://localhost:4200');
+    // cy.get('a[id=logOutLink]').click();
+    // cy.contains('Log In');
+    // cy.visit('http://localhost:4200/login');
+    // cy.get('input[id=userEmail]').type(email);
+    // cy.get('input[id=password]').type(pass);
+    // cy.get('button[id=loginSubmit]').click();
+    // cy.contains('Match Rating');
+    // cy.contains('Click');
+    // cy.get('a[name=videoClick]').first().click();
+    // cy.contains('vs.');
     cy.get('a[id=play]').click({force:true});
     cy.wait(5000);
     cy.get('a[id=pause-vid]').click({force:true});
     cy.contains('Add an annotation to the match');
   });
 
-  it.skip('still sees the table upon reload of the all-matches page', ()=>{
+  it('still sees the table upon reload of the all-matches page', ()=>{
     cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');

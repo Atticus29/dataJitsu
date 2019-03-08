@@ -58,6 +58,7 @@ export class MatchDisplayComponent implements OnInit {
         let onPlayerReady = (event) => {
           document.getElementById("play").addEventListener("click", function() {
             player.playVideo();
+            console.log("you clicked play");
           });
           let pause = document.getElementById("begin-move").addEventListener("click", function() {
             //TODO add 1 second rewind?
