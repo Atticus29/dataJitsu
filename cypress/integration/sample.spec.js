@@ -19,12 +19,6 @@ describe ('Sequential login and logout tests', () =>{
     cy.visit('/');
   });
 
-  // it('logs out intially might fails', ()=>{
-  //   // cy.visit('http://localhost:4200');
-  //   cy.get('a[id=logOutLink]').click();
-  //   cy.contains('Log In');
-  // });
-
   it('has a title', () =>{
     cy.contains('Match Annotator').should('exist');
   });
@@ -63,9 +57,6 @@ describe ('Sequential login and logout tests', () =>{
 
     cy.url().should('match',/login/);
     cy.login(email,pass);
-    // cy.get('input[id=userEmail]').type(email);
-    // cy.get('input[id=password]').type(pass);
-    // cy.get('button[id=loginSubmit]').click({force:true});
     cy.contains("Log Out").should("exist");
     cy.contains("Rank").should("exist");
     cy.contains("Tournament").should("exist");
@@ -73,10 +64,11 @@ describe ('Sequential login and logout tests', () =>{
   })
 
   it('blocks protected routes', () =>{
+    cy.visit('/matches');
+    cy.url().should('match',/matches/);
     cy.logout();
     cy.visit('/matches');
     cy.url().should('match',/login/);
-    //TODO check whether this works
   });
 
   it('logs in', ()=>{
@@ -92,8 +84,6 @@ describe ('Sequential login and logout tests', () =>{
 
   it('logs back in and clicks on a match', ()=>{
     cy.login(email, pass);
-    // cy.contains('Match Rating');
-    // cy.contains('Click');
     cy.get('a[name=videoClick]').first().click();
     cy.contains('vs.').should('exist');
     cy.contains('Age Class').should('exist');
@@ -101,19 +91,9 @@ describe ('Sequential login and logout tests', () =>{
   });
 
   it('plays and pauses a match', ()=>{
-    // cy.visit('http://localhost:4200');
-    // cy.get('a[id=logOutLink]').click();
-    // cy.contains('Log In');
-    // cy.visit('http://localhost:4200/login');
-    // cy.get('input[id=userEmail]').type(email);
-    // cy.get('input[id=password]').type(pass);
-    // cy.get('button[id=loginSubmit]').click();
-    // cy.contains('Match Rating');
-    // cy.contains('Click');
-    // cy.get('a[name=videoClick]').first().click();
-    // cy.contains('vs.');
     cy.get('a[id=play]').click({force:true});
     cy.wait(5000);
+    //TODO make this real
     cy.get('a[id=pause-vid]').click({force:true});
     cy.contains('Add an annotation to the match');
   });
