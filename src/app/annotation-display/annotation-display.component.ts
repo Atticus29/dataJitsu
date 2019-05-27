@@ -1,8 +1,10 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
+
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { MatIconModule } from '@angular/material';
 import {NestedTreeControl, FlatTreeControl} from '@angular/cdk/tree';
 import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -28,6 +30,14 @@ export class DynamicFlatNode {
  * the descendants data from the database.
  */
 export class DynamicDatabase {
+  constructor(private dbService: DatabaseService){
+  }
+
+  // let testService: DatabaseService = new DatabaseService(new AngularFireDatabase(), new TextTransformationService());
+  this.dbService.getMoves().subscribe(results=>{
+    console.log(results);
+  });
+
   dataMap = new Map<string, string[]>([
     ['Fruits', ['Apple', 'Orange', 'Banana']],
     ['Vegetables', ['Tomato', 'Potato', 'Onion']],

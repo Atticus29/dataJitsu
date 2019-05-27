@@ -50,7 +50,7 @@ export class MatchDisplayComponent implements OnInit {
           player = new window['YT'].Player('videoIframe', {
             events: {
               'onReady': onPlayerReady,
-              'onStateChange': onPlayerStateChange
+              // 'onStateChange': onPlayerStateChange
             }
           });
         }
