@@ -36,7 +36,7 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.0.0",
     "materialize-css": "^0.100.2",
-    "ngx-youtube-player": "0.0.41",
+    "ngx-youtube-player": "7.1.1",
     "rxjs": "^6.0.0",
     "zone.js": "^0.9.1"
   },
@@ -63,6 +63,6 @@
     "protractor": "^5.4.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "3.4.5"
   }
 }
