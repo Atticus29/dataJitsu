@@ -1,5 +1,5 @@
 # Known issues
-
+- [ ] Datatable doesn't respond to deleted matches in real time
 - [ ] Creating new account makes status stuff visible, enables logout button but doesn't have user logged in
 - [ ] Clicking the play button doesn't work
 - [ ] The title in the tab doesn't load
@@ -10,5 +10,7 @@
   - [ ] all of the nested children are displayed without clicking on the parent
   - [ ] none of the children seem clickable
   - [ ] the parents are clickable, but nothing happens other than the focus of the chevron changes and the direction of the chevron changes
+
+# Resolved issues
 - [x] Clicking on matches takes you to /matches/matches instead of just one /matches
 - [x] API key is currently public. Reset this.

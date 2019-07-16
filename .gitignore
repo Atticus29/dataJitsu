@@ -47,3 +47,6 @@ Thumbs.db
 
 # Functions
 /functions
+
+# API Keys
+/src/app/api-keys.ts

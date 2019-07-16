@@ -29,14 +29,15 @@ export class DynamicFlatNode {
  * Database for dynamic data. When expanding a node in the tree, the data source will need to fetch
  * the descendants data from the database.
  */
+@Injectable()
 export class DynamicDatabase {
   constructor(private dbService: DatabaseService){
+    this.dbService.getMoves().subscribe(results=>{
+      console.log(results);
+    });
   }
-
   // let testService: DatabaseService = new DatabaseService(new AngularFireDatabase(), new TextTransformationService());
-  this.dbService.getMoves().subscribe(results=>{
-    console.log(results);
-  });
+
 
   dataMap = new Map<string, string[]>([
     ['Fruits', ['Apple', 'Orange', 'Banana']],
@@ -72,14 +73,15 @@ export class DynamicDataSource {
 
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
+  constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
+    private database: DynamicDatabase) {}
+    
   get data(): DynamicFlatNode[] { return this.dataChange.value; }
   set data(value: DynamicFlatNode[]) {
     this.treeControl.dataNodes = value;
     this.dataChange.next(value);
   }
 
-  constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
-              private database: DynamicDatabase) {}
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this.treeControl.expansionModel.onChange.subscribe(change => {
