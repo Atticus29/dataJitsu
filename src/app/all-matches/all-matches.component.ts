@@ -29,7 +29,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   private matchCount: number;
   private pageSize: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef) { }
 

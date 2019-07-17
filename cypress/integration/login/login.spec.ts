@@ -1,12 +1,22 @@
+
+import Chance from 'chance';
+const chance = new Chance();
+
+// declare namespace Cypress {
+//   interface Chainable<Subject = any> {
+//     logout(): Chainable<undefined>;
+//     login(): Chainable<undefined>;
+//   }
+// }
 /// <reference types="cypress" />
 describe('Login tests with no beforeEach', ()=>{
-  it.only('logout works', () => {
+  it('logout works', () => {
     cy.logout();
   });
 });
 
 describe ('Login tests', () =>{
-  // const email = chance.email();
+  const email = chance.email();
   const name = "Bob";
   const pass = 'ValidPassword23';
   const age = '33';
@@ -18,7 +28,8 @@ describe ('Login tests', () =>{
   const affiliation = 'Straight Blast Gym';
 
   beforeEach(()=>{
-    cy.logout();
+    // cy.logout();
+    cy.visit('/');
   });
 
   it('has a title', () =>{

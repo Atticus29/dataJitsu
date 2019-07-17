@@ -1,8 +1,10 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
+
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { MatIconModule } from '@angular/material';
 import {NestedTreeControl, FlatTreeControl} from '@angular/cdk/tree';
 import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -27,7 +29,16 @@ export class DynamicFlatNode {
  * Database for dynamic data. When expanding a node in the tree, the data source will need to fetch
  * the descendants data from the database.
  */
+@Injectable()
 export class DynamicDatabase {
+  constructor(private dbService: DatabaseService){
+    this.dbService.getMoves().subscribe(results=>{
+      console.log(results);
+    });
+  }
+  // let testService: DatabaseService = new DatabaseService(new AngularFireDatabase(), new TextTransformationService());
+
+
   dataMap = new Map<string, string[]>([
     ['Fruits', ['Apple', 'Orange', 'Banana']],
     ['Vegetables', ['Tomato', 'Potato', 'Onion']],
@@ -62,14 +73,15 @@ export class DynamicDataSource {
 
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
+  constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
+    private database: DynamicDatabase) {}
+    
   get data(): DynamicFlatNode[] { return this.dataChange.value; }
   set data(value: DynamicFlatNode[]) {
     this.treeControl.dataNodes = value;
     this.dataChange.next(value);
   }
 
-  constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
-              private database: DynamicDatabase) {}
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this.treeControl.expansionModel.onChange.subscribe(change => {
