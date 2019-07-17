@@ -1,3 +1,4 @@
+/// <reference types = "node" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -11,7 +12,14 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+const webpack = require('@cypress/webpack-preprocessor')
+module.exports = on => {
+  const options = {
+    // send in the options from your webpack.config.js, so it works the same
+    // as your app's code
+    webpackOptions: require('../../webpack.config'),
+    watchOptions: {}
+  }
+
+  on('file:preprocessor', webpack(options))
 }

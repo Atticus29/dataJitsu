@@ -8,8 +8,20 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
+// declare namespace Cypress {
+//   interface Chainable<Subject> {
+//     myCustomCommand(value: string): Chainable<Subject>
+//   }
+// }
+// declare namespace Cypress {
+//   interface Chainable<Subject = any> {
+//     logout(): Chainable<undefined>;
+//     login(): Chainable<undefined>;
+//   }
+// }
 // -- This is a parent command --
+
+
 Cypress.Commands.add("login", (email, password) => {
   cy.visit('/login');
   cy.get('input[id=userEmail]').type(email);
@@ -17,7 +29,7 @@ Cypress.Commands.add("login", (email, password) => {
   cy.get('button[id=loginSubmit]').click();
 });
 
-Cypress.Commands.add("logout", (email, password) => {
+Cypress.Commands.add("logout", () => {
   cy.get('a[id=logOutLink]').click();
 });
 //
