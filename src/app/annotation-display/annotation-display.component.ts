@@ -32,9 +32,12 @@ export class DynamicFlatNode {
 @Injectable()
 export class DynamicDatabase {
   constructor(private dbService: DatabaseService){
-    this.dbService.getMoves().subscribe(results=>{
-      console.log(results);
-    });
+    // this.dbService.getMoves().subscribe(results=>{
+    //   console.log("this happens");
+    //   let jsonStuff = JSON.stringify(results);
+    //   this.dataChange.next(jsonStuff);
+    //   console.log(jsonStuff);
+    // });
   }
   // let testService: DatabaseService = new DatabaseService(new AngularFireDatabase(), new TextTransformationService());
 
@@ -50,7 +53,7 @@ export class DynamicDatabase {
 
   /** Initial data from database */
   initialData(): DynamicFlatNode[] {
-    return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
+    return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true, false));
   }
 
   getChildren(node: string): string[] | undefined {
@@ -74,8 +77,8 @@ export class DynamicDataSource {
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
   constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
-    private database: DynamicDatabase) {}
-    
+    private database: DynamicDatabase, private dbService: DatabaseService) {}
+
   get data(): DynamicFlatNode[] { return this.dataChange.value; }
   set data(value: DynamicFlatNode[]) {
     this.treeControl.dataNodes = value;
@@ -115,6 +118,16 @@ export class DynamicDataSource {
     }
 
     node.isLoading = true;
+    this.dbService.getMoves().subscribe(results=>{
+      console.log("this happens");
+      let jsonStuff = JSON.stringify(results);
+      let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+      results.forEach(item =>{
+        let newDynamicFlatNode = new DynamicFlatNode(item, 1, true, false);
+        flatNodeArray.push(newDynamicFlatNode);
+      });
+      this.dataChange.next(flatNodeArray);
+    });
 
     setTimeout(() => {
       if (expand) {
@@ -156,7 +169,7 @@ export class AnnotationDisplayComponent implements OnInit {
   constructor(private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase) {
     //TODO fix this after mat-tree SO branch gets resolved
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database);
+    this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
 
     this.dataSource.data = database.initialData();
 
