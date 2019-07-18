@@ -2,13 +2,8 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     logout(): Chainable<undefined>;
-//     login(): Chainable<undefined>;
-//   }
-// }
 /// <reference types="cypress" />
+
 describe('Login tests with no beforeEach', ()=>{
   it('logout works', () => {
     cy.logout();

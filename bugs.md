@@ -1,4 +1,7 @@
 # Known issues
+- [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
+- [ ] Tooltips in match-display are very inconsistent
+- [ ] Cypress tests are still having issues with the chainable stuff
 - [ ] Datatable doesn't respond to deleted matches in real time
 - [ ] Creating new account makes status stuff visible, enables logout button but doesn't have user logged in
 - [ ] Clicking the play button doesn't work
