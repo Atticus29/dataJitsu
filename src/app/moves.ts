@@ -1,11 +1,11 @@
 export var allCurrentMoves ={
-  guardPasses:[
+  "Guard Passes":[
     "X Pass",
     "Leg Drag",
     "Knee Slice",
     "Back Step"
   ],
-  takeDown:[
+  "Take Downs":[
     "Single Leg",
     "High Single",
     "Double Leg",
@@ -80,8 +80,8 @@ export var allCurrentMoves ={
     "Harai Makikomi;Sweeping Wraparound",
     "Sode Tsurikomi Goshi;Sleeve Lifting Pulling Hip"
   ],
-  submissionsOrSubmissionAttemptsThatScoredPoints:
-    {chokeOrCervicalSubmissions:[
+  "Submissions or Submission Attempts That Scored Points":
+    {"Choke Or Cervical Submissions":[
       "Bow and Arrow",
       "Cross Collar Choke",
       "Baseball Bat Choke",
@@ -104,39 +104,38 @@ export var allCurrentMoves ={
       "Arm Triangle",
       "Triangle"
     ],
-    elbow:[
+    "Elbow":[
     "Arm Bar or Straight Arm Lock",
     "Biceps Slicer",
     "Dead Orchard"
   ],
-  shoulder:[
+  "Shoulder":[
     "Americana;Keylock;Paintbrush",
     "Kimura",
     "Omoplata",
     "Baratoplata"
   ],
-  kneeLigaments:[
+  "Knee Ligaments":[
     "Knee Bar",
     "Inside Heel Hook",
-    "Figure 4 Toe Hold",
+    "Toe Hold/Figure 4 Toe Hold",
     "Outside Heel Hook",
     "Calf Slicer"
   ],
-  back:[
+  "Back":[
     "Twister;Wrestler’s Guillotine"
   ],
-  ankleLigaments:[
+  "Ankle Ligaments":[
     "Ankle Lock",
-    "Toe Hold"
   ],
-  groin:[
+  "Groin":[
     "Banana Split",
   ],
-  wrist:[
+  "Wrist":[
   "Wrist Lock"
   ]
 },
-sweeps:[
+"Sweeps":[
   "Scissor Sweep",
   "Flower Sweep",
   "Old School Sweep",
@@ -150,13 +149,13 @@ sweeps:[
   "Plan B Sweep",
   "Sickle Sweep",
 ],
-positionalChanges:[
+"Positional Changes":[
   "Back Mount",
   "Back Control",
   "Mount",
   "Knee on Belly"
 ],
-positionsWithNamesThatDoNotScorePointsInMostRuleSets:[
+"Positions With Names That Do Not Score Points In Most Rule Sets":[
   "Truck",
   "Pitstop",
   "New York",
@@ -176,7 +175,7 @@ positionsWithNamesThatDoNotScorePointsInMostRuleSets:[
   "4/11",
   "Worm Guard"
 ],
-discliplinaryAction:[
+"Discliplinary Action":[
   "Severe Foul",
   "Serious Foul",
   "Combatitiveness Foul;Stalling;Fleeing",

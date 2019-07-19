@@ -43,13 +43,9 @@ export class DynamicDatabase {
 
 
   dataMap = new Map<string, string[]>([
-    ['Fruits', ['Apple', 'Orange', 'Banana']],
-    ['Vegetables', ['Tomato', 'Potato', 'Onion']],
-    ['Apple', ['Fuji', 'Macintosh']],
-    ['Onion', ['Yellow', 'White', 'Purple']]
   ]);
 
-  rootLevelNodes: string[] = ['Fruits', 'Vegetables'];
+  rootLevelNodes: string[] = [];
 
   /** Initial data from database */
   initialData(): DynamicFlatNode[] {
@@ -77,7 +73,20 @@ export class DynamicDataSource {
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
   constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
-    private database: DynamicDatabase, private dbService: DatabaseService) {}
+    private database: DynamicDatabase, private dbService: DatabaseService) {
+      this.dbService.getMovesAsObject().subscribe(results=>{
+        console.log("this happens");
+        console.log(results);
+        let headers: string[] = Object.getOwnPropertyNames(results);
+        let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+        headers.forEach(item =>{
+          let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
+          flatNodeArray.push(newDynamicFlatNode);
+        });
+        console.log(flatNodeArray);
+        this.dataChange.next(flatNodeArray);
+      });
+    }
 
   get data(): DynamicFlatNode[] { return this.dataChange.value; }
   set data(value: DynamicFlatNode[]) {
@@ -100,9 +109,11 @@ export class DynamicDataSource {
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
     if (change.added) {
+      console.log("handleTreeControl hits change added");
       change.added.forEach(node => this.toggleNode(node, true));
     }
     if (change.removed) {
+      console.log("handleTreeControl hits change removed");
       change.removed.slice().reverse().forEach(node => this.toggleNode(node, false));
     }
   }
@@ -111,25 +122,33 @@ export class DynamicDataSource {
    * Toggle the node, remove from display list
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    const children = this.database.getChildren(node.item);
-    const index = this.data.indexOf(node);
-    if (!children || index < 0) { // If no children, or cannot find the node, no op
-      return;
-    }
-
-    node.isLoading = true;
-    this.dbService.getMoves().subscribe(results=>{
-      console.log("this happens");
-      let jsonStuff = JSON.stringify(results);
-      let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
-      results.forEach(item =>{
-        let newDynamicFlatNode = new DynamicFlatNode(item, 1, true, false);
-        flatNodeArray.push(newDynamicFlatNode);
-      });
-      this.dataChange.next(flatNodeArray);
-    });
-
-    setTimeout(() => {
+    console.log("toggleNode hit");
+    console.log("toggleNode node is " + node.item);
+    this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
+      console.log(results);
+      let children = null;
+      if (Array.isArray(results)) { //results[0] === "string"
+        console.log("Got an Array");
+        children = results;
+      } else{
+        let objHeaders: string[] = Object.getOwnPropertyNames(results);
+        children = objHeaders;
+        //TODO can I safely assume this is an object?
+      }
+      // let headers: string[] = Object.getOwnPropertyNames(results);
+      // let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+      // headers.forEach(item =>{
+      //   let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
+      //   flatNodeArray.push(newDynamicFlatNode);
+      // const children = results; //this.database.getChildren(node.item);
+      console.log("got to children:");
+      console.log(children);
+      const index = this.data.indexOf(node);
+      console.log("index is " + index);
+      if (!children || index < 0) { // If no children, or cannot find the node, no op
+        console.log("toggleNode hit no children or can't find node");
+        return;
+      }
       if (expand) {
         const nodes = children.map(name =>
           new DynamicFlatNode(name, node.level + 1, this.database.isExpandable(name)));
@@ -144,7 +163,26 @@ export class DynamicDataSource {
       // notify the change
       this.dataChange.next(this.data);
       node.isLoading = false;
-    }, 1000);
+    });
+
+    node.isLoading = true;
+
+    // setTimeout(() => {
+    //   if (expand) {
+    //     const nodes = children.map(name =>
+    //       new DynamicFlatNode(name, node.level + 1, this.database.isExpandable(name)));
+    //     this.data.splice(index + 1, 0, ...nodes);
+    //   } else {
+    //     let count = 0;
+    //     for (let i = index + 1; i < this.data.length
+    //       && this.data[i].level > node.level; i++, count++) {}
+    //     this.data.splice(index + 1, count);
+    //   }
+    //
+    //   // notify the change
+    //   this.dataChange.next(this.data);
+    //   node.isLoading = false;
+    // }, 1000);
   }
 }
 

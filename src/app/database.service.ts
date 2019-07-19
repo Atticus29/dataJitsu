@@ -17,6 +17,7 @@ export class DatabaseService {
   currentUser:Observable<any>;
   moves:Observable<any>;
   retrievedMatch:Observable<any>;
+  movesAsObject: Observable<any>;
 
   constructor(private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
     this.matches = db.list<Match>('/matches').valueChanges();
@@ -26,6 +27,12 @@ export class DatabaseService {
     this.ageClasses = db.list<String>('/ageClasses').valueChanges();
     this.users = db.list<User>('/users').valueChanges();
     this.moves = db.list<String>('/moves').valueChanges(); //TODO maybe JSON?
+    this.movesAsObject = db.object('/moves').valueChanges();
+
+  }
+
+  getMovesSubsetAsObject(childNodeName: string){
+    return this.db.object('/moves/' + childNodeName).valueChanges();
   }
 
   getLowRatedMatch(){
@@ -56,6 +63,10 @@ export class DatabaseService {
       });
     });
     return obsRet;
+  }
+
+  getMovesAsObject(){
+    return this.movesAsObject;
   }
 
   getMovesKeys(){
