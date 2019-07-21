@@ -73,7 +73,7 @@ export class DatabaseService {
     return this.movesAsObject;
   }
 
-  getMovesAsList(childNodeName: string){
+  getMovesAsList(){
     return this.db.list('/moves').valueChanges();
   }
 
