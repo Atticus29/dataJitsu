@@ -32,7 +32,15 @@ export class DatabaseService {
   }
 
   getMovesSubsetAsObject(childNodeName: string){
-    return this.db.object('/moves/' + childNodeName).valueChanges();
+    console.log("entering db space with " + childNodeName);
+    //TODO SUUUPER HACKY
+    if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
+      console.log("entering weird db space");
+      return this.db.object('/moves/Submissions or Submission Attempts That Scored Points/' + childNodeName).valueChanges();
+    } else{
+      console.log("entering normal db space");
+      return this.db.object('/moves/' + childNodeName).valueChanges();
+    }
   }
 
   getMovesSubsetAsList(childNodeName: string){

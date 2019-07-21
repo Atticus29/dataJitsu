@@ -225,7 +225,7 @@ export class DynamicDataSource {
             console.log("data before");
             console.log(this.data);
             this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
-            // this.data.splice(index + 1, 0, nodes);
+            // this.data.splice(index + 1, 0, Array.from(children));
             console.log("data after");
             console.log(this.data);
         }
