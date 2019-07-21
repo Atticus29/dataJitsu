@@ -1,16 +1,20 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+
 import { MatIconModule } from '@angular/material';
-import {NestedTreeControl, FlatTreeControl} from '@angular/cdk/tree';
-import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
+import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
-import {map} from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
+import { TrackerService } from '../tracker.service';
+import { ValidationService } from '../validation.service';
 
 import { allCurrentMoves } from '../moves';
 
@@ -32,14 +36,7 @@ export class DynamicFlatNode {
 @Injectable()
 export class DynamicDatabase {
   constructor(private dbService: DatabaseService){
-    // this.dbService.getMoves().subscribe(results=>{
-    //   console.log("this happens");
-    //   let jsonStuff = JSON.stringify(results);
-    //   this.dataChange.next(jsonStuff);
-    //   console.log(jsonStuff);
-    // });
   }
-  // let testService: DatabaseService = new DatabaseService(new AngularFireDatabase(), new TextTransformationService());
 
 
   dataMap = new Map<string, string[]>([
@@ -76,16 +73,11 @@ export class DynamicDataSource {
   constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
     private database: DynamicDatabase, private dbService: DatabaseService) {
       this.dbService.getMovesAsObject().subscribe(results=>{
-        console.log("this happens");
-        console.log(results);
-        // let newTreeResults = this.jsonToMap(results);
-        // this.dataChange.next(newTreeResults);
         let headers: string[] = Object.getOwnPropertyNames(results);
         headers.forEach(item =>{ //headers
           let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
           this.flatNodeArray.push(newDynamicFlatNode);
         });
-        console.log(this.flatNodeArray);
         this.dataChange.next(this.flatNodeArray);
       });
     }
@@ -111,11 +103,9 @@ export class DynamicDataSource {
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
     if (change.added) {
-      console.log("handleTreeControl hits change added");
       change.added.forEach(node => this.toggleNode(node, true));
     }
     if (change.removed) {
-      console.log("handleTreeControl hits change removed");
       change.removed.slice().reverse().forEach(node => this.toggleNode(node, false));
     }
   }
@@ -134,8 +124,6 @@ export class DynamicDataSource {
 
     jsonToStrMap(jsonStr) {
       return new Map(Object.entries(jsonStr));
-      // return Array.from(jsonStr).map(entry => {});
-      // return this.objToStrMap(JSON.parse(jsonStr));
     }
 
    jsonToMap(jsonStr) {
@@ -143,91 +131,27 @@ export class DynamicDataSource {
    }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    console.log("toggleNode hit");
-    console.log("toggleNode node is " + node.item);
-    // if(node.level === 1){
-    //
-    // }
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
-      // console.log("look here");
-      console.log("before");
-      console.log(results);
-      // console.log(JSON.stringify(results));
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
-        console.log("Got an Array");
         children = results;
-        console.log("after");
-        console.log(children);
       } else{
         results = this.jsonToStrMap(results);
-        console.log("after");
         children = results;
-        console.log(children);
-        // console.log("this should no longer happen");
-        // let objHeaders: string[] = Object.getOwnPropertyNames(results);
-        // children = objHeaders;
-        // // let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
-        // results.forEach(item =>{
-        //   let newDynamicFlatNode = new DynamicFlatNode(item, 2, true, false);
-        //   this.flatNodeArray.push(newDynamicFlatNode);
-        // });
       }
-      // this.dataChange.next(children); //this.flatNodeArray
-      console.log(children);
-      console.log("node is ");
-      console.log(node);
       const index = this.data.indexOf(node);
       if (!children || index < 0) { // If no children, or cannot find the node, no op
         return;
       }
       if (expand) {
-        console.log("expand is true!");
-        console.log("children before the map function: ");
-        console.log(children);
         if(Array.isArray(children)){
-          console.log("children is array");
           const nodes = children.map(name =>
             new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString())));
-          console.log(...nodes);
           this.data.splice(index + 1, 0, ...nodes);
         } else{
-          //TODO if it's already a map, what do I do? LEFT OFF HERE
-          console.log("children is not array");
-          // let objHeaders: string[] = children.keys();
-          // console.log("headers");
-          // console.log(objHeaders);
-          // console.log("nodes before map function");
-          // console.log(nodes);
-          console.log("here");
-          console.log(Array.from(children));
           const nodes = Array.from(children).map(name =>
             new DynamicFlatNode(name[0], node.level + 1, true));
-          // const nodes = Array.from(children).map(child => {
-          //   console.log(child[0]);
-          //   console.log(node.level);
-          //   new DynamicFlatNode(child[0].toString(), 1, true); //.toString() //this.database.isExpandable(name)
-          //   // child[1].forEach(entry =>{
-          //   //   new DynamicFlatNode(entry, 2, false);
-          //   // });
-          // });
-          // const moreNodes = Array.from(children).map(child =>{
-          //   child[1].forEach(entry =>{
-          //     new DynamicFlatNode(entry, node.level + 2, false);
-          //   });
-          // });
-          // nodes.push(moreNodes);
-          //Array.from(children)
-            console.log("nodes after map function");
-            console.log(nodes);
-            console.log("nodes collapsed");
-            console.log(...nodes);
-            console.log("data before");
-            console.log(this.data);
             this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
-            // this.data.splice(index + 1, 0, Array.from(children));
-            console.log("data after");
-            console.log(this.data);
         }
       } else {
         let count = 0;
@@ -238,25 +162,7 @@ export class DynamicDataSource {
       this.dataChange.next(this.data);
       node.isLoading = false;
     });
-
     node.isLoading = true;
-
-    // setTimeout(() => {
-    //   if (expand) {
-    //     const nodes = children.map(name =>
-    //       new DynamicFlatNode(name, node.level + 1, this.database.isExpandable(name)));
-    //     this.data.splice(index + 1, 0, ...nodes);
-    //   } else {
-    //     let count = 0;
-    //     for (let i = index + 1; i < this.data.length
-    //       && this.data[i].level > node.level; i++, count++) {}
-    //     this.data.splice(index + 1, count);
-    //   }
-    //
-    //   // notify the change
-    //   this.dataChange.next(this.data);
-    //   node.isLoading = false;
-    // }, 1000);
   }
 }
 
@@ -267,7 +173,6 @@ export class DynamicDataSource {
   providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent implements OnInit {
-  // private treeData = JSON.stringify(allCurrentMoves);
   @Output() moveSelected = new EventEmitter<MoveInVideo>();
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
@@ -277,17 +182,15 @@ export class AnnotationDisplayComponent implements OnInit {
   isExpandable = (node: DynamicFlatNode) => node.expandable;
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
   getLevel = (node: DynamicFlatNode) => node.level;
+  private selectedAnnotation: string = "No Annotation Currently Selected";
+  private disabledStatus: boolean = true;
+  private performerFormGroup: FormGroup;
+  performers: any[];
 
-  constructor(private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase) {
-    //TODO fix this after mat-tree SO branch gets resolved
+  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
-
     this.dataSource.data = database.initialData();
-
-    // database.dataChange.subscribe(data =>{
-    //   this.nestedDataSource.data = data;
-    // });
   }
 
   ngOnInit() {
@@ -296,22 +199,62 @@ export class AnnotationDisplayComponent implements OnInit {
       this.moveCategories = results;
     });
     let results = this.db.getMoves().subscribe(stuff=>{
-      // console.log(stuff);
       for(let index in stuff){
-      // console.log(stuff[index].key());
-    }
+        //TODO ??
+      }
+    });
+    this.trackerService.startTimePoint.next(1);
+    this.performerFormGroup = this.fb.group({
+      performerBound: ['', Validators.required],
+    });
+    this.trackerService.currentMatch.subscribe(matchId =>{
+      this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
+        console.log("matchDeets");
+        let localMatchDeets = matchDeets
+        //TODO LEFT OFF HERE need to figure out what you can't get property athlete1Name from recovered object in below three lines
+        // console.log(localMatchDeets.athlete1Name);
+        // let performers: string[] = [matchDeets.athlete1Name, matchDeets.athlete2Name];
+        // this.performers = performers;
+      });
     });
   }
 
-  submitFormAndClose(){
-    console.log("got to submitFormAndClose");
+  //TODO mechanism for making disabledStatus false after checking the forms
+
+
+  submitFormAndClose(){ //TODO this may be unnecessary
+    this.trackerService.startTimePoint.subscribe(result =>{
+      console.log("time from tracker service is " + result);
+    });
     //TODO createMoveInVideo from form submission
-    let tempMove = new MoveInVideo('0', 'armbar', 'me', 'you', 1, 2, 0, '12345', true);
+    let tempMove = new MoveInVideo('armbar', 'me', 'you', 1, 2, 0, '12345', true);
     this.moveSelected.emit(tempMove);
     //TODO add some way to resume the youtube player from here...
   }
 
   selectItem(item: string){
-    console.log("clicked!" + item);
+    this.selectedAnnotation = item;
+    this.trackerService.moveName.next(item);
+  }
+
+  getValues(){
+    let result = this.performerFormGroup.value;
+    return result;
+  }
+
+  processFormInputs(){
+    let result = this.getValues();
+    console.log("form processing results: ");
+    console.log(result);
+    //TODO next the subject tracking performer of action
+  }
+
+  allValid(){
+    let values = this.performerFormGroup.value;
+    if(values.performerBound){
+      return true;
+    } else{
+      return false;
+    }
   }
 }

@@ -14,9 +14,9 @@
 //   }
 // }
 declare namespace Cypress {
-  interface Chainable<Subject = any> {
-    logout(): Cypress.Chainable<Response>;
-    login(email: string, pw: string): Cypress.Chainable<Response>;
+  interface Chainable<Subject> {
+    logout(): Chainable<Subject>;
+    login(email: string, pw: string): Cypress.Chainable<any>;
   }
 }
 // -- This is a parent command --

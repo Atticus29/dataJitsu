@@ -4,6 +4,7 @@ import { MatchDetails } from '../matchDetails.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { User } from '../user.model';
 import { DatabaseService } from '../database.service';
+import { TrackerService } from '../tracker.service';
 
 @Component({
   selector: 'app-youtube',
@@ -13,7 +14,7 @@ import { DatabaseService } from '../database.service';
 })
 export class YoutubeComponent implements OnInit {
 
-  constructor(private db:DatabaseService) { }
+  constructor(private db:DatabaseService, private trackerService: TrackerService) { }
 
   ngOnInit() {
     var player;
@@ -30,6 +31,7 @@ export class YoutubeComponent implements OnInit {
     function onPlayerStateChange(event){
       if (event.data == window['YT'].PlayerState.PAUSED) {
         console.log(player.getCurrentTime());
+        this.trackerService.startTimePoint.next(player.getCurrentTime());
       }
     }
 

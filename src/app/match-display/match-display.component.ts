@@ -7,6 +7,7 @@ import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
+import { TrackerService } from '../tracker.service';
 
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
@@ -30,7 +31,7 @@ export class MatchDisplayComponent implements OnInit {
   // player: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar) { }
+  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService) { }
 
   ngOnDestroy(){
 
@@ -42,6 +43,7 @@ export class MatchDisplayComponent implements OnInit {
     let self = this;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
+      this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
@@ -65,14 +67,24 @@ export class MatchDisplayComponent implements OnInit {
             player.pauseVideo();
             console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
+            self.trackerService.startTimePoint.next(player.getCurrentTime());
             self.beginAnnotation(currentTime);
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();
             let currentTime = player.getCurrentTime();
+            self.trackerService.endTimePoint.next(player.getCurrentTime());
             self.finishAnnotation(currentTime);
             self.openSnackBar("Move Recorded");
             self.annotationFinishButtonDisabled = true;
+            self.trackerService.startTimePoint.subscribe(startTime =>{
+              self.trackerService.endTimePoint.subscribe(endTime =>{
+                self.trackerService.moveName.subscribe(moveName =>{
+                  // let tempMove = new MoveInVideo(moveName, self.match.matchDeets., 'you', 1, 2, 0, '12345', true); //TODO update this once you add performers
+                });
+              });
+            });
+            //TODO make record of video here
             //TODO add 1 second delay
             player.playVideo();
           });

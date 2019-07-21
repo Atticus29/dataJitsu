@@ -1,6 +1,7 @@
 <div id="annotationModal" class="modal">
   <div class="modal-content">
     <h4>Add an annotation to the match</h4>
+    <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
           <button mat-icon-button disabled></button>
@@ -17,9 +18,27 @@
           <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
     </mat-tree-node>
   </mat-tree>
+  <div id="action-performer-form-div">
+    <form class="col s12" materialize [formGroup]="performerFormGroup">
+      <div class="row">
+        <div class="input-field col m12 s12">
+          <select formControlName="performerBound" materialize="material_select" id="performer" name="test">
+            <option value="" disabled selected name="choosePerformer">Who performed the action?</option>
+            <option *ngFor="let performer of performers">{{performer}}</option>
+          </select>
+          <label for="performer">Performer</label>
+        </div>
+      </div>
+      <div class="row">
+        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputs()" id="done-button-performers">Done
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 <div class="modal-footer">
-  <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()">Done</button>
+  <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()" disabled="disabledStatus">Done</button>
   <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
 </div>
 </div>

@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] //TODO make record of video here
 - [ ] Add test for starting and stopping an annotation
 - [x] Fix test for clicking pause
 

@@ -6,13 +6,14 @@ import * as firebase from 'firebase/app';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 import { DatabaseService } from './database.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthorizationService {
   private authenticated: Observable<boolean>;
   private locationWatcher = new EventEmitter();  // @TODO: switch to RxJS Subject instead of EventEmitter
   user: Observable<firebase.User>;
-  constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase, private router: Router, public dbService: DatabaseService) {
+  constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase, private router: Router, public dbService: DatabaseService, private _snackBar: MatSnackBar) {
     this.user = afAuth.authState;
     this.user.subscribe(user=>{
       if(user){
@@ -58,6 +59,12 @@ export class AuthorizationService {
     // .catch(()=>of(false));
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
   signup(email: string, password: string) {
     this.afAuth
     .auth
@@ -68,6 +75,8 @@ export class AuthorizationService {
     })
     .catch(err => {
       console.log('Something went wrong:',err.message);
+      this.openSnackBar('Something went wrong:' + err.message, null);
+      //TODO open snackbar
     });
   }
 
@@ -85,6 +94,7 @@ export class AuthorizationService {
     })
     .catch(err => {
       console.log('Something went wrong:',err.message);
+      this.openSnackBar('Something went wrong:' + err.message, null);
     });
   }
 
