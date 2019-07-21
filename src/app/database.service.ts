@@ -35,6 +35,10 @@ export class DatabaseService {
     return this.db.object('/moves/' + childNodeName).valueChanges();
   }
 
+  getMovesSubsetAsList(childNodeName: string){
+    return this.db.list('/moves/' + childNodeName).valueChanges();
+  }
+
   getLowRatedMatch(){
     let ref = firebase.database().ref('matches/');
     let obsRet = Observable.create(function(observer){
@@ -67,6 +71,10 @@ export class DatabaseService {
 
   getMovesAsObject(){
     return this.movesAsObject;
+  }
+
+  getMovesAsList(childNodeName: string){
+    return this.db.list('/moves').valueChanges();
   }
 
   getMovesKeys(){

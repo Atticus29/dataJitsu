@@ -69,6 +69,7 @@ import {
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
+import { TemporaryComponent } from './temporary/temporary.component';
 
 
 export const firebaseConfig = {
@@ -92,7 +93,8 @@ export const firebaseConfig = {
     AnnotationDisplayComponent,
     NotfoundComponent,
     UserStatusReportComponent,
-    PaymentOrAnnotationDetailsComponent
+    PaymentOrAnnotationDetailsComponent,
+    TemporaryComponent
   ],
   imports: [
     BrowserModule,

@@ -71,20 +71,22 @@ export class DynamicDatabase {
 export class DynamicDataSource {
 
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
+  flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
 
   constructor(private treeControl: FlatTreeControl<DynamicFlatNode>,
     private database: DynamicDatabase, private dbService: DatabaseService) {
       this.dbService.getMovesAsObject().subscribe(results=>{
         console.log("this happens");
         console.log(results);
+        // let newTreeResults = this.jsonToMap(results);
+        // this.dataChange.next(newTreeResults);
         let headers: string[] = Object.getOwnPropertyNames(results);
-        let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
-        headers.forEach(item =>{
+        headers.forEach(item =>{ //headers
           let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
-          flatNodeArray.push(newDynamicFlatNode);
+          this.flatNodeArray.push(newDynamicFlatNode);
         });
-        console.log(flatNodeArray);
-        this.dataChange.next(flatNodeArray);
+        console.log(this.flatNodeArray);
+        this.dataChange.next(this.flatNodeArray);
       });
     }
 
@@ -121,46 +123,118 @@ export class DynamicDataSource {
   /**
    * Toggle the node, remove from display list
    */
+
+   objToStrMap(obj) {
+      let strMap = new Map();
+      for (let k of Object.keys(obj)) {
+          strMap.set(k, obj[k]);
+      }
+      return strMap;
+    }
+
+    jsonToStrMap(jsonStr) {
+      return new Map(Object.entries(jsonStr));
+      // return Array.from(jsonStr).map(entry => {});
+      // return this.objToStrMap(JSON.parse(jsonStr));
+    }
+
+   jsonToMap(jsonStr) {
+     return new Map(JSON.parse(jsonStr));
+   }
+
   toggleNode(node: DynamicFlatNode, expand: boolean) {
     console.log("toggleNode hit");
     console.log("toggleNode node is " + node.item);
+    // if(node.level === 1){
+    //
+    // }
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
+      // console.log("look here");
+      console.log("before");
       console.log(results);
+      // console.log(JSON.stringify(results));
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
         console.log("Got an Array");
         children = results;
+        console.log("after");
+        console.log(children);
       } else{
-        let objHeaders: string[] = Object.getOwnPropertyNames(results);
-        children = objHeaders;
-        //TODO can I safely assume this is an object?
+        results = this.jsonToStrMap(results);
+        console.log("after");
+        children = results;
+        console.log(children);
+        // console.log("this should no longer happen");
+        // let objHeaders: string[] = Object.getOwnPropertyNames(results);
+        // children = objHeaders;
+        // // let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+        // results.forEach(item =>{
+        //   let newDynamicFlatNode = new DynamicFlatNode(item, 2, true, false);
+        //   this.flatNodeArray.push(newDynamicFlatNode);
+        // });
       }
-      // let headers: string[] = Object.getOwnPropertyNames(results);
-      // let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
-      // headers.forEach(item =>{
-      //   let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
-      //   flatNodeArray.push(newDynamicFlatNode);
-      // const children = results; //this.database.getChildren(node.item);
-      console.log("got to children:");
+      // this.dataChange.next(children); //this.flatNodeArray
       console.log(children);
+      console.log("node is ");
+      console.log(node);
       const index = this.data.indexOf(node);
-      console.log("index is " + index);
       if (!children || index < 0) { // If no children, or cannot find the node, no op
-        console.log("toggleNode hit no children or can't find node");
         return;
       }
       if (expand) {
-        const nodes = children.map(name =>
-          new DynamicFlatNode(name, node.level + 1, this.database.isExpandable(name)));
-        this.data.splice(index + 1, 0, ...nodes);
+        console.log("expand is true!");
+        console.log("children before the map function: ");
+        console.log(children);
+        if(Array.isArray(children)){
+          console.log("children is array");
+          const nodes = children.map(name =>
+            new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString())));
+          console.log(...nodes);
+          this.data.splice(index + 1, 0, ...nodes);
+        } else{
+          //TODO if it's already a map, what do I do? LEFT OFF HERE
+          console.log("children is not array");
+          // let objHeaders: string[] = children.keys();
+          // console.log("headers");
+          // console.log(objHeaders);
+          // console.log("nodes before map function");
+          // console.log(nodes);
+          console.log("here");
+          console.log(Array.from(children));
+          const nodes = Array.from(children).map(name =>
+            new DynamicFlatNode(name[0], node.level + 1, true));
+          // const nodes = Array.from(children).map(child => {
+          //   console.log(child[0]);
+          //   console.log(node.level);
+          //   new DynamicFlatNode(child[0].toString(), 1, true); //.toString() //this.database.isExpandable(name)
+          //   // child[1].forEach(entry =>{
+          //   //   new DynamicFlatNode(entry, 2, false);
+          //   // });
+          // });
+          // const moreNodes = Array.from(children).map(child =>{
+          //   child[1].forEach(entry =>{
+          //     new DynamicFlatNode(entry, node.level + 2, false);
+          //   });
+          // });
+          // nodes.push(moreNodes);
+          //Array.from(children)
+            console.log("nodes after map function");
+            console.log(nodes);
+            console.log("nodes collapsed");
+            console.log(...nodes);
+            console.log("data before");
+            console.log(this.data);
+            this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
+            // this.data.splice(index + 1, 0, nodes);
+            console.log("data after");
+            console.log(this.data);
+        }
       } else {
         let count = 0;
         for (let i = index + 1; i < this.data.length
           && this.data[i].level > node.level; i++, count++) {}
         this.data.splice(index + 1, count);
       }
-
-      // notify the change
       this.dataChange.next(this.data);
       node.isLoading = false;
     });

@@ -11,6 +11,7 @@ import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
+import { TemporaryComponent } from './temporary/temporary.component';
 const appRoutes: Routes = [
   {
     path: '',
@@ -58,6 +59,11 @@ const appRoutes: Routes = [
   component: AnnotationDisplayComponent,
   pathMatch: 'full'
 },{
+  path: 'mark',
+  component: TemporaryComponent,
+  pathMatch: 'full'
+},
+{
   path: '**',
   component: NotfoundComponent,
   pathMatch: 'full'
