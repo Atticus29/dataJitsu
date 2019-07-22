@@ -186,6 +186,8 @@ export class AnnotationDisplayComponent implements OnInit {
   private disabledStatus: boolean = true;
   private performerFormGroup: FormGroup;
   performers: any[];
+  private localMatchDeets: any[];
+  private disabledPerformer: boolean = false;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -210,11 +212,15 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         console.log("matchDeets");
-        let localMatchDeets = matchDeets
-        //TODO LEFT OFF HERE need to figure out what you can't get property athlete1Name from recovered object in below three lines
-        // console.log(localMatchDeets.athlete1Name);
-        // let performers: string[] = [matchDeets.athlete1Name, matchDeets.athlete2Name];
-        // this.performers = performers;
+        console.log(matchDeets);
+        let localMatchDeets: any = matchDeets;
+        console.log(localMatchDeets.athlete1Name);
+        console.log(localMatchDeets.athlete2Name);
+        let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
+        // let thePerformers: string[] = [localMatchDeets[2], localMatchDeets[3]];
+        this.performers = thePerformers;
+        console.log(this.performers);
+        this.disabledPerformer = true;
       });
     });
   }

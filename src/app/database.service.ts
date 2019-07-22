@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import { Match } from './match.model';
 import { User } from './user.model';
 import { TextTransformationService } from './text-transformation.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Injectable()
 export class DatabaseService {
@@ -18,8 +19,9 @@ export class DatabaseService {
   moves:Observable<any>;
   retrievedMatch:Observable<any>;
   movesAsObject: Observable<any>;
+  matchDetails: Observable<any>;
 
-  constructor(private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
+  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
     this.matches = db.list<Match>('/matches').valueChanges();
     this.weightClasses = db.list<String>('/weightClasses').valueChanges();
     this.giRanks = db.list<String>('/giRanks').valueChanges();
@@ -28,7 +30,10 @@ export class DatabaseService {
     this.users = db.list<User>('/users').valueChanges();
     this.moves = db.list<String>('/moves').valueChanges(); //TODO maybe JSON?
     this.movesAsObject = db.object('/moves').valueChanges();
-
+    // this.route.params.subscribe(params => {
+    //   let matchId = params['matchId'];
+    //   this.matchDetails = db.object('/matches/' + matchId + '/matchDeets').valueChanges()
+    // });
   }
 
   getMovesSubsetAsObject(childNodeName: string){
@@ -41,7 +46,7 @@ export class DatabaseService {
   }
 
   getMatchDetails(matchId: string){
-    return (this.db.object('/matches/' + matchId + '/matchDeets').valueChanges());
+    return this.db.object('/matches/' + matchId + '/matchDeets').valueChanges();
   }
 
   getMovesSubsetAsList(childNodeName: string){
