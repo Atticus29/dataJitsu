@@ -217,8 +217,8 @@ export class AnnotationDisplayComponent implements OnInit {
         let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
         this.performers = thePerformers;
         this.trackerService.moveName.subscribe(moveNameResult =>{
-          console.log(moveNameResult);
           if(moveNameResult !== "tempMove"){
+            console.log("move has been picked");
             this.allValidSubject.next(true);
           } else{
             this.allValidSubject.next(false);
@@ -227,8 +227,6 @@ export class AnnotationDisplayComponent implements OnInit {
       });
     });
     this.allValidSubject.subscribe(status =>{
-      console.log("valid status is ");
-      console.log(status);
       if(this.allValid() && status){
         this.validStatus = true;
       } else{
@@ -270,9 +268,10 @@ export class AnnotationDisplayComponent implements OnInit {
   }
 
   allValid(): boolean{
+    console.log("allValid called");
     let values = this.performerFormGroup.value;
-    console.log("this happens")
     if(values.performerBound){
+      console.log("performerBound true");
       return true;
     } else{
       return false;

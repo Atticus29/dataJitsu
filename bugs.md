@@ -1,4 +1,6 @@
 # Known issues
+- [ ] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
+- [ ] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
 - [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
 - [ ] Tooltips in match-display are very inconsistent
 - [ ] Cypress tests are still having issues with the chainable stuff

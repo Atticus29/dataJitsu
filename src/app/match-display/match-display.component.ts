@@ -81,6 +81,7 @@ export class MatchDisplayComponent implements OnInit {
               self.trackerService.endTimePoint.subscribe(endTime =>{
                 self.trackerService.moveName.subscribe(moveName =>{
                   // let tempMove = new MoveInVideo(moveName, self.match.matchDeets., 'you', 1, 2, 0, '12345', true); //TODO update this once you add performers
+                  //TODO after move is added to db somehow have to disable the form again (do I emit new stuff, reset to "Nobody" and "tmpMove" or whatever???)
                 });
               });
             });
