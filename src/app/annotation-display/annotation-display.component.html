@@ -2,6 +2,24 @@
   <div class="modal-content">
     <h4>Add an annotation to the match</h4>
     <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
+    <div id="tree-div">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
+          <button mat-icon-button disabled></button>
+          {{node.item}}
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + node.filename">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.item}}
+        <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
+      </mat-tree-node>
+    </mat-tree>
+    </div>
     <div id="action-performer-form-div">
       <form class="col s12 m12" materialize [formGroup]="performerFormGroup">
         <div class="row">
@@ -19,23 +37,6 @@
         </div>
       </form>
     </div>
-    <br>
-    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
-        <button mat-icon-button disabled></button>
-        {{node.item}}
-      </mat-tree-node>
-      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button matTreeNodeToggle
-        [attr.aria-label]="'toggle ' + node.filename">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon>
-      </button>
-      {{node.item}}
-      <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
-    </mat-tree-node>
-  </mat-tree>
   <div id="buttons-div">
     <div class="row">
       <button [disabled]="!validStatus"  class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
