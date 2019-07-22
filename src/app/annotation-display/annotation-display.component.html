@@ -19,31 +19,39 @@
         <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"></mat-progress-bar>
       </mat-tree-node>
     </mat-tree>
-    </div>
-    <div id="action-performer-form-div">
-      <form class="col s12 m12" materialize [formGroup]="performerFormGroup">
-        <div class="row">
-          <div class="input-field col m12 s12">
-            <select formControlName="performerBound" materialize="material_select" id="performer">
-              <option value="(choose)" [disabled]="disabledPerformer" name="choosePerformer">Who performed the action?</option>
-              <option *ngFor="let performer of performers">{{performer}}</option>
-            </select>
-            <label for="performer">Performer</label>
-          </div>
-          <div class="input-field col m12 s12">
-            <input formControlName="pointsBound" type="number" id="points" placeholder="E.g., 0">
-            <label for="weight">How many points was the move worth in this match format, if any?</label>
-          </div>
-        </div>
-      </form>
-    </div>
-  <div id="buttons-div">
+  </div>
+  <div id="action-performer-form-div">
+
     <div class="row">
-      <button [disabled]="!validStatus"  class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
-        <i class="material-icons right">send</i>
-      </button>
-      <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
+      <div class="col m12 s12">
+        <mat-form-field class="col m12 s12">
+          <mat-select [formControl]="performerFg" id="performer" required  placeholder="Who performed the action?">
+            <!-- <mat-label>Who performed the action?</mat-label> -->
+            <!-- <mat-option value="(choose)" [disabled]="disabledPerformer" name="choosePerformer">Who performed the action?</mat-option> -->
+            <!-- <mat-option>--None--</mat-option> -->
+            <mat-option *ngFor="let performer of performers" [value]="performer">{{performer}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
+    <div class="row">
+      <mat-form-field appearance="standard" class="col m12 s12">
+        <mat-label>How many points was the move worth in this match format, if any?</mat-label>
+        <input matInput [formControl]="points" type="number" id="points" placeholder="E.g., 0">
+        <mat-error *ngIf="points.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div id="buttons-div">
+      <div class="row">
+        <button type="submit" [disabled]="!validStatus"  class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
+          <i class="material-icons right">send</i>
+        </button>
+        <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>

@@ -44,12 +44,13 @@ export class AnnotationDisplayComponent implements OnInit {
   getLevel = (node: DynamicFlatNode) => node.level;
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private disabledStatus: boolean = true;
-  private performerFormGroup: FormGroup;
-  performers: any[];
+  private performers: any[];
   private localMatchDeets: any[];
   private disabledPerformer: boolean = false;
   private allValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private validStatus: boolean = false;
+  private points = new FormControl('', [Validators.required, Validators.min(0)]);
+  private performerFg = new FormControl('', [Validators.required]);
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -68,10 +69,6 @@ export class AnnotationDisplayComponent implements OnInit {
       }
     });
     this.trackerService.startTimePoint.next(1);
-    this.performerFormGroup = this.fb.group({
-      performerBound: ['', Validators.required],
-      pointsBound: ['', Validators.required]
-    });
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         let localMatchDeets: any = matchDeets;
@@ -96,33 +93,48 @@ export class AnnotationDisplayComponent implements OnInit {
     });
   }
 
+  getErrorMessage() {
+    return this.points.hasError('required') ? 'You must enter a value' :
+        this.points.hasError('min') ? 'Number must be zero or greater' :
+            '';
+    // return this.email.hasError('required') ? 'You must enter a value' :
+    //     this.email.hasError('email') ? 'Not a valid email' :
+    //         '';
+  }
+
   selectItem(item: string){
     this.selectedAnnotation = item;
     this.trackerService.moveName.next(item);
   }
 
   getValues(){
-    let result = this.performerFormGroup.value;
-    return result;
+    let performerValue = this.performerFg.value;
+    let pointValue = this.points.value;
+    let results = {performerValue, pointValue};
+    console.log("getValues call: ");
+    console.log(results);
+    return results;
   }
 
   processFormInputs(){
     let result = this.getValues();
-    let {performerFromForm, pointsFromForm} = result;
-    this.trackerService.performer.next(performerFromForm);
-    this.trackerService.points.next(pointsFromForm);
-    let remainder = this.performers.filter( function(item){return (item !== performerFromForm);} );
+    this.trackerService.performer.next(result.performerValue);
+    this.trackerService.points.next(result.pointValue);
+    let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
 
   }
 
   allValid(): boolean{
     console.log("allValid called");
-    let values = this.performerFormGroup.value;
-    console.log("values from allValid");
-    console.log(values);
-    if(values.performerBound && values.pointsBound >-1 && values.pointsBound < 100){
-      console.log("performerBound true");
+    let performerValue = this.performerFg.value;
+    console.log("performerValue from allValid");
+    console.log(performerValue);
+    let pointValue = this.points.value;
+    console.log("pointValue from allValid");
+    console.log(pointValue);
+    if(performerValue && pointValue > -1){ //&& values.pointsBound >-1 && values.pointsBound < 100 //TODO
+      console.log("performerValue true");
       return true;
     } else{
       return false;
