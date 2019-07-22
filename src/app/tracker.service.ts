@@ -9,6 +9,7 @@ export class TrackerService {
   public endTimePoint: BehaviorSubject<number> = new BehaviorSubject(1);
   public moveName: BehaviorSubject<string> = new BehaviorSubject("tempMove");
   public currentMatch: BehaviorSubject<string> = new BehaviorSubject("currentMatch");
+  public performer: BehaviorSubject<string> = new BehaviorSubject("Nobody");
 
   constructor() { }
 }

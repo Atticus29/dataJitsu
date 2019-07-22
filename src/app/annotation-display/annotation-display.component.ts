@@ -188,6 +188,8 @@ export class AnnotationDisplayComponent implements OnInit {
   performers: any[];
   private localMatchDeets: any[];
   private disabledPerformer: boolean = false;
+  private allValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private validStatus: boolean = false;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -211,32 +213,42 @@ export class AnnotationDisplayComponent implements OnInit {
     });
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
-        console.log("matchDeets");
-        console.log(matchDeets);
         let localMatchDeets: any = matchDeets;
-        console.log(localMatchDeets.athlete1Name);
-        console.log(localMatchDeets.athlete2Name);
         let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
-        // let thePerformers: string[] = [localMatchDeets[2], localMatchDeets[3]];
         this.performers = thePerformers;
-        console.log(this.performers);
-        this.disabledPerformer = true;
+        this.trackerService.moveName.subscribe(moveNameResult =>{
+          console.log(moveNameResult);
+          if(moveNameResult !== "tempMove"){
+            this.allValidSubject.next(true);
+          } else{
+            this.allValidSubject.next(false);
+          }
+        });
       });
+    });
+    this.allValidSubject.subscribe(status =>{
+      console.log("valid status is ");
+      console.log(status);
+      if(this.allValid() && status){
+        this.validStatus = true;
+      } else{
+        this.validStatus = false;
+      }
     });
   }
 
   //TODO mechanism for making disabledStatus false after checking the forms
 
 
-  submitFormAndClose(){ //TODO this may be unnecessary
-    this.trackerService.startTimePoint.subscribe(result =>{
-      console.log("time from tracker service is " + result);
-    });
-    //TODO createMoveInVideo from form submission
-    let tempMove = new MoveInVideo('armbar', 'me', 'you', 1, 2, 0, '12345', true);
-    this.moveSelected.emit(tempMove);
-    //TODO add some way to resume the youtube player from here...
-  }
+  // submitFormAndClose(){ //TODO this may be unnecessary
+  //   this.trackerService.startTimePoint.subscribe(result =>{
+  //     // console.log("time from tracker service is " + result);
+  //   });
+  //   //TODO createMoveInVideo from form submission
+  //   let tempMove = new MoveInVideo('armbar', 'me', 'you', 1, 2, 0, '12345', true);
+  //   this.moveSelected.emit(tempMove);
+  //   //TODO add some way to resume the youtube player from here...
+  // }
 
   selectItem(item: string){
     this.selectedAnnotation = item;
@@ -252,11 +264,14 @@ export class AnnotationDisplayComponent implements OnInit {
     let result = this.getValues();
     console.log("form processing results: ");
     console.log(result);
+    this.trackerService.performer.next(result);
+    //TODO createMoveInVideo from form submission
     //TODO next the subject tracking performer of action
   }
 
-  allValid(){
+  allValid(): boolean{
     let values = this.performerFormGroup.value;
+    console.log("this happens")
     if(values.performerBound){
       return true;
     } else{

@@ -33,15 +33,12 @@
         </div>
       </div>
       <div class="row">
-        <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputs()" id="done-button-performers">Done
+        <button [disabled]="!validStatus"  class="btn waves-effect waves-light" (click)="processFormInputs()" id="done-button-performers">Done
           <i class="material-icons right">send</i>
         </button>
+        <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
       </div>
     </form>
   </div>
-</div>
-<div class="modal-footer">
-  <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndClose()" disabled="disabledStatus">Done</button>
-  <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
 </div>
 </div>
