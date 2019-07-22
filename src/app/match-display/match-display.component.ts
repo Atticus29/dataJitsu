@@ -77,11 +77,19 @@ export class MatchDisplayComponent implements OnInit {
             self.finishAnnotation(currentTime);
             self.openSnackBar("Move Recorded");
             self.annotationFinishButtonDisabled = true;
-            self.trackerService.startTimePoint.subscribe(startTime =>{
-              self.trackerService.endTimePoint.subscribe(endTime =>{
-                self.trackerService.moveName.subscribe(moveName =>{
-                  // let tempMove = new MoveInVideo(moveName, self.match.matchDeets., 'you', 1, 2, 0, '12345', true); //TODO update this once you add performers
-                  //TODO after move is added to db somehow have to disable the form again (do I emit new stuff, reset to "Nobody" and "tmpMove" or whatever???)
+            self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
+              self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
+                self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
+                  self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
+                    self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
+                      self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
+                        
+                      })
+                      // let tempMove = new MoveInVideo(moveName, self.match.matchDeets., 'you', 1, 2, 0, '12345', true); //TODO update this once you add performers
+                      //TODO after move is added to db somehow have to disable the form again (do I emit new stuff, reset to "Nobody" and "tmpMove" or whatever???)
+                      //TODO add some way to resume the youtube player from here...??
+                    });
+                  });
                 });
               });
             });

@@ -210,6 +210,7 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.startTimePoint.next(1);
     this.performerFormGroup = this.fb.group({
       performerBound: ['', Validators.required],
+      pointsBound: ['', Validators.required]
     });
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
@@ -235,19 +236,6 @@ export class AnnotationDisplayComponent implements OnInit {
     });
   }
 
-  //TODO mechanism for making disabledStatus false after checking the forms
-
-
-  // submitFormAndClose(){ //TODO this may be unnecessary
-  //   this.trackerService.startTimePoint.subscribe(result =>{
-  //     // console.log("time from tracker service is " + result);
-  //   });
-  //   //TODO createMoveInVideo from form submission
-  //   let tempMove = new MoveInVideo('armbar', 'me', 'you', 1, 2, 0, '12345', true);
-  //   this.moveSelected.emit(tempMove);
-  //   //TODO add some way to resume the youtube player from here...
-  // }
-
   selectItem(item: string){
     this.selectedAnnotation = item;
     this.trackerService.moveName.next(item);
@@ -260,17 +248,20 @@ export class AnnotationDisplayComponent implements OnInit {
 
   processFormInputs(){
     let result = this.getValues();
-    console.log("form processing results: ");
-    console.log(result);
-    this.trackerService.performer.next(result);
-    //TODO createMoveInVideo from form submission
-    //TODO next the subject tracking performer of action
+    let {performerFromForm, pointsFromForm} = result;
+    this.trackerService.performer.next(performerFromForm);
+    this.trackerService.points.next(pointsFromForm);
+    let remainder = this.performers.filter( function(item){return (item !== performerFromForm);} );
+    this.trackerService.recipient.next(remainder[0]);
+
   }
 
   allValid(): boolean{
     console.log("allValid called");
     let values = this.performerFormGroup.value;
-    if(values.performerBound){
+    console.log("values from allValid");
+    console.log(values);
+    if(values.performerBound && values.pointsBound >-1 && values.pointsBound < 100){
       console.log("performerBound true");
       return true;
     } else{

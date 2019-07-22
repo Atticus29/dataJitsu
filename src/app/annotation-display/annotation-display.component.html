@@ -12,9 +12,14 @@
             </select>
             <label for="performer">Performer</label>
           </div>
+          <div class="input-field col m12 s12">
+            <input formControlName="pointsBound" type="number" id="points" placeholder="E.g., 0">
+            <label for="weight">How many points was the move worth in this match format, if any?</label>
+          </div>
         </div>
       </form>
     </div>
+    <br>
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
         <button mat-icon-button disabled></button>
