@@ -23,10 +23,6 @@ describe ('Login tests', () =>{
     cy.visit('http://localhost:4200/');
   });
 
-  it('logout works', () => {
-    cy.logout();
-  });
-
   it('has a title', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.contains(cypressConstants.title).should('exist');
@@ -76,21 +72,11 @@ describe ('Login tests', () =>{
   });
 
   it('logs out', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
-    cy.contains('Match Rating');
-    cy.get('a[id=logOutLink]').click();
-    cy.contains('Log In');
+    cy.logout();
   });
 
-
   it('logs back in and clicks on a match', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.get('input[id=userEmail]').type(email);
-    cy.get('input[id=password]').type(pass);
-    cy.get('button[id=loginSubmit]').click();
+    cy.login(email, pass);
     cy.contains('Match Rating');
     cy.contains('Click');
     cy.get('a[name=videoClick]').first().click();
@@ -100,7 +86,6 @@ describe ('Login tests', () =>{
   });
 
   it('plays and pauses a match', ()=>{
-    cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
     cy.visit('http://localhost:4200/login');
@@ -118,7 +103,6 @@ describe ('Login tests', () =>{
   });
 
   it('still sees the table upon reload of the all-matches page', ()=>{
-    cy.visit('http://localhost:4200');
     cy.get('a[id=logOutLink]').click();
     cy.contains('Log In');
     cy.visit('http://localhost:4200/login');
@@ -131,4 +115,75 @@ describe ('Login tests', () =>{
     cy.contains('Match Rating');
     cy.contains('Adult'); //TODO improve
   });
+
+
+  it.only('annotates a match with a move', ()=>{
+    cy.visit('http://localhost:4200/login');
+    cy.contains('Log In');
+    cy.login(email,pass);
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Severe Foul').click();
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+    cy.get('input[id=points]').click({force:true}).type('2{enter}');
+    cy.get('input[id=points]').type('2{enter}');
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+  });
+
+
+  it('cannot annotate a match with a move without the move', ()=>{
+    cy.visit('http://localhost:4200/login');
+    cy.contains('Log In');
+    cy.login(email,pass);
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('input[id=points]').click({force:true}).type('2{enter}');
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+  });
+
+  it('cannot annotate a match with a move without the performer of the move', ()=>{
+    cy.visit('http://localhost:4200/login');
+    cy.contains('Log In');
+    cy.login(email,pass);
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Severe Foul').click();
+    cy.get('input[id=points]').type('2{enter}');
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+  });
+
+  it('cannot annotate a match with a move without the points', ()=>{
+    cy.visit('http://localhost:4200/login');
+    cy.contains('Log In');
+    cy.login(email,pass);
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Severe Foul').click();
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+  });
+
+
 });

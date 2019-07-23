@@ -47,10 +47,11 @@ export class AnnotationDisplayComponent implements OnInit {
   private performers: any[];
   private localMatchDeets: any[];
   private disabledPerformer: boolean = false;
-  private allValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private validStatus: boolean = false;
+  private moveValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private moveValidStatus: boolean = false;
   private points = new FormControl('', [Validators.required, Validators.min(0)]);
   private performerFg = new FormControl('', [Validators.required]);
+  private pointsEntered: number = 10000;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -69,34 +70,41 @@ export class AnnotationDisplayComponent implements OnInit {
       }
     });
     this.trackerService.startTimePoint.next(1);
+    this.trackerService.moveName.subscribe(moveName =>{
+          if(moveName !== "tempMove"){
+            this.moveValidSubject.next(true);
+          }
+    });
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         let localMatchDeets: any = matchDeets;
         let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
         this.performers = thePerformers;
-        this.trackerService.moveName.subscribe(moveNameResult =>{
-          if(moveNameResult !== "tempMove"){
-            console.log("move has been picked");
-            this.allValidSubject.next(true);
-          } else{
-            this.allValidSubject.next(false);
-          }
-        });
+        // this.trackerService.moveName.subscribe(moveNameResult =>{
+        //   if(moveNameResult !== "tempMove"){
+        //     console.log("move has been picked");
+        //     this.moveValidSubject.next(true);
+        //   } else{
+        //     this.moveValidSubject.next(false);
+        //   }
+        // });
       });
     });
-    this.allValidSubject.subscribe(status =>{
-      if(this.allValid() && status){
-        this.validStatus = true;
+    this.moveValidSubject.subscribe(status =>{
+      console.log("status of moveValidSubject updated: ");
+      console.log(status);
+      if(status){
+        this.moveValidStatus = true;
       } else{
-        this.validStatus = false;
+        this.moveValidStatus = false;
       }
     });
   }
 
   getErrorMessage() {
     return this.points.hasError('required') ? 'You must enter a value' :
-        this.points.hasError('min') ? 'Number must be zero or greater' :
-            '';
+    this.points.hasError('min') ? 'Number must be zero or greater' :
+    '';
     // return this.email.hasError('required') ? 'You must enter a value' :
     //     this.email.hasError('email') ? 'Not a valid email' :
     //         '';

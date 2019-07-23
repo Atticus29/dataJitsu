@@ -5,7 +5,7 @@
     <div id="tree-div">
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
-          <button mat-icon-button disabled></button>
+          <button mat-icon-button disabled id="node-button"></button>
           {{node.item}}
         </mat-tree-node>
         <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
@@ -45,7 +45,7 @@
 
     <div id="buttons-div">
       <div class="row">
-        <button type="submit" [disabled]="!validStatus"  class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
+          <button type="submit" [disabled]="!points.valid || !performerFg.valid || !moveValidStatus" class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
           <i class="material-icons right">send</i>
         </button>
         <button class="modal-action modal-close waves-effect waves-green btn">Cancel</button>
