@@ -14,29 +14,24 @@
 //   }
 // }
 // declare namespace Cypress {
-//   interface Chainable<Subject> {
+//   interface Chainable<Subject = any> {
 //     logout(): Chainable<undefined>;
-//     login(email: string, pw: string): Chainable<undefined>;
+//     login(): Chainable<undefined>;
 //   }
-// }
-
-// function logout(): Cypress.Chainable<any>{
-//   return cy.get('a[id=logOutLink]').click();
 // }
 // -- This is a parent command --
 
 
-Cypress.Commands.add('login', (email: string, pw: string) => {
+Cypress.Commands.add("login", (email, password) => {
   cy.visit('/login');
   cy.get('input[id=userEmail]').type(email);
-  cy.get('input[id=password]').type(pw);
-  return cy.get('button[id=loginSubmit]').click();
+  cy.get('input[id=password]').type(password);
+  cy.get('button[id=loginSubmit]').click();
 });
 
-Cypress.Commands.add('logout', () => {
-  cy.get('a[id=logOutLink]').click(); //return
+Cypress.Commands.add("logout", () => {
+  cy.get('a[id=logOutLink]').click();
 });
-
 //
 //
 // -- This is a child command --
