@@ -1,7 +1,7 @@
 
 /// <reference types="cypress" />
 describe('Login tests with no beforeEach', ()=>{
-  it('logout works', () => {
+  it.skip('logout works', () => {
     cy.logout();
   });
 });
@@ -21,6 +21,10 @@ describe ('Login tests', () =>{
   beforeEach(()=>{
     // cy.logout();
     cy.visit('http://localhost:4200/');
+  });
+
+  it('logout works', () => {
+    cy.logout();
   });
 
   it('has a title', () =>{
