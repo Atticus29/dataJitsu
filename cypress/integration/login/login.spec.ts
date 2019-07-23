@@ -1,13 +1,4 @@
 
-import Chance from 'chance';
-const chance = new Chance();
-
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     logout(): Chainable<undefined>;
-//     login(): Chainable<undefined>;
-//   }
-// }
 /// <reference types="cypress" />
 describe('Login tests with no beforeEach', ()=>{
   it('logout works', () => {
@@ -16,7 +7,7 @@ describe('Login tests with no beforeEach', ()=>{
 });
 
 describe ('Login tests', () =>{
-  const email = chance.email();
+  const email = "fakeEmail@gmail.com";
   const name = "Bob";
   const pass = 'ValidPassword23';
   const age = '33';
@@ -29,7 +20,7 @@ describe ('Login tests', () =>{
 
   beforeEach(()=>{
     // cy.logout();
-    cy.visit('/');
+    cy.visit('http://localhost:4200/');
   });
 
   it('has a title', () =>{
