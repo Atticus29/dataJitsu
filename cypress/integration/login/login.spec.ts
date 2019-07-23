@@ -4,6 +4,13 @@ const chance = new Chance();
 
 /// <reference types="cypress" />
 
+// declare namespace Cypress {
+//   interface Chainable<Subject> {
+//     logout(): Cypress.Chainable<any>;
+//     login(email: string, pw: string): Cypress.Chainable<any>;
+//   }
+// }
+
 describe('Login tests with no beforeEach', ()=>{
   it('logout works', () => {
     cy.logout();

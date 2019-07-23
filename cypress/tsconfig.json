@@ -1,13 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": [
-   "../node_modules/cypress",
-   "./cypress/*/*.ts"
-  ],
   "compilerOptions": {
     "types": ["mocha", "cypress"]
-  },
-  "module": "es6",
-  "target": "es6",
-  "allowJs": true
+  }
 }

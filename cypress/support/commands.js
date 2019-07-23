@@ -13,12 +13,16 @@
 //     myCustomCommand(value: string): Chainable<Subject>
 //   }
 // }
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    logout(): Chainable<Subject>;
-    login(email: string, pw: string): Cypress.Chainable<any>;
-  }
-}
+// declare namespace Cypress {
+//   interface Chainable<Subject> {
+//     logout(): Chainable<undefined>;
+//     login(email: string, pw: string): Chainable<undefined>;
+//   }
+// }
+
+// function logout(): Cypress.Chainable<any>{
+//   return cy.get('a[id=logOutLink]').click();
+// }
 // -- This is a parent command --
 
 
@@ -30,8 +34,9 @@ Cypress.Commands.add('login', (email: string, pw: string) => {
 });
 
 Cypress.Commands.add('logout', () => {
-  return cy.get('a[id=logOutLink]').click();
+  cy.get('a[id=logOutLink]').click(); //return
 });
+
 //
 //
 // -- This is a child command --
