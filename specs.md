@@ -3,12 +3,8 @@
 - [ ] Add test for starting and stopping an annotation
 - [x] Fix test for clicking pause
 
-# Bugs High Priority
-- [ ] //TODO createMoveInVideo from form submission
-- [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
-- [ ] Gi/Nogi on match-display says false
-
-# Bugs Low Priority
+# TODO low priority
+- [ ] Flesh out README with details about what it is and how it works
 
 # Specs
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)

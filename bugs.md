@@ -11,8 +11,12 @@
 - [ ] If you log out and then try to click on annotate a video, it takes you to the lost page.
 - [ ] Video icon not displaying on main window
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
+- [ ] //TODO createMoveInVideo from form submission
+- [ ] Gi/Nogi on match-display says false
+
 
 # Resolved issues
+- [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
 - [x] Doesn't resume play after Done for annotate a move is clicked
 - [x] Cypress tests are still having issues with the chainable stuff
 - [x] Clicking on matches takes you to /matches/matches instead of just one /matches
