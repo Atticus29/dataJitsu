@@ -117,7 +117,7 @@ describe ('Login tests', () =>{
   });
 
 
-  it.only('annotates a match with a move', ()=>{
+  it('annotates a match with a move', ()=>{
     cy.visit('http://localhost:4200/login');
     cy.contains('Log In');
     cy.login(email,pass);

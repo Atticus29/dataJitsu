@@ -71,7 +71,7 @@ export class AnnotationDisplayComponent implements OnInit {
     });
     this.trackerService.startTimePoint.next(1);
     this.trackerService.moveName.subscribe(moveName =>{
-          if(moveName !== "tempMove"){
+          if(moveName !== "No Annotation Currently Selected"){
             this.moveValidSubject.next(true);
           }
     });
@@ -80,14 +80,6 @@ export class AnnotationDisplayComponent implements OnInit {
         let localMatchDeets: any = matchDeets;
         let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
         this.performers = thePerformers;
-        // this.trackerService.moveName.subscribe(moveNameResult =>{
-        //   if(moveNameResult !== "tempMove"){
-        //     console.log("move has been picked");
-        //     this.moveValidSubject.next(true);
-        //   } else{
-        //     this.moveValidSubject.next(false);
-        //   }
-        // });
       });
     });
     this.moveValidSubject.subscribe(status =>{
@@ -130,6 +122,7 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.points.next(result.pointValue);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
+    this.trackerService.videoResumeStatus.next(true);
 
   }
 

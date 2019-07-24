@@ -30,6 +30,8 @@ export class MatchDisplayComponent implements OnInit {
   private annotationFinishButtonDisabled: boolean = true;
   // player: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private shouldVideoResume: boolean = false;
+  private selectedAnnotation: string = "No Annotation Currently Selected";
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService) { }
 
@@ -39,7 +41,6 @@ export class MatchDisplayComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit for match-display called");
-
     let self = this;
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
@@ -56,6 +57,16 @@ export class MatchDisplayComponent implements OnInit {
             }
           });
         }
+
+        this.trackerService.moveName.subscribe(moveName =>{
+          this.selectedAnnotation = moveName;
+        })
+
+        this.trackerService.videoResumeStatus.subscribe(videoResumeStatus =>{
+          if(videoResumeStatus){
+            player.playVideo();
+          }
+        });
 
         let onPlayerReady = (event) => {
           document.getElementById("play").addEventListener("click", function() {
@@ -93,6 +104,7 @@ export class MatchDisplayComponent implements OnInit {
                 });
               });
             });
+            self.trackerService.moveName.next("No Annotation Currently Selected");
             //TODO make record of video here
             //TODO add 1 second delay
             player.playVideo();
