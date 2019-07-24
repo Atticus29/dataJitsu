@@ -124,7 +124,7 @@ export class AnnotationDisplayComponent implements OnInit {
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
     this.trackerService.videoResumeStatus.next(true);
-
+    this.trackerService.annotationBegun.next(true);
   }
 
   allValid(): boolean{
@@ -140,5 +140,9 @@ export class AnnotationDisplayComponent implements OnInit {
     } else{
       return false;
     }
+  }
+
+  respondToAnnotationCancel(){
+    console.log("Cancel was clicked TODO don't swap the buttons in match display");
   }
 }

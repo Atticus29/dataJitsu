@@ -15,6 +15,7 @@ export class TrackerService {
   public matchId: BehaviorSubject<string> = new BehaviorSubject("tmpId");
   public videoResumeStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public submission: BehaviorSubject<string> = new BehaviorSubject<string>("No");
+  public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 }

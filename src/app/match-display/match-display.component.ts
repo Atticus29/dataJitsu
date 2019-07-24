@@ -47,6 +47,15 @@ export class MatchDisplayComponent implements OnInit {
   ngOnInit() {
     console.log("ngOnInit for match-display called");
     let self = this;
+
+    this.trackerService.annotationBegun.subscribe(status =>{
+      if(status){
+        this.annotationFinishButtonDisabled = false;
+      }
+      if(status == false){
+        this.annotationFinishButtonDisabled = true;
+      }
+    });
     this.route.params.subscribe(params => {
       this.matchId = params['matchId'];
       this.trackerService.currentMatch.next(this.matchId);
@@ -84,7 +93,6 @@ export class MatchDisplayComponent implements OnInit {
             console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
             self.trackerService.startTimePoint.next(player.getCurrentTime());
-            self.beginAnnotation(currentTime);
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();
@@ -92,7 +100,6 @@ export class MatchDisplayComponent implements OnInit {
             self.trackerService.endTimePoint.next(player.getCurrentTime());
             self.finishAnnotation(currentTime);
             self.openSnackBar("Move Recorded");
-            self.annotationFinishButtonDisabled = true;
             self.trackerService.startTimePoint.pipe(take(1)).subscribe(startTime =>{
               self.trackerService.endTimePoint.pipe(take(1)).subscribe(endTime =>{
                 self.trackerService.moveName.pipe(take(1)).subscribe(moveName =>{
@@ -115,8 +122,6 @@ export class MatchDisplayComponent implements OnInit {
                 });
               });
             });
-
-            // self.trackerService.moveName.next("No Annotation Currently Selected");
             //TODO add 1 second delay?
             player.playVideo();
           });
@@ -143,7 +148,7 @@ export class MatchDisplayComponent implements OnInit {
           var firstScriptTag = document.getElementsByTagName('script')[0];
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
-      })
+      });
     });
 
     this.moveAssembledStatus.subscribe(status =>{
@@ -161,10 +166,11 @@ export class MatchDisplayComponent implements OnInit {
         self.trackerService.recipient.next("Nobody");
         self.trackerService.videoResumeStatus.next(true);
         self.trackerService.submission.next("No");
+        self.trackerService.annotationBegun.next(false);
+        console.log("all of the resets supposedly have happened?");
       }
     });
   }
-
   moveCompletelyLegit(): boolean{
     let returnVal = false;
     try {
@@ -175,23 +181,14 @@ export class MatchDisplayComponent implements OnInit {
     }
     return returnVal;
   }
-
-
   parseVideoUrl(url: string){ //@TODO seems hacky
     var re = /.*youtu.+?be\/(.+)/ig;
     var result = re.exec(url);
     return result[1];
   }
-
-  beginAnnotation(currentTime: string){
-    console.log(currentTime);
-    this.annotationFinishButtonDisabled = false;
-  }
-
   finishAnnotation(currentTime: string){
     console.log(currentTime);
   }
-
   onMoveSelected(moveSelected: MoveInVideo){
     console.log(moveSelected);
     player.playVideo();

@@ -1,8 +1,8 @@
 # Known issues
+- [ ] Second time someone tries to annotate, nothing is reset
 - [ ] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
 - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
 - [ ] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process
-- [ ] Second time someone tries to annotate, nothing is reset
 - [ ] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
 - [ ] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
 - [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
