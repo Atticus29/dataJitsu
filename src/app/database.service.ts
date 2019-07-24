@@ -7,6 +7,8 @@ import { User } from './user.model';
 import { TextTransformationService } from './text-transformation.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
+import { MoveInVideo } from './moveInVideo.model';
+
 @Injectable()
 export class DatabaseService {
   matches:Observable<any>;
@@ -245,6 +247,15 @@ export class DatabaseService {
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
     return userId;
+  }
+
+  addMoveInVideoToMatch(move: MoveInVideo){
+    let matchId = move.getMatchId();
+    let ref = this.db.list('/matches/' + matchId + '/moves');
+    let moveId = ref.push(move).key;
+    let updates = {};
+    updates['/matches/' + matchId + '/moves/' + moveId] = move;
+    firebase.database().ref().update(updates);
   }
 
   updateUserInDb(user: User){

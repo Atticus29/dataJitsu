@@ -5,8 +5,10 @@
 
 # TODO low priority
 - [ ] Flesh out README with details about what it is and how it works
+- [ ] Add guard jump and add more passes
 
 # Specs
+- [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
 - [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)

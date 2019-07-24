@@ -51,7 +51,8 @@ export class AnnotationDisplayComponent implements OnInit {
   private moveValidStatus: boolean = false;
   private points = new FormControl('', [Validators.required, Validators.min(0)]);
   private performerFg = new FormControl('', [Validators.required]);
-  private pointsEntered: number = 10000;
+  private submissionStatus: string = "No";
+  private pointsEntered: number = -1;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
@@ -83,8 +84,6 @@ export class AnnotationDisplayComponent implements OnInit {
       });
     });
     this.moveValidSubject.subscribe(status =>{
-      console.log("status of moveValidSubject updated: ");
-      console.log(status);
       if(status){
         this.moveValidStatus = true;
       } else{
@@ -110,7 +109,8 @@ export class AnnotationDisplayComponent implements OnInit {
   getValues(){
     let performerValue = this.performerFg.value;
     let pointValue = this.points.value;
-    let results = {performerValue, pointValue};
+    let theSubmissionStatus = this.submissionStatus;
+    let results = {performerValue, pointValue, theSubmissionStatus};
     console.log("getValues call: ");
     console.log(results);
     return results;
@@ -120,6 +120,7 @@ export class AnnotationDisplayComponent implements OnInit {
     let result = this.getValues();
     this.trackerService.performer.next(result.performerValue);
     this.trackerService.points.next(result.pointValue);
+    this.trackerService.submission.next(result.theSubmissionStatus);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
     this.trackerService.videoResumeStatus.next(true);
@@ -128,13 +129,12 @@ export class AnnotationDisplayComponent implements OnInit {
 
   allValid(): boolean{
     console.log("allValid called");
+    let submissionStatusValue = this.submissionStatus;
+    console.log("submissionStatusValue from allValid");
+    console.log(submissionStatusValue);
     let performerValue = this.performerFg.value;
-    console.log("performerValue from allValid");
-    console.log(performerValue);
     let pointValue = this.points.value;
-    console.log("pointValue from allValid");
-    console.log(pointValue);
-    if(performerValue && pointValue > -1){ //&& values.pointsBound >-1 && values.pointsBound < 100 //TODO
+    if(performerValue && pointValue > -1){ //TODO && submissionStatusValue stuff
       console.log("performerValue true");
       return true;
     } else{

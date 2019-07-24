@@ -125,7 +125,8 @@ export const firebaseConfig = {
     MatSnackBarModule,
     MatProgressBarModule,
     MatChipsModule,
-    MatRippleModule
+    MatRippleModule,
+    MatRadioModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
   bootstrap: [AppComponent]

@@ -39,6 +39,15 @@
         <mat-error *ngIf="points.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
     </div>
+
+    <div class="row">
+          <label>Is this a submission? </label>
+          <mat-radio-group name="submission-radio" [(ngModel)]="submissionStatus">
+            <mat-radio-button value="Yes">Yes</mat-radio-button>
+            <mat-radio-button value="No">No</mat-radio-button>
+          </mat-radio-group>
+    </div>
+
     <div id="buttons-div">
       <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
       <div class="row">

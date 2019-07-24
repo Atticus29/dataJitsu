@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 
 import { Subject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
@@ -12,6 +12,9 @@ import { TrackerService } from '../tracker.service';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
+
+import { BehaviorSubject } from 'rxjs';
+
 var player;
 
 @Component({
@@ -32,6 +35,8 @@ export class MatchDisplayComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private shouldVideoResume: boolean = false;
   private selectedAnnotation: string = "No Annotation Currently Selected";
+  private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private tempMove: MoveInVideo;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService) { }
 
@@ -88,25 +93,31 @@ export class MatchDisplayComponent implements OnInit {
             self.finishAnnotation(currentTime);
             self.openSnackBar("Move Recorded");
             self.annotationFinishButtonDisabled = true;
-            self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
-              self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
-                self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
-                  self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
-                    self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
-                      self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
-                        //TODO LEFT OFF HERE
-                        // let tempMove = new MoveInVideo(moveName, self.match.matchDeets., 'you', 1, 2, 0, '12345', true); //TODO update this once you add performers
-                        //TODO after move is added to db somehow have to disable the form again (do I emit new stuff, reset to "Nobody" and "tmpMove" or whatever???)
-                        //TODO add some way to resume the youtube player from here...??
+            self.trackerService.startTimePoint.pipe(take(1)).subscribe(startTime =>{
+              self.trackerService.endTimePoint.pipe(take(1)).subscribe(endTime =>{
+                self.trackerService.moveName.pipe(take(1)).subscribe(moveName =>{
+                  self.trackerService.performer.pipe(take(1)).subscribe(performer =>{
+                    self.trackerService.recipient.pipe(take(1)).subscribe(recipient =>{
+                      self.trackerService.points.pipe(take(1)).subscribe(points =>{
+                        self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
+                          self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
+                            let submissionStatus: boolean = false;
+                            if(submission === "Yes"){
+                              submissionStatus = true;
+                            }
+                            self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus); //TODO update this once you add performers
+                            self.moveAssembledStatus.next(true);
+                          });
+                        });
                       })
                     });
                   });
                 });
               });
             });
-            self.trackerService.moveName.next("No Annotation Currently Selected");
-            //TODO make record of video here
-            //TODO add 1 second delay
+
+            // self.trackerService.moveName.next("No Annotation Currently Selected");
+            //TODO add 1 second delay?
             player.playVideo();
           });
           document.getElementById("pause-vid").addEventListener("click", function() {
@@ -134,6 +145,35 @@ export class MatchDisplayComponent implements OnInit {
         }
       })
     });
+
+    this.moveAssembledStatus.subscribe(status =>{
+      console.log("moveAssembledStatus changed to " + status);
+      console.log(this.tempMove);
+      console.log(this.moveCompletelyLegit());
+      if(status && this.moveCompletelyLegit()){
+        self.db.addMoveInVideoToMatch(this.tempMove);
+        this.moveAssembledStatus.next(false);
+        self.trackerService.moveName.next("No Annotation Currently Selected");
+        self.trackerService.startTimePoint.next(0);
+        self.trackerService.endTimePoint.next(0);
+        self.trackerService.points.next(-1);
+        self.trackerService.performer.next("Nobody");
+        self.trackerService.recipient.next("Nobody");
+        self.trackerService.videoResumeStatus.next(true);
+        self.trackerService.submission.next("No");
+      }
+    });
+  }
+
+  moveCompletelyLegit(): boolean{
+    let returnVal = false;
+    try {
+      returnVal = (this.tempMove.actor !== "Nobody" && this.tempMove.recipient !== "Nobody" && this.tempMove.points > -1);
+    }
+    catch(err) {
+      returnVal = false;
+    }
+    return returnVal;
   }
 
 
