@@ -1,6 +1,7 @@
 <div id="annotationModal" class="modal">
   <div class="modal-content">
     <h4>Add an annotation to the match</h4>
+    <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
     <div id="tree-div">
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectItem(node.item)">
@@ -24,16 +25,16 @@
   <div id="action-performer-form-div">
 
     <div class="row">
-      <div class="col m12 s12">
+      <!-- <div class="col m12 s12"> -->
         <mat-form-field class="col m12 s12">
           <mat-select [formControl]="performerFg" id="performer" required  placeholder="Who performed the action?">
             <mat-option *ngFor="let performer of performers" [value]="performer">{{performer}}</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      <!-- </div> -->
     </div>
     <div class="row">
-      <mat-form-field appearance="standard" class="col m12 s12">
+      <mat-form-field class="col m12 s12">
         <mat-label>How many points was the move worth in this match format, if any?</mat-label>
         <input matInput [formControl]="points" type="number" id="points" placeholder="E.g., 0">
         <mat-error *ngIf="points.invalid">{{getErrorMessage()}}</mat-error>
@@ -43,8 +44,8 @@
     <div class="row">
           <label>Is this a submission? </label>
           <mat-radio-group name="submission-radio" [(ngModel)]="submissionStatus">
-            <mat-radio-button value="Yes">Yes</mat-radio-button>
-            <mat-radio-button value="No">No</mat-radio-button>
+            <mat-radio-button value="Yes">Yes </mat-radio-button>
+            <mat-radio-button value="No">No </mat-radio-button>
           </mat-radio-group>
     </div>
 
