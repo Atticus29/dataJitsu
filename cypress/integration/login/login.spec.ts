@@ -30,7 +30,8 @@ describe ('Login tests', () =>{
   });
 
   it('signs up a new user', () =>{
-    cy.get('button[id=new-account-button]').click();
+    cy.visit('http://localhost:4200/createaccount');
+    // cy.get('button[id=new-account-button]').click();
     cy.get('input[id=affiliation]').type(affiliation);
     cy.get('input[id=password]').type(pass);
     cy.get('input[id=userName]').type(name);
