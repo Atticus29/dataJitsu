@@ -1,29 +1,22 @@
 # TODO high priority
-- [ ] //TODO make record of video here
+- [ ] Add move to the user who made it, and include a timestamp in the entry as well
+- [ ] Add advantages to moves list
 - [ ] Add test for starting and stopping an annotation
-- [x] Fix test for clicking pause
+- [ ] Add test for cancelling annotation (making sure certain buttons are and are not visible)
 
 # TODO low priority
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add guard jump and add more passes
 
+# Completed TODOs
+- [x] //TODO make record of video here
+- [x] Fix test for clicking pause
+
 # Specs
+- [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
-- [x] Users can log in
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
-- [x] Users can create an account
-  - [x] Name
-  - [x] Email
-  - [x] Rank (gi)
-  - [x] Rank (no gi)
-  - [x] Affiliation
-  - [x] Age
-  - [x] Gender
-  - [x] Date last annotated (defaults to null)
-  - [x] paidStatus
-  - [x] Weight (find a way for the input to be in kilos or lbs.)
-  - [x] Reputation points (defaults to 100)
 - [ ] Set up unit testing, especially for database stuff
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:
@@ -82,6 +75,22 @@
         - [ ] The name of the move
         - [ ] Users can create a new move name if it doesn't exist
           - [ ] This name must be vetted by other users
+
+# Completed Specs
+
+- [x] Users can log in
+- [x] Users can create an account
+  - [x] Name
+  - [x] Email
+  - [x] Rank (gi)
+  - [x] Rank (no gi)
+  - [x] Affiliation
+  - [x] Age
+  - [x] Gender
+  - [x] Date last annotated (defaults to null)
+  - [x] paidStatus
+  - [x] Weight (find a way for the input to be in kilos or lbs.)
+  - [x] Reputation points (defaults to 100)
 
 - [x] Users can add a brand new video with match details:
   - [x] Tournament name

@@ -8,6 +8,7 @@ import { takeUntil, take } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
+import { AuthorizationService } from '../authorization.service';
 
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
@@ -38,7 +39,7 @@ export class MatchDisplayComponent implements OnInit {
   private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private tempMove: MoveInVideo;
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService) { }
+  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService) { }
 
   ngOnDestroy(){
 
@@ -46,6 +47,7 @@ export class MatchDisplayComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit for match-display called");
+
     let self = this;
 
     this.trackerService.annotationBegun.subscribe(status =>{
@@ -152,11 +154,16 @@ export class MatchDisplayComponent implements OnInit {
     });
 
     this.moveAssembledStatus.subscribe(status =>{
-      console.log("moveAssembledStatus changed to " + status);
-      console.log(this.tempMove);
-      console.log(this.moveCompletelyLegit());
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
+        self.authService.getCurrentUser().subscribe(user =>{
+          this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+            let userInDb: string = snapshot.key;
+            console.log("user is: ");
+            console.log(userInDb);
+            self.db.addMoveInVideoToUser(self.tempMove, userInDb);//TODO get UserId
+          });
+        });
         this.moveAssembledStatus.next(false);
         self.trackerService.moveName.next("No Annotation Currently Selected");
         self.trackerService.startTimePoint.next(0);

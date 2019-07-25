@@ -1,5 +1,7 @@
 # Known issues
 - [ ] Second time someone tries to annotate, nothing is reset
+- [ ] Currently, lets you create multiple duplicate accounts
+- [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
 - [ ] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
 - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
 - [ ] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process

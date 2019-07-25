@@ -70,6 +70,7 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import { TemporaryComponent } from './temporary/temporary.component';
+import { AnnotationDataDisplayComponent } from './annotation-data-display/annotation-data-display.component';
 
 
 export const firebaseConfig = {
@@ -94,7 +95,8 @@ export const firebaseConfig = {
     NotfoundComponent,
     UserStatusReportComponent,
     PaymentOrAnnotationDetailsComponent,
-    TemporaryComponent
+    TemporaryComponent,
+    AnnotationDataDisplayComponent
   ],
   imports: [
     BrowserModule,

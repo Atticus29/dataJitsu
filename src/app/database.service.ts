@@ -168,30 +168,12 @@ export class DatabaseService {
 
   //@TODO fix getUserByUid below low priority 05/11/2018 only would get used in app.component
   getUserByUid(uid: string){
-    // console.log("got to getUserByUid call");
     let ref = firebase.database().ref('users/');
     let user: User = null;
-    // let temp = ref.orderByChild('uid').equalTo(uid).limitToFirst(1).once('value').then(function(snapshot){
-    //   this.currentUser = snapshot.val();
-    //   console.log(this.currentUser);
+    // ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
+    //   return this.getUserById(snapshot.key);
     // });
-    ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-      // console.log(snapshot.key);
-      return this.getUserById(snapshot.key);
-    });
-    // return true;
-    // });
-    // return Observable.of(ref.orderByChild('uid').equalTo(uid).limitToFirst(1));
-    // .on("child_added", snapshot=>{
-    //   console.log(snapshot.key);
-    //   user = snapshot;
-    //   return this.user;
-    // });
-    // if (user != null){
-    //   return Observable.of(user);
-    // } else{
-    //   throw new TypeError("user was null in getUserByUid in database.service");
-    // }
+    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1);
   }
 
   getMatchFromNodeKey(key: string){
@@ -255,6 +237,17 @@ export class DatabaseService {
     let moveId = ref.push(move).key;
     let updates = {};
     updates['/matches/' + matchId + '/moves/' + moveId] = move;
+    firebase.database().ref().update(updates);
+  }
+
+  addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){
+    let now = new Date().toJSON();
+    let newMove = {move, dateAdded:now};
+    let matchId = move.getMatchId();
+    let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
+    let moveId = ref.push(move).key;
+    let updates = {};
+    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = newMove;
     firebase.database().ref().update(updates);
   }
 
