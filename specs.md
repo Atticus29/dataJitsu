@@ -1,6 +1,4 @@
 # TODO high priority
-- [ ] Add move to the user who made it, and include a timestamp in the entry as well
-- [ ] Add advantages to moves list
 - [ ] Add test for starting and stopping an annotation
 - [ ] Add test for cancelling annotation (making sure certain buttons are and are not visible)
 
@@ -9,6 +7,8 @@
 - [ ] Add guard jump and add more passes
 
 # Completed TODOs
+- [x] Add advantages to moves list
+- [x] Add move to the user who made it, and include a timestamp in the entry as well
 - [x] //TODO make record of video here
 - [x] Fix test for clicking pause
 

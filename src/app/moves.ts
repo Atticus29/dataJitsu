@@ -1,4 +1,5 @@
 export var allCurrentMoves ={
+  "Advantage": ["Advantage"],
   "Guard Passes":[
     "X Pass",
     "Leg Drag",
