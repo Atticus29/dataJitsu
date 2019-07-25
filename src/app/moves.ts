@@ -158,6 +158,8 @@ export var allCurrentMoves ={
 ],
 "Positions With Names That Do Not Score Points In Most Rule Sets":[
   "Truck",
+  "Guard Jump",
+  "Guard Pull",
   "Pitstop",
   "New York",
   "Crackhead Control",

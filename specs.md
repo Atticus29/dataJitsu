@@ -4,9 +4,10 @@
 
 # TODO low priority
 - [ ] Flesh out README with details about what it is and how it works
-- [ ] Add guard jump and add more passes
+- [ ] Add more passes
 
 # Completed TODOs
+- [x] Add guard jump
 - [x] Add advantages to moves list
 - [x] Add move to the user who made it, and include a timestamp in the entry as well
 - [x] //TODO make record of video here
