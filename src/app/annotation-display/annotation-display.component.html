@@ -55,7 +55,7 @@
           <button type="submit" [disabled]="!points.valid || !performerFg.valid || !moveValidStatus" class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
           <i class="material-icons right">send</i>
         </button>
-        <button class="modal-action modal-close waves-effect waves-green btn" (click)="respondToAnnotationCancel()">Cancel</button>
+        <button id="modal-cancel-button" class="modal-action modal-close waves-effect waves-green btn" (click)="respondToAnnotationCancel()">Cancel</button>
       </div>
     </div>
 

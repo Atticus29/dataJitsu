@@ -97,6 +97,7 @@ describe ('Login tests', () =>{
     cy.contains('Click');
     cy.get('a[name=videoClick]').first().click();
     cy.contains('vs.');
+    cy.wait(5000);
     cy.get('a[id=play]').click({force:true});
     cy.wait(5000);
     cy.get('a[id=pause-vid]').click({force:true});
@@ -116,75 +117,4 @@ describe ('Login tests', () =>{
     cy.contains('Match Rating');
     cy.contains('Adult'); //TODO improve
   });
-
-
-  it('annotates a match with a move', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.contains('Log In');
-    cy.login(email,pass);
-    cy.contains('Match Rating');
-    cy.contains('Click');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
-    cy.contains('Severe Foul').click();
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').click({force:true}).type('2{enter}');
-    cy.get('input[id=points]').type('2{enter}');
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
-  });
-
-
-  it('cannot annotate a match with a move without the move', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.contains('Log In');
-    cy.login(email,pass);
-    cy.contains('Match Rating');
-    cy.contains('Click');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('input[id=points]').click({force:true}).type('2{enter}');
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-  });
-
-  it('cannot annotate a match with a move without the performer of the move', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.contains('Log In');
-    cy.login(email,pass);
-    cy.contains('Match Rating');
-    cy.contains('Click');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
-    cy.contains('Severe Foul').click();
-    cy.get('input[id=points]').type('2{enter}');
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-  });
-
-  it('cannot annotate a match with a move without the points', ()=>{
-    cy.visit('http://localhost:4200/login');
-    cy.contains('Log In');
-    cy.login(email,pass);
-    cy.contains('Match Rating');
-    cy.contains('Click');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
-    cy.contains('Severe Foul').click();
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-  });
-
-
 });
