@@ -1,4 +1,5 @@
 # Known issues
+- [ ] should have begin move disabled and end move enabled after done have been clicked test is failing for an unknown reason
 - [ ] Second time someone tries to annotate, nothing is reset
 - [ ] Currently, lets you create multiple duplicate accounts
 - [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere

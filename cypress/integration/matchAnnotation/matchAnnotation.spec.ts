@@ -105,7 +105,7 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=end-move]').should('be.disabled');
   });
 
-  it.only('should have begin move disabled and end move enabled after done have been clicked', function(){
+  it('should have begin move disabled and end move enabled after done have been clicked', function(){
     cy.visit('http://localhost:4200/login');
     cy.contains('Log In');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
