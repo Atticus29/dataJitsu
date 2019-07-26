@@ -38,6 +38,10 @@ export class DatabaseService {
     // });
   }
 
+  getMovesInMatch(matchId: string){
+    return this.db.list('/matches/' + matchId + '/moves').valueChanges();
+  }
+
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
