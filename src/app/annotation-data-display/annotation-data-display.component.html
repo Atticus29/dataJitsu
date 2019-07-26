@@ -1,1 +1,3 @@
-<p>annotation-data-display works!</p>
+<div *ngIf="timeline.length" class="container-fluid">
+  <horizontal-timeline [timelineElements]="timeline" [showContent]="true" [timelineWrapperWidth]="2000"></horizontal-timeline>
+</div>
