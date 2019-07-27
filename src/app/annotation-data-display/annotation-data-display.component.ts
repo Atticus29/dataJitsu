@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { TimelineElement } from '../horizontal-timeline/timeline-element';
+import { MoveInVideo } from '../moveInVideo.model';
 
 @Component({
   selector: 'app-annotation-data-display',
@@ -17,10 +18,7 @@ export class AnnotationDataDisplayComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private matchId: string;
   private timeline: TimelineElement[] = [];
-  content = `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae
-  ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae,
-  ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam
-  quisquam, quae, temporibus dolores porro doloribus.`;
+  content = `Lorem ipsum dolor sit amet`;
 
   constructor(private dbService: DatabaseService, private route: ActivatedRoute) { }
 
@@ -31,12 +29,16 @@ export class AnnotationDataDisplayComponent implements OnInit {
       this.dbService.getMovesInMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
         console.log("move from within AnnotationDataDisplayComponent:");
         console.log(moves);
+        // let theMoves = new MoveInVideo(moves);
+        //TODO LEFT OFF HERE
+        moves.forEach(move =>{
+          this.timeline.push({caption: move.moveName, date: new Date (moves.timeInitiated), title: move.moveName, content: moves.moveName + " performed by " + moves.actor + ". Scored " + moves.points + " points."})
+        });
       });
     });
   }
 
   load() {
-    this.timeline = [];
     setTimeout(() => { // simulate delay
       this.timeline = [
     { caption: '16 Jan', date: new Date(2014, 1, 16), title: 'Horizontal Timeline', content: this.content },

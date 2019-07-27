@@ -27,8 +27,8 @@
     <ol>
       <li *ngFor="let item of timelineElements; let index = index"
           [@contentState]="item.selected ? 'active' : (index < selectedIndex ? 'left' : 'right')">
-        <h2>{{item.title}}</h2>
-        <em>{{item.date | date:dateFormat}}</em>
+        <h5>{{item.title}}</h5>
+        <p>{{item.date}}</p>
         <p>{{item.content}}</p>
       </li>
     </ol>
