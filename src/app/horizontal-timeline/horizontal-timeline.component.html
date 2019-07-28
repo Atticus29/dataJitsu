@@ -5,7 +5,7 @@
         <ol>
           <li *ngFor="let item of timelineElements; let index = index">
             <a #timelineEvents href="#" [ngClass]="{'selected': item.selected, 'older-event': index < selectedIndex}"
-               (click)="onEventClick($event, item)">{{item.date | date:dateFormat}}</a>
+               (click)="onEventClick($event, item)">{{item.date}}</a>
             <span>{{item.caption}}</span>
           </li>
         </ol>

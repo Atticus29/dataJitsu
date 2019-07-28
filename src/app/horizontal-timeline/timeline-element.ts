@@ -1,6 +1,6 @@
 export interface TimelineElement {
   caption: string;
-  date: Date;
+  startTime: number;
   title: string;
   selected?: boolean;
   content: string;

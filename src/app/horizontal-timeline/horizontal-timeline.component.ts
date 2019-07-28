@@ -191,8 +191,8 @@ export class HorizontalTimelineComponent implements AfterViewInit {
     element.style['transform'] = property + '(' + value + ')';
   }
 
-  private static dayDiff(first: Date, second: Date): number {
-    return Math.round(second.getTime() - first.getTime());
+  private static timeDiff(first: number, second: number): number {
+    return Math.round(second - first);
   }
 
   private static minLapse(elements: TimelineElement[]): number {
@@ -202,7 +202,7 @@ export class HorizontalTimelineComponent implements AfterViewInit {
 
     let result: number = 0;
     for (let i = 1; i < elements.length; i++) {
-      let distance = HorizontalTimelineComponent.dayDiff(elements[i - 1].date, elements[i].date);
+      let distance = HorizontalTimelineComponent.timeDiff(elements[i - 1].startTime, elements[i].startTime);
       result = result ? Math.min(result, distance) : distance;
     }
     return result;
@@ -225,7 +225,11 @@ export class HorizontalTimelineComponent implements AfterViewInit {
     if (this._disabled) {
       return;
     }
+    // console.log("event");
+    // console.log(event);
     let element = event.target;
+    // console.log("element in onEventClick");
+    // console.log(element);
     // detect click on the a single event - show new event content
     let visibleItem = this._timelineElements[0];
     this._timelineElements.forEach(function (item: TimelineElement) {
@@ -242,6 +246,14 @@ export class HorizontalTimelineComponent implements AfterViewInit {
 
   initTimeline(timeLines: TimelineElement[]) {
     let eventsMinLapse = HorizontalTimelineComponent.minLapse(timeLines);
+    // console.log("eventsMinLapse is: ");
+    // console.log(eventsMinLapse);
+    // console.log("timeLines are: ");
+    // console.log(timeLines);
+    // console.log("this._eventsMinDistance");
+    // console.log(this._eventsMinDistance);
+    // console.log("eventsMinLapse");
+    // console.log(eventsMinLapse);
     // assign a left position to the single events along the timeline
     this.setDatePosition(timeLines, this._eventsMinDistance, eventsMinLapse);
     // assign a width to the timeline
@@ -284,18 +296,22 @@ export class HorizontalTimelineComponent implements AfterViewInit {
   setTimelineWidth(elements: TimelineElement[], width: number, eventsMinLapse: number) {
     let timeSpan = 100;
     if (elements.length > 1) {
-      timeSpan = HorizontalTimelineComponent.dayDiff(elements[0].date, elements[elements.length - 1].date);
+      timeSpan = HorizontalTimelineComponent.timeDiff(elements[0].startTime, elements[elements.length - 1].startTime);
     }
     let timeSpanNorm = timeSpan / eventsMinLapse;
     timeSpanNorm = Math.round(timeSpanNorm) + 4;
     this.eventsWrapperWidth = timeSpanNorm * width;
     let aHref = this.eventsWrapper.nativeElement.querySelectorAll('a.selected')[0];
+    // console.log("aHref in setTimelineWidth");
+    // console.log(aHref);
     this.updateFilling(aHref);
     this.updateTimelinePosition(aHref);
     return this.eventsWrapperWidth;
   }
 
   private updateFilling(element: any) {
+    // console.log("element");
+    // console.log(element);
     // change .filling-line length according to the selected event
     let eventStyle = window.getComputedStyle(element);
     let eventLeft = eventStyle.getPropertyValue('left');
@@ -326,7 +342,7 @@ export class HorizontalTimelineComponent implements AfterViewInit {
     let timelineEventsArray = this.timelineEvents.toArray();
     let i: number = 0;
     for (let component of elements) {
-      let distance = HorizontalTimelineComponent.dayDiff(elements[0].date, component.date);
+      let distance = HorizontalTimelineComponent.timeDiff(elements[0].startTime, component.startTime);
       let distanceNorm = Math.round(distance / eventsMinLapse);
       timelineEventsArray[i].nativeElement.style.left = distanceNorm * min + 'px';
       // span
