@@ -1,4 +1,7 @@
 # Known issues
+- [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
+- [ ] the timeline for a previous match might persist when a new match is clicked
+- [ ] logging out and logging back in makes the moves tree disappear
 - [ ] should have begin move disabled and end move enabled after done have been clicked test is failing for an unknown reason
 - [ ] Second time someone tries to annotate, nothing is reset
 - [ ] Currently, lets you create multiple duplicate accounts

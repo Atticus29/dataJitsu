@@ -135,4 +135,32 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=end-move]').should('be.enabled');
   });
 
+  it.only('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+    // cy.visit('http://localhost:4200/login');
+    cy.contains('Log In');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+    });
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Advantage').first().next().click();
+    cy.get('button[id=modal-cancel-button]').click();
+    cy.get('a[id=logOutLink]').click();
+    cy.contains('Log In');
+    // cy.visit('http://localhost:4200/login');
+    // cy.contains('Log In');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.get('input[id=userEmail]').type(cypressConstants.usrnm);
+      cy.get('input[id=password]').type(cypressConstants.passw);
+      cy.get('button[id=loginSubmit]').click();
+    });
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Advantage').first().next().click();
+  });
+
 });
