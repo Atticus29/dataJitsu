@@ -216,6 +216,8 @@ export class HorizontalTimelineComponent implements AfterViewInit {
 
   onScrollClick(event: Event, forward: boolean) {
     event.preventDefault();
+    console.log("onScrollClick width: ");
+    console.log(this.eventsWrapperWidth);
     this.updateSlide(this.eventsWrapperWidth, forward);
     this._cdr.detectChanges();
   }
@@ -264,7 +266,8 @@ export class HorizontalTimelineComponent implements AfterViewInit {
 
   updateSlide(timelineTotWidth: number, forward: boolean) {
     let translateValue = HorizontalTimelineComponent.getTranslateValue(this.eventsWrapper.nativeElement);
-
+    console.log("translateValue from updateSlide");
+    console.log(translateValue);
     if (forward) {
       this.translateTimeline(translateValue - this._timelineWrapperWidth + this._eventsMinDistance, this._timelineWrapperWidth - timelineTotWidth)
     } else {

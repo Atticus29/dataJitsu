@@ -135,7 +135,7 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=end-move]').should('be.enabled');
   });
 
-  it.only('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+  it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
     // cy.visit('http://localhost:4200/login');
     cy.contains('Log In');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
