@@ -32,6 +32,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
+import { DynamicDatabase } from './dynamicDatabase.model';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -130,7 +131,7 @@ export const firebaseConfig = {
     MatRippleModule,
     MatRadioModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

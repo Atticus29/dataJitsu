@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { DynamicFlatNode } from './dynamicFlatNode.model';
+import { constants } from './constants';
 /**
  * Database for dynamic data. When expanding a node in the tree, the data source will need to fetch
  * the descendants data from the database.
@@ -14,7 +15,8 @@ export class DynamicDatabase {
   dataMap = new Map<string, string[]>([
   ]);
 
-  rootLevelNodes: string[] = [];
+  // rootLevelNodes: string[] = [];
+  rootLevelNodes: string[] = constants.rootNodes;
 
   /** Initial data from database */
   initialData(): DynamicFlatNode[] {

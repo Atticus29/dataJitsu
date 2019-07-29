@@ -1,12 +1,14 @@
 # TODO high priority
 - [ ] Add test for starting and stopping an annotation
-- [ ] Add test for cancelling annotation (making sure certain buttons are and are not visible)
+- [ ] Have logout reload the page and/or resetAll from the tracker
+- [ ] Add date annotated to move in match
 
 # TODO low priority
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes
 
 # Completed TODOs
+- [x] Add test for cancelling annotation (making sure certain buttons are and are not visible)
 - [x] Add guard jump
 - [x] Add advantages to moves list
 - [x] Add move to the user who made it, and include a timestamp in the entry as well

@@ -5,7 +5,6 @@ describe ('Match annotation tests', () =>{
   });
 
   it('annotates a match with a move', ()=>{
-    cy.visit('http://localhost:4200/login');
     cy.contains('Log In');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
@@ -133,6 +132,47 @@ describe ('Match annotation tests', () =>{
     cy.wait(5000);
     cy.get('button[id=begin-move]', {timeout: 5000}).should('be.disabled');
     cy.get('button[id=end-move]').should('be.enabled');
+  });
+
+  it.only('annotate a move once and when it is done it does it again and finds the previous options unselected', function(){
+    cy.contains('Log In');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+    });
+    cy.contains('Match Rating');
+    cy.contains('Click');
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Annotation Selected: Advantage').should('not.exist');
+    cy.contains('Advantage').first().next().click();
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+    cy.get('input[id=points]').click({force:true}).type('2{enter}'); //
+    cy.contains('Annotation Selected: Advantage').should('exist');
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+    cy.wait(5000);
+    cy.get('button[id=end-move]').click({force:true});
+    cy.wait(2000);
+    //And then again
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').first().click({force:true});
+    cy.contains('Annotation Selected: Advantage').should('not.exist');
+    cy.contains('Advantage').first().next().click();
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+    cy.get('input[id=points]').click({force:true}).type('2{enter}'); //
+    cy.contains('Annotation Selected: Advantage').should('exist');
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+
   });
 
 });

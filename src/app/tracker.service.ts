@@ -18,4 +18,31 @@ export class TrackerService {
   public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
+
+  resetAllExceptCurrentMatch(){
+    this.startTimePoint.next(0);
+    this.endTimePoint.next(1);
+    this.points.next(-1);
+    this.moveName.next("No Annotation Currently Selected");
+    this.performer.next("Nobody");
+    this.recipient.next("Nobody");
+    this.matchId.next("tmpId");
+    this.videoResumeStatus.next(false);
+    this.submission.next("No");
+    this.annotationBegun.next(false);
+  }
+
+  resetAll(){
+    this.startTimePoint.next(0);
+    this.endTimePoint.next(1);
+    this.points.next(-1);
+    this.moveName.next("No Annotation Currently Selected");
+    this.currentMatch.next("currentMatch");
+    this.performer.next("Nobody");
+    this.recipient.next("Nobody");
+    this.matchId.next("tmpId");
+    this.videoResumeStatus.next(false);
+    this.submission.next("No");
+    this.annotationBegun.next(false);
+  };
 }
