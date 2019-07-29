@@ -172,7 +172,6 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
-
   });
 
 });
