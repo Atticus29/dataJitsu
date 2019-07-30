@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-
 import {MatSnackBar} from '@angular/material';
+import { FlatTreeControl } from '@angular/cdk/tree';
 
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
@@ -10,9 +10,13 @@ import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { AuthorizationService } from '../authorization.service';
 
+import { DynamicDataSource } from '../dynamicDataSource.model';
+import { DynamicDatabase } from '../dynamicDatabase.model';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
+import { DynamicFlatNode } from '../dynamicFlatNode.model';
+import { constants } from '../constants';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -38,8 +42,17 @@ export class MatchDisplayComponent implements OnInit {
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private tempMove: MoveInVideo;
+  private dataSource: DynamicDataSource;
+  private treeControl: FlatTreeControl<DynamicFlatNode>;
+  getLevel = (node: DynamicFlatNode) => node.level;
+  isExpandable = (node: DynamicFlatNode) => node.expandable;
+  // private database: DynamicDatabase;
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService) { }
+  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
+    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
+    this.dataSource.data = database.initialData();
+  }
 
   ngOnDestroy(){
 
@@ -92,9 +105,11 @@ export class MatchDisplayComponent implements OnInit {
           let pause = document.getElementById("begin-move").addEventListener("click", function() {
             //TODO add 1 second rewind?
             player.pauseVideo();
+            // self.dataSource.data = self.database.initialData();
             console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
             self.trackerService.startTimePoint.next(player.getCurrentTime());
+            //TODO reset the tree and the submission status (and the annotation move just to be safe?)
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();
@@ -165,16 +180,22 @@ export class MatchDisplayComponent implements OnInit {
           });
         });
         this.moveAssembledStatus.next(false);
-        self.trackerService.moveName.next("No Annotation Currently Selected");
-        self.trackerService.startTimePoint.next(0);
-        self.trackerService.endTimePoint.next(0);
-        self.trackerService.points.next(-1);
-        self.trackerService.performer.next("Nobody");
-        self.trackerService.recipient.next("Nobody");
-        self.trackerService.videoResumeStatus.next(true);
-        self.trackerService.submission.next("No");
-        self.trackerService.annotationBegun.next(false);
+        self.trackerService.resetAllExceptCurrentMatch();
+        self.dataSource.dataChange.next(self.database.initialData());
+        // console.log(self.dataSource.data);
+        // self.dataSource.dataChange.next(self.database.initialData());
+        // console.log(self.dataSource.data);
+        let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+        constants.rootNodes.forEach(rootNode =>{ //headers
+          let newDynamicFlatNode = new DynamicFlatNode(rootNode, 0, true, false);
+          flatNodeArray.push(newDynamicFlatNode);
+        });
+        console.log("flatNodeArray: ");
+        console.log(flatNodeArray);
+        self.dataSource.dataChange.next(flatNodeArray);
         console.log("all of the resets supposedly have happened?");
+      } else{
+        //Nothing
       }
     });
   }

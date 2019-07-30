@@ -66,21 +66,9 @@ export class DynamicDataSource {
    * Toggle the node, remove from display list
    */
 
-   objToStrMap(obj) {
-      let strMap = new Map();
-      for (let k of Object.keys(obj)) {
-          strMap.set(k, obj[k]);
-      }
-      return strMap;
-    }
-
     jsonToStrMap(jsonStr) {
       return new Map(Object.entries(jsonStr));
     }
-
-   jsonToMap(jsonStr) {
-     return new Map(JSON.parse(jsonStr));
-   }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{

@@ -29,8 +29,8 @@ declare var $:any;
 @Component({
   selector: 'app-annotation-display',
   templateUrl: './annotation-display.component.html',
-  styleUrls: ['./annotation-display.component.scss'],
-  providers: [DynamicDatabase]
+  styleUrls: ['./annotation-display.component.scss']
+  // providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent implements OnInit {
   @Output() moveSelected = new EventEmitter<MoveInVideo>();
@@ -54,10 +54,10 @@ export class AnnotationDisplayComponent implements OnInit {
   private submissionStatus: string = "No";
   private pointsEntered: number = -1;
 
-  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
+  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
-    this.dataSource.data = database.initialData();
+    this.dataSource = new DynamicDataSource(this.treeControl, this.database, this.db);
+    this.dataSource.data = this.database.initialData();
   }
 
   ngOnInit() {
@@ -78,7 +78,10 @@ export class AnnotationDisplayComponent implements OnInit {
     });
     this.trackerService.currentMatch.subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
+        // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
+        // console.log(matchDeets);
         let localMatchDeets: any = matchDeets;
+        //TODO maybe a try catch here?
         let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
         this.performers = thePerformers;
       });
@@ -89,6 +92,9 @@ export class AnnotationDisplayComponent implements OnInit {
       } else{
         this.moveValidStatus = false;
       }
+    });
+    this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
+      this.selectedAnnotation = moveName;
     });
   }
 
@@ -102,7 +108,6 @@ export class AnnotationDisplayComponent implements OnInit {
   }
 
   selectItem(item: string){
-    this.selectedAnnotation = item;
     this.trackerService.moveName.next(item);
   }
 
@@ -116,7 +121,7 @@ export class AnnotationDisplayComponent implements OnInit {
     return results;
   }
 
-  processFormInputs(){
+  processFormInputs(){ //Kicks off some observables that have subscribers elsewhere. Has its little tendrils in everything
     let result = this.getValues();
     this.trackerService.performer.next(result.performerValue);
     this.trackerService.points.next(result.pointValue);
@@ -125,6 +130,9 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.recipient.next(remainder[0]);
     this.trackerService.videoResumeStatus.next(true);
     this.trackerService.annotationBegun.next(true);
+    this.performerFg.reset();
+    this.points.reset();
+    this.dataSource.dataChange.next(this.database.initialData());
   }
 
   allValid(): boolean{

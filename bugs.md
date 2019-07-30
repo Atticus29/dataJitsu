@@ -3,7 +3,7 @@
 - [ ] the timeline for a previous match might persist when a new match is clicked
 - [ ] logging out and logging back in makes the moves tree disappear
 - [ ] should have begin move disabled and end move enabled after done have been clicked test is failing for an unknown reason
-- [ ] Second time someone tries to annotate, nothing is reset
+- [ ] submission status in the form stays imprinted on the previously annotated move
 - [ ] Currently, lets you create multiple duplicate accounts
 - [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
 - [ ] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
@@ -25,6 +25,8 @@
 
 
 # Resolved issues
+- [x] the tree in the form stays imprinted on the previously annotated move
+- [x] Second time someone tries to annotate, nothing is reset
 - [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
 - [x] Doesn't resume play after Done for annotate a move is clicked
 - [x] Cypress tests are still having issues with the chainable stuff

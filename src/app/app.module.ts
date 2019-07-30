@@ -33,6 +33,8 @@ import { MatFormFieldModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
+import { DynamicDatabase } from './dynamicDatabase.model';
+
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -132,7 +134,7 @@ export const firebaseConfig = {
     MatRippleModule,
     MatRadioModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
