@@ -1,16 +1,12 @@
 # Known issues
 - [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
 - [ ] the timeline for a previous match might persist when a new match is clicked
-- [ ] logging out and logging back in makes the moves tree disappear
 - [ ] should have begin move disabled and end move enabled after done have been clicked test is failing for an unknown reason
 - [ ] submission status in the form stays imprinted on the previously annotated move
 - [ ] Currently, lets you create multiple duplicate accounts
 - [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
-- [ ] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
 - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
 - [ ] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process
-- [ ] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
-- [ ] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
 - [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
 - [ ] Tooltips in match-display are very inconsistent
 - [ ] Datatable doesn't respond to deleted matches in real time
@@ -23,8 +19,12 @@
 - [ ] //TODO createMoveInVideo from form submission
 - [ ] Gi/Nogi on match-display says false
 
-
 # Resolved issues
+- [x] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
+- [x] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
+- [x] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
+- [x] logging out and logging back in makes the moves tree disappear
+- [x] the youTube player isn't attached to the DOM upon logoff and log back in.
 - [x] the tree in the form stays imprinted on the previously annotated move
 - [x] Second time someone tries to annotate, nothing is reset
 - [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call

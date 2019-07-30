@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
         this.authService.setAuthenticated(false);
         this.router.navigate(['login']);
         this.authenticationStatus = false;
+        window.location.reload(false);
         // this.cdr.detectChanges();
       }
     });
