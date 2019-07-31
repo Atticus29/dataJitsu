@@ -8,15 +8,20 @@ import { constants } from './constants';
  */
 @Injectable()
 export class DynamicDatabase {
-  constructor(private dbService: DatabaseService){
-  }
-
-
   dataMap = new Map<string, string[]>([
   ]);
 
   // rootLevelNodes: string[] = [];
-  rootLevelNodes: string[] = constants.rootNodes;
+  rootLevelNodes: string[];
+
+  constructor(){ //private dbService: DatabaseService
+    console.log("inside DynamicDatabase");
+    // console.log(constants.rootNodes);
+    // this.rootLevelNodes = [];
+    this.rootLevelNodes = constants.rootNodes;
+    console.log(this.rootLevelNodes);
+    console.log(this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true, false)));
+  }
 
   /** Initial data from database */
   initialData(): DynamicFlatNode[] {

@@ -1,28 +1,35 @@
 # Known issues
-- [ ] should have begin move disabled and end move enabled after done have been clicked test is failing for an unknown reason
+- [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
+- [ ] the timeline for a previous match might persist when a new match is clicked
 - [ ] submission status in the form stays imprinted on the previously annotated move
-- [ ] the tree in the form stays imprinted on the previously annotated move
 - [ ] Currently, lets you create multiple duplicate accounts
 - [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
-- [ ] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
 - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
 - [ ] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process
-- [ ] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
-- [ ] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
 - [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
 - [ ] Tooltips in match-display are very inconsistent
 - [ ] Datatable doesn't respond to deleted matches in real time
 - [ ] Creating new account makes status stuff visible, enables logout button but doesn't have user logged in
 - [ ] Clicking the play button doesn't work
 - [ ] The title in the tab doesn't load
-- [ ] If you log out and then try to click on annotate a video, it takes you to the lost page.
+- [ ] logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
 - [ ] Video icon not displaying on main window
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
 - [ ] //TODO createMoveInVideo from form submission
 - [ ] Gi/Nogi on match-display says false
 
+# Mysteriously failing tests
+- [ ] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
+- [ ] should have begin move disabled and end move enabled after done have been clicked //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 
 # Resolved issues
+- [x] If you log out and then try to click on annotate a video, it takes you to the lost page. // Seems to be resolved, although logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
+- [x] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
+- [x] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
+- [x] In the annotation, picking a move has to be the most recent thing you've done to call allValid(). I made this more ok by changing the order of the form, but still not great behavior.
+- [x] logging out and logging back in makes the moves tree disappear
+- [x] the youTube player isn't attached to the DOM upon logoff and log back in.
+- [x] the tree in the form stays imprinted on the previously annotated move
 - [x] Second time someone tries to annotate, nothing is reset
 - [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
 - [x] Doesn't resume play after Done for annotate a move is clicked
