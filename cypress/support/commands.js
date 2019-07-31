@@ -20,10 +20,6 @@ Cypress.Commands.add("login", (email, pass) => {
 
 Cypress.Commands.add("logout", () => {
   cy.visit('http://localhost:4200/login');
-  // cy.get('input[id=userEmail]').type(email);
-  // cy.get('input[id=password]').type(pass);
-  // cy.get('button[id=loginSubmit]').click();
-  // cy.contains('Match Rating');
   cy.get('a[id=logOutLink]').click();
   cy.contains('Log In');
 });

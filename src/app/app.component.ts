@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   user: any = null;
   userObjFromDb;
   title: string = constants.title;
-  authenticationStatus: boolean;
+  authenticationStatus: boolean =false;
 
   shouldAnnotate: boolean = false;
 
@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
       this.user = user;
     });
     this.afAuth.authState.subscribe(user =>{
-      // console.log(user);
+      console.log("user in afAuth of app.component");
+      console.log(user);
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
@@ -50,8 +51,8 @@ export class AppComponent implements OnInit {
         console.log("got here");
         this.authService.user = null;
         this.authService.setAuthenticated(false);
-        this.router.navigate(['login']);
         this.authenticationStatus = false;
+        this.router.navigate(['login']); //move back up one line?
         window.location.reload(false);
         // this.cdr.detectChanges();
       }
