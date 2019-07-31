@@ -69,7 +69,7 @@ describe ('Login tests', () =>{
     cy.contains("Rank").should('exist');
     cy.logout();
     cy.visit('localhost:4200/matches');
-    cy.url().should('match',/login/);
+    // cy.url().should('match',/login/);
     cy.contains("Rank").should('not.exist');
   });
 
