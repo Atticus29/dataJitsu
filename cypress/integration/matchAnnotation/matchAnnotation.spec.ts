@@ -150,10 +150,11 @@ describe ('Match annotation tests', () =>{
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').click({force:true}).type('2{enter}'); //
+    cy.get('input[id=points]').type('2'); //.click({force:true})
+    cy.get('mat-radio-button[id=yes-radio-button]').click();
     cy.contains('Annotation Selected: Advantage').should('exist');
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('button[id=done-button-performers]').click();
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.wait(5000);
     cy.get('button[id=end-move]').click({force:true});
@@ -163,15 +164,15 @@ describe ('Match annotation tests', () =>{
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').first().click({force:true});
     cy.contains('Annotation Selected: Advantage').should('not.exist');
-    cy.contains('Advantage').first().next().click();
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').click({force:true}).type('2{enter}'); //
-    cy.contains('Annotation Selected: Advantage').should('exist');
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
+    // cy.contains('Advantage').first().next().click();
+    // cy.get('mat-select[id=performer]').click({force:true});
+    // cy.get('mat-option').first().click({force:true});
+    // cy.get('button[id=done-button-performers]').should('be.disabled');
+    // cy.get('input[id=points]').click({force:true}).type('2{enter}'); //
+    // cy.contains('Annotation Selected: Advantage').should('exist');
+    // cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    // cy.get('button[id=done-button-performers]').click({force:true});
+    // cy.get('div[id=annotationModal]').should('not.be.visible');
   });
 
 });
