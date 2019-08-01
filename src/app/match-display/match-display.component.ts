@@ -16,6 +16,7 @@ import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
+import { constants } from '../constants';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -104,7 +105,7 @@ export class MatchDisplayComponent implements OnInit {
           let pause = document.getElementById("begin-move").addEventListener("click", function() {
             //TODO add 1 second rewind?
             player.pauseVideo();
-            self.dataSource.data = self.database.initialData();
+            // self.dataSource.data = self.database.initialData();
             console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
             self.trackerService.startTimePoint.next(player.getCurrentTime());
@@ -180,6 +181,18 @@ export class MatchDisplayComponent implements OnInit {
         });
         this.moveAssembledStatus.next(false);
         self.trackerService.resetAllExceptCurrentMatch();
+        self.dataSource.dataChange.next(self.database.initialData());
+        // console.log(self.dataSource.data);
+        // self.dataSource.dataChange.next(self.database.initialData());
+        // console.log(self.dataSource.data);
+        let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
+        constants.rootNodes.forEach(rootNode =>{ //headers
+          let newDynamicFlatNode = new DynamicFlatNode(rootNode, 0, true, false);
+          flatNodeArray.push(newDynamicFlatNode);
+        });
+        console.log("flatNodeArray: ");
+        console.log(flatNodeArray);
+        self.dataSource.dataChange.next(flatNodeArray);
         console.log("all of the resets supposedly have happened?");
       } else{
         //Nothing

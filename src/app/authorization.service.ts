@@ -94,7 +94,7 @@ export class AuthorizationService {
     })
     .catch(err => {
       console.log('Something went wrong:',err.message);
-      this.openSnackBar('Something went wrong:' + err.message, null);
+      this.openSnackBar('Something went wrong:' + err.message + " Please try again later or once you have an internet connection.", null);
     });
   }
 

@@ -1,1 +1,6 @@
-<p>annotation-data-display works!</p>
+<div id="annotation-data-title">
+  <h5>Match Annotations</h5>
+</div>
+<div *ngIf="timeline.length" class="container-fluid">
+  <horizontal-timeline [timelineElements]="timeline" [showContent]="true" [timelineWrapperWidth]="2000"></horizontal-timeline>
+</div>

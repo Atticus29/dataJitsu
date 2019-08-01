@@ -32,7 +32,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
+import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
+
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -97,7 +99,8 @@ export const firebaseConfig = {
     UserStatusReportComponent,
     PaymentOrAnnotationDetailsComponent,
     TemporaryComponent,
-    AnnotationDataDisplayComponent
+    AnnotationDataDisplayComponent,
+    HorizontalTimelineComponent
   ],
   imports: [
     BrowserModule,
@@ -129,7 +132,7 @@ export const firebaseConfig = {
     MatProgressBarModule,
     MatChipsModule,
     MatRippleModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
   bootstrap: [AppComponent]

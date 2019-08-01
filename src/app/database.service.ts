@@ -38,7 +38,7 @@ export class DatabaseService {
     // });
   }
 
-  getMovesInMatch(matchId: string){
+  getMovesInMatch(matchId: string): Observable<any>{
     return this.db.list('/matches/' + matchId + '/moves').valueChanges();
   }
 

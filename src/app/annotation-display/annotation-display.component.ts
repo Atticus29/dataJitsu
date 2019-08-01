@@ -29,8 +29,8 @@ declare var $:any;
 @Component({
   selector: 'app-annotation-display',
   templateUrl: './annotation-display.component.html',
-  styleUrls: ['./annotation-display.component.scss'],
-  providers: [DynamicDatabase]
+  styleUrls: ['./annotation-display.component.scss']
+  // providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent implements OnInit {
   @Output() moveSelected = new EventEmitter<MoveInVideo>();
@@ -54,10 +54,10 @@ export class AnnotationDisplayComponent implements OnInit {
   private submissionStatus: string = "No";
   private pointsEntered: number = -1;
 
-  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, database: DynamicDatabase, private trackerService:TrackerService) {
+  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
-    this.dataSource.data = database.initialData();
+    this.dataSource = new DynamicDataSource(this.treeControl, this.database, this.db);
+    this.dataSource.data = this.database.initialData();
   }
 
   ngOnInit() {
@@ -132,6 +132,7 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.annotationBegun.next(true);
     this.performerFg.reset();
     this.points.reset();
+    this.dataSource.dataChange.next(this.database.initialData());
   }
 
   allValid(): boolean{
