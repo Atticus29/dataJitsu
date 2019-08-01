@@ -134,7 +134,7 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=end-move]').should('be.enabled');
   });
 
-  it.only('annotate a move once and when it is done it does it again and finds the previous options unselected', function(){
+  it('annotate a move once and when it is done it does it again and finds the previous options unselected', function(){
     cy.contains('Log In');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
