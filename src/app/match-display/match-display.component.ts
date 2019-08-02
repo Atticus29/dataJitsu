@@ -46,6 +46,8 @@ export class MatchDisplayComponent implements OnInit {
   private treeControl: FlatTreeControl<DynamicFlatNode>;
   getLevel = (node: DynamicFlatNode) => node.level;
   isExpandable = (node: DynamicFlatNode) => node.expandable;
+  private matchAverageRating: number = 0;
+  private annotationAverageRating: number = 0;
   // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
@@ -73,6 +75,12 @@ export class MatchDisplayComponent implements OnInit {
     });
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
+      this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
+        this.matchAverageRating = average;
+      });
+      this.db.getAverageAnnotationRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
+        this.annotationAverageRating = average;
+      })
       this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         this.match = match;

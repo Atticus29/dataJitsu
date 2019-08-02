@@ -312,4 +312,12 @@ export class DatabaseService {
     updates['/users/' + userId + '/matchesRated/' + matchId + '/annotationRating/'] = annotationRating;
     firebase.database().ref().update(updates);
   }
+
+  getAverageMatchRating(matchId: string){
+    //TODO flesh out LEFT OFF HERE
+  }
+
+  getAverageAnnotationRating(matchId:string){
+    //TODO flesh out LEFT OFF HERE
+  }
 }
