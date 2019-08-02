@@ -300,4 +300,16 @@ export class DatabaseService {
     let ref = this.db.list<String>('/ageClasses');
     ref.push(ageClass);
   }
+
+  addMatchRatingToUser(userId: string, matchId: string, rating: number){
+    let updates = {};
+    updates['/users/' + userId + '/matchesRated/' + matchId + '/matchRating/'] = rating;
+    firebase.database().ref().update(updates);
+  }
+
+  addMatchAnnotationRatingToUser(userId: string, matchId: string, annotationRating: number){
+    let updates = {};
+    updates['/users/' + userId + '/matchesRated/' + matchId + '/annotationRating/'] = annotationRating;
+    firebase.database().ref().update(updates);
+  }
 }

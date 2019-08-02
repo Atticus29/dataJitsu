@@ -71,7 +71,7 @@ export class MatchDisplayComponent implements OnInit {
         this.annotationFinishButtonDisabled = true;
       }
     });
-    this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
       this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
@@ -199,6 +199,37 @@ export class MatchDisplayComponent implements OnInit {
       }
     });
   }
+
+  onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+    //TODO add stuff to db: 1. updateRatingAverage, 2. record rating in user
+    let newRating = $event.newValue;
+    console.log("newRating");
+    console.log(newRating);
+    this.authService.getCurrentUser().subscribe(user =>{
+      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+        let userInDb: string = snapshot.key;
+        console.log("user is: ");
+        console.log(userInDb);
+        this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
+        });
+    });
+  }
+
+  onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+    //TODO add stuff to db 1. updateRatingAverage, 2. record rating in user
+    let newRating = $event.newValue;
+    console.log("newRating");
+    console.log(newRating);
+    this.authService.getCurrentUser().subscribe(user =>{
+      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+        let userInDb: string = snapshot.key;
+        console.log("user is: ");
+        console.log(userInDb);
+        this.db.addMatchAnnotationRatingToUser(userInDb, this.matchId, $event.newValue);
+        });
+    });
+  }
+
   moveCompletelyLegit(): boolean{
     let returnVal = false;
     try {
