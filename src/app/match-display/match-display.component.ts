@@ -46,6 +46,8 @@ export class MatchDisplayComponent implements OnInit {
   private treeControl: FlatTreeControl<DynamicFlatNode>;
   getLevel = (node: DynamicFlatNode) => node.level;
   isExpandable = (node: DynamicFlatNode) => node.expandable;
+  private matchAverageRating: number = 0;
+  private annotationAverageRating: number = 0;
   // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
@@ -71,8 +73,16 @@ export class MatchDisplayComponent implements OnInit {
         this.annotationFinishButtonDisabled = true;
       }
     });
-    this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
+      console.log("matchID is: " + this.matchId);
+      this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
+        console.log("got inside here");
+        this.matchAverageRating = average;
+      });
+      this.db.getAverageAnnotationRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
+        this.annotationAverageRating = average;
+      })
       this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         this.match = match;
@@ -199,6 +209,39 @@ export class MatchDisplayComponent implements OnInit {
       }
     });
   }
+
+  onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+    //TODO add stuff to db: 1. updateRatingAverage, 2. record rating in user
+    let newRating = $event.newValue;
+    console.log("newRating");
+    console.log(newRating);
+    this.authService.getCurrentUser().subscribe(user =>{
+      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+        let userInDb: string = snapshot.key;
+        console.log("user is: ");
+        console.log(userInDb);
+        this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
+        this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
+        });
+    });
+  }
+
+  onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+    //TODO add stuff to db 1. updateRatingAverage, 2. record rating in user
+    let newRating = $event.newValue;
+    console.log("newRating");
+    console.log(newRating);
+    this.authService.getCurrentUser().subscribe(user =>{
+      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+        let userInDb: string = snapshot.key;
+        console.log("user is: ");
+        console.log(userInDb);
+        this.db.addMatchAnnotationRatingToUser(userInDb, this.matchId, $event.newValue);
+        this.db.addMatchAnnotationRatingToMatch(userInDb, this.matchId, $event.newValue);
+        });
+    });
+  }
+
   moveCompletelyLegit(): boolean{
     let returnVal = false;
     try {

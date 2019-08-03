@@ -1,4 +1,5 @@
 import { MaterializeModule } from 'angular2-materialize'
+import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -133,6 +134,7 @@ export const firebaseConfig = {
     MatChipsModule,
     MatRippleModule,
     MatRadioModule,
+    RatingModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
   bootstrap: [AppComponent]
