@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Creating a new match isn't working??
 - [ ] Add test for starting and stopping an annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
@@ -16,6 +17,7 @@
 - [x] Fix test for clicking pause
 
 # Specs
+- [ ] User can filter annotations by ones that scored points
 - [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)

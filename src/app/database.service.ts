@@ -210,6 +210,7 @@ export class DatabaseService {
   }
 
   addMatchToDb(match: any){
+    console.log("addMatchToDb entered");
     let ref = this.db.list<Match>('/matches');
     let matchId = ref.push(match).key;
     let updates = {};

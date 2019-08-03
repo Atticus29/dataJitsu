@@ -123,6 +123,7 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
+    console.log("result in createMatchObj:");
     console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
@@ -133,7 +134,8 @@ export class NewMatchComponent implements OnInit {
     return this.as.getCurrentUser().pipe(switchMap(userInfo => {
         // TODO fix this/make sure it's working
         return Observable.create(obs=>{
-        this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
+        // this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
+        this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
           let match = new Match(matchDeets, snapshot.key, moves);
           console.log("this happened");
           obs.next(match);
@@ -176,10 +178,11 @@ export class NewMatchComponent implements OnInit {
   }
 
   submitFormAndReturnToMain(){
+    console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     // console.log(values);
     let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-      // console.log(result);
+      console.log(result);
       this.db.addMatchToDb(result);
       this.router.navigate(['']);
     });
