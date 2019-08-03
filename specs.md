@@ -5,6 +5,7 @@
 - [ ] Add date annotated to move in match
 
 # TODO low priority
+- [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes
 
