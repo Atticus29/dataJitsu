@@ -75,7 +75,9 @@ export class MatchDisplayComponent implements OnInit {
     });
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
+      console.log("matchID is: " + this.matchId);
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
+        console.log("got inside here");
         this.matchAverageRating = average;
       });
       this.db.getAverageAnnotationRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
@@ -219,6 +221,7 @@ export class MatchDisplayComponent implements OnInit {
         console.log("user is: ");
         console.log(userInDb);
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
+        this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
         });
     });
   }
@@ -234,6 +237,7 @@ export class MatchDisplayComponent implements OnInit {
         console.log("user is: ");
         console.log(userInDb);
         this.db.addMatchAnnotationRatingToUser(userInDb, this.matchId, $event.newValue);
+        this.db.addMatchAnnotationRatingToMatch(userInDb, this.matchId, $event.newValue);
         });
     });
   }

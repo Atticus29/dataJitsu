@@ -15,12 +15,12 @@ export class DynamicDatabase {
   rootLevelNodes: string[];
 
   constructor(){ //private dbService: DatabaseService
-    console.log("inside DynamicDatabase");
+    // console.log("inside DynamicDatabase");
     // console.log(constants.rootNodes);
     // this.rootLevelNodes = [];
     this.rootLevelNodes = constants.rootNodes;
-    console.log(this.rootLevelNodes);
-    console.log(this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true, false)));
+    // console.log(this.rootLevelNodes);
+    // console.log(this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true, false)));
   }
 
   /** Initial data from database */

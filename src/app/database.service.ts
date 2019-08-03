@@ -307,17 +307,63 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
+  addMatchRatingToMatch(userId: string, matchId: string, rating: number){
+    let updates = {};
+    updates['/matches/' + matchId + '/matchRatings/' + userId] = rating;
+    firebase.database().ref().update(updates);
+  }
+
   addMatchAnnotationRatingToUser(userId: string, matchId: string, annotationRating: number){
     let updates = {};
     updates['/users/' + userId + '/matchesRated/' + matchId + '/annotationRating/'] = annotationRating;
     firebase.database().ref().update(updates);
   }
 
+  addMatchAnnotationRatingToMatch(userId: string, matchId: string, annotationRating: number){
+    let updates = {};
+    updates['/matches/' + matchId + '/annotationRatings/' + userId] = annotationRating;
+    firebase.database().ref().update(updates);
+  }
+
+  average(list: number[]){
+    return list.reduce((prev, curr) => prev + curr) / list.length;
+  }
+
+
   getAverageMatchRating(matchId: string){
+    let ref = firebase.database().ref('matches/' + matchId + '/matchRatings/');
+    let resultObservable = Observable.create(observer =>{
+      ref.on('value', snapshot =>{
+        let results = snapshot.val();
+        let arrayOfRatings = Object.values(results);
+        observer.next(this.average(arrayOfRatings));
+      });
+      // ref.on('child_changed', snapshot =>{
+      //   let results = snapshot.val();
+      //   console.log("getAverageMatchRating results");
+      //   console.log(results);
+      //   observer.next(results);
+      // });
+    });
+    return resultObservable;
     //TODO flesh out LEFT OFF HERE
   }
 
   getAverageAnnotationRating(matchId:string){
+    let ref = firebase.database().ref('matches/' + matchId + '/annotationRatings/');
+    let resultObservable = Observable.create(observer =>{
+      ref.on('value', snapshot =>{
+        let results = snapshot.val();
+        let arrayOfRatings = Object.values(results);
+        observer.next(this.average(arrayOfRatings));
+      // ref.on('child_changed', snapshot =>{
+      //   let results = snapshot.val();
+      //   console.log("getAverageAnnotationRating results");
+      //   console.log(results);
+      //   observer.next(results);
+      });
+    });
+    return resultObservable;
     //TODO flesh out LEFT OFF HERE
   }
 }
