@@ -52,6 +52,7 @@ export class AnnotationDisplayComponent implements OnInit {
   private points = new FormControl('', [Validators.required, Validators.min(0)]);
   private performerFg = new FormControl('', [Validators.required]);
   private submissionStatus: string = "No";
+  private attemptStatus: boolean = true;
   private pointsEntered: number = -1;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
@@ -115,7 +116,8 @@ export class AnnotationDisplayComponent implements OnInit {
     let performerValue = this.performerFg.value;
     let pointValue = this.points.value;
     let theSubmissionStatus = this.submissionStatus;
-    let results = {performerValue, pointValue, theSubmissionStatus};
+    let theAttemptStatus = this.attemptStatus;
+    let results = {performerValue, pointValue, theSubmissionStatus, theAttemptStatus};
     console.log("getValues call: ");
     console.log(results);
     return results;
@@ -126,6 +128,7 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.performer.next(result.performerValue);
     this.trackerService.points.next(result.pointValue);
     this.trackerService.submission.next(result.theSubmissionStatus);
+    this.trackerService.attemptStatus.next(result.theAttemptStatus);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
     this.trackerService.videoResumeStatus.next(true);
@@ -138,11 +141,14 @@ export class AnnotationDisplayComponent implements OnInit {
   allValid(): boolean{
     console.log("allValid called");
     let submissionStatusValue = this.submissionStatus;
-    console.log("submissionStatusValue from allValid");
-    console.log(submissionStatusValue);
+    // console.log("submissionStatusValue from allValid");
+    // console.log(submissionStatusValue);
+    let attemptStatusValue = this.attemptStatus;
+    console.log("attemptStatusValue from allValid");
+    console.log(attemptStatusValue);
     let performerValue = this.performerFg.value;
     let pointValue = this.points.value;
-    if(performerValue && pointValue > -1){ //TODO && submissionStatusValue stuff
+    if(performerValue && pointValue > -1){ //TODO && submissionStatusValue stuff && attemptStatusValue stuff
       console.log("performerValue true");
       return true;
     } else{

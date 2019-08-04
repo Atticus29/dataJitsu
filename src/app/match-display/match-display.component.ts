@@ -135,12 +135,18 @@ export class MatchDisplayComponent implements OnInit {
                       self.trackerService.points.pipe(take(1)).subscribe(points =>{
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
-                            let submissionStatus: boolean = false;
-                            if(submission === "Yes"){
-                              submissionStatus = true;
-                            }
-                            self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus); //TODO update this once you add performers
-                            self.moveAssembledStatus.next(true);
+                            self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
+                              let attemptStatus: boolean = true;
+                              if(attemptSuccessful === false){
+                                attemptStatus = false
+                              }
+                              let submissionStatus: boolean = false;
+                              if(submission === "Yes"){
+                                submissionStatus = true;
+                              }
+                              self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus, attemptStatus); //TODO update this once you add performers
+                              self.moveAssembledStatus.next(true);
+                            });
                           });
                         });
                       })

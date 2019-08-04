@@ -1,8 +1,10 @@
 # TODO high priority
 - [ ] Creating a new match isn't working??
+- [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Test logging out from individual match
 - [ ] Test adding a new match
 - [ ] Test rating the match and annotation (possibly as two different users)
+- [ ] Test clicking deeper into the tree
 - [ ] Add test for starting and stopping an annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
@@ -10,6 +12,7 @@
 - [ ] Add was this a successful attempt functionality
 
 # TODO low priority
+- [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes

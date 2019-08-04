@@ -1,4 +1,6 @@
 # Known issues
+- [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?
+- [ ] Clicking the stuff deepest into the tree no longer works
 - [ ] Changing the annotation rating resets the video
 - [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
 - [ ] the timeline for a previous match might persist when a new match is clicked
