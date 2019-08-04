@@ -3,6 +3,8 @@
 - [ ] Add test for starting and stopping an annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
+- [ ] Make the match card display more info. (including date)
+- [ ] Add was this a successful attempt functionality
 
 # TODO low priority
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now

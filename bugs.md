@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Changing the annotation rating resets the video
 - [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
 - [ ] the timeline for a previous match might persist when a new match is clicked
 - [ ] submission status in the form stays imprinted on the previously annotated move
