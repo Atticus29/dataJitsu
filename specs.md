@@ -5,7 +5,6 @@
 - [ ] Test adding a new match
 - [ ] Test rating the match and annotation (possibly as two different users)
 - [ ] Test clicking deeper into the tree
-- [ ] Add test for starting and stopping an annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
@@ -18,6 +17,7 @@
 - [ ] Add more passes
 
 # Completed TODOs
+- [x] Add test for starting and stopping an annotation
 - [x] Add test for cancelling annotation (making sure certain buttons are and are not visible)
 - [x] Add guard jump
 - [x] Add advantages to moves list

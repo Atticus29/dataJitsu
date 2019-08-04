@@ -23,9 +23,9 @@
 
 # Mysteriously failing tests
 - [ ] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
-- [ ] should have begin move disabled and end move enabled after done have been clicked //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 
 # Resolved issues
+- [x] should have begin move disabled and end move enabled after done have been clicked //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 - [x] If you log out and then try to click on annotate a video, it takes you to the lost page. // Seems to be resolved, although logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
 - [x] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
 - [x] Clicking cancel in the annotation of move causes the begin move button to be disabled and the end move to be enabled
