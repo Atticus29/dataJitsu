@@ -10,7 +10,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthorizationService {
-  private authenticated: Observable<boolean>;
+  authenticated: Observable<boolean>;
   private locationWatcher = new EventEmitter();  // @TODO: switch to RxJS Subject instead of EventEmitter
   user: Observable<firebase.User>;
   constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase, private router: Router, public dbService: DatabaseService, private _snackBar: MatSnackBar) {

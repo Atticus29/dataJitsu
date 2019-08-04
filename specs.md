@@ -1,5 +1,8 @@
 # TODO high priority
 - [ ] Creating a new match isn't working??
+- [ ] Test logging out from individual match
+- [ ] Test adding a new match
+- [ ] Test rating the match and annotation (possibly as two different users)
 - [ ] Add test for starting and stopping an annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
@@ -20,6 +23,7 @@
 - [x] Fix test for clicking pause
 
 # Specs
+- [ ] Admin status is tracked and admin can remove matches
 - [ ] User can filter annotations by ones that scored points
 - [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
