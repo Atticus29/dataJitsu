@@ -326,7 +326,7 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
-  average(list: number[]){
+  average(list: any[]){
     return list.reduce((prev, curr) => prev + curr) / list.length;
   }
 
