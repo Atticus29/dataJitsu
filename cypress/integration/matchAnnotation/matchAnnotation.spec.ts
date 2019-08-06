@@ -208,4 +208,22 @@ describe ('Match annotation tests', () =>{
     cy.contains('Annotation Selected: Advantage').should('not.exist');
   });
 
+  it('can click into the deepest part of the tree', function(){
+    cy.logout();
+    cy.contains('Log In');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.get('input[id=userEmail]').type(cypressConstants.usrnm);
+      cy.get('input[id=password]').type(cypressConstants.passw);
+      cy.get('button[id=loginSubmit]').click();
+    });
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').eq(5).click({force:true});
+    cy.get('mat-icon').eq(6).click({force:true});
+    cy.contains('Annotation Selected: Ankle Lock').should('not.exist');
+    cy.contains('Ankle Lock').first().click();
+    cy.contains('Annotation Selected: Ankle Lock').should('exist');
+  });
+
 });

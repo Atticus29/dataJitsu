@@ -1,5 +1,5 @@
 # TODO high priority
-- [ ] Test clicking deeper into the tree
+- [ ] Record ratings in user
 - [ ] Creating a new match isn't working??
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Test logging out from individual match
@@ -17,6 +17,7 @@
 - [ ] Add more passes
 
 # Completed TODOs
+- [x] Test clicking deeper into the tree
 - [x] Add test for starting and stopping an annotation
 - [x] Add test for cancelling annotation (making sure certain buttons are and are not visible)
 - [x] Add guard jump

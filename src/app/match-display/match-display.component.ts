@@ -122,10 +122,10 @@ export class MatchDisplayComponent implements OnInit {
             //TODO reset the tree and the submission status (and the annotation move just to be safe?)
           });
           document.getElementById("end-move").addEventListener("click", function() {
-            player.pauseVideo();
+            // player.pauseVideo();
             let currentTime = player.getCurrentTime();
             self.trackerService.endTimePoint.next(player.getCurrentTime());
-            self.finishAnnotation(currentTime);
+            // self.finishAnnotation(currentTime);
             self.openSnackBar("Move Recorded");
             self.trackerService.startTimePoint.pipe(take(1)).subscribe(startTime =>{
               self.trackerService.endTimePoint.pipe(take(1)).subscribe(endTime =>{
@@ -155,15 +155,18 @@ export class MatchDisplayComponent implements OnInit {
                 });
               });
             });
+            // console.log("add delay here?");
             //TODO add 1 second delay?
-            player.playVideo();
+            // player.resumeVideo();
           });
+
           document.getElementById("pause-vid").addEventListener("click", function() {
             player.pauseVideo();
           });
         }
 
         function onPlayerStateChange(event){
+          console.log("happens!");
           if (event.data == window['YT'].PlayerState.PAUSED) {
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           };
@@ -192,24 +195,18 @@ export class MatchDisplayComponent implements OnInit {
             let userInDb: string = snapshot.key;
             console.log("user is: ");
             console.log(userInDb);
-            self.db.addMoveInVideoToUser(self.tempMove, userInDb);//TODO get UserId
+            self.db.addMoveInVideoToUser(self.tempMove, userInDb);
           });
         });
         this.moveAssembledStatus.next(false);
         self.trackerService.resetAllExceptCurrentMatch();
         self.dataSource.dataChange.next(self.database.initialData());
-        // console.log(self.dataSource.data);
-        // self.dataSource.dataChange.next(self.database.initialData());
-        // console.log(self.dataSource.data);
         let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
         constants.rootNodes.forEach(rootNode =>{ //headers
           let newDynamicFlatNode = new DynamicFlatNode(rootNode, 0, true, false);
           flatNodeArray.push(newDynamicFlatNode);
         });
-        console.log("flatNodeArray: ");
-        console.log(flatNodeArray);
         self.dataSource.dataChange.next(flatNodeArray);
-        console.log("all of the resets supposedly have happened?");
       } else{
         //Nothing
       }
@@ -263,9 +260,9 @@ export class MatchDisplayComponent implements OnInit {
     var result = re.exec(url);
     return result[1];
   }
-  finishAnnotation(currentTime: string){
-    console.log(currentTime);
-  }
+  // finishAnnotation(currentTime: string){
+  //   console.log(currentTime);
+  // }
   onMoveSelected(moveSelected: MoveInVideo){
     console.log(moveSelected);
     player.playVideo();

@@ -150,6 +150,8 @@ export var allCurrentMoves ={
   "Elevator Sweep",
   "Plan B Sweep",
   "Sickle Sweep",
+  "Sweep from Omoplata",
+  "Sit up sweep; Reversal"
 ],
 "Positional Changes":[
   "Back Mount",
