@@ -45,7 +45,7 @@ export class DatabaseService {
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
-      return this.db.object('/moves/Submissions or Submission Attempts That Scored Points/' + childNodeName).valueChanges();
+      return this.db.object('/moves/Submissions or Submission Attempts/' + childNodeName).valueChanges();
     } else{
       return this.db.object('/moves/' + childNodeName).valueChanges();
     }
