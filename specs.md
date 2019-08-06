@@ -1,9 +1,11 @@
 # TODO high priority
 - [ ] Record ratings in user
-- [ ] Creating a new match isn't working??
+- [ ] Check for and prevent duplicate videos from being added
+- [ ] Delete a match as an admin
+- [ ] Test deleting a match
+- [ ] Test adding a new match
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Test logging out from individual match
-- [ ] Test adding a new match
 - [ ] Test rating the match and annotation (possibly as two different users)
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
@@ -14,9 +16,10 @@
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
-- [ ] Add more passes
+- [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Creating a new match isn't working??
 - [x] Test clicking deeper into the tree
 - [x] Add test for starting and stopping an annotation
 - [x] Add test for cancelling annotation (making sure certain buttons are and are not visible)
