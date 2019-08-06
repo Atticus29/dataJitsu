@@ -336,8 +336,12 @@ export class DatabaseService {
     let resultObservable = Observable.create(observer =>{
       ref.on('value', snapshot =>{
         let results = snapshot.val();
-        let arrayOfRatings = Object.values(results);
-        observer.next(this.average(arrayOfRatings));
+        if(results){
+          let arrayOfRatings = Object.values(results);
+          observer.next(this.average(arrayOfRatings));
+        } else{
+          observer.next(0);
+        }
       });
       // ref.on('child_changed', snapshot =>{
       //   let results = snapshot.val();
@@ -355,8 +359,12 @@ export class DatabaseService {
     let resultObservable = Observable.create(observer =>{
       ref.on('value', snapshot =>{
         let results = snapshot.val();
-        let arrayOfRatings = Object.values(results);
-        observer.next(this.average(arrayOfRatings));
+        if(results){
+          let arrayOfRatings = Object.values(results);
+          observer.next(this.average(arrayOfRatings));
+        } else{
+          observer.next(0);
+        }
       // ref.on('child_changed', snapshot =>{
       //   let results = snapshot.val();
       //   console.log("getAverageAnnotationRating results");

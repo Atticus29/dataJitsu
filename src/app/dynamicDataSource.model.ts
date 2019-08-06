@@ -67,7 +67,20 @@ export class DynamicDataSource {
    */
 
     jsonToStrMap(jsonStr) {
-      return new Map(Object.entries(jsonStr));
+      console.log("Got into jsonToStrMap");
+      // console.log(jsonStr);
+      console.log(Object.entries(jsonStr));
+      let map = null;
+      try {
+        map = new Map(Object.entries(jsonStr));
+        console.log(map);
+      }
+      catch(error) {
+        console.log("got into error in jsonToStrMap");
+        console.error(error);
+      }
+      console.log(map);
+      return map;
     }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
@@ -76,8 +89,17 @@ export class DynamicDataSource {
       if (Array.isArray(results)) { //results[0] === "string"
         children = results;
       } else{
-        results = this.jsonToStrMap(results);
-        children = results;
+        try {
+          console.log("results before conversion:");
+          console.log(results);
+          results = this.jsonToStrMap(results);
+          console.log("jsonToStrMap successful:");
+          console.log(results);
+          children = results;
+        }
+        catch(error) {
+          console.error(error);
+        }
       }
       const index = this.data.indexOf(node);
       if (!children || index < 0) { // If no children, or cannot find the node, no op
@@ -89,9 +111,11 @@ export class DynamicDataSource {
             new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString())));
           this.data.splice(index + 1, 0, ...nodes);
         } else{
-          const nodes = Array.from(children).map(name =>
-            new DynamicFlatNode(name[0], node.level + 1, true));
-            this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
+          console.log("expand is true and children is not an array");
+          const nodes = Array.from(children).map(name => new DynamicFlatNode(name[0], node.level + 1, true));
+          console.log("node after mapping to dynamicFlatNodes: ");
+          console.log(nodes);
+          this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
         }
       } else {
         let count = 0;
