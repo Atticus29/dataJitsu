@@ -1,6 +1,6 @@
 # TODO high priority
-- [ ] Record ratings in user
 - [ ] Check for and prevent duplicate videos from being added
+- [ ] Set up CircleCI deploy to S3
 - [ ] Delete a match as an admin
 - [ ] Test deleting a match
 - [ ] Test adding a new match
@@ -11,6 +11,7 @@
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
 - [ ] Add was this a successful attempt functionality
+- [ ] Make password toggleable to be visible
 
 # TODO low priority
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
@@ -19,6 +20,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Record ratings in user
 - [x] Creating a new match isn't working??
 - [x] Test clicking deeper into the tree
 - [x] Add test for starting and stopping an annotation

@@ -174,10 +174,24 @@ export class DatabaseService {
   getUserByUid(uid: string){
     let ref = firebase.database().ref('users/');
     let user: User = null;
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
+        user = snapshot.val();
+        observer.next(user);
+        // console.log(snapshot.val());
+      });
+      //   if(snapshot.val()){
+      //     observer.next(true);
+      //   } else{
+      //     observer.next(false);
+      //   }
+      // });
+    });
+    return resultObservable;
     // ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
     //   return this.getUserById(snapshot.key);
     // });
-    return ref.orderByChild('uid').equalTo(uid).limitToFirst(1);
+    // return ref.orderByChild('uid').equalTo(uid).limitToFirst(1);
   }
 
   getMatchFromNodeKey(key: string){
@@ -308,15 +322,14 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
-  addMatchRatingToMatch(userId: string, matchId: string, rating: number){
-    let updates = {};
-    updates['/matches/' + matchId + '/matchRatings/' + userId] = rating;
-    firebase.database().ref().update(updates);
-  }
-
   addMatchAnnotationRatingToUser(userId: string, matchId: string, annotationRating: number){
     let updates = {};
     updates['/users/' + userId + '/matchesRated/' + matchId + '/annotationRating/'] = annotationRating;
+    firebase.database().ref().update(updates);
+  }
+  addMatchRatingToMatch(userId: string, matchId: string, rating: number){
+    let updates = {};
+    updates['/matches/' + matchId + '/matchRatings/' + userId] = rating;
     firebase.database().ref().update(updates);
   }
 
@@ -343,15 +356,8 @@ export class DatabaseService {
           observer.next(0);
         }
       });
-      // ref.on('child_changed', snapshot =>{
-      //   let results = snapshot.val();
-      //   console.log("getAverageMatchRating results");
-      //   console.log(results);
-      //   observer.next(results);
-      // });
     });
     return resultObservable;
-    //TODO flesh out LEFT OFF HERE
   }
 
   getAverageAnnotationRating(matchId:string){
@@ -365,14 +371,44 @@ export class DatabaseService {
         } else{
           observer.next(0);
         }
-      // ref.on('child_changed', snapshot =>{
-      //   let results = snapshot.val();
-      //   console.log("getAverageAnnotationRating results");
-      //   console.log(results);
-      //   observer.next(results);
       });
     });
     return resultObservable;
-    //TODO flesh out LEFT OFF HERE
   }
+
+  doesMatchExist(videoUrl: string){
+    let ref = firebase.database().ref('matches/');
+    // console.log("doesMatchExist?: ");
+    // console.log(result);
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild('/matchDeets/videoUrl').equalTo(videoUrl).on("value", snapshot=>{
+        if(snapshot.val()){
+          observer.next(true);
+        } else{
+          observer.next(false);
+        }
+      });
+    });
+    return resultObservable;
+  }
+
+  isAdmin(userId: string){
+    let ref = firebase.database().ref('users/' + userId + '/isAdmin');
+    let resultObservable = Observable.create(observer =>{
+      ref.on("value", snapshot=>{
+        if(snapshot.val()){
+          observer.next(true);
+        } else{
+          observer.next(false);
+        }
+      });
+    });
+    return resultObservable;
+  }
+
+  deleteMatch(matchId: string){
+    let ref = firebase.database().ref('matches/' + matchId);
+    ref.remove();
+  }
+
 }

@@ -36,6 +36,12 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
+      this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
+        // console.log(dbUser.isAdmin);
+        if(dbUser.isAdmin){
+          this.columnsToDisplay.push('deleteMatch');
+        }
+      });
     },err=>{
       console.log(err);
     });
@@ -72,5 +78,9 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log("onDestroy is called");
       this.ngUnsubscribe.next();
       this.ngUnsubscribe.complete();
+    }
+
+    deleteMatch(){
+      console.log("deleteMatch clicked!");
     }
 }

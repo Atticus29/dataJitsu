@@ -123,8 +123,8 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    console.log("result in createMatchObj:");
-    console.log(result);
+    // console.log("result in createMatchObj:");
+    // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
     // athlete1NameBound = athlete1NameBound==undefined ? "" : athlete1NameBound;
@@ -137,7 +137,6 @@ export class NewMatchComponent implements OnInit {
         // this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
           let match = new Match(matchDeets, snapshot.key, moves);
-          console.log("this happened");
           obs.next(match);
         });
         });
@@ -148,7 +147,7 @@ export class NewMatchComponent implements OnInit {
     console.log(val);
     if(val === "addNew"){
       console.log("contains add new!");
-
+      //TODO new stuff here
     } else{
       //do nothing
     }
@@ -170,19 +169,31 @@ export class NewMatchComponent implements OnInit {
 
   submitFormAndAnnotate(){
     let values = this.getValues();
-    let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
+    // console.log("values in submitFormAndAnnotate:");
+    // console.log(values);
+    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = values;
+    this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
+      console.log("into subscription of doesMatchExist:");
       console.log(result);
-      this.db.addMatchToDb(result);
-      //TODO navigate to annotation page??
-    });
+      if(!result){
+        console.log("match doesn't already exist");
+        let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
+          console.log(result);
+          this.db.addMatchToDb(result);
+          //TODO navigate to annotation page??
+        });
+      }
+    })
   }
 
   submitFormAndReturnToMain(){
-    console.log("submitFormAndReturnToMain entered");
+    // console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     // console.log(values);
+
+    //TODO add this.db.doesMatchExist logic from submitFormAndAnnotate here
     let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-      console.log(result);
+      // console.log(result);
       this.db.addMatchToDb(result);
       this.router.navigate(['']);
     });
