@@ -80,7 +80,15 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       this.ngUnsubscribe.complete();
     }
 
-    deleteMatch(){
-      console.log("deleteMatch clicked!");
+    deleteMatch(matchId: string){
+      // console.log("deleteMatch clicked!");
+      // console.log("entry in deleteMatch:");
+      let confirmation = confirm("Are you sure you want to delete this match?");
+      if(confirmation){
+        console.log("Deleting " + matchId);
+        this.dbService.deleteMatch(matchId);
+      } else{
+        console.log("confirmation denied");
+      }
     }
 }

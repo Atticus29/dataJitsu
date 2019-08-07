@@ -1,16 +1,15 @@
 # TODO high priority
-- [ ] Check for and prevent duplicate videos from being added
-- [ ] Set up CircleCI deploy to S3
 - [ ] Delete a match as an admin
 - [ ] Test deleting a match
 - [ ] Test adding a new match
+- [ ] Check for and prevent duplicate videos from being added
 - [ ] Reset attemptStatus to true after every finished annotation
+- [ ] Have logout reload the page and/or resetAll from the tracker
+- [ ] Set up CircleCI deploy to S3
 - [ ] Test logging out from individual match
 - [ ] Test rating the match and annotation (possibly as two different users)
-- [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
-- [ ] Add was this a successful attempt functionality
 - [ ] Make password toggleable to be visible
 
 # TODO low priority
@@ -18,8 +17,10 @@
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes to moves.ts
+- [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Add was this a successful attempt functionality
 - [x] Record ratings in user
 - [x] Creating a new match isn't working??
 - [x] Test clicking deeper into the tree

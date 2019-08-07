@@ -411,4 +411,16 @@ export class DatabaseService {
     ref.remove();
   }
 
+  addAdminStatus(userId: string){
+    let updates = {};
+    updates['/users/' + userId + '/isAdmin'] = true;
+    firebase.database().ref().update(updates);
+  }
+
+  removeAdminStatus(userId: string){
+    let updates = {};
+    updates['/users/' + userId + '/isAdmin'] = false;
+    firebase.database().ref().update(updates);
+  }
+
 }
