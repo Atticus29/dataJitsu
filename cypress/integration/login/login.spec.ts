@@ -126,4 +126,12 @@ describe ('Login tests', () =>{
     cy.contains('Match Rating');
     cy.contains('Adult'); //TODO improve
   });
+
+  it('does not see delete match as an option because not logged in as admin', function(){
+    cy.logout();
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+    });
+    cy.contains("Delete Match").should('not.exist');
+  });
 });

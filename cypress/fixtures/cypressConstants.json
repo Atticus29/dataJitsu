@@ -8,5 +8,7 @@
   "testAthlete2": "E.T.",
   "testTournament": "The Quest Deathmatch",
   "testLocation": "A Pineapple Under the Sea",
-  "testDate": "7/4/1776"
+  "testDate": "7/4/1776",
+  "adminEmailAddress": "mark.aaron.fisher@gmail.com",
+  "adminPassword": "APython!11"
 }

@@ -1,8 +1,10 @@
 # TODO high priority
+- [ ] Set up admin email and password on circleCI
 - [ ] Test deleting a match
 - [ ] Flesh out 'created match appears on table' test
 - [ ] Check for and prevent duplicate videos from being added
 - [ ] Reset attemptStatus to true after every finished annotation
+- [ ] Figure out a way to remove the api key and admin email and password from the repo (in an automated way)
 - [ ] Have logout reload the page and/or resetAll from the tracker
 - [ ] Set up CircleCI deploy to S3
 - [ ] Test logging out from individual match

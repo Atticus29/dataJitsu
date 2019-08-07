@@ -3,12 +3,15 @@ describe ('Tests involving match creation', () =>{
   beforeEach(()=>{
     // cy.visit('http://localhost:4200/');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+      cy.login(cypressConstants.usrnm,cypressConstants.passw).then(()=>{
+        cy.wait(2000);
+      });
     });
-    cy.visit('http://localhost:4200/newmatch');
   });
 
   it('creates a match', function(){
+    cy.visit('http://localhost:4200/newmatch');
+    // cy.contains("New Match").click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
       cy.get('input[id=athlete1Name]').clear().type(cypressConstants.testAthlete1);

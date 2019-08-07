@@ -18,6 +18,15 @@ Cypress.Commands.add("login", (email, pass) => {
   cy.get('button[id=loginSubmit]').click();
 });
 
+Cypress.Commands.add("loginAsAdmin", () => {
+  cy.visit('http://localhost:4200/login');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=userEmail]').type(cypressConstants.adminEmailAddress);
+    cy.get('input[id=password]').type(cypressConstants.adminPassword);
+  });
+  cy.get('button[id=loginSubmit]').click();
+});
+
 Cypress.Commands.add("logout", () => {
   cy.visit('http://localhost:4200/login');
   cy.get('a[id=logOutLink]').click();

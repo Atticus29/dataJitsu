@@ -18,6 +18,8 @@ jobs:
             echo $fireBaseApiKey
             cat src/app/api-keys.ts
             sed -i "s/circleCiApiKey/$fireBaseApiKey/g" src/app/api-keys.ts
+            sed -i "s/administratorEmail/$adminEmail/g" src/app/api-keys.ts
+            sed -i "s/administratorPassword/$adminPw/g" src/app/api-keys.ts
             cat src/app/api-keys.ts
       - restore_cache:
           keys:
