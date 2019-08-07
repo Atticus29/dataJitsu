@@ -21,7 +21,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   // private dataSource: MatchDataSource;
-  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'videoUrl']; //TODO make this dynamic somehow
+  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   private showLoader: any;
   user: any = null;
@@ -80,9 +80,9 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       this.ngUnsubscribe.complete();
     }
 
-    deleteMatch(matchId: string){
-      // console.log("deleteMatch clicked!");
-      // console.log("entry in deleteMatch:");
+    deleteMatch(matchId: any){
+      // console.log("entry:");
+      // console.log(matchId);
       let confirmation = confirm("Are you sure you want to delete this match?");
       if(confirmation){
         console.log("Deleting " + matchId);
