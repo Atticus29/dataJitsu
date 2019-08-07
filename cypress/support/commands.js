@@ -29,7 +29,7 @@ Cypress.Commands.add("loginAsAdmin", () => {
 
 Cypress.Commands.add("logout", () => {
   cy.visit('http://localhost:4200/login');
-  cy.get('a[id=logOutLink]').click();
+  cy.get('a[id=logOutLink]').click({force:true});
   cy.contains('Log In');
 });
 //

@@ -9,7 +9,7 @@ describe ('Tests involving admin privleges and deletions', () =>{
   });
 
   it('deletes a match containing Alfie as athlete 1', function(){ //TODO brittle right now
-    cy.get('button[class=mat-paginator-navigation-previous]').click();
+    // cy.get('button[class=mat-paginator-navigation-previous]').click();
     cy.get('mat-cell[id=Alfie]>button').click();
   });
 });

@@ -96,7 +96,8 @@ describe ('Login tests', () =>{
   });
 
   it('plays and pauses a match', ()=>{ //TODO needs work
-    cy.get('a[id=logOutLink]').click();
+    // cy.get('a[id=logOutLink]').click();
+    cy.logout();
     // cy.contains('Log In');
     cy.visit('http://localhost:4200/login');
     cy.get('input[id=userEmail]').type(email);
@@ -114,7 +115,8 @@ describe ('Login tests', () =>{
   });
 
   it('still sees the table upon reload of the all-matches page', ()=>{
-    cy.get('a[id=logOutLink]').click();
+    // cy.get('a[id=logOutLink]').click();
+    cy.logout();
     // cy.contains('Log In');
     cy.visit('http://localhost:4200/login');
     cy.get('input[id=userEmail]').type(email);

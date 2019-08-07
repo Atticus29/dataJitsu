@@ -1,9 +1,10 @@
 # TODO high priority
 - [ ] Check for and prevent duplicate videos from being added
+- [ ] Have table auto-update when move details are revised?
+- [ ] Update the weight classes of the matches that have already been made
 - [ ] Tests
   - [ ] Improve deleting a match test
   - [ ] Flesh out 'created match appears on table' test
-- [ ] Update the weight classes of the matches that have already been made
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Figure out a way to remove the api key and admin email and password from the repo (in an automated way)
 - [ ] Fix bugs with logging out (sometimes you have to do it multiply)
