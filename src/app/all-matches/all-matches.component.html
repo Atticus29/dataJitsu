@@ -47,14 +47,19 @@
       <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
       <mat-cell *matCellDef="let entry"> {{entry.date | date:'shortDate'}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="videoUrl">
-      <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> <a routerLink="/matches/{{entry.id}}" name="videoClick">Click</a></mat-cell>
-      <!-- <i class="material-icons right">video</i> -->
-    </ng-container>
     <ng-container matColumnDef="matchRating">
       <mat-header-cell *matHeaderCellDef> Match Rating </mat-header-cell>
       <mat-cell *matCellDef="let entry"> {{entry.matchRating}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="annotationRating">
+      <mat-header-cell *matHeaderCellDef> Annotation Rating </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.annotationRating}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="videoUrl">
+      <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> <a routerLink="/matches/{{entry.id}}" name="videoClick">Click</a></mat-cell>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="deleteMatch">

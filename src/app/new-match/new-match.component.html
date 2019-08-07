@@ -73,7 +73,7 @@
         <mat-form-field>
           <mat-select formControlName="weightBound" id="weight" placeholder="Weight Class">
             <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
-            <mat-option *ngFor="let weight of weightClasses" value="weight">{{weight}}</mat-option>
+            <mat-option *ngFor="let weight of weightClasses" [value]="weight">{{weight}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

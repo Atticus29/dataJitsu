@@ -126,6 +126,7 @@ export class NewMatchComponent implements OnInit {
     // console.log("result in createMatchObj:");
     // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
+    console.log("weight class recorded: " + weightBound);
     this.rankBound = rankBound==undefined ? "" : rankBound;
     // athlete1NameBound = athlete1NameBound==undefined ? "" : athlete1NameBound;
     // console.log(athlete1NameBound);

@@ -77,7 +77,6 @@ export class MatchDisplayComponent implements OnInit {
       this.matchId = params['matchId'];
       console.log("matchID is: " + this.matchId);
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
-        console.log("got inside here");
         this.matchAverageRating = average;
       });
       this.db.getAverageAnnotationRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE

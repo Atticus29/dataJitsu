@@ -351,13 +351,21 @@ export class DatabaseService {
         let results = snapshot.val();
         if(results){
           let arrayOfRatings = Object.values(results);
-          observer.next(this.average(arrayOfRatings));
+          let averageRating = this.average(arrayOfRatings);
+          this.updateMatchRating(matchId, averageRating);
+          observer.next(averageRating);
         } else{
           observer.next(0);
         }
       });
     });
     return resultObservable;
+  }
+
+  updateMatchRating(matchId: string, matchRating: number){
+    let updates = {};
+    updates['matches/' + matchId + '/matchDeets/matchRating'] = matchRating;
+    firebase.database().ref().update(updates);
   }
 
   getAverageAnnotationRating(matchId:string){
@@ -367,13 +375,21 @@ export class DatabaseService {
         let results = snapshot.val();
         if(results){
           let arrayOfRatings = Object.values(results);
-          observer.next(this.average(arrayOfRatings));
+          let annotationAverage = this.average(arrayOfRatings);
+          this.updateAnnotationRating(matchId, annotationAverage);
+          observer.next(annotationAverage);
         } else{
           observer.next(0);
         }
       });
     });
     return resultObservable;
+  }
+
+  updateAnnotationRating(matchId: string, annotationRating: number){
+    let updates = {};
+    updates['matches/' + matchId + '/matchDeets/annotationRating'] = annotationRating;
+    firebase.database().ref().update(updates);
   }
 
   doesMatchExist(videoUrl: string){
