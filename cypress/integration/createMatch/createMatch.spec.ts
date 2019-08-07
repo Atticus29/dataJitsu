@@ -28,6 +28,7 @@ describe ('Tests involving match creation', () =>{
       cy.get('mat-select[id=weight]').click();
       cy.get('mat-option').first().next().click({force:true});
       cy.get('button[id=new-match-submit-button]').click();
+      cy.wait(2000);
       cy.get('button[id=add-to-queue-modal-button]').should('be.visible');
       cy.get('button[id=add-to-queue-modal-button]').click();
       cy.url().should('not.match',/newmatch/);
