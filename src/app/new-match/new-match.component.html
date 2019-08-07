@@ -27,7 +27,7 @@
           <br>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="tournamentDateBound" [matDatepicker]="picker" placeholder="Match Date (m/d/yyyy)">
+          <input matInput formControlName="tournamentDateBound" [matDatepicker]="picker" placeholder="Match Date (m/d/yyyy)" id="date-input">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker required="" id="test"></mat-datepicker>
           <!-- <div class="validation-messages" ng-messages="newMatchForm.test.$error">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <mat-form-field class="col m2 s12">
-          <mat-select formControlName="genderBound" placeholder="Gender">
+          <mat-select formControlName="genderBound" placeholder="Gender" id="gender-select">
             <mat-option value="(choose)" [disabled]="disabledGender" >Choose gender</mat-option>
             <mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
           </mat-select>
@@ -77,7 +77,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <button [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newMatchForm.valid" -->
+      <button id="new-match-submit-button" [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newMatchForm.valid" -->
         <i class="material-icons right">send</i>
       </button>
     </form>
@@ -89,7 +89,7 @@
       </div>
       <div class="modal-footer">
         <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndAnnotate()">Annotate</button>
-        <button (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
+        <button id="add-to-queue-modal-button" (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
       </div>
     </div>
 

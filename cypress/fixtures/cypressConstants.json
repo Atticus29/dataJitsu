@@ -2,5 +2,11 @@
   "title": "Match Annotator",
   "usrnm": "fakeEmail@gmail.com",
   "passw": "ValidPassword23",
-  "tmp": "tmp"
+  "tmp": "tmp",
+  "testVideoUrl": "https://youtu.be/ytktpNIN3OM",
+  "testAthlete1": "Alfie",
+  "testAthlete2": "E.T.",
+  "testTournament": "The Quest Deathmatch",
+  "testLocation": "A Pineapple Under the Sea",
+  "testDate": "7/4/1776"
 }

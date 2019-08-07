@@ -60,7 +60,7 @@
     <ng-container matColumnDef="deleteMatch">
       <mat-header-cell *matHeaderCellDef> Delete Match </mat-header-cell>
       <mat-cell *matCellDef="let entry">
-        <button id="delete-button" (click)="deleteMatch(entry.id)">Delete Match</button>
+        <button id="delete-button" class="btn waves-effect waves-light" (click)="deleteMatch(entry.id)">Delete Match</button>
       </mat-cell>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>

@@ -1,7 +1,6 @@
 # TODO high priority
-- [ ] Delete a match as an admin
 - [ ] Test deleting a match
-- [ ] Test adding a new match
+- [ ] Flesh out 'created match appears on table' test
 - [ ] Check for and prevent duplicate videos from being added
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Have logout reload the page and/or resetAll from the tracker
@@ -20,6 +19,8 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Test adding a new match
+- [x] Delete a match only as an admin
 - [x] Add was this a successful attempt functionality
 - [x] Record ratings in user
 - [x] Creating a new match isn't working??
