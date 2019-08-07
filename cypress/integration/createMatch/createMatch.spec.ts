@@ -9,7 +9,7 @@ describe ('Tests involving match creation', () =>{
     });
   });
 
-  it.only('creates a match', function(){
+  it('creates a match', function(){
     cy.visit('http://localhost:4200/newmatch');
     // cy.contains("New Match").click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
