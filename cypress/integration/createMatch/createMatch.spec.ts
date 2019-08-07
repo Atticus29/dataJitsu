@@ -9,7 +9,7 @@ describe ('Tests involving match creation', () =>{
     });
   });
 
-  it('creates a match', function(){
+  it.only('creates a match', function(){
     cy.visit('http://localhost:4200/newmatch');
     // cy.contains("New Match").click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
@@ -20,13 +20,13 @@ describe ('Tests involving match creation', () =>{
       cy.get('input[id=location]').clear().type(cypressConstants.testLocation);
       cy.get('input[id=date-input]').clear().type(cypressConstants.testDate);
       cy.get('mat-select[id=gender-select]').click();
-      cy.get('mat-option').first().next().click();
+      cy.get('mat-option').first().next().click({force:true});
       cy.get('mat-select[id=ageClass]').click();
-      cy.get('mat-option').first().next().click();
+      cy.get('mat-option').first().next().click({force:true});
       cy.get('mat-select[id=rank]').click();
-      cy.get('mat-option').first().next().click();
+      cy.get('mat-option').first().next().click({force:true});
       cy.get('mat-select[id=weight]').click();
-      cy.get('mat-option').first().next().click();
+      cy.get('mat-option').first().next().click({force:true});
       cy.get('button[id=new-match-submit-button]').click();
       cy.get('button[id=add-to-queue-modal-button]').should('be.visible');
       cy.get('button[id=add-to-queue-modal-button]').click();

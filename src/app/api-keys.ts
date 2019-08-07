@@ -3,7 +3,9 @@ export var masterFirebaseConfig = {
     authDomain: "dataJitsu.firebaseapp.com",
     databaseURL: "https://datajitsu.firebaseio.com",
     storageBucket: "",
-    messagingSenderId: "495992924984"
+    messagingSenderId: "495992924984",
+    adminEmailAddress: "mark.aaron.fisher@gmail.com",
+    adminPassword: "APython!11"
   };
 
 export var masterStripeConfig = {
