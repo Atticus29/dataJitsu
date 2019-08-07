@@ -1,10 +1,12 @@
 # TODO high priority
-- [ ] Test deleting a match
-- [ ] Flesh out 'created match appears on table' test
 - [ ] Check for and prevent duplicate videos from being added
+- [ ] Tests
+  - [ ] Improve deleting a match test
+  - [ ] Flesh out 'created match appears on table' test
+- [ ] Update the weight classes of the matches that have already been made
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Figure out a way to remove the api key and admin email and password from the repo (in an automated way)
-- [ ] Have logout reload the page and/or resetAll from the tracker
+- [ ] Fix bugs with logging out (sometimes you have to do it multiply)
 - [ ] Set up CircleCI deploy to S3
 - [ ] Test logging out from individual match
 - [ ] Test rating the match and annotation (possibly as two different users)
@@ -20,6 +22,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Have logout reload the page and/or resetAll from the tracker
 - [x] Set up admin email and password on circleCI
 - [x] Test adding a new match
 - [x] Delete a match only as an admin
