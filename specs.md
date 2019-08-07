@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Set up admin email and password on circleCI
 - [ ] Test deleting a match
 - [ ] Flesh out 'created match appears on table' test
 - [ ] Check for and prevent duplicate videos from being added
@@ -21,6 +20,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Set up admin email and password on circleCI
 - [x] Test adding a new match
 - [x] Delete a match only as an admin
 - [x] Add was this a successful attempt functionality
