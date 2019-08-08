@@ -3,7 +3,8 @@ export class User {
   private weightClass: string;
   private ageClass: string;
   private uid: string;
-  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: any, public paidStatus: boolean, public gender: string, public dateCreated: any, public privileges: {}) {
+  private privileges: {};
+  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: any, public paidStatus: boolean, public gender: string, public dateCreated: any) {
     this.privileges = {
       isAdmin: false,
       canEditMatches: false,

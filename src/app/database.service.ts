@@ -418,7 +418,7 @@ export class DatabaseService {
   }
 
   isAdmin(userId: string){
-    let ref = firebase.database().ref('users/' + userId + '/isAdmin');
+    let ref = firebase.database().ref('users/' + userId + '/privileges/isAdmin');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot=>{
         if(snapshot.val()){
@@ -438,7 +438,7 @@ export class DatabaseService {
 
   addAdminStatus(userId: string){
     let updates = {};
-    updates['/users/' + userId + '/isAdmin'] = true;
+    updates['/users/' + userId + '/privileges/isAdmin'] = true;
     firebase.database().ref().update(updates);
   }
 
