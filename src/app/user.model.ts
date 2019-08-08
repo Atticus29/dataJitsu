@@ -10,7 +10,9 @@ export class User {
       canEditMatches: false,
       canAnnotateVideos: true,
       canRateMatches: true,
-      canRateAnnotations: false
+      canRateAnnotations: false,
+      canFlagAnnotations: false,
+      canFlagUsers: false
     }
   }
 

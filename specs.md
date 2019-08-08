@@ -1,5 +1,6 @@
 # TODO high priority
 - [ ] Have table auto-update when move details are revised?
+- [ ] Monitor user's reputation points and enable privileges when things change
 - [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
 - [ ] Detect when the link url is different but other match specs are the same

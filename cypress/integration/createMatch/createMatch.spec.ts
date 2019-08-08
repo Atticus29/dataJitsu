@@ -30,7 +30,6 @@ describe ('Tests involving match creation', () =>{
       cy.get('button[id=new-match-submit-button]').click();
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
-      cy.get('button[id=add-to-queue-modal-button]').should('be.visible');
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
       cy.url().should('not.match',/newmatch/);
       cy.contains('Athlete 1').should('exist');

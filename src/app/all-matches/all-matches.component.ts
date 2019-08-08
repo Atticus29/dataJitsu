@@ -20,7 +20,6 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
-  // private dataSource: MatchDataSource;
   private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   private showLoader: any;
@@ -45,7 +44,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     },err=>{
       console.log(err);
     });
-    this.pageSize = 10; //TODO increase me to something reasonable
+    this.pageSize = 10;
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
@@ -81,8 +80,6 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     deleteMatch(matchId: any){
-      // console.log("entry:");
-      // console.log(matchId);
       let confirmation = confirm("Are you sure you want to delete this match?");
       if(confirmation){
         console.log("Deleting " + matchId);
