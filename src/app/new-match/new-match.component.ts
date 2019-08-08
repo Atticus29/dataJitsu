@@ -126,7 +126,7 @@ export class NewMatchComponent implements OnInit {
     // console.log("result in createMatchObj:");
     // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    console.log("weight class recorded: " + weightBound);
+    // console.log("weight class recorded: " + weightBound);
     this.rankBound = rankBound==undefined ? "" : rankBound;
     // athlete1NameBound = athlete1NameBound==undefined ? "" : athlete1NameBound;
     // console.log(athlete1NameBound);
@@ -145,7 +145,7 @@ export class NewMatchComponent implements OnInit {
   }
 
   onChange(val){
-    console.log(val);
+    // console.log(val);
     if(val === "addNew"){
       console.log("contains add new!");
       //TODO new stuff here
@@ -169,26 +169,32 @@ export class NewMatchComponent implements OnInit {
   }
 
   submitFormAndAnnotate(){
+    console.log("submitFormAndAnnotate entered");
     let values = this.getValues();
-    // console.log("values in submitFormAndAnnotate:");
-    // console.log(values);
+    console.log("values in submitFormAndAnnotate:");
+    console.log(values);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = values;
+    console.log("got past the crazy equal step");
+    console.log(values.matchUrlBound);
     this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
       console.log("into subscription of doesMatchExist:");
       console.log(result);
       if(!result){
         console.log("match doesn't already exist");
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-          console.log(result);
+          // console.log(result);
           this.db.addMatchToDb(result);
           //TODO navigate to annotation page??
         });
+      } else{
+        alert("Match already exists!");
+        //TODO more delicate than this
       }
-    })
+    });
   }
 
   submitFormAndReturnToMain(){
-    // console.log("submitFormAndReturnToMain entered");
+    console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     // console.log(values);
 
@@ -216,5 +222,9 @@ export class NewMatchComponent implements OnInit {
     //TODO flesh out
     console.log("entered submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch");
   }
+
+  // onDestroy(){
+  //
+  // }
 
 }

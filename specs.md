@@ -1,5 +1,6 @@
 # TODO high priority
-- [ ] Check for and prevent duplicate videos from being added
+- [ ] Indicate to the user that a match was created
+- [ ] Detect when the link url is different but other match specs are the same
 - [ ] Have table auto-update when move details are revised?
 - [ ] Update the weight classes of the matches that have already been made
 - [ ] Tests
@@ -23,6 +24,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Check for and prevent duplicate videos from being added
 - [x] Have logout reload the page and/or resetAll from the tracker
 - [x] Set up admin email and password on circleCI
 - [x] Test adding a new match

@@ -394,16 +394,25 @@ export class DatabaseService {
 
   doesMatchExist(videoUrl: string){
     let ref = firebase.database().ref('matches/');
+    // let entranceDetector = 0;
     // console.log("doesMatchExist?: ");
     // console.log(result);
     let resultObservable = Observable.create(observer =>{
-      ref.orderByChild('/matchDeets/videoUrl').equalTo(videoUrl).on("value", snapshot=>{
-        if(snapshot.val()){
-          observer.next(true);
-        } else{
+      ref.orderByChild('/matchDeets/videoUrl').equalTo(videoUrl).limitToFirst(1).once("value", snapshot=>{
+        // entranceDetector = 1;
+        if(!snapshot.exists()){
+          console.log("snapshot doesn't exist");
           observer.next(false);
         }
+        console.log("value happens in doesMatchExist inside database service");
+        console.log(snapshot.val());
+        if(snapshot.val()){
+          observer.next(true);
+        }
       });
+      // if(entranceDetector < 1){
+        // observer.next(false);
+      // }
     });
     return resultObservable;
   }
