@@ -62,7 +62,6 @@ export class MatchDisplayComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit for match-display called");
-
     let self = this;
 
     this.trackerService.annotationBegun.subscribe(status =>{
@@ -213,15 +212,10 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
-    //TODO add stuff to db: 1. updateRatingAverage, 2. record rating in user
     let newRating = $event.newValue;
-    console.log("newRating");
-    console.log(newRating);
-    this.authService.getCurrentUser().subscribe(user =>{
-      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+    this.authService.getCurrentUser().subscribe(usr =>{
+      this.db.getUserByUid(usr.uid).on("child_added", snapshot => {
         let userInDb: string = snapshot.key;
-        console.log("user is: ");
-        console.log(userInDb);
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
         this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
         });
@@ -229,17 +223,12 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
-    //TODO add stuff to db 1. updateRatingAverage, 2. record rating in user
     let newRating = $event.newValue;
-    console.log("newRating");
-    console.log(newRating);
-    this.authService.getCurrentUser().subscribe(user =>{
-      this.db.getUserByUid(user.uid).on("child_added", snapshot => {
-        let userInDb: string = snapshot.key;
-        console.log("user is: ");
-        console.log(userInDb);
-        this.db.addMatchAnnotationRatingToUser(userInDb, this.matchId, $event.newValue);
-        this.db.addMatchAnnotationRatingToMatch(userInDb, this.matchId, $event.newValue);
+    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+      this.db.getUserByUid(usr.uid).subscribe(result => {
+        let userDbId: string = result.id;
+        this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
+        this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
         });
     });
   }
@@ -259,9 +248,7 @@ export class MatchDisplayComponent implements OnInit {
     var result = re.exec(url);
     return result[1];
   }
-  // finishAnnotation(currentTime: string){
-  //   console.log(currentTime);
-  // }
+
   onMoveSelected(moveSelected: MoveInVideo){
     console.log(moveSelected);
     player.playVideo();

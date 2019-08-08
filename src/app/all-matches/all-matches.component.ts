@@ -36,7 +36,6 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
-        console.log(dbUser.privileges.isAdmin);
         if(dbUser.privileges.isAdmin){
           this.columnsToDisplay.push('deleteMatch');
         }
@@ -48,53 +47,44 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
-      console.log("getMatchCount changes");
-      console.log(results);
       this.matchCount = results;
-      // this.loadMatchesPage(); //TODO ??
     });
-    // console.log(this.dataSource);
-    // this.dataSource.loading$.subscribe(result =>{
-    //   console.log(result);
-    // });
+    this.dataSource.loading$.subscribe(result =>{
+      this.showLoader = result;
+      this.cdr.detectChanges();
+    });
 
-      this.dataSource.loading$.subscribe(result =>{
-        this.showLoader = result;
-        this.cdr.detectChanges();
-      });
+    this.dbService.getMatches().subscribe(results =>{
+      this.loadMatchesPage();
+    });
+  }
 
-      this.dbService.getMatches().subscribe(results =>{
-        console.log("change in matches");
-        this.loadMatchesPage();
-      })
+  ngAfterViewInit(){
+    this.paginator.page
+      .pipe(
+        tap(()=> this.loadMatchesPage())
+      )
+      .subscribe();
+  }
+
+  loadMatchesPage(){
+    this.dataSource.loadMatches('TODO', '', 'asc', this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
+  ngOnDestroy(){
+    console.log("onDestroy is called");
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  deleteMatch(matchId: any){
+    let confirmation = confirm("Are you sure you want to delete this match?");
+    if(confirmation){
+      console.log("Deleting " + matchId);
+      this.dbService.deleteMatch(matchId);
+      // this.loadMatchesPage();
+    } else{
+      console.log("confirmation denied");
     }
-
-    ngAfterViewInit(){
-      this.paginator.page
-        .pipe(
-          tap(()=> this.loadMatchesPage())
-        )
-        .subscribe();
-    }
-
-    loadMatchesPage(){
-      this.dataSource.loadMatches('TODO', '', 'asc', this.paginator.pageIndex, this.paginator.pageSize);
-    }
-
-    ngOnDestroy(){
-      console.log("onDestroy is called");
-      this.ngUnsubscribe.next();
-      this.ngUnsubscribe.complete();
-    }
-
-    deleteMatch(matchId: any){
-      let confirmation = confirm("Are you sure you want to delete this match?");
-      if(confirmation){
-        console.log("Deleting " + matchId);
-        this.dbService.deleteMatch(matchId);
-        // this.loadMatchesPage();
-      } else{
-        console.log("confirmation denied");
-      }
-    }
+  }
 }

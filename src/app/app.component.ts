@@ -36,6 +36,16 @@ export class AppComponent implements OnInit {
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
+        this.db.getUserByUid(user.uid).subscribe(dbUser =>{
+          console.log(dbUser);
+          this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
+            console.log("got into reputation points");
+            console.log(reputation);
+            //TODO update reputation points privileges
+          })
+        });
+      } else {
+        this.authenticationStatus = false;
       }
     });
   }

@@ -125,6 +125,17 @@ export class DatabaseService {
     return resultObservable;
   }
 
+  getUserReputationPoints(userId: string){
+    // let ref = firebase.database().ref('users/' + userId + '/reputationPoints');
+    return this.db.object('users/' + userId + '/reputationPoints').valueChanges();
+    // let queryObservable = Observable.create(function(observer){
+    //   ref.on('value', snapshot=>{
+    //     observer.next(snapshot.numChildren());
+    //   });
+    // });
+    // return queryObservable;
+  }
+
   getMatchCount(){ //TODO this is very inefficient. Some not-great leads here: https://stackoverflow.com/questions/15148803/in-firebase-is-there-a-way-to-get-the-number-of-children-of-a-node-without-load
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
@@ -335,9 +346,17 @@ export class DatabaseService {
   }
 
   average(list: any[]){
-    return list.reduce((prev, curr) => prev + curr) / list.length;
+    return this.roundToDecimal(list.reduce((prev, curr) => prev + curr) / list.length, 2);
   }
-
+  roundToDecimal(number,decimal) {
+    var zeros = new String( 1.0.toFixed(decimal) );
+    zeros = zeros.substr(2);
+    var mul_div = parseInt( "1"+zeros );
+    var increment = parseFloat( "."+zeros+"01" );
+    if( ( (number * (mul_div * 10)) % 10) >= 5 )
+      { number += increment; }
+    return Math.round(number * mul_div) / mul_div;
+  }
 
   getAverageMatchRating(matchId: string){
     let ref = firebase.database().ref('matches/' + matchId + '/matchRatings/');
