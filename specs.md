@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Have table auto-update when move details are revised?
 - [ ] Monitor user's reputation points and enable privileges when things change
 - [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
@@ -26,6 +25,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Have table auto-update when move details are revised
 - [x] Add cannot create duplicate match test
 - [x] Indicate to the user that a match was created
 - [x] Check for and prevent duplicate videos from being added

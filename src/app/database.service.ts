@@ -116,7 +116,13 @@ export class DatabaseService {
   }
 
   getMatches(){
-    return this.db.object('/matches');
+    let ref = firebase.database().ref('/matches');
+    let resultObservable = Observable.create(observer =>{
+      ref.on('value', snapshot=>{
+        observer.next(snapshot.val());
+      });
+    });
+    return resultObservable;
   }
 
   getMatchCount(){ //TODO this is very inefficient. Some not-great leads here: https://stackoverflow.com/questions/15148803/in-firebase-is-there-a-way-to-get-the-number-of-children-of-a-node-without-load
@@ -170,7 +176,6 @@ export class DatabaseService {
     return this.db.object('/matches/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  //@TODO fix getUserByUid below low priority 05/11/2018 only would get used in app.component
   getUserByUid(uid: string){
     let ref = firebase.database().ref('users/');
     let user: User = null;
@@ -178,20 +183,9 @@ export class DatabaseService {
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
         user = snapshot.val();
         observer.next(user);
-        // console.log(snapshot.val());
       });
-      //   if(snapshot.val()){
-      //     observer.next(true);
-      //   } else{
-      //     observer.next(false);
-      //   }
-      // });
     });
     return resultObservable;
-    // ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-    //   return this.getUserById(snapshot.key);
-    // });
-    // return ref.orderByChild('uid').equalTo(uid).limitToFirst(1);
   }
 
   getMatchFromNodeKey(key: string){

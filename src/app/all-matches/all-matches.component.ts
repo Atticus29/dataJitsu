@@ -53,7 +53,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       this.matchCount = results;
       // this.loadMatchesPage(); //TODO ??
     });
-    console.log(this.dataSource);
+    // console.log(this.dataSource);
     // this.dataSource.loading$.subscribe(result =>{
     //   console.log(result);
     // });
@@ -62,6 +62,11 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = result;
         this.cdr.detectChanges();
       });
+
+      this.dbService.getMatches().subscribe(results =>{
+        console.log("change in matches");
+        this.loadMatchesPage();
+      })
     }
 
     ngAfterViewInit(){
@@ -87,7 +92,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       if(confirmation){
         console.log("Deleting " + matchId);
         this.dbService.deleteMatch(matchId);
-        this.loadMatchesPage();
+        // this.loadMatchesPage();
       } else{
         console.log("confirmation denied");
       }
