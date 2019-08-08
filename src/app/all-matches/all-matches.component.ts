@@ -48,7 +48,10 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().subscribe(results=>{
+      console.log("getMatchCount changes");
+      console.log(results);
       this.matchCount = results;
+      // this.loadMatchesPage(); //TODO ??
     });
     console.log(this.dataSource);
     // this.dataSource.loading$.subscribe(result =>{

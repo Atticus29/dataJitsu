@@ -122,7 +122,7 @@ export class DatabaseService {
   getMatchCount(){ //TODO this is very inefficient. Some not-great leads here: https://stackoverflow.com/questions/15148803/in-firebase-is-there-a-way-to-get-the-number-of-children-of-a-node-without-load
     let ref = firebase.database().ref('matches/');
     let queryObservable = Observable.create(function(observer){
-      ref.once('value').then(function(snapshot){
+      ref.on('value', snapshot=>{
         observer.next(snapshot.numChildren());
       });
     });
