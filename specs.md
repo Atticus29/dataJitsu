@@ -26,6 +26,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Add cannot create duplicate match test
 - [x] Indicate to the user that a match was created
 - [x] Check for and prevent duplicate videos from being added
 - [x] Have logout reload the page and/or resetAll from the tracker

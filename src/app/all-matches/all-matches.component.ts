@@ -84,6 +84,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       if(confirmation){
         console.log("Deleting " + matchId);
         this.dbService.deleteMatch(matchId);
+        this.loadMatchesPage();
       } else{
         console.log("confirmation denied");
       }
