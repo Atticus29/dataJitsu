@@ -5,6 +5,7 @@ describe ('Tests involving admin privleges and deletions', () =>{
   });
 
   it('creates a match', function(){
+    cy.wait(1000);
     cy.visit('http://localhost:4200/newmatch');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);

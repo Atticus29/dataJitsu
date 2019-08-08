@@ -1,19 +1,23 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import {Location} from "@angular/common";
+import {MatSnackBar} from '@angular/material/snack-bar';
+
+import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { Subject ,  Observable } from 'rxjs';
+import { takeUntil, switchMap } from 'rxjs/operators';
+
+import { User } from '../user.model';
+import { AuthorizationService } from '../authorization.service';
+import { ProtectionGuard } from '../protection.guard';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
-import { User } from '../user.model';
-import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { Subject ,  Observable } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { AuthorizationService } from '../authorization.service';
-import {Location} from "@angular/common";
-import { ProtectionGuard } from '../protection.guard';
+
 declare var $:any;
 
 @Component({
@@ -50,7 +54,7 @@ export class NewMatchComponent implements OnInit {
 
   newRankForm: FormGroup; //TODO what is this?
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar) {
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);
@@ -123,19 +127,12 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    // console.log("result in createMatchObj:");
-    // console.log(result);
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
-    // console.log("weight class recorded: " + weightBound);
     this.rankBound = rankBound==undefined ? "" : rankBound;
-    // athlete1NameBound = athlete1NameBound==undefined ? "" : athlete1NameBound;
-    // console.log(athlete1NameBound);
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.getCurrentUser().pipe(switchMap(userInfo => {
-        // TODO fix this/make sure it's working
         return Observable.create(obs=>{
-        // this.db.getNodeIdFromEmail(userInfo.email).on("child_added", snapshot=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
           let match = new Match(matchDeets, snapshot.key, moves);
           obs.next(match);
@@ -168,41 +165,44 @@ export class NewMatchComponent implements OnInit {
     }
   }
 
-  submitFormAndAnnotate(){
-    console.log("submitFormAndAnnotate entered");
+  submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
     let values = this.getValues();
-    console.log("values in submitFormAndAnnotate:");
-    console.log(values);
-    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = values;
-    console.log("got past the crazy equal step");
-    console.log(values.matchUrlBound);
     this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
-      console.log("into subscription of doesMatchExist:");
       console.log(result);
       if(!result){
-        console.log("match doesn't already exist");
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-          // console.log(result);
-          this.db.addMatchToDb(result);
+          console.log(result)
+          let matchId = this.db.addMatchToDb(result);
+          this.openSnackBar("Match Successfully Created!", null);
+          this.router.navigate(['matches/' + matchId]);
           //TODO navigate to annotation page??
         });
       } else{
-        alert("Match already exists!");
-        //TODO more delicate than this
+        this.openSnackBar("Match Already Exists in the Database!", null);
       }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
     });
   }
 
   submitFormAndReturnToMain(){
     console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
-    // console.log(values);
-
-    //TODO add this.db.doesMatchExist logic from submitFormAndAnnotate here
-    let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-      // console.log(result);
-      this.db.addMatchToDb(result);
-      this.router.navigate(['']);
+    this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
+      console.log(result);
+      if(!result){
+        let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
+          this.db.addMatchToDb(result);
+          this.openSnackBar("Match Successfully Created!", null);
+          this.router.navigate(['']);
+        });
+      } else{
+        this.openSnackBar("Match Already Exists in the Database!", null);
+      }
     });
   }
 

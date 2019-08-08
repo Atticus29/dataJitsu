@@ -231,6 +231,7 @@ export class DatabaseService {
     updates['/matches/' + matchId + '/id'] = matchId;
     updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
+    return matchId;
   }
 
   addUserToDb(user: User){

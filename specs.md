@@ -1,7 +1,8 @@
 # TODO high priority
-- [ ] Indicate to the user that a match was created
-- [ ] Detect when the link url is different but other match specs are the same
 - [ ] Have table auto-update when move details are revised?
+- [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
+- [ ] Separate and gitignore the admin email and password and then go back through and erase
+- [ ] Detect when the link url is different but other match specs are the same
 - [ ] Update the weight classes of the matches that have already been made
 - [ ] Tests
   - [ ] Improve deleting a match test
@@ -24,6 +25,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Indicate to the user that a match was created
 - [x] Check for and prevent duplicate videos from being added
 - [x] Have logout reload the page and/or resetAll from the tracker
 - [x] Set up admin email and password on circleCI

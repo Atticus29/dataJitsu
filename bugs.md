@@ -1,7 +1,8 @@
 # Known issues
+- [ ] Original poster ID is "users" right now and should be updated to the actual user's id
 - [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?
+- [ ] If you navigate to matches/undefined, it still shows something that looks somewhat like a match
 - [ ] Second time you annotate a move, whether submission and whether successful not at their default values
-- [ ] Clicking the stuff deepest into the tree no longer works
 - [ ] Changing the annotation rating resets the video
 - [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
 - [ ] the timeline for a previous match might persist when a new match is clicked
@@ -23,9 +24,10 @@
 - [ ] Gi/Nogi on match-display says false
 
 # Mysteriously failing tests
-- [ ] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 
 # Resolved issues
+- [x] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
+- [x] Clicking the stuff deepest into the tree no longer works
 - [x] should have begin move disabled and end move enabled after done have been clicked //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 - [x] If you log out and then try to click on annotate a video, it takes you to the lost page. // Seems to be resolved, although logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
 - [x] The first time you annotate a move, the annotation button toggles don't enable and disable as expected, but after that, they do
