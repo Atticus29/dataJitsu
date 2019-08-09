@@ -34,7 +34,28 @@ $primary-color: green;
   justify-content: flex-start;
 }
 
+.flexbox-container-alt{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.flexbox-vertical{
+  width: 25em;
+  background-color: #e6e8e7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
 .flexbox-item{
   padding: 0.5em;
   margin: 0.5em;
+  border: 5px solid #fffff;
+}
+
+huge-flexbox-item{
+  flex-grow: 1
+  // flex: initial;
 }

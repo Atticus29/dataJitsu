@@ -40,7 +40,8 @@ export class AppComponent implements OnInit {
           console.log(dbUser);
           this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
             console.log("got into reputation points");
-            console.log(reputation);
+            console.log(Number(reputation));
+            this.db.updatePrivileges(dbUser, Number(reputation));
             //TODO update reputation points privileges
           })
         });

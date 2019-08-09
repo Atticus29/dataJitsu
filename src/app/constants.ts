@@ -15,5 +15,18 @@ export var constants = {
     "Submissions or Submission Attempts That Scored Points",
     "Take Downs",
     "Guard Passes"
-    ]
+    ],
+    privilegeLevels: {
+      1: 100,
+      2: 200,
+      3: 500,
+      4: 1000,
+      5: 1500,
+      6: 2000,
+      7: 3000,
+      8: 4000,
+      9: 5000,
+      10: 10000
+    }
+
   };

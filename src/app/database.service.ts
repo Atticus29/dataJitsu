@@ -6,6 +6,7 @@ import { Match } from './match.model';
 import { User } from './user.model';
 import { TextTransformationService } from './text-transformation.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { constants } from './constants';
 
 import { MoveInVideo } from './moveInVideo.model';
 
@@ -459,6 +460,54 @@ export class DatabaseService {
   removeAdminStatus(userId: string){
     let updates = {};
     updates['/users/' + userId + '/isAdmin'] = false;
+    firebase.database().ref().update(updates);
+  }
+
+  updatePrivileges(userId: string, reputationPoints: number){
+    let updates = {};
+    if(reputationPoints > constants.privilegeLevels[10]){
+      updates['/users/' + userId + '/privileges/'] = true; //TODO
+    } else{
+      if(reputationPoints > constants.privilegeLevels[9]){
+        //TODO
+      }else{
+        if(reputationPoints > constants.privilegeLevels[8]){
+          //TODO
+        }else{
+          if(reputationPoints > constants.privilegeLevels[7]){
+            //TODO
+          }else{
+            if(reputationPoints > constants.privilegeLevels[6]){
+              //TODO
+            } else{
+              if(reputationPoints > constants.privilegeLevels[5]){
+                //TODO
+              } else{
+                if(reputationPoints > constants.privilegeLevels[4]){
+                  //TODO
+                } else{
+                  if(reputationPoints > constants.privilegeLevels[3]){
+                    //TODO
+                  } else{
+                    if(reputationPoints > constants.privilegeLevels[2]){
+                      //TODO
+                    } else{
+                      if(reputationPoints > constants.privilegeLevels[1]){
+                        //TODO
+                      } else{
+                        if(reputationPoints <= constants.privilegeLevels[1]){
+                          console.log("You don't have a lot of reputation points")
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     firebase.database().ref().update(updates);
   }
 
