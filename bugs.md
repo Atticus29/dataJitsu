@@ -1,4 +1,5 @@
 # Known issues
+- [ ] If user is logged in and navigates to /login, it will still show them login stuff
 - [ ] Original poster ID is "users" right now and should be updated to the actual user's id
 - [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?
 - [ ] If you navigate to matches/undefined, it still shows something that looks somewhat like a match

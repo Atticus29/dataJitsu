@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { D3Service } from '../d3.service';
-import { DatabaseService } from '../database.service';
-import { TextTransformationService } from '../text-transformation.service';
 import * as firebase from 'firebase/app';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DataSource } from '@angular/cdk/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { MatchDataSource } from '../matchDataSource.model';
-import { AuthorizationService } from '../authorization.service';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 import { tap, takeUntil } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material';
 import { ChangeDetectorRef } from '@angular/core';
+
+import { DatabaseService } from '../database.service';
+import { D3Service } from '../d3.service';
+import { TextTransformationService } from '../text-transformation.service';
+import { MatchDataSource } from '../matchDataSource.model';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-all-matches',
@@ -30,9 +32,15 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef) { }
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
+    this.authService.authenticated.subscribe(status =>{
+      if(status){
+      } else{
+        this.router.navigate(['login']);
+      }
+    });
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{

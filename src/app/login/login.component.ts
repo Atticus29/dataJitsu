@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
-import { ValidationService } from '../validation.service';
-import { AuthorizationService } from '../authorization.service';
 import { ProtectionGuard } from '../protection.guard';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+import { AuthorizationService } from '../authorization.service';
+import { ValidationService } from '../validation.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ import { ProtectionGuard } from '../protection.guard';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  private showLoader: boolean = true;
 
   constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
 
@@ -21,7 +24,15 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       emailBound: ['', Validators.required],
       passwordBound: ['', Validators.required]
-    })
+    });
+    this.as.authenticated.subscribe(status =>{
+      if(status){
+        // this.showLoader = !status;
+        this.router.navigate(['']);
+      } else{
+        this.showLoader = false;
+      }
+    });
   }
 
   submitLoginForm(){

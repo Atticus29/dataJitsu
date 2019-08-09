@@ -1,4 +1,7 @@
-<div class="flexbox-vertical flexbox-item">
+<div class="spinner-container flexbox-item" *ngIf="showLoader" id="spinner-login">
+  <mat-spinner id="spinner"></mat-spinner>
+</div>
+<div class="flexbox-vertical flexbox-item" *ngIf="!showLoader">
   <div class="flexbox-item">
     <h1 class="subtitle">Log In</h1>
   </div>
