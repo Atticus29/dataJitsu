@@ -14,10 +14,10 @@
     </ul>
   </div>
 </nav>
+<div class="flexbox-item">
+  <app-user-status-report *ngIf="authenticationStatus"></app-user-status-report>
+</div>
 <div class="flexbox-container-alt">
-  <div class="flexbox-item">
-    <app-user-status-report *ngIf="authenticationStatus"></app-user-status-report>
-  </div>
   <div class="huge-flexbox-item">
     <router-outlet></router-outlet>
   </div>
