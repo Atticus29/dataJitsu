@@ -1,4 +1,7 @@
 # Known issues
+- [ ] Fake user doesn't get a uid
+- [ ] Need a way to handle things like missing uid in users
+- [ ] My admin user is being either removed or replaced by the next one?
 - [ ] If user is logged in and navigates to /login, it will still show them login stuff
 - [ ] Original poster ID is "users" right now and should be updated to the actual user's id
 - [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?

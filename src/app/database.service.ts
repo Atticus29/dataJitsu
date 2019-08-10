@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { takeUntil, first } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
-import { Match } from './match.model';
-import { User } from './user.model';
-import { TextTransformationService } from './text-transformation.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+
+import { TextTransformationService } from './text-transformation.service';
+import { User } from './user.model';
+import { Match } from './match.model';
 import { constants } from './constants';
 
 import { MoveInVideo } from './moveInVideo.model';
@@ -23,6 +26,7 @@ export class DatabaseService {
   retrievedMatch:Observable<any>;
   movesAsObject: Observable<any>;
   matchDetails: Observable<any>;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
     this.matches = db.list<Match>('/matches').valueChanges();
@@ -127,14 +131,31 @@ export class DatabaseService {
   }
 
   getUserReputationPoints(userId: string){
-    // let ref = firebase.database().ref('users/' + userId + '/reputationPoints');
     return this.db.object('users/' + userId + '/reputationPoints').valueChanges();
-    // let queryObservable = Observable.create(function(observer){
-    //   ref.on('value', snapshot=>{
-    //     observer.next(snapshot.numChildren());
-    //   });
-    // });
-    // return queryObservable;
+  }
+
+  updateUserReputationPoints(userId: string, points: number){
+    let updates = {};
+    this.getUserReputationPoints(userId).pipe(first()).subscribe(result =>{
+      console.log("reputation points? in updateUserReputationPoints");
+      console.log(result);
+      updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;
+      firebase.database().ref().update(updates);
+    });
+  }
+
+  getMainAnnotatorOfMatch(matchId: string){
+    let ref = firebase.database().ref('matches/' + matchId + '/moves');
+    let queryObservable = Observable.create(function(observer){
+      ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
+        console.log("getMainAnnotatorOfMatch snapshot:");
+        console.log(snapshot.val());
+        console.log(snapshot.numChildren());
+        //TODO flesh out
+        observer.next(snapshot.val());
+      });
+    });
+    return queryObservable;
   }
 
   getMatchCount(){ //TODO this is very inefficient. Some not-great leads here: https://stackoverflow.com/questions/15148803/in-firebase-is-there-a-way-to-get-the-number-of-children-of-a-node-without-load
@@ -192,10 +213,18 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/');
     let user: User = null;
     let resultObservable = Observable.create(observer =>{
+      let queryResult = null;
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
+        console.log("result of query is :");
+        console.log(snapshot.val());
         user = snapshot.val();
+        queryResult = snapshot.val();
         observer.next(user);
       });
+      if (queryResult == null)
+      {
+        observer.next(null);
+      }
     });
     return resultObservable;
   }

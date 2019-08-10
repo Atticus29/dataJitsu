@@ -31,10 +31,14 @@ export class AppComponent implements OnInit {
       this.user = user;
     });
     this.afAuth.authState.subscribe(user =>{
+      console.log("user from authState in app.component:");
+      console.log(user);
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
+          console.log("db user from getUserByUid in app.component is:");
+          console.log(dbUser);
           this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
             this.db.updatePrivileges(dbUser, Number(reputation));
             //TODO update reputation points privileges

@@ -1,4 +1,9 @@
 # TODO high priority
+- [ ] getMainAnnotatorOfMatch doesn't work as expected yet
+- [ ] Add onDestroy handling for the memory leakers?
+- [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable (do you unreward if diluted by crap?)
+  - [ ] TODO && current rater is not the main annotator
+- [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable? (do you unreward if diluted by crap?)
 - [ ] Monitor user's reputation points and enable privileges when things change
 - [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
@@ -18,6 +23,7 @@
 - [ ] Make password toggleable to be visible
 
 # TODO low priority
+- [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
@@ -25,6 +31,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Annotation includes the annotator's user id
 - [x] Have table auto-update when move details are revised
 - [x] Add cannot create duplicate match test
 - [x] Indicate to the user that a match was created

@@ -61,9 +61,7 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit for match-display called");
     let self = this;
-
     this.trackerService.annotationBegun.subscribe(status =>{
       if(status){
         this.annotationFinishButtonDisabled = false;
@@ -134,16 +132,21 @@ export class MatchDisplayComponent implements OnInit {
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
-                              let attemptStatus: boolean = true;
-                              if(attemptSuccessful === false){
-                                attemptStatus = false
-                              }
-                              let submissionStatus: boolean = false;
-                              if(submission === "Yes"){
-                                submissionStatus = true;
-                              }
-                              self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus, attemptStatus); //TODO update this once you add performers
-                              self.moveAssembledStatus.next(true);
+                              self.authService.getCurrentUser().subscribe(user =>{
+                                self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+                                  let userInDb: string = usr.id;
+                                  let attemptStatus: boolean = true;
+                                  if(attemptSuccessful === false){
+                                    attemptStatus = false
+                                  }
+                                  let submissionStatus: boolean = false;
+                                  if(submission === "Yes"){
+                                    submissionStatus = true;
+                                  }
+                                  self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus, attemptStatus, userInDb); //TODO update this once you add performers
+                                  self.moveAssembledStatus.next(true);
+                                });
+                              });
                             });
                           });
                         });
@@ -214,8 +217,8 @@ export class MatchDisplayComponent implements OnInit {
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
     this.authService.getCurrentUser().subscribe(usr =>{
-      this.db.getUserByUid(usr.uid).on("child_added", snapshot => {
-        let userInDb: string = snapshot.key;
+      this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
+        let userInDb: string = urs.id;
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
         this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
         });
@@ -223,12 +226,33 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+    console.log("got into onRateAnnotation");
     let newRating = $event.newValue;
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+      console.log("usr from auth service is: ");
+      console.log(usr);
+      console.log("usr.uid is "+ usr.uid);
       this.db.getUserByUid(usr.uid).subscribe(result => {
+        console.log("result of getUserByUid is: ");
+        console.log(result);
         let userDbId: string = result.id;
+        console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
         this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
+        if($event.newValue > 4){
+          console.log("rating is over 4");
+          this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
+            console.log("major annotator is ");
+            console.log(majorityAnnotator.annotatorUserId);
+            if(majorityAnnotator.annotatorUserId !== userDbId){
+              // console.log()
+              this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
+            }
+            if(majorityAnnotator.annotatorUserId === userDbId){
+              console.log("bish just upvoted their own shit");
+            }
+          });
+        }
         });
     });
   }

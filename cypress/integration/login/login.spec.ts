@@ -29,7 +29,7 @@ describe ('Login tests', () =>{
     });
   });
 
-  it('signs up a new user', () =>{
+  it.only('signs up a new user', () =>{
     cy.visit('http://localhost:4200/createaccount');
     // cy.get('button[id=new-account-button]').click();
     cy.get('input[id=affiliation]').type(affiliation);
