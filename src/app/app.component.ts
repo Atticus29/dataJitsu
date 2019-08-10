@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
     this.afAuth.authState.subscribe(user =>{
       console.log("user from authState in app.component:");
       console.log(user);
+      console.log("user id");
+      console.log(user.uid);
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;

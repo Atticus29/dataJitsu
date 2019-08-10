@@ -213,18 +213,12 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/');
     let user: User = null;
     let resultObservable = Observable.create(observer =>{
-      let queryResult = null;
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
         console.log("result of query is :");
         console.log(snapshot.val());
         user = snapshot.val();
-        queryResult = snapshot.val();
         observer.next(user);
       });
-      if (queryResult == null)
-      {
-        observer.next(null);
-      }
     });
     return resultObservable;
   }
