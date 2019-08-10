@@ -20,8 +20,13 @@ Cypress.Commands.add("login", (email, pass) => {
 
 Cypress.Commands.add("loginAsAdmin", () => {
   cy.visit('http://localhost:4200/login');
-  cy.get('a[id=logOutLink]').click({force:true});
-  cy.visit('http://localhost:4200/login');
+  cy.wait(2000);
+  const $el = Cypress.$('a[id=logOutLink]')
+  if ($el) {
+    cy.log('Clicking log out')
+    cy.get('a[id=logOutLink]').click({force:true});
+    cy.wait(2000);
+  }
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=userEmail]').type(cypressConstants.adminEmailAddress);
     cy.get('input[id=password]').type(cypressConstants.adminPassword);

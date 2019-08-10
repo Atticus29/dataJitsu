@@ -1,6 +1,7 @@
 # TODO high priority
 - [ ] Add branching/if statements to cypress login as admin test
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
+- [ ] reset annotationVotesCastToday at midnight every night
 - [ ] Add onDestroy handling for the memory leakers?
 - [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable (do you unreward if diluted by crap?)
   - [ ] TODO && current rater is not the main annotator

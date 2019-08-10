@@ -27,6 +27,6 @@ export var constants = {
       8: 4000,
       9: 5000,
       10: 10000
-    }
-
+    },
+    annotationVoteQuota: 10
   };

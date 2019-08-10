@@ -45,7 +45,7 @@ export class AuthorizationService {
       this.authenticated.next(false);
       //@TODO test whether authenticated changes at appropriate times for protected directive to work
       //@TODO navigate to root
-      // this.router.navigate(['login']);
+      this.router.navigate(['login']);
     }
   }
 

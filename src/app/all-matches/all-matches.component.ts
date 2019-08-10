@@ -36,6 +36,8 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.authService.authenticated.subscribe(status =>{
+      console.log("authenticated status in all-matches.component:");
+      console.log(status);
       if(status){
       } else{
         this.router.navigate(['login']);
