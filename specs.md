@@ -8,6 +8,7 @@
 - [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable? (do you unreward if diluted by crap?)
 - [ ] Monitor user's reputation points and enable privileges when things change
 - [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
+- [ ] Admin and moderators have a special area only they can access and do administrative things in
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
 - [ ] Detect when the link url is different but other match specs are the same
 - [ ] Update the weight classes of the matches that have already been made

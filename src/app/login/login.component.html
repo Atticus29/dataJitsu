@@ -1,37 +1,12 @@
 <div class="spinner-container flexbox-item" *ngIf="showLoader" id="spinner-login">
   <mat-spinner id="spinner"></mat-spinner>
 </div>
-<div class="flexbox-vertical flexbox-item" *ngIf="!showLoader">
-  <div class="flexbox-item">
-    <h1 class="subtitle">Log In</h1>
+<div class="flexbox-vertical flex-item" *ngIf="!showLoader" id="login-flexbox">
+  <div *ngIf="afAuth.user | async as user; else showLogin">
+    <h1>Hello {{ user.displayName }}!</h1>
+    <button (click)="logout()">Logout</button>
   </div>
-  <div class="flexbox-item">
-    <form  materialize [formGroup]="loginForm">
-      <div class="subcontainer">
-        <div class="flexbox-item">
-          <div class="input-field">
-            <input formControlName="emailBound" type="email" placeholder="Email address" id="userEmail">
-          </div>
-        </div>
-        <div class="flexbox-item">
-          <div class="input-field">
-            <input formControlName="passwordBound" type="password" placeholder="Password" id="password">
-          </div>
-        </div>
-        <div class="flexbox-item">
-          <button id="loginSubmit" type="submit" (click)="submitLoginForm()" [disabled]="!allValid()" class="btn waves-effect waves-light">Login <i class="material-icons right"></i></button>
-        </div>
-        <!-- <div class="row">
-        <div class="col s1">
-      </div>
-      <button type="submit" (click)="loginWithGoogle()" class="btn col s9 waves-effect blue">Login with Google</button>
-      <div class="col s1">
-    </div>
-  </div> -->
-  <div class="flexbox-item">
-    <button id="new-account-button" type="button" (click)="newAccount()" class="btn col s9 waves-effect blue">Create New Account</button>
-  </div>
-</div>
-</form>
-</div>
+  <ng-template #showLogin>
+    <button (click)="signInWithGoogle()">Login with Google</button>
+  </ng-template>
 </div>

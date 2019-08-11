@@ -35,14 +35,14 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
-    this.authService.authenticated.subscribe(status =>{
-      console.log("authenticated status in all-matches.component:");
-      console.log(status);
-      if(status){
-      } else{
-        this.router.navigate(['login']);
-      }
-    });
+    // this.authService.authenticated.subscribe(status =>{
+    //   console.log("authenticated status in all-matches.component:");
+    //   console.log(status);
+    //   if(status){
+    //   } else{
+    //     this.router.navigate(['login']);
+    //   }
+    // });
     this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{

@@ -22,6 +22,7 @@ import { TextTransformationService } from './text-transformation.service';
 import { ValidationService } from './validation.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
+import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { D3Service } from './d3.service';
@@ -136,7 +137,7 @@ export const firebaseConfig = {
     MatRadioModule,
     RatingModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

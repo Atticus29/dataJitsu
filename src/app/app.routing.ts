@@ -12,20 +12,27 @@ import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
+import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
+import { canActivate } from '@angular/fire/auth-guard';
+
+const adminOnly = hasCustomClaim('admin');
+const redirectUnauthorizedToLogin = redirectUnauthorizedTo(['login']);
+const redirectLoggedInToAllMatches = redirectLoggedInTo(['matches']);
 const appRoutes: Routes = [
   {
     path: '',
     component: AllMatchesComponent,
-    canActivate: [ProtectionGuard],
+    ...canActivate(redirectUnauthorizedTo(['login'])),
     pathMatch: 'full'
   },{
   path: 'login',
   component: LoginComponent,
+  ...canActivate(redirectLoggedInTo(['matches'])),
   pathMatch: 'full'
 },{
   path: 'newmatch',
   component: NewMatchComponent,
-  canActivate: [ProtectionGuard],
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'createaccount',
@@ -34,29 +41,32 @@ const appRoutes: Routes = [
 },{
   path: 'populatedb',
   component: TestDbComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'landing',
   component: LandingComponent,
-  canActivate: [ProtectionGuard],
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'matches',
   component: AllMatchesComponent,
-  canActivate: [ProtectionGuard],
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'matches/:matchId',
   component: MatchDisplayComponent,
-  canActivate: [ProtectionGuard],
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'youtube',
   component: YoutubeComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'matches/:matchId/annotate',
   component: AnnotationDisplayComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: 'mark',

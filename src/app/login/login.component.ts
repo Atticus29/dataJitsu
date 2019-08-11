@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angu
 import { Router } from '@angular/router';
 import { ProtectionGuard } from '../protection.guard';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase/app';
 
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
@@ -15,52 +17,62 @@ import { ValidationService } from '../validation.service';
   providers: [ValidationService, AuthorizationService, ProtectionGuard]
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
-  private showLoader: boolean = true;
-
-  constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
-
+  constructor(public afAuth: AngularFireAuth, private router: Router, private as: AuthorizationService) {
+  }
+  signInWithGoogle() {
+    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+    // location.reload();
+  }
+  logout() {
+    this.afAuth.auth.signOut();
+  }
+  // loginForm: FormGroup;
+  // private showLoader: boolean = true;
+  //
+  // constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
+  //
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      emailBound: ['', Validators.required],
-      passwordBound: ['', Validators.required]
-    });
+  //   this.loginForm = this.fb.group({
+  //     emailBound: ['', Validators.required],
+  //     passwordBound: ['', Validators.required]
+  //   });
     this.as.authenticated.subscribe(status =>{
       if(status){
+        location.reload();
         // this.showLoader = !status;
-        this.router.navigate(['']);
+        // this.router.navigate(['']);
       } else{
-        this.showLoader = false;
+        // this.showLoader = false;
       }
     });
   }
-
-  submitLoginForm(){
-    let values = this.getValues();
-    this.as.login(values.emailBound, values.passwordBound);
-    //@TODO flesh me out
-  }
-
-  getValues(){
-    let result = this.loginForm.value;
-    return result;
-  }
-
-  allValid(){
-    let values = this.loginForm.value;
-    if(this.vs.validateEmail(values.emailBound) && this.vs.validatePassword(values.passwordBound)){
-      return true;
-    } else{
-      return false;
-    }
-  }
-
-  newAccount(){
-    this.router.navigate(['createaccount']);
-  }
-
-  loginWithGoogle(){
-    this.as.loginGoogle();
-  }
+  //
+  // submitLoginForm(){
+  //   let values = this.getValues();
+  //   this.as.login(values.emailBound, values.passwordBound);
+  //   //@TODO flesh me out
+  // }
+  //
+  // getValues(){
+  //   let result = this.loginForm.value;
+  //   return result;
+  // }
+  //
+  // allValid(){
+  //   let values = this.loginForm.value;
+  //   if(this.vs.validateEmail(values.emailBound) && this.vs.validatePassword(values.passwordBound)){
+  //     return true;
+  //   } else{
+  //     return false;
+  //   }
+  // }
+  //
+  // newAccount(){
+  //   this.router.navigate(['createaccount']);
+  // }
+  //
+  // loginWithGoogle(){
+  //   this.as.loginGoogle();
+  // }
 
 }

@@ -64,12 +64,12 @@ export class AppComponent implements OnInit {
         this.authService.user = null;
         this.authService.setAuthenticated(false);
         this.authenticationStatus = false;
-        this.authService.authenticated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-          if(!status){
-            this.router.navigate(['login']); //move back up one line?
-            window.location.reload(false);
-          }
-        });
+        // this.authService.authenticated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+        //   if(!status){
+        //     this.router.navigate(['login']); //move back up one line?
+        //     window.location.reload(false);
+        //   }
+        // });
         // this.cdr.detectChanges();
       }
     });
