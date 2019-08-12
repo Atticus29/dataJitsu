@@ -29,18 +29,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
-    });
-    this.afAuth.authState.subscribe(user =>{
-      console.log("user from authState in app.component:");
-      console.log(user);
-      console.log("user id");
-      console.log(user.uid);
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
           console.log("db user from getUserByUid in app.component is:");
           console.log(dbUser);
+          this.shouldAnnotate = dbUser.paymentSatus;
           this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
             this.db.updatePrivileges(dbUser, Number(reputation));
             //TODO update reputation points privileges
@@ -50,6 +45,13 @@ export class AppComponent implements OnInit {
         this.authenticationStatus = false;
       }
     });
+    // this.afAuth.authState.subscribe(user =>{
+    //   console.log("user from authState in app.component:");
+    //   console.log(user);
+    //   console.log("user id");
+    //   console.log(user.uid);
+    //
+    // });
   }
 
   loginGoogleComponent(){

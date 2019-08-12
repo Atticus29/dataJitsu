@@ -1,6 +1,6 @@
-<div class="col s12 m2">
+<div class="col s12 m2" *ngIf="user && shouldAnnotate">
   <p>Status stuff here</p>
-  <div  class="attention-draw" *ngIf="shouldAnnotate">
+  <div  class="attention-draw">
       <span>It's time to</span><a (click)="sendToMatchToAnnotate()"> annotate a video</a>
   </div>
 </div>

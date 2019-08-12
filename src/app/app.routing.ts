@@ -7,17 +7,16 @@ import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
 import { LoginComponent } from './login/login.component';
-import { ProtectionGuard } from './protection.guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
-import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
+import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim, 
 import { canActivate } from '@angular/fire/auth-guard';
 
-const adminOnly = hasCustomClaim('admin');
-const redirectUnauthorizedToLogin = redirectUnauthorizedTo(['login']);
-const redirectLoggedInToAllMatches = redirectLoggedInTo(['matches']);
+// const adminOnly = hasCustomClaim('admin');
+// const redirectUnauthorizedToLogin = redirectUnauthorizedTo(['login']);
+// const redirectLoggedInToAllMatches = redirectLoggedInTo(['matches']);
 const appRoutes: Routes = [
   {
     path: '',
