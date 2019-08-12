@@ -9,7 +9,7 @@
       <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
       <li *ngIf="user"><a routerLink="newmatch" >New Match</a></li>
       <li *ngIf="user && paidStatus"><a routerLink="matches" >View All Matches</a></li>
-      <li *ngIf="user"><a routerLink="annotate" >Annotate a video</a></li>
+      <li *ngIf="user"><a (click)="navigateToVideoInNeedOfAnnotation()" >Annotate a video</a></li>
       <li *ngIf="user"><a (click)="logout()" id="logOutLink">Log Out</a></li>
     </ul>
   </div>

@@ -472,6 +472,19 @@ export class DatabaseService {
     ref.remove();
   }
 
+  getMatchInNeedOfAnnotation(){
+    console.log("got into getMatchInNeedOfAnnotation in database service");
+    let ref = firebase.database().ref('matches/');
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild('matchDeets/annotationRating').limitToFirst(1).on("child_added", result =>{
+        console.log("child added to getMatchInNeedOfAnnotation query: ");
+        console.log(result.val());
+        observer.next(result.val());
+      });
+    });
+    return resultObservable;
+  }
+
   addAdminStatus(userId: string){
     let updates = {};
     updates['/users/' + userId + '/privileges/isAdmin'] = true;

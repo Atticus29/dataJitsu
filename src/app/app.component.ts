@@ -84,4 +84,11 @@ export class AppComponent implements OnInit {
     } else {
     }
   }
+
+  navigateToVideoInNeedOfAnnotation(){
+    console.log("got into navigateToVideoInNeedOfAnnotation");
+    this.db.getMatchInNeedOfAnnotation().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+      this.router.navigate(['matches/' + match.id]);
+    });
+  }
 }
