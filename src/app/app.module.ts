@@ -144,6 +144,7 @@ export const firebaseConfig = {
     MatDialogModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EmailLoginDialogComponent]
 })
 export class AppModule { }

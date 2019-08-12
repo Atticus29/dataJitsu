@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProtectionGuard } from '../protection.guard';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { auth } from 'firebase/app';
 
 import { Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
 import { EmailLoginDialog } from '../emailLoginDialog.model';
+import { EmailLoginDialogComponent } from '../email-login-dialog/email-login-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -63,15 +64,15 @@ export class LoginComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(EmailLoginDialog, {
-      width: '250px',
-      data: {animal: this.animal}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
-    });
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(EmailLoginDialogComponent,
+        dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        val => console.log("Dialog output:", val)
+    );
   }
 
   //
