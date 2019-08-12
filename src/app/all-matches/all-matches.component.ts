@@ -43,7 +43,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     //     this.router.navigate(['login']);
     //   }
     // });
-    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
         if(dbUser.privileges.isAdmin){

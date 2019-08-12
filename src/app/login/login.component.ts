@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProtectionGuard } from '../protection.guard';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
@@ -17,14 +17,22 @@ import { ValidationService } from '../validation.service';
   providers: [ValidationService, AuthorizationService, ProtectionGuard]
 })
 export class LoginComponent implements OnInit {
-  constructor(public afAuth: AngularFireAuth, private router: Router, private as: AuthorizationService) {
+  private user: any = null;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService) {
   }
   signInWithGoogle() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+    this.authService.googleLogin(); //.signInWithPopup(new auth.GoogleAuthProvider());
     // location.reload();
   }
+
+  signInWithEmail(email: string, password: string){
+    this.authService.emailLogin(email, password); //TODO where do I get these??
+  }
+
   logout() {
-    this.afAuth.auth.signOut();
+    this.authService.signOut();
   }
   // loginForm: FormGroup;
   // private showLoader: boolean = true;
@@ -36,15 +44,16 @@ export class LoginComponent implements OnInit {
   //     emailBound: ['', Validators.required],
   //     passwordBound: ['', Validators.required]
   //   });
-    this.as.authenticated.subscribe(status =>{
-      if(status){
-        location.reload();
-        // this.showLoader = !status;
-        // this.router.navigate(['']);
-      } else{
-        // this.showLoader = false;
-      }
-    });
+    if(this.as.authenticated){
+      this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+          this.user = result;
+      });
+      location.reload();
+      // this.showLoader = !status;
+      // this.router.navigate(['']);
+    } else{
+      // this.showLoader = false;
+    }
   }
   //
   // submitLoginForm(){

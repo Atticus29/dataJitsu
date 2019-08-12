@@ -131,12 +131,14 @@ export class NewMatchComponent implements OnInit {
     this.rankBound = rankBound==undefined ? "" : rankBound;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.as.getCurrentUser().pipe(switchMap(userInfo => {
+    return this.as.currentUserObservable.pipe(switchMap(userInfo => {
+      console.log("got userInfo in new-match component. Looking for email from here");
+      console.log(userInfo);
         return Observable.create(obs=>{
-        this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
-          let match = new Match(matchDeets, snapshot.key, moves);
-          obs.next(match);
-        });
+        // this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
+        //   let match = new Match(matchDeets, snapshot.key, moves);
+        //   obs.next(match);
+        // });
         });
       }));
   }

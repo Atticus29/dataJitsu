@@ -1,106 +1,144 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database'; //removed FirebaseListObservable
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
-import * as firebase from 'firebase/app';
-import { User } from './user.model';
-import { Router } from '@angular/router';
-import { DatabaseService } from './database.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { Router } from "@angular/router";
+import * as firebase from 'firebase';
+
 
 @Injectable()
 export class AuthorizationService {
-  public authenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private locationWatcher = new EventEmitter();  // @TODO: switch to RxJS Subject instead of EventEmitter
-  user: Observable<firebase.User>;
-  constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase, private router: Router, public dbService: DatabaseService, private _snackBar: MatSnackBar) {
-    this.user = afAuth.authState;
-    let self = this;
-    this.user.subscribe(user=>{
-      if(user){
-        this.authenticated.next(true);
-        this.dbService.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-          this.dbService.addUidToUser(user.uid, snapshot.key);
-        });
-      }
-    });
+
+  authState: any = null;
+
+  constructor(private afAuth: AngularFireAuth,
+              private db: AngularFireDatabase,
+              private router:Router) {
+
+            this.afAuth.authState.subscribe((auth) => {
+              this.authState = auth;
+            });
+          }
+
+  // Returns true if user is logged in
+  get authenticated(): boolean {
+    return this.authState !== null;
   }
 
-  loginGoogle() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    this.authenticated.next(true);
-    //@TODO handle login errors
-    //@TODO handle userCreation when they log in with google (associating the userID with the uuid)
+  // Returns current user data
+  get currentUser(): any {
+    return this.authenticated ? this.authState : null;
   }
 
-  // isAuthenticated() { //TODO I can't figure out how to get this to work, so I'm just using this.afAuth.authState.subscribe (user) if(user)
-  //   return this.authenticated;
-  //   //old // return this.afAuth.authState;
-  //   //@TODO Not yet clear whether moving this into the now-defunct isAuthenticated method of authorization service would work
-  // }
-
-  logout() {
-    if(confirm("Are you sure you want to sign out?")){
-      this.afAuth.auth.signOut();
-      this.authenticated.next(false);
-      //@TODO test whether authenticated changes at appropriate times for protected directive to work
-      //@TODO navigate to root
-      this.router.navigate(['login']);
-    }
+  // Returns
+  get currentUserObservable(): any {
+    return this.afAuth.authState
   }
 
-  switchUser(){
-    this.logout();
-    this.loginGoogle();
+  // Returns current user UID
+  get currentUserId(): string {
+    return this.authenticated ? this.authState.uid : '';
   }
 
-  getCurrentUser(){
-    this.user = this.afAuth.authState; //TODO not sure whether will fix
-    return this.user;
-    // .catch(()=>of(false));
+  // Anonymous User
+  get currentUserAnonymous(): boolean {
+    return this.authenticated ? this.authState.isAnonymous : false
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-    });
+  // Returns current user display name or Guest
+  get currentUserDisplayName(): string {
+    if (!this.authState) { return 'Guest' }
+    else if (this.currentUserAnonymous) { return 'Anonymous' }
+    else { return this.authState['displayName'] || 'User without a Name' }
   }
 
-  signup(email: string, password: string) {
-    this.afAuth
-    .auth
-    .createUserWithEmailAndPassword(email, password)
-    .then(value => {
-      // console.log('Success!', value);
-      this.authenticated.next(true);
+  //// Social Auth ////
+
+  githubLogin() {
+    const provider = new firebase.auth.GithubAuthProvider()
+    return this.socialSignIn(provider);
+  }
+
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    return this.socialSignIn(provider);
+  }
+
+  facebookLogin() {
+    const provider = new firebase.auth.FacebookAuthProvider()
+    return this.socialSignIn(provider);
+  }
+
+  twitterLogin(){
+    const provider = new firebase.auth.TwitterAuthProvider()
+    return this.socialSignIn(provider);
+  }
+
+  private socialSignIn(provider) {
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((credential) =>  {
+          this.authState = credential.user
+          this.updateUserData()
+      })
+      .catch(error => console.log(error));
+  }
+
+
+  //// Anonymous Auth ////
+
+  anonymousLogin() {
+    return this.afAuth.auth.signInAnonymously()
+    .then((user) => {
+      this.authState = user
+      this.updateUserData()
     })
-    .catch(err => {
-      console.log('Something went wrong:',err.message);
-      this.openSnackBar('Something went wrong:' + err.message, null);
-      //TODO open snackbar
-    });
+    .catch(error => console.log(error));
   }
 
-  setAuthenticated(newStatus: boolean){ //TODO this.authenticated isn't working as expected. Might get rid of this
-    this.authenticated.next(newStatus);
+  //// Email/Password Auth ////
+
+  emailSignUp(email:string, password:string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        this.authState = user
+        this.updateUserData()
+      })
+      .catch(error => console.log(error));
   }
 
-  login(email: string, password: string) {
-    this.afAuth
-    .auth
-    .signInWithEmailAndPassword(email, password)
-    .then(value => {
-      this.authenticated.next(true);
-      this.router.navigate(['']);
-    })
-    .catch(err => {
-      console.log('Something went wrong:',err.message);
-      this.openSnackBar('Something went wrong:' + err.message + " Please try again later or once you have an internet connection.", null);
-    });
+  emailLogin(email:string, password:string) {
+     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+       .then((user) => {
+         this.authState = user
+         this.updateUserData()
+       })
+       .catch(error => console.log(error));
   }
 
-  public subscribe(onNext: (value: any) => void, onThrow?: (exception: any) => void, onReturn?: () => void) {
-    return this.locationWatcher.subscribe(onNext, onThrow, onReturn);
+  // Sends email allowing user to reset password
+  resetPassword(email: string) {
+    var auth = firebase.auth();
+    return auth.sendPasswordResetEmail(email)
+      .then(() => console.log("email sent"))
+      .catch((error) => console.log(error))
   }
 
+
+  //// Sign Out ////
+  signOut(): void {
+    this.afAuth.auth.signOut();
+    this.router.navigate(['login']);
+  }
+  //// Helpers ////
+
+  private updateUserData(): void {
+  // Writes user name and email to realtime db
+  // useful if your app displays information about users or for admin features
+    let path = `users/${this.currentUserId}`; // Endpoint on firebase
+    let data = {
+                  email: this.authState.email,
+                  name: this.authState.displayName
+                }
+    this.db.object(path).update(data)
+    .catch(error => console.log(error));
+  }
 }

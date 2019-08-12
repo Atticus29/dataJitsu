@@ -11,10 +11,10 @@ export class LandingComponent implements OnInit {
 
   constructor(private as: AuthorizationService) {
 
-    this.sub = this.as.subscribe(val => {
+    this.sub = this.as.authState(val => {
       console.log("got here");
       console.log(val);
-      if(val.athenticated){
+      if(val){
         console.log("authenticated in landing component");
       }
     });

@@ -26,7 +26,7 @@ export class UserStatusReportComponent implements OnInit {
     // console.log("ngOnInit user-status-report is called");
     this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
-    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       if (this.user) {
         let ref = firebase.database().ref('users/');

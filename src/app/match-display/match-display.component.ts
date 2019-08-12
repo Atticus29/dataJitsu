@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
 
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
@@ -17,8 +17,6 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { constants } from '../constants';
-
-import { BehaviorSubject } from 'rxjs';
 
 var player;
 
@@ -132,7 +130,7 @@ export class MatchDisplayComponent implements OnInit {
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
-                              self.authService.getCurrentUser().subscribe(user =>{
+                              self.authService.currentUser().subscribe(user =>{
                                 self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
                                   let userInDb: string = usr.id;
                                   let attemptStatus: boolean = true;
@@ -191,7 +189,7 @@ export class MatchDisplayComponent implements OnInit {
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
-        self.authService.getCurrentUser().subscribe(user =>{
+        self.authService.currentUserObservable.subscribe(user =>{
           this.db.getUserByUid(user.uid).on("child_added", snapshot => {
             let userInDb: string = snapshot.key;
             console.log("user is: ");
@@ -216,7 +214,7 @@ export class MatchDisplayComponent implements OnInit {
 
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.authService.getCurrentUser().subscribe(usr =>{
+    this.authService.currentUserObservable.subscribe(usr =>{
       this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
         let userInDb: string = urs.id;
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
@@ -228,7 +226,7 @@ export class MatchDisplayComponent implements OnInit {
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     console.log("got into onRateAnnotation");
     let newRating = $event.newValue;
-    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
       console.log("usr from auth service is: ");
       console.log(usr);
       console.log("usr.uid is "+ usr.uid);

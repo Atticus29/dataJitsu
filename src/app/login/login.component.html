@@ -1,12 +1,16 @@
-<div class="spinner-container flexbox-item" *ngIf="showLoader" id="spinner-login">
-  <mat-spinner id="spinner"></mat-spinner>
-</div>
-<div class="flexbox-vertical flex-item" *ngIf="!showLoader" id="login-flexbox">
-  <div *ngIf="afAuth.user | async as user; else showLogin">
-    <h1>Hello {{ user.displayName }}!</h1>
-    <button (click)="logout()">Logout</button>
+<div class="flexbox-item" id="login-flexbox">
+  <div class="spinner-container" *ngIf="showLoader" id="spinner-login">
+    <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <ng-template #showLogin>
-    <button (click)="signInWithGoogle()">Login with Google</button>
-  </ng-template>
+  <div class="flexbox-vertical" *ngIf="!showLoader">
+    <div *ngIf="user; else showLogin">
+      <h1>Hello {{ user.displayName }}!</h1>
+      <button (click)="logout()">Logout</button>
+    </div>
+    <ng-template #showLogin>
+      <button (click)="signInWithGoogle()" class="btn waves-effect waves-light">Login with Google <i class="material-icons right button-space">send</i></button>
+      <button (click)="signInWithFacebook()" class="btn waves-effect waves-light">Login with Facebook <i class="material-icons right button-space">send</i></button>
+      <button (click)="signInWithEmail()" class="btn waves-effect waves-light">Login with Email <i class="material-icons right button-space">email</i></button>
+    </ng-template>
+  </div>
 </div>

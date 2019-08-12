@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth){}
 
   ngOnInit() {
-    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
     });
     this.afAuth.authState.subscribe(user =>{
@@ -53,27 +53,33 @@ export class AppComponent implements OnInit {
   }
 
   loginGoogleComponent(){
-    this.authService.loginGoogle();
+    this.authService.googleLogin();
   }
 
   logout(){
-    this.authService.logout();
-    this.afAuth.authState.subscribe(user =>{
-      if(!user){
-        console.log("got here");
-        this.authService.user = null;
-        this.authService.setAuthenticated(false);
-        this.authenticationStatus = false;
-        // this.authService.authenticated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-        //   if(!status){
-        //     this.router.navigate(['login']); //move back up one line?
-        //     window.location.reload(false);
-        //   }
-        // });
-        // this.cdr.detectChanges();
-      }
-    });
+    let confirmation = confirm("Are you sure you want to log out?");
+    if (confirmation == true) {
+      this.authService.signOut();
+      this.afAuth.authState.subscribe(user =>{
+        if(!user){
+          console.log("got here");
+          //TODO maybe fix below?
+          //Commented out 8.11.2019
+          // this.authService.user = null;
+          // this.authService.setAuthenticated(false);
+          // this.authenticationStatus = false;
+
+          //Commented out before 8.11.2019
+          // this.authService.authenticated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            //   if(!status){
+              //     this.router.navigate(['login']); //move back up one line?
+              //     window.location.reload(false);
+              //   }
+              // });
+              // this.cdr.detectChanges();
+            }
+      });
+    } else {
+    }
   }
-
-
 }

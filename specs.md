@@ -1,5 +1,7 @@
 # TODO high priority
+- [ ] Get login to display and to successfully navigate both for login and for logout
 - [ ] Add branching/if statements to cypress login as admin test
+- [ ] Either have a question on the form about whether the match
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
 - [ ] reset annotationVotesCastToday at midnight every night
 - [ ] Add onDestroy handling for the memory leakers?

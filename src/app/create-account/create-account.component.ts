@@ -92,10 +92,10 @@ export class CreateAccountComponent implements OnInit {
     let newUser: User = this.createUserObj(result);
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
-    this.as.signup(newUser.getEmail(), newUser.getPassword());
+    this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
 
-    let user:any = this.as.getCurrentUser().subscribe(user=>{
+    let user:any = this.as.currentUserObservable.subscribe(user=>{
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
         // console.log("got to snapshot in getNodeIdFromEmail");
