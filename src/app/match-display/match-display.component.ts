@@ -79,8 +79,11 @@ export class MatchDisplayComponent implements OnInit {
       })
       this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+        console.log("getMatchFromNodeKey called and returned: ");
+        console.log(match);
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
+        console.log("matchUrl is: " + this.matchUrl);
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
         window['onYouTubeIframeAPIReady'] = function() {
           player = new window['YT'].Player('videoIframe', {
@@ -189,8 +192,8 @@ export class MatchDisplayComponent implements OnInit {
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
-        self.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe).subscribe(user =>{
-          this.db.getUserByUid(user.uid).on("child_added", snapshot => {
+        this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+          this.db.getUserByUid(usr.uid).on("child_added", snapshot => {
             let userInDb: string = snapshot.key;
             console.log("user is: ");
             console.log(userInDb);
