@@ -36,6 +36,8 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EmailLoginDialog } from './emailLoginDialog.model';
 
 import {
   MatAutocompleteModule,
@@ -72,10 +74,11 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule,
+  MatTreeModule
 } from '@angular/material';
 import { TemporaryComponent } from './temporary/temporary.component';
 import { AnnotationDataDisplayComponent } from './annotation-data-display/annotation-data-display.component';
+import { EmailLoginDialogComponent } from './email-login-dialog/email-login-dialog.component';
 
 
 export const firebaseConfig = {
@@ -102,7 +105,8 @@ export const firebaseConfig = {
     PaymentOrAnnotationDetailsComponent,
     TemporaryComponent,
     AnnotationDataDisplayComponent,
-    HorizontalTimelineComponent
+    HorizontalTimelineComponent,
+    EmailLoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -120,6 +124,7 @@ export const firebaseConfig = {
     MatSelectModule,
     MatOptionModule,
     MatInputModule,
+    MatFormFieldModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatTableModule,
@@ -135,9 +140,10 @@ export const firebaseConfig = {
     MatChipsModule,
     MatRippleModule,
     MatRadioModule,
-    RatingModule
+    RatingModule,
+    MatDialogModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

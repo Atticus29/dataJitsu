@@ -1,7 +1,10 @@
 # TODO high priority
 - [ ] Get login to display and to successfully navigate both for login and for logout
+- [ ] Set up new email login dialog box
+- [ ] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation
 - [ ] Add branching/if statements to cypress login as admin test
-- [ ] Either have a question on the form about whether the match
+
+- [ ] Either have a question on the form about whether the match uses points or somehow automate that to prevent users from assigning points in tournament types that don't reward them
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
 - [ ] reset annotationVotesCastToday at midnight every night
 - [ ] Add a paid status guard to all matches and stats (when there are stats)

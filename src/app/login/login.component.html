@@ -12,5 +12,16 @@
       <button (click)="signInWithFacebook()" class="btn waves-effect waves-light button-space">Login with Facebook <i class="material-icons right">send</i></button>
       <button (click)="signInWithEmail()" class="btn waves-effect waves-light button-space">Login with Email <i class="material-icons right">email</i></button>
     </ng-template>
+    <h1 mat-dialog-title>Hi {{data.name}}</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.animal">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+</div>
   </div>
 </div>

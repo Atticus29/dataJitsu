@@ -1,4 +1,5 @@
 # Known issues
+- [ ] user-status-report stuff is not correctly fetching date from the user's last annotation
 - [ ] Fake user doesn't get a uid
 - [ ] Need a way to handle things like missing uid in users
 - [ ] My admin user is being either removed or replaced by the next one?

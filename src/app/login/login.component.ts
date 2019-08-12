@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProtectionGuard } from '../protection.guard';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { auth } from 'firebase/app';
 
 import { Subject } from 'rxjs';
@@ -9,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
+import { EmailLoginDialog } from '../emailLoginDialog.model';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,9 @@ export class LoginComponent implements OnInit {
   private user: any = null;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService) {
+  private animal: string;
+
+  constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService, public dialog: MatDialog) {
   }
   signInWithGoogle() {
     this.authService.googleLogin(); //.signInWithPopup(new auth.GoogleAuthProvider());
@@ -28,6 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithEmail(email: string, password: string){
+    this.openDialog();
     this.authService.emailLogin(email, password); //TODO where do I get these??
   }
 
@@ -56,6 +61,19 @@ export class LoginComponent implements OnInit {
       // this.showLoader = false;
     }
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(EmailLoginDialog, {
+      width: '250px',
+      data: {animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
   //
   // submitLoginForm(){
   //   let values = this.getValues();
