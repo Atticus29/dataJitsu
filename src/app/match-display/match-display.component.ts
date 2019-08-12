@@ -130,7 +130,7 @@ export class MatchDisplayComponent implements OnInit {
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
-                              self.authService.currentUser().subscribe(user =>{
+                              self.authService.currentUserObservable.pipe(take(1)).subscribe(user =>{
                                 self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
                                   let userInDb: string = usr.id;
                                   let attemptStatus: boolean = true;
@@ -189,7 +189,7 @@ export class MatchDisplayComponent implements OnInit {
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
-        self.authService.currentUserObservable.subscribe(user =>{
+        self.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe).subscribe(user =>{
           this.db.getUserByUid(user.uid).on("child_added", snapshot => {
             let userInDb: string = snapshot.key;
             console.log("user is: ");

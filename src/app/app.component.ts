@@ -28,6 +28,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+      // console.log("currentUserObservable in ngOnInit in app.component ")
+      // console.log(user);
       this.user = user;
       if(user){
         // console.log("user exists");
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
           // console.log("db user from getUserByUid in app.component is:");
           // console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentSatus;
+          this.router.navigate(['matches']);
           this.db.hasUserPaid(dbUser.id).valueChanges().subscribe(paymentStatus =>{
             if(paymentStatus){
               this.paidStatus = Boolean(paymentStatus);
@@ -63,8 +66,9 @@ export class AppComponent implements OnInit {
     if (confirmation == true) {
       this.authService.signOut();
       this.afAuth.authState.subscribe(user =>{
+        this.user = user;
         if(!user){
-          console.log("got here");
+          // console.log("got here no user in logout");
           //TODO maybe fix below?
           //Commented out 8.11.2019
           // this.authService.user = null;
@@ -86,7 +90,7 @@ export class AppComponent implements OnInit {
   }
 
   navigateToVideoInNeedOfAnnotation(){
-    console.log("got into navigateToVideoInNeedOfAnnotation");
+    // console.log("got into navigateToVideoInNeedOfAnnotation");
     this.db.getMatchInNeedOfAnnotation().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
       this.router.navigate(['matches/' + match.id]);
     });

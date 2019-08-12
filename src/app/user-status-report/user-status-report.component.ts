@@ -16,6 +16,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class UserStatusReportComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: any = null;
+  userLoggedIn: boolean = false;
   userObjFromDb;
   shouldAnnotate: boolean = false;
   paidStatus: any = false;
@@ -28,8 +29,11 @@ export class UserStatusReportComponent implements OnInit {
     // this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+      console.log("user in authService of user-status-report: ");
+      console.log(user);
       this.user = user;
       if (this.user) {
+        this.userLoggedIn = true;
         let ref = firebase.database().ref('users/');
         ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
           this.db.getUserById(snapshot.key).valueChanges().subscribe(result => {
@@ -48,6 +52,8 @@ export class UserStatusReportComponent implements OnInit {
             });
 
             this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
+              console.log("getDateSinceAnnotated call in user-status-report: ");
+              console.log(date);
               let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
               if(dateLastAnnotated.toString() != "Invalid Date"){
                 console.log("yes");
@@ -60,11 +66,14 @@ export class UserStatusReportComponent implements OnInit {
                   this.toggleAnnotationPrompt(true);
                 }
               } else{
-                this.toggleAnnotationPrompt();
+                console.log("this shouldn't happen user-status-report date is invalid");
+                this.toggleAnnotationPrompt(true); //TODO should this be a thing??? Not clear when this happens
               }
             });
           });
         });
+      } else{
+        this.userLoggedIn = false;
       }
     });
   }
