@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
   //     passwordBound: ['', Validators.required]
   //   });
     if(this.as.authenticated){
+      console.log("authenticated in login component");
       this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
           this.user = result;
       });

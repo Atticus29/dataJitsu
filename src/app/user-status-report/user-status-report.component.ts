@@ -18,13 +18,14 @@ export class UserStatusReportComponent implements OnInit {
   user: any = null;
   userObjFromDb;
   shouldAnnotate: boolean = false;
-  paidStatus: any = null;
+  paidStatus: any = false;
 
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    // this.db.hasUserPaid()
     // console.log("ngOnInit user-status-report is called");
-    this.paidStatus = false;
+    // this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
@@ -35,9 +36,14 @@ export class UserStatusReportComponent implements OnInit {
             this.userObjFromDb = result;
             this.db.hasUserPaid(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
+                console.log("user has paid");
                 this.togglePaid(this.userObjFromDb.id);
+                this.togglePayMentPrompt(false);
+                this.paidStatus = status;
               } else{
-                this.togglePayMentPrompt();
+                console.log("user has not paid");
+                this.togglePayMentPrompt(true);
+                this.paidStatus = false;
               }
             });
 
@@ -51,7 +57,7 @@ export class UserStatusReportComponent implements OnInit {
                   console.log("leak!");
                   this.togglePaid(this.userObjFromDb.id);
                 } else{
-                  this.toggleAnnotationPrompt();
+                  this.toggleAnnotationPrompt(true);
                 }
               } else{
                 this.toggleAnnotationPrompt();
@@ -86,20 +92,27 @@ export class UserStatusReportComponent implements OnInit {
     return Math.round((second-first)/(1000*60*60*24));
   }
 
-  toggleAnnotationPrompt(){
+  toggleAnnotationPrompt(status: boolean){
     //TODO flesh out
-    this.shouldAnnotate = true;
+    if(status){
+      this.shouldAnnotate = true;
+    } else{
+      this.shouldAnnotate = false;
+    }
   }
 
   togglePaid(userId: string){
     this.db.updateUserPaymentStatus(userId, true);
-    this.paidStatus = true;
     console.log("paidStatus changed to true");
   }
 
-  togglePayMentPrompt(){
-    console.log("bitch better have my money");
-    //TODO flesh out
+  togglePayMentPrompt(status: boolean){
+    if(status){
+      console.log("bitch better have my money");
+      this.shouldAnnotate = true;
+    } else{
+      this.shouldAnnotate = false;
+    }
   }
 
   sendToMatchToAnnotate(){

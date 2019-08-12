@@ -198,7 +198,7 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string){
-    return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+    return this.db.object('/users/'+ userId + '/paymentStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
   getDateSinceAnnotated(userId: string){
@@ -214,8 +214,6 @@ export class DatabaseService {
     let user: User = null;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-        console.log("result of query is :");
-        console.log(snapshot.val());
         user = snapshot.val();
         observer.next(user);
       });
@@ -519,7 +517,7 @@ export class DatabaseService {
                         //TODO
                       } else{
                         if(reputationPoints <= constants.privilegeLevels[1]){
-                          console.log("You don't have a lot of reputation points")
+                          // console.log("You don't have a lot of reputation points")
                         }
                       }
                     }

@@ -17,11 +17,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class AppComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private paidStatus: boolean = false;
   user: any = null;
   userObjFromDb;
   title: string = constants.title;
   authenticationStatus: boolean =false;
-
   shouldAnnotate: boolean = false;
 
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth){}
@@ -33,9 +33,16 @@ export class AppComponent implements OnInit {
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
-          console.log("db user from getUserByUid in app.component is:");
-          console.log(dbUser);
+          // console.log("db user from getUserByUid in app.component is:");
+          // console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentSatus;
+          this.db.hasUserPaid(dbUser.id).valueChanges().subscribe(paymentStatus =>{
+            if(paymentStatus){
+              this.paidStatus = Boolean(paymentStatus);
+            }else{
+              this.paidStatus = false;
+            }
+          });
           this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
             this.db.updatePrivileges(dbUser, Number(reputation));
             //TODO update reputation points privileges
@@ -45,13 +52,6 @@ export class AppComponent implements OnInit {
         this.authenticationStatus = false;
       }
     });
-    // this.afAuth.authState.subscribe(user =>{
-    //   console.log("user from authState in app.component:");
-    //   console.log(user);
-    //   console.log("user id");
-    //   console.log(user.uid);
-    //
-    // });
   }
 
   loginGoogleComponent(){

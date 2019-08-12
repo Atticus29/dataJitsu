@@ -4,6 +4,7 @@
 - [ ] Either have a question on the form about whether the match
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
 - [ ] reset annotationVotesCastToday at midnight every night
+- [ ] Add a paid status guard to all matches and stats (when there are stats)
 - [ ] Add onDestroy handling for the memory leakers?
 - [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable (do you unreward if diluted by crap?)
   - [ ] TODO && current rater is not the main annotator
