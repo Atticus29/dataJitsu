@@ -32,10 +32,9 @@ export class LoginComponent implements OnInit {
     // location.reload();
   }
 
-  signInWithEmail(email: string, password: string){
-    this.openDialog();
-    this.authService.emailLogin(email, password); //TODO where do I get these??
-  }
+  // openDialog(email: string, password: string){
+  //   this.signInWithEmail();
+  // }
 
   logout() {
     this.authService.signOut();
@@ -63,16 +62,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
+  openSignInWithEmailDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {};
-    const dialogRef = this.dialog.open(EmailLoginDialogComponent,
-        dialogConfig);
-    dialogRef.afterClosed().subscribe(
-        val => console.log("Dialog output:", val)
-    );
+    const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(val => {
+      console.log("Dialog output:", val);
+      this.authService.emailLogin(val.email, val.passwd);
+    });
+  }
+
+  newAccount(){
+    this.router.navigate(['createaccount']);
   }
 
   //
@@ -96,9 +99,7 @@ export class LoginComponent implements OnInit {
   //   }
   // }
   //
-  // newAccount(){
-  //   this.router.navigate(['createaccount']);
-  // }
+
   //
   // loginWithGoogle(){
   //   this.as.loginGoogle();
