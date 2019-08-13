@@ -33,8 +33,6 @@ export class EmailLoginDialogComponent implements OnInit {
 
   allValid(){
     let values = this.form.value;
-    console.log("values are: ");
-    console.log(values);
     if(this.vs.validateEmail(values.email) && this.vs.validatePassword(values.passwd)){
       return true;
     } else{

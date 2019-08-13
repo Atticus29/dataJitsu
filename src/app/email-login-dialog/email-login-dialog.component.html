@@ -1,24 +1,20 @@
 
 <div class="flexbox-vertical">
-  <h2 mat-dialog-title>Login with your email address</h2>
+  <h2 mat-dialog-title class="flex-item">Login with your email address</h2>
   <mat-dialog-content [formGroup]="form">
-    <mat-form-field>
-      <input matInput
-      placeholder="Email address"
-      formControlName="email">
+    <mat-form-field class="flex-item">
+      <input matInput placeholder="Email address" formControlName="email">
     </mat-form-field>
     <br>
-    <mat-form-field>
-      <input matInput
-      placeholder="Password"
-      formControlName="passwd">
+    <mat-form-field class="flex-item">
+      <input matInput placeholder="Password" formControlName="passwd" type="password">
     </mat-form-field>
   </mat-dialog-content>
-  <mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()">
+  <mat-dialog-actions class="flex-item">
+    <button class="btn waves-effect waves-light button-space" (click)="close()">
       Close
     </button>
-    <button class="mat-raised-button mat-primary" (click)="loginEmailProxy()" [disabled]="!allValid()">
+    <button class="btn waves-effect waves-light" (click)="loginEmailProxy()" [disabled]="!allValid()">
       Login
     </button>
   </mat-dialog-actions>

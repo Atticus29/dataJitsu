@@ -2,7 +2,7 @@
   <div class="spinner-container" *ngIf="showLoader" id="spinner-login">
     <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <div class="flexbox-vertical" *ngIf="!showLoader">
+  <div class="flexbox-vertical grey" *ngIf="!showLoader">
     <div *ngIf="user; else showLogin">
       <h1>Hello {{ user.displayName }}!</h1>
       <button (click)="logout()">Logout</button>

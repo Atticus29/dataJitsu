@@ -42,11 +42,14 @@ $primary-color: green;
 
 .flexbox-vertical{
   width: 25em;
-  background-color: #e6e8e7;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+}
+
+.grey {
+  background-color: #e6e8e7;
 }
 
 .flexbox-item{

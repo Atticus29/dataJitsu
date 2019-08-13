@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
       this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
           this.user = result;
       });
-      location.reload();
+      // location.reload();
       // this.showLoader = !status;
       // this.router.navigate(['']);
     } else{
