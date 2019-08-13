@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Logging in a user previously logged in through google via email fails
 - [ ] user-status-report stuff is not correctly fetching date from the user's last annotation
 - [ ] Fake user doesn't get a uid
 - [ ] Need a way to handle things like missing uid in users
