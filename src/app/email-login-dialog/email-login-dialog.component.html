@@ -3,18 +3,18 @@
   <h2 mat-dialog-title class="flex-item">Login with your email address</h2>
   <mat-dialog-content [formGroup]="form">
     <mat-form-field class="flex-item">
-      <input matInput placeholder="Email address" formControlName="email">
+      <input id="dialog-email-input" matInput placeholder="Email address" formControlName="email">
     </mat-form-field>
     <br>
     <mat-form-field class="flex-item">
-      <input matInput placeholder="Password" formControlName="passwd" type="password">
+      <input id="dialog-pw-input" matInput placeholder="Password" formControlName="passwd" type="password">
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions class="flex-item">
     <button class="btn waves-effect waves-light button-space" (click)="close()">
       Close
     </button>
-    <button class="btn waves-effect waves-light" (click)="loginEmailProxy()" [disabled]="!allValid()">
+    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="loginEmailProxy()" [disabled]="!allValid()">
       Login
     </button>
   </mat-dialog-actions>

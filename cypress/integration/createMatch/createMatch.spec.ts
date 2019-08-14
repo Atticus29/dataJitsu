@@ -4,12 +4,16 @@ describe ('Tests involving match creation', () =>{
     // cy.visit('http://localhost:4200/');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw).then(()=>{
-        cy.wait(2000);
+        // cy.wait(2000);
       });
     });
   });
 
-  it('creates a match', function(){
+  afterEach(() =>{
+    cy.logout();
+  });
+
+  it.only('creates a match', function(){
     cy.visit('http://localhost:4200/newmatch');
     // cy.contains("New Match").click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{

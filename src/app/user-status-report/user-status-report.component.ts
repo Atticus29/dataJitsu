@@ -38,7 +38,7 @@ export class UserStatusReportComponent implements OnInit {
         ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
           this.db.getUserById(snapshot.key).valueChanges().subscribe(result => {
             this.userObjFromDb = result;
-            this.db.hasUserPaid(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
                 // console.log("user has paid");
                 this.togglePaid(this.userObjFromDb.id);

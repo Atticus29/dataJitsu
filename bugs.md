@@ -1,5 +1,5 @@
 # Known issues
-- [ ] Logging in a user previously logged in through google via email fails
+- [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
 - [ ] user-status-report stuff is not correctly fetching date from the user's last annotation
 - [ ] Fake user doesn't get a uid
 - [ ] Need a way to handle things like missing uid in users

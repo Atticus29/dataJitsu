@@ -3,7 +3,6 @@
 - [ ] Set up new email login dialog box
 - [ ] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation
 - [ ] Add branching/if statements to cypress login as admin test
-
 - [ ] Either have a question on the form about whether the match uses points or somehow automate that to prevent users from assigning points in tournament types that don't reward them
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
 - [ ] reset annotationVotesCastToday at midnight every night
@@ -32,6 +31,7 @@
 - [ ] Make password toggleable to be visible
 
 # TODO low priority
+- [ ] Whether the user has verified their email address or not doesn't matter yet
 - [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now

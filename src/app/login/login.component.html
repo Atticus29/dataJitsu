@@ -8,10 +8,9 @@
       <button (click)="logout()">Logout</button>
     </div>
     <ng-template #showLogin>
-      <button (click)="openSignInWithEmailDialog()" class="btn waves-effect waves-light button-space">Login with Email <i class="material-icons right">email</i></button>
-      <button id="special-google-button" (click)="signInWithGoogle()" class="icon btn waves-effect waves-light button-space"></button>
-      <button (click)="signInWithFacebook()" class="btn waves-effect waves-light button-space" disabled="true">Login with Facebook <i class="material-icons right">send</i></button>
-      <!-- <button (click)="signInWithGoogle()" class="btn waves-effect waves-light button-space">Login with Google <i class="material-icons right">google</i></button> -->
+      <button id="email-dialog-open-button" (click)="openSignInWithEmailDialog()" class="btn waves-effect waves-light button-space">Login with Email <i class="material-icons right">email</i></button>
+      <button id="special-google-button" (click)="signInWithGoogle()" class="icon btn waves-effect waves-light button-space" disabled="true"></button>
+      <!-- <button (click)="signInWithFacebook()" class="btn waves-effect waves-light button-space" disabled="true">Login with Facebook <i class="material-icons right">send</i></button> -->
       <button id="new-account-button" type="button" (click)="newAccount()" class="btn waves-light blue button-space">Register New Account</button>
     </ng-template>
   </div>

@@ -198,7 +198,15 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string){
-    return this.db.object('/users/'+ userId + '/paymentStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+    let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
+    let resultObservable = Observable.create(observer =>{
+      ref.on("value", snapshot => {
+        console.log(snapshot);
+        status = snapshot.val();
+        observer.next(status);
+      });
+    });
+    return resultObservable;
   }
 
   getDateSinceAnnotated(userId: string){

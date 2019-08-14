@@ -51,6 +51,8 @@ export class NewMatchComponent implements OnInit {
   giStatus: boolean = false;
   checked: boolean = false;
   rankSelection: string;
+  private hasPaid: boolean = false;
+  private isAdmin: boolean = false;
 
   newRankForm: FormGroup; //TODO what is this?
 
@@ -63,6 +65,17 @@ export class NewMatchComponent implements OnInit {
 
   ngOnInit() {
     $('.modal').modal();
+
+    this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
+      this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+        this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
+          this.hasPaid = paymentStatus;
+        });
+        this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+          this.isAdmin = status;
+        });
+      });
+    });
 
     this.genders = ["Female", "Male"];
 
@@ -133,12 +146,12 @@ export class NewMatchComponent implements OnInit {
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.as.currentUserObservable.pipe(switchMap(userInfo => {
       console.log("got userInfo in new-match component. Looking for email from here");
-      console.log(userInfo);
+      console.log(userInfo.email);
         return Observable.create(obs=>{
-        // this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
-        //   let match = new Match(matchDeets, snapshot.key, moves);
-        //   obs.next(match);
-        // });
+        this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{ //TODO make robust
+          let match = new Match(matchDeets, snapshot.key, moves);
+          obs.next(match);
+        });
         });
       }));
   }
@@ -200,7 +213,7 @@ export class NewMatchComponent implements OnInit {
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           this.db.addMatchToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate(['']);
+          (this.hasPaid||this.isAdmin) ? this.router.navigate(['matches']) : this.router.navigate(['landing']);
         });
       } else{
         this.openSnackBar("Match Already Exists in the Database!", null);

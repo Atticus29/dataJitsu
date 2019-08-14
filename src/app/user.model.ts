@@ -7,7 +7,7 @@ export class User {
   private uid: string;
   private privileges: {};
   private votingInfo: {};
-  private paymentSatus: boolean;
+  private paymentStatus: boolean;
   constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: any, public paidStatus: boolean, public gender: string, public dateCreated: any) {
     this.privileges = {
       isAdmin: false,
@@ -22,7 +22,7 @@ export class User {
       annotationVoteQuota: constants.annotationVoteQuota,
       annotationVotesCastToday: 0
     }
-    this.paymentSatus = false;
+    this.paymentStatus = false;
   }
 
   isValidWeight(): boolean{
