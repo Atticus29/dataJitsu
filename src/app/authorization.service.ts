@@ -5,27 +5,41 @@ import { Router } from "@angular/router";
 import * as firebase from 'firebase';
 
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 
 @Injectable()
 export class AuthorizationService {
 
-  @Output() authState: EventEmitter<any> = new EventEmitter();
-  @Output() authError: EventEmitter<any> = new EventEmitter();
+  private authError: BehaviorSubject<any> = new BehaviorSubject(null);
+  private authState: any = null;
+  public authenticated: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private afAuth: AngularFireAuth,
-              private db: AngularFireDatabase,
-              private router:Router) {
-              this.afAuth.authState.subscribe((auth) => {
-              this.authState.emit(auth);
-            });
-          }
+  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router:Router) {
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth;
+      if(auth){
+        this.authenticated = true;
+      } else{
+        this.authenticated = false;
+      }
+    // this.authState.emit(auth);
+    });
+  }
 
   // Returns true if user is logged in
-  get authenticated(): boolean {
-    return this.authState !== null;
+  get authenticatedObservable(): any {
+    let obsRet = Observable.create(function(observer){
+      this.afAuth.authState.subscribe(result =>{
+        if(result !== null){
+          observer.next(true);
+        } else{
+          observer.next(false);
+        }
+      });
+    });
+    return obsRet;
   }
 
   // Returns current user data
@@ -35,28 +49,33 @@ export class AuthorizationService {
 
   // Returns
   get currentUserObservable(): any {
-    return this.afAuth.authState
+    console.log("this.authState: ");
+    console.log(this.authState);
+    let self = this;
+    let obsRet = Observable.create(function(observer){
+      self.afAuth.authState.subscribe(auth =>{
+        observer.next(auth);
+      });
+    });
+    return obsRet;
   }
 
   // Returns current user UID
-  //TODO fix this with Observable magic?
-  // get currentUserId(): string {
-  //   return this.authenticated ? this.authState.uid : '';
-  // }
+  get currentUserId(): string {
+    return this.authenticated ? this.authState.uid : '';
+  }
 
   // Anonymous User
-  //TODO fix this with Observable magic?
-  // get currentUserAnonymous(): boolean {
-  //   return this.authenticated ? this.authState.isAnonymous : false
-  // }
+  get currentUserAnonymous(): boolean {
+    return this.authenticated ? this.authState.isAnonymous : false
+  }
 
   // Returns current user display name or Guest
-  //TODO fix this with Observable magic?
-  // get currentUserDisplayName(): string {
-  //   if (!this.authState) { return 'Guest' }
-  //   else if (this.currentUserAnonymous) { return 'Anonymous' }
-  //   else { return this.authState['displayName'] || 'User without a Name' }
-  // }
+  get currentUserDisplayName(): string {
+    if (!this.authState) { return 'Guest' }
+    else if (this.currentUserAnonymous) { return 'Anonymous' }
+    else { return this.authState['displayName'] || 'User without a Name' }
+  }
 
   //// Social Auth ////
 
@@ -83,7 +102,7 @@ export class AuthorizationService {
   private socialSignIn(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) =>  {
-          this.authState.emit(credential.user);
+          this.authState = credential.user;
           this.updateUserData()
       })
       .catch(error => console.log(error));
@@ -95,7 +114,7 @@ export class AuthorizationService {
   anonymousLogin() {
     return this.afAuth.auth.signInAnonymously()
     .then((user) => {
-      this.authState.emit(user);
+      this.authState = user;
       this.updateUserData()
     })
     .catch(error => console.log(error));
@@ -106,7 +125,7 @@ export class AuthorizationService {
   emailSignUp(email:string, password:string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        this.authState.emit(user);
+        this.authState = user;
         this.updateUserData()
       })
       .catch(error => console.log(error));
@@ -119,17 +138,17 @@ export class AuthorizationService {
        .then((user) => {
          // console.log("user in emailLogin in authorization service");
          // console.log(user);
-         this.authState.emit(user);
+         this.authState = user;
          // console.log(this.currentUserId);
          this.updateUserData()
        })
        .catch(error => {
           if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-              this.authError.emit('The username and password you entered did not match our records. Please double-check and try again.');
+              this.authError.next('The username and password you entered did not match our records. Please double-check and try again.');
           } else if (error.code === 'auth/user-disabled') {
-              this.authError.emit('Your account has been suspended. Please contact us directly to discuss this.');
+              this.authError.next('Your account has been suspended. Please contact us directly to discuss this.');
           } else {
-            this.authError.emit(error.message);
+            this.authError.next(error.message);
           }
       });
   }

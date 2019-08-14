@@ -96,6 +96,8 @@ export class CreateAccountComponent implements OnInit {
     this.db.addUserToDb(newUser);
 
     let user:any = this.as.currentUserObservable.subscribe(user=>{
+      console.log("user in currentUserObservable in create-account component");
+      console.log(user);
       newUser.setUid(user.uid);
       this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
         // console.log("got to snapshot in getNodeIdFromEmail");
@@ -107,7 +109,7 @@ export class CreateAccountComponent implements OnInit {
       //@TODO test whether trying to create a second account under the same email messes up
     });
 
-    this.router.navigate(['landing']);
+    this.router.navigate(['matches']);
 
     //@TODO return to main or login results/welcome page
   }
