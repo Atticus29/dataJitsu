@@ -2,13 +2,14 @@
   <div class="nav-wrapper">
     <ul>
       <li><a href="#" class="brand-logo center">{{title}}</a></li>
+      <li *ngIf="user">Welcome, {{user.name}}</li>
     </ul>
   </div>
   <div class="nav-wrapper" *ngIf="user">
     <ul id="nav-mobile" class="left hide-on-med-and-down flexbox-container">
       <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
       <li *ngIf="user"><a routerLink="newmatch" >New Match</a></li>
-      <li *ngIf="user && paidStatus"><a routerLink="matches" >View All Matches</a></li>
+      <li *ngIf="user && (paidStatus || isAdmin)"><a routerLink="matches" >View All Matches</a></li>
       <li *ngIf="user"><a (click)="navigateToVideoInNeedOfAnnotation()" >Annotate a video</a></li>
       <li *ngIf="user"><a (click)="logout()" id="logOutLink">Log Out</a></li>
     </ul>

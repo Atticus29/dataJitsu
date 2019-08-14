@@ -88,7 +88,7 @@ export class CreateAccountComponent implements OnInit {
   //@TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
-    console.log("loginImprovements entered");
+    // console.log("loginImprovements entered");
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
 
@@ -99,14 +99,14 @@ export class CreateAccountComponent implements OnInit {
 
     let user:any = this.as.currentUserObservable.subscribe(user=>{
       if(user){
-        console.log("user in currentUserObservable in create-account component");
-        console.log(user);
-        console.log("user.uid in create-account component: " + user.uid);
+        // console.log("user in currentUserObservable in create-account component");
+        // console.log(user);
+        // console.log("user.uid in create-account component: " + user.uid);
         newUser.setUid(user.uid);
-        console.log(newUser);
+        // console.log(newUser);
         this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-          console.log("got to snapshot in getNodeIdFromEmail");
-          console.log(snapshot.val().id);
+          // console.log("got to snapshot in getNodeIdFromEmail");
+          // console.log(snapshot.val().id);
           newUser.setId(snapshot.val().id);
           this.db.updateUserInDb(newUser);
         });
@@ -114,7 +114,7 @@ export class CreateAccountComponent implements OnInit {
       //@TODO test whether trying to create a second account under the same email messes up
     });
 
-    this.router.navigate(['matches']);
+    this.router.navigate(['landing']);
 
     //@TODO return to main or login results/welcome page
   }

@@ -18,6 +18,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class AppComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private paidStatus: boolean = false;
+  private isAdmin: boolean = false;
   user: any = null;
   userObjFromDb;
   title: string = constants.title;
@@ -28,17 +29,21 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
-      // console.log("currentUserObservable in ngOnInit in app.component ")
-      // console.log(user);
-      this.user = user;
+      console.log("currentUserObservable in ngOnInit in app.component ")
+      console.log(user);
+      // this.user = user;
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
+          this.user = dbUser;
           // console.log("db user from getUserByUid in app.component is:");
           // console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentSatus;
           this.router.navigate(['matches']);
+          this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            this.isAdmin = status;
+          });
           this.db.hasUserPaid(dbUser.id).valueChanges().subscribe(paymentStatus =>{
             if(paymentStatus){
               this.paidStatus = Boolean(paymentStatus);

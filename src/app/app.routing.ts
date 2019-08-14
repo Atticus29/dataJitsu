@@ -11,7 +11,7 @@ import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
-import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim, 
+import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate } from '@angular/fire/auth-guard';
 
 // const adminOnly = hasCustomClaim('admin');
@@ -71,8 +71,12 @@ const appRoutes: Routes = [
   path: 'mark',
   component: TemporaryComponent,
   pathMatch: 'full'
-},
-{
+},{
+  path: 'landing',
+  component: LandingComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
+},{
   path: '**',
   component: NotfoundComponent,
   pathMatch: 'full'

@@ -82,7 +82,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(){
-    console.log("onDestroy is called");
+    // console.log("onDestroy is called");
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -90,11 +90,11 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   deleteMatch(matchId: any){
     let confirmation = confirm("Are you sure you want to delete this match?");
     if(confirmation){
-      console.log("Deleting " + matchId);
+      // console.log("Deleting " + matchId);
       this.dbService.deleteMatch(matchId);
       // this.loadMatchesPage();
     } else{
-      console.log("confirmation denied");
+      // console.log("confirmation denied");
     }
   }
 }

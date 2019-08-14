@@ -29,8 +29,8 @@ export class UserStatusReportComponent implements OnInit {
     // this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
-      console.log("user in authService of user-status-report: ");
-      console.log(user);
+      // console.log("user in authService of user-status-report: ");
+      // console.log(user);
       this.user = user;
       if (this.user) {
         this.userLoggedIn = true;
@@ -40,12 +40,12 @@ export class UserStatusReportComponent implements OnInit {
             this.userObjFromDb = result;
             this.db.hasUserPaid(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
-                console.log("user has paid");
+                // console.log("user has paid");
                 this.togglePaid(this.userObjFromDb.id);
                 this.togglePayMentPrompt(false);
                 this.paidStatus = status;
               } else{
-                console.log("user has not paid");
+                // console.log("user has not paid");
                 this.togglePayMentPrompt(true);
                 this.paidStatus = false;
               }
@@ -56,11 +56,11 @@ export class UserStatusReportComponent implements OnInit {
               console.log(date);
               let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
               if(dateLastAnnotated.toString() != "Invalid Date"){
-                console.log("yes");
+                // console.log("yes");
                 let daysSinceLastAnnotation: number = this.calculateDaysSinceLastAnnotation(dateLastAnnotated);
-                console.log(daysSinceLastAnnotation);
+                // console.log(daysSinceLastAnnotation);
                 if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
-                  console.log("leak!");
+                  // console.log("leak!");
                   this.togglePaid(this.userObjFromDb.id);
                 } else{
                   this.toggleAnnotationPrompt(true);
@@ -112,12 +112,12 @@ export class UserStatusReportComponent implements OnInit {
 
   togglePaid(userId: string){
     this.db.updateUserPaymentStatus(userId, true);
-    console.log("paidStatus changed to true");
+    // console.log("paidStatus changed to true");
   }
 
   togglePayMentPrompt(status: boolean){
     if(status){
-      console.log("bitch better have my money");
+      // console.log("bitch better have my money");
       this.shouldAnnotate = true;
     } else{
       this.shouldAnnotate = false;

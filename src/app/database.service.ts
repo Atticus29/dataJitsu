@@ -137,8 +137,8 @@ export class DatabaseService {
   updateUserReputationPoints(userId: string, points: number){
     let updates = {};
     this.getUserReputationPoints(userId).pipe(first()).subscribe(result =>{
-      console.log("reputation points? in updateUserReputationPoints");
-      console.log(result);
+      // console.log("reputation points? in updateUserReputationPoints");
+      // console.log(result);
       updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;
       firebase.database().ref().update(updates);
     });
@@ -251,7 +251,7 @@ export class DatabaseService {
   }
 
   addMatchToDb(match: any){
-    console.log("addMatchToDb entered");
+    // console.log("addMatchToDb entered");
     let ref = this.db.list<Match>('/matches');
     let matchId = ref.push(match).key;
     let updates = {};
@@ -437,11 +437,11 @@ export class DatabaseService {
       ref.orderByChild('/matchDeets/videoUrl').equalTo(videoUrl).limitToFirst(1).once("value", snapshot=>{
         // entranceDetector = 1;
         if(!snapshot.exists()){
-          console.log("snapshot doesn't exist");
+          // console.log("snapshot doesn't exist");
           observer.next(false);
         }
-        console.log("value happens in doesMatchExist inside database service");
-        console.log(snapshot.val());
+        // console.log("value happens in doesMatchExist inside database service");
+        // console.log(snapshot.val());
         if(snapshot.val()){
           observer.next(true);
         }

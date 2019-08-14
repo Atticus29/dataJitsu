@@ -26,6 +26,11 @@ export class AuthorizationService {
       }
     // this.authState.emit(auth);
     });
+
+    this.authError.pipe(takeUntil(this.ngUnsubscribe)).subscribe(errorResults =>{
+      console.log("errorResults");
+      console.log(errorResults);
+    });
   }
 
   // Returns true if user is logged in
@@ -52,8 +57,8 @@ export class AuthorizationService {
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.afAuth.authState.subscribe(auth =>{
-        console.log("user in currentUserObservable: ");
-        console.log(auth);
+        // console.log("user in currentUserObservable: ");
+        // console.log(auth);
         observer.next(auth);
       });
     });
@@ -103,7 +108,10 @@ export class AuthorizationService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) =>  {
           this.authState = credential.user;
-          this.updateUserData()
+          console.log("credential.user in socialSignIn:");
+          console.log(credential.user);
+          //TODO switch user to the one in the db
+          // this.updateUserData()
       })
       .catch(error => console.log(error));
   }
@@ -115,7 +123,7 @@ export class AuthorizationService {
     return this.afAuth.auth.signInAnonymously()
     .then((user) => {
       this.authState = user;
-      this.updateUserData()
+      // this.updateUserData()
     })
     .catch(error => console.log(error));
   }
@@ -126,7 +134,7 @@ export class AuthorizationService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user;
-        this.updateUserData()
+        // this.updateUserData()
       })
       .catch(error => console.log(error));
   }
@@ -136,15 +144,26 @@ export class AuthorizationService {
     // console.log("password in emailLogin in authorization service: " + password);
      return this.afAuth.auth.signInWithEmailAndPassword(email, password)
        .then((user) => {
-         // console.log("user in emailLogin in authorization service");
-         // console.log(user);
+         console.log("user in emailLogin in authorization service");
+         console.log(user);
          this.authState = user;
          // console.log(this.currentUserId);
-         this.updateUserData()
+         // this.updateUserData()
        })
        .catch(error => {
+         console.log("error code is: ");
+         console.log(error.code);
           if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
               this.authError.next('The username and password you entered did not match our records. Please double-check and try again.');
+              try {
+                alert("Log in failed. Attempting Google Login");
+                this.googleLogin();
+              }
+              catch(error) {
+                console.error(error);
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
+              }
           } else if (error.code === 'auth/user-disabled') {
               this.authError.next('Your account has been suspended. Please contact us directly to discuss this.');
           } else {

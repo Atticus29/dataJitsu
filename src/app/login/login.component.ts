@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   //     passwordBound: ['', Validators.required]
   //   });
     if(this.as.authenticated){
-      console.log("authenticated in login component");
+      // console.log("authenticated in login component");
       this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
           this.user = result;
       });
@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(val => {
-      console.log("Dialog output:", val);
       this.authService.emailLogin(val.email, val.passwd);
     });
   }
