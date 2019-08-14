@@ -49,11 +49,11 @@ export class AuthorizationService {
 
   // Returns
   get currentUserObservable(): any {
-    console.log("this.authState: ");
-    console.log(this.authState);
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.afAuth.authState.subscribe(auth =>{
+        console.log("user in currentUserObservable: ");
+        console.log(auth);
         observer.next(auth);
       });
     });
@@ -170,15 +170,15 @@ export class AuthorizationService {
   //// Helpers ////
 
   private updateUserData(): void {
-    this.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-      let path = `users/${usr.id}`; // Endpoint on firebase
+    // this.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+      let path = `users/${this.authState.id}`; // Endpoint on firebase
       let data = {
-                    email: usr.email,
-                    name: usr.displayName ? usr.displayName : "Nameless User"
+                    email: this.authState.email,
+                    name: this.authState.displayName ? this.authState.displayName : "Nameless User"
                   }
       this.db.object(path).update(data)
       .catch(error => console.log(error));
-    });
+    // });
   // Writes user name and email to realtime db
   // useful if your app displays information about users or for admin features
     // let path = `users/${this.currentUserId}`; // Endpoint on firebase

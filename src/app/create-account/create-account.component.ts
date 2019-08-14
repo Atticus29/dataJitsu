@@ -88,24 +88,29 @@ export class CreateAccountComponent implements OnInit {
   //@TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
+    console.log("loginImprovements entered");
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
+    this.as.emailLogin(newUser.getEmail(), newUser.getPassword());
 
     let user:any = this.as.currentUserObservable.subscribe(user=>{
-      console.log("user in currentUserObservable in create-account component");
-      console.log(user);
-      newUser.setUid(user.uid);
-      this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-        // console.log("got to snapshot in getNodeIdFromEmail");
-        // console.log(snapshot.val().id);
-        newUser.setId(snapshot.val().id);
-        this.db.updateUserInDb(newUser);
-      });
-
+      if(user){
+        console.log("user in currentUserObservable in create-account component");
+        console.log(user);
+        console.log("user.uid in create-account component: " + user.uid);
+        newUser.setUid(user.uid);
+        console.log(newUser);
+        this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
+          console.log("got to snapshot in getNodeIdFromEmail");
+          console.log(snapshot.val().id);
+          newUser.setId(snapshot.val().id);
+          this.db.updateUserInDb(newUser);
+        });
+      }
       //@TODO test whether trying to create a second account under the same email messes up
     });
 
