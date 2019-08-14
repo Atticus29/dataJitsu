@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
+  private name: string = "Anonymous User";
   userObjFromDb;
   title: string = constants.title;
   authenticationStatus: boolean =false;
@@ -28,17 +29,18 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth){}
 
   ngOnInit() {
-    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
-      console.log("currentUserObservable in ngOnInit in app.component ")
-      console.log(user);
+    this.authService.currentUserObservable.subscribe(user=>{
+      // console.log("currentUserObservable in ngOnInit in app.component ")
+      // console.log(user);
       // this.user = user;
       if(user){
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
           this.user = dbUser;
-          // console.log("db user from getUserByUid in app.component is:");
-          // console.log(dbUser);
+          this.name = dbUser.name;
+          console.log("db user from getUserByUid in app.component is:");
+          console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentSatus;
           this.router.navigate(['matches']);
           this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
