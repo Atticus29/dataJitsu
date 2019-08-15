@@ -201,7 +201,7 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => {
-        console.log(snapshot);
+        // console.log(snapshot);
         status = snapshot.val();
         observer.next(status);
       });
@@ -296,13 +296,20 @@ export class DatabaseService {
   }
 
   addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){
-    let now = new Date().toJSON();
-    let newMove = {move, dateAdded:now};
+    console.log("entered addMoveInVideoToUser");
+    let now: string = new Date().toJSON();
+    // let newMove = {move, dateAdded:now};
     let matchId = move.getMatchId();
     let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
     let moveId = ref.push(move).key;
     let updates = {};
-    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = newMove;
+    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
+    console.log(updates);
+    firebase.database().ref().update(updates);
+    //Now update dateLastAnnotated
+    ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
+    updates = {};
+    updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
     firebase.database().ref().update(updates);
   }
 

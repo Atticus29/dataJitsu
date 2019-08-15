@@ -70,7 +70,7 @@ export class MatchDisplayComponent implements OnInit {
     });
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
-      console.log("matchID is: " + this.matchId);
+      // console.log("matchID is: " + this.matchId);
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
         this.matchAverageRating = average;
       });
@@ -79,11 +79,11 @@ export class MatchDisplayComponent implements OnInit {
       })
       this.trackerService.currentMatch.next(this.matchId);
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        console.log("getMatchFromNodeKey called and returned: ");
-        console.log(match);
+        // console.log("getMatchFromNodeKey called and returned: ");
+        // console.log(match);
         this.match = match;
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        console.log("matchUrl is: " + this.matchUrl);
+        // console.log("matchUrl is: " + this.matchUrl);
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
         window['onYouTubeIframeAPIReady'] = function() {
           player = new window['YT'].Player('videoIframe', {
@@ -107,13 +107,13 @@ export class MatchDisplayComponent implements OnInit {
         let onPlayerReady = (event) => {
           document.getElementById("play").addEventListener("click", function() {
             player.playVideo();
-            console.log("you clicked play");
+            // console.log("you clicked play");
           });
           let pause = document.getElementById("begin-move").addEventListener("click", function() {
             //TODO add 1 second rewind?
             player.pauseVideo();
             // self.dataSource.data = self.database.initialData();
-            console.log("pause beginning of move");
+            // console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
             self.trackerService.startTimePoint.next(player.getCurrentTime());
             //TODO reset the tree and the submission status (and the annotation move just to be safe?)
@@ -168,7 +168,7 @@ export class MatchDisplayComponent implements OnInit {
         }
 
         function onPlayerStateChange(event){
-          console.log("happens!");
+          // console.log("happens!");
           if (event.data == window['YT'].PlayerState.PAUSED) {
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           };
@@ -193,8 +193,10 @@ export class MatchDisplayComponent implements OnInit {
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
         this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-          this.db.getUserByUid(usr.uid).on("child_added", snapshot => {
-            let userInDb: string = snapshot.key;
+          this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+            console.log("getUserByUid is ");
+            console.log(usr);
+            let userInDb: string = usr.id;
             console.log("user is: ");
             console.log(userInDb);
             self.db.addMoveInVideoToUser(self.tempMove, userInDb);
@@ -227,24 +229,24 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
-    console.log("got into onRateAnnotation");
+    // console.log("got into onRateAnnotation");
     let newRating = $event.newValue;
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-      console.log("usr from auth service is: ");
-      console.log(usr);
-      console.log("usr.uid is "+ usr.uid);
-      this.db.getUserByUid(usr.uid).subscribe(result => {
-        console.log("result of getUserByUid is: ");
-        console.log(result);
+      // console.log("usr from auth service is: ");
+      // console.log(usr);
+      // console.log("usr.uid is "+ usr.uid);
+      this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        // console.log("result of getUserByUid is: ");
+        // console.log(result);
         let userDbId: string = result.id;
         console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
         this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
         if($event.newValue > 4){
-          console.log("rating is over 4");
+          // console.log("rating is over 4");
           this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
-            console.log("major annotator is ");
-            console.log(majorityAnnotator.annotatorUserId);
+            // console.log("major annotator is ");
+            // console.log(majorityAnnotator.annotatorUserId);
             if(majorityAnnotator.annotatorUserId !== userDbId){
               // console.log()
               this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
@@ -275,7 +277,7 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onMoveSelected(moveSelected: MoveInVideo){
-    console.log(moveSelected);
+    // console.log(moveSelected);
     player.playVideo();
   }
   openSnackBar(message: string) {

@@ -55,7 +55,7 @@ export class UserStatusReportComponent implements OnInit {
               console.log("getDateSinceAnnotated call in user-status-report: ");
               console.log(date);
               let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
-              if(dateLastAnnotated.toString() != "Invalid Date"){
+              if(dateLastAnnotated.toString() != "Invalid Date"){ //dateLastAnnotated.toString()
                 // console.log("yes");
                 let daysSinceLastAnnotation: number = this.calculateDaysSinceLastAnnotation(dateLastAnnotated);
                 // console.log(daysSinceLastAnnotation);
@@ -83,16 +83,21 @@ export class UserStatusReportComponent implements OnInit {
   }
 
   calculateDaysSinceLastAnnotation(date: Date){ //TODO move to service
-    let today: Date = new Date();
+    let today: string = new Date().toJSON();
+    console.log("today");
+    console.log(today);
     let parsedToday = this.parseDate(today);
-    let parsedAnnotationDate = this.parseDate(date);
+    console.log("parsedToday");
+    console.log(parsedToday);
+    let parsedAnnotationDate = this.parseDate(date.toJSON());
     let numDays = this.datediff(parsedAnnotationDate, parsedToday);
     return numDays;
   }
 
-  parseDate(str) { //TODO move to service
-    var mdy = str.split('/');
-    return new Date(mdy[2], mdy[0]-1, mdy[1]);
+  parseDate(str: string) { //TODO move to service
+    let mdy = str.split('-');
+    console.log(mdy);
+    return new Date(Number(mdy[2].substring(0,1)), Number(mdy[0]), Number(mdy[1]));
   }
 
   datediff(first, second) { //TODO move to service
