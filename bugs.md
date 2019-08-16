@@ -1,11 +1,12 @@
 # Known issues
-- [ ] Deleting a user (maybe just the admin) creates a payment entry in the db?
+- [ ] Creating a user gives them a different uid than they should have?
+- [ ] Logging in after creating user and logging out changes paid status to trip
 - [ ] My admin user is being either removed or replaced by the next one?
 - [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
+- [ ] TODO make the signs up a new user test pass
 
+- [ ] Deleting a user from the db when they're logged in creates a payment entry in the db
 - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
-- [x] user-status-report stuff is not correctly fetching date from the user's last annotation
-- [x] Fake user doesn't get a uid
 - [ ] Need a way to handle things like missing uid in users
 - [ ] If user is logged in and navigates to /login, it will still show them login stuff
 - [ ] Original poster ID is "users" right now and should be updated to the actual user's id
@@ -33,8 +34,11 @@
 - [ ] Gi/Nogi on match-display says false
 
 # Mysteriously failing tests
+- [ ] TODO make the signs up a new user test pass (see above list [cross-listed])
 
 # Resolved issues
+- [x] user-status-report stuff is not correctly fetching date from the user's last annotation
+- [x] Fake user doesn't get a uid
 - [x] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode
 - [x] Clicking the stuff deepest into the tree no longer works
 - [x] should have begin move disabled and end move enabled after done have been clicked //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode

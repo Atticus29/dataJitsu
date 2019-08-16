@@ -33,7 +33,8 @@ export class AppComponent implements OnInit {
       console.log("currentUserObservable in ngOnInit in app.component ")
       console.log(user);
       // this.user = user;
-      if(user){
+      if(user && user.uid){
+        console.log("currentUserObservable user.uid in ngOnInit in app.component: " + user.uid);
         // console.log("user exists");
         this.authenticationStatus = true;
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{

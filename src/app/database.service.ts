@@ -236,8 +236,17 @@ export class DatabaseService {
 
   //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
+    console.log("got to getNodeIdFromEmail in database service");
     let ref = firebase.database().ref('users/');
-    return ref.orderByChild('email').equalTo(email).limitToFirst(1);
+    let user: User = null;
+    let resultObservable = Observable.create(observer =>{
+      return ref.orderByChild('email').equalTo(email).limitToFirst(1).on("child_added", snapshot => {
+        console.log("got to snapshot in getNodeIdFromEmail in database service");
+        user = snapshot.val();
+        observer.next(user);
+      });
+    });
+    return resultObservable;
   }
 
   addUidToUser(uid: string, userKey: string){

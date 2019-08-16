@@ -103,20 +103,21 @@ export class CreateAccountComponent implements OnInit {
 
     this.as.currentUserObservable.subscribe(user=>{
       if(user){
-        this.as.emailLogin(newUser.getEmail(), newUser.getPassword());
         // console.log("user in currentUserObservable in create-account component");
         // console.log(user);
-        console.log("user.uid in create-account component: " + user.uid);
-        console.log(user);
+        // console.log("user.uid in create-account component: " + user.uid);
+        // console.log(user);
+        // console.log("user email: " + user.email);
         newUser.setUid(user.uid);
+        this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
         // console.log(newUser);
-        self.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-          console.log("got to snapshot in getNodeIdFromEmail");
-          console.log(snapshot);
-          console.log(snapshot.key);
-          newUser.setId(snapshot.key);
+        self.db.getNodeIdFromEmail(user.email).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
+          // console.log("got to getNodeIdFromEmail results");
+          // console.log(result);
+          // console.log(result.id);
+          newUser.setId(result.id);
           this.db.updateUserInDb(newUser);
-          this.db.setUidFromNodeId(user.uid,snapshot.key)
+          this.db.setUidFromNodeId(user.uid,result.id)
         });
       }
       //@TODO test whether trying to create a second account under the same email messes up
