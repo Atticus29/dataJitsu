@@ -9,13 +9,17 @@ describe ('Tests involving match creation', () =>{
     });
   });
 
+  after(() =>{
+    //And delete the match just for cleanup
+    cy.get('mat-cell[id=Alfie]>button').click();
+  });
+
   afterEach(() =>{
     cy.logout();
   });
 
-  it.only('creates a match', function(){
+  it('creates a match', function(){
     cy.visit('http://localhost:4200/newmatch');
-    // cy.contains("New Match").click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
       cy.get('input[id=athlete1Name]').clear().type(cypressConstants.testAthlete1);

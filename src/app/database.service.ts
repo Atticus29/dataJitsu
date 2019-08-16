@@ -314,6 +314,7 @@ export class DatabaseService {
   }
 
   updateUserInDb(user: User){
+    console.log("userId in updateUserInDb calll in database service: " + user.getId());
     let updates = {};
     updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);
@@ -557,6 +558,15 @@ export class DatabaseService {
         }
       }
     }
+    firebase.database().ref().update(updates);
+  }
+
+  setUidFromNodeId(uid: string, nodeId: string){
+    console.log("grr this is happening. I don't know what's going on!");
+    console.log(nodeId);
+    console.log(uid);
+    let updates = {};
+    updates['/users/' + nodeId + '/uid'] = uid;
     firebase.database().ref().update(updates);
   }
 

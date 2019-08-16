@@ -17,23 +17,13 @@ Cypress.Commands.add("login", (email, pass) => {
   cy.get('input[id=dialog-email-input]').type(email);
   cy.get('input[id=dialog-pw-input]').type(pass);
   cy.get('button[id=dialog-submit-button]').click();
+  cy.contains("Log Out").should('exist');
+  cy.contains("Rank").should('exist');
 });
 
 Cypress.Commands.add("loginAsAdmin", () => {
   cy.visit('http://localhost:4200/login');
   cy.wait(2000);
-  // const $el = Cypress.$('a[id=logOutLink]')
-  // if ($el) {
-  //   cy.log('Clicking log out')
-  //   try{
-  //     // cy.get('a[id=logOutLink]').click({force:true});
-  //   }
-  //   catch(error){
-  //     console.log(error);
-  //   }
-    // cy.get('a[id=logOutLink]').click({force:true});
-    // cy.wait(2000);
-  // }
   cy.get('button[id=email-dialog-open-button]').click();
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);

@@ -41,11 +41,12 @@ export class UserStatusReportComponent implements OnInit {
             this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
                 // console.log("user has paid");
-                this.togglePaid(this.userObjFromDb.id);
+                this.togglePaid(this.userObjFromDb.id, true);
                 this.togglePayMentPrompt(false);
                 this.paidStatus = status;
               } else{
                 // console.log("user has not paid");
+                this.togglePaid(this.userObjFromDb.id, false);
                 this.togglePayMentPrompt(true);
                 this.paidStatus = false;
               }
@@ -61,7 +62,7 @@ export class UserStatusReportComponent implements OnInit {
                 // console.log(daysSinceLastAnnotation);
                 if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
                   // console.log("leak!");
-                  this.togglePaid(this.userObjFromDb.id);
+                  this.toggleAnnotationPrompt(false);
                 } else{
                   this.toggleAnnotationPrompt(true);
                 }
@@ -84,20 +85,24 @@ export class UserStatusReportComponent implements OnInit {
 
   calculateDaysSinceLastAnnotation(date: Date){ //TODO move to service
     let today: string = new Date().toJSON();
-    console.log("today");
-    console.log(today);
+    // console.log("today");
+    // console.log(today);
     let parsedToday = this.parseDate(today);
-    console.log("parsedToday");
-    console.log(parsedToday);
+    // console.log("parsedToday");
+    // console.log(parsedToday);
     let parsedAnnotationDate = this.parseDate(date.toJSON());
     let numDays = this.datediff(parsedAnnotationDate, parsedToday);
+    // console.log("numDays: " + numDays);
     return numDays;
   }
 
   parseDate(str: string) { //TODO move to service
     let mdy = str.split('-');
-    console.log(mdy);
-    return new Date(Number(mdy[2].substring(0,1)), Number(mdy[0]), Number(mdy[1]));
+    // console.log(mdy);
+    // console.log(mdy[0]);
+    // console.log(mdy[1]);
+    // console.log(mdy[2].substring(0,2));
+    return new Date(Number(mdy[0]), Number(mdy[1])-1, Number(mdy[2].substring(0,2)));
   }
 
   datediff(first, second) { //TODO move to service
@@ -115,9 +120,10 @@ export class UserStatusReportComponent implements OnInit {
     }
   }
 
-  togglePaid(userId: string){
-    this.db.updateUserPaymentStatus(userId, true);
-    // console.log("paidStatus changed to true");
+  togglePaid(userId: string, status: boolean){
+    this.db.updateUserPaymentStatus(userId, status);
+    console.log("paidStatus changed to " + status);
+    //TODO other stuff?
   }
 
   togglePayMentPrompt(status: boolean){

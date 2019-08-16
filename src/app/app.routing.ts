@@ -81,6 +81,10 @@ const appRoutes: Routes = [
   path: 'verify-email-address',
   component: VerifyEmailAddressComponent,
 },{
+  path: 'error',
+  component: NotfoundComponent,
+  pathMatch: 'full'
+},{
   path: '**',
   component: NotfoundComponent,
   pathMatch: 'full'

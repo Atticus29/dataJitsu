@@ -1,9 +1,12 @@
 # Known issues
-- [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
-- [ ] user-status-report stuff is not correctly fetching date from the user's last annotation
-- [ ] Fake user doesn't get a uid
-- [ ] Need a way to handle things like missing uid in users
+- [ ] Deleting a user (maybe just the admin) creates a payment entry in the db?
 - [ ] My admin user is being either removed or replaced by the next one?
+- [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
+
+- [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
+- [x] user-status-report stuff is not correctly fetching date from the user's last annotation
+- [x] Fake user doesn't get a uid
+- [ ] Need a way to handle things like missing uid in users
 - [ ] If user is logged in and navigates to /login, it will still show them login stuff
 - [ ] Original poster ID is "users" right now and should be updated to the actual user's id
 - [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?

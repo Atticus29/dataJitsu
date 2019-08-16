@@ -28,8 +28,9 @@ export class AuthorizationService {
       }
     });
     this.authError.pipe(takeUntil(this.ngUnsubscribe)).subscribe(errorResults =>{
-      console.log("errorResults");
-      console.log(errorResults);
+      //TODO uncomment back in after 08/15/2019
+      // console.log("errorResults");
+      // console.log(errorResults);
     });
   }
 

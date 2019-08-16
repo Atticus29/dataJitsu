@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUserObservable.subscribe(user=>{
-      // console.log("currentUserObservable in ngOnInit in app.component ")
-      // console.log(user);
+      console.log("currentUserObservable in ngOnInit in app.component ")
+      console.log(user);
       // this.user = user;
       if(user){
         // console.log("user exists");
@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
         this.db.getUserByUid(user.uid).subscribe(dbUser =>{
           this.user = dbUser;
           this.name = dbUser.name;
-          // console.log("db user from getUserByUid in app.component is:");
-          // console.log(dbUser);
+          console.log("db user from getUserByUid in app.component is:");
+          console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentStatus;
           // this.router.navigate(['matches']);
           this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{

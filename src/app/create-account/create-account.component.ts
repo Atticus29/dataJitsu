@@ -82,6 +82,7 @@ export class CreateAccountComponent implements OnInit {
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
     let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", false, genderBound, new Date().toJSON());
+    // console.log(newUser);
     return newUser;
   }
 
@@ -91,24 +92,31 @@ export class CreateAccountComponent implements OnInit {
     // console.log("loginImprovements entered");
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
+    console.log("newUser from processFormInputsToDB: ");
+    console.log(newUser);
+    let self = this;
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
-    this.as.emailLogin(newUser.getEmail(), newUser.getPassword());
+    //TODO
 
-    let user:any = this.as.currentUserObservable.subscribe(user=>{
+    this.as.currentUserObservable.subscribe(user=>{
       if(user){
+        this.as.emailLogin(newUser.getEmail(), newUser.getPassword());
         // console.log("user in currentUserObservable in create-account component");
         // console.log(user);
-        // console.log("user.uid in create-account component: " + user.uid);
+        console.log("user.uid in create-account component: " + user.uid);
+        console.log(user);
         newUser.setUid(user.uid);
         // console.log(newUser);
-        this.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
-          // console.log("got to snapshot in getNodeIdFromEmail");
-          // console.log(snapshot.val().id);
-          newUser.setId(snapshot.val().id);
+        self.db.getNodeIdFromEmail(user.email).on("child_added", snapshot=>{
+          console.log("got to snapshot in getNodeIdFromEmail");
+          console.log(snapshot);
+          console.log(snapshot.key);
+          newUser.setId(snapshot.key);
           this.db.updateUserInDb(newUser);
+          this.db.setUidFromNodeId(user.uid,snapshot.key)
         });
       }
       //@TODO test whether trying to create a second account under the same email messes up

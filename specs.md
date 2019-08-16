@@ -1,7 +1,7 @@
 # TODO high priority
-- [ ] Get login to display and to successfully navigate both for login and for logout
-- [ ] Set up new email login dialog box
-- [ ] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation
+- [ ] Figure out why creating a new user works fine manually but not with the cypress test in login.spec
+- [ ] Add some way of preventing users from simply making one shitty annotation and getting in
+  - [ ] Add some way of disabling them for a punishingly long time if they do it
 - [ ] Add branching/if statements to cypress login as admin test
 - [ ] Either have a question on the form about whether the match uses points or somehow automate that to prevent users from assigning points in tournament types that don't reward them
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
@@ -40,6 +40,9 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Get login to display and to successfully navigate both for login and for logout
+- [x] Set up new email login dialog box
+- [x] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation
 - [x] Annotation includes the annotator's user id
 - [x] Have table auto-update when move details are revised
 - [x] Add cannot create duplicate match test

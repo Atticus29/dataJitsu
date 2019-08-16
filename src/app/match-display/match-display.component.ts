@@ -70,6 +70,9 @@ export class MatchDisplayComponent implements OnInit {
     });
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
+      if(this.matchId === "undefined"){
+        this.router.navigate(['error']);
+      }
       // console.log("matchID is: " + this.matchId);
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
         this.matchAverageRating = average;
