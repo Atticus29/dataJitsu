@@ -1,5 +1,5 @@
 # Known issues
-- [ ] Creating a user gives them a different uid than they should have?
+- [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't swtich disabled
 - [ ] Logging in after creating user and logging out changes paid status to trip
 - [ ] My admin user is being either removed or replaced by the next one?
 - [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
@@ -37,6 +37,8 @@
 - [ ] TODO make the signs up a new user test pass (see above list [cross-listed])
 
 # Resolved issues
+- [x] Creating a user gives them a different uid than they should have?
+- [x] Move not being recorded in database
 - [x] user-status-report stuff is not correctly fetching date from the user's last annotation
 - [x] Fake user doesn't get a uid
 - [x] annotate a move once and when it is done it does it again and finds the previous options unselected //TODO can't figure out why the button is not disabling. Seems to work fine when not in testing mode

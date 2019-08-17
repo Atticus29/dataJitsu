@@ -49,11 +49,23 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
+    let ref = firebase.database().ref('/moves/');
+    let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
-      return this.db.object('/moves/Submissions or Submission Attempts/' + childNodeName).valueChanges();
+      ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
+        console.log("getMovesSubsetAsObject special snapshot: ");
+        console.log(snapshot.val());
+        observer.next(snapshot.val());
+      });
     } else{
-      return this.db.object('/moves/' + childNodeName).valueChanges();
+      ref.orderByChild('/moves/' + childNodeName).on("value", snapshot =>{
+        console.log("getMovesSubsetAsObject not special snapshot: ");
+        console.log(snapshot.val());
+        observer.next(snapshot.val());
+      });
     }
+    });
+    return obsRet;
   }
 
   getMatchDetails(matchId: string){
@@ -222,8 +234,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-        console.log("query result in getUserByUid in databaseService: ");
-        console.log(snapshot.val());
+        // console.log("query result in getUserByUid in databaseService: ");
+        // console.log(snapshot.val());
         user = snapshot.val();
         observer.next(user);
       });

@@ -55,13 +55,16 @@ export class UserStatusReportComponent implements OnInit {
             });
 
             this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
-              console.log("getDateSinceAnnotated call in user-status-report: ");
-              console.log(date);
+              // console.log("getDateSinceAnnotated call in user-status-report: ");
+              // console.log(date);
               let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
               if(dateLastAnnotated.toString() != "Invalid Date"){ //dateLastAnnotated.toString()
                 // console.log("yes");
                 let daysSinceLastAnnotation: number = this.calculateDaysSinceLastAnnotation(dateLastAnnotated);
                 // console.log(daysSinceLastAnnotation);
+                if(!daysSinceLastAnnotation){
+                  this.toggleAnnotationPrompt(true);
+                }
                 if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
                   // console.log("leak!");
                   this.toggleAnnotationPrompt(false);
@@ -69,7 +72,7 @@ export class UserStatusReportComponent implements OnInit {
                   this.toggleAnnotationPrompt(true);
                 }
               } else{
-                console.log("this shouldn't happen user-status-report date is invalid");
+                console.log("first timer here!");
                 this.toggleAnnotationPrompt(true); //TODO should this be a thing??? Not clear when this happens
               }
             });

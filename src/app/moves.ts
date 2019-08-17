@@ -4,7 +4,8 @@ export var allCurrentMoves ={
     "X Pass",
     "Leg Drag",
     "Knee Slice",
-    "Back Step"
+    "Back Step",
+    "Over Under Pass"
   ],
   "Take Downs or Take Down Attempts":[
     "Knee Drop Ogoshi; Knee Drop",

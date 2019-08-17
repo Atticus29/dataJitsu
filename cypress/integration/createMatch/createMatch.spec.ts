@@ -11,7 +11,13 @@ describe ('Tests involving match creation', () =>{
 
   after(() =>{
     //And delete the match just for cleanup
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login(cypressConstants.adminEmailAddress,cypressConstants.adminPassword);
+    });
+    cy.wait(2000);
+    cy.visit('http://localhost:4200/matches');
     cy.get('mat-cell[id=Alfie]>button').click();
+    cy.logout();
   });
 
   afterEach(() =>{
@@ -40,7 +46,8 @@ describe ('Tests involving match creation', () =>{
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
       cy.url().should('not.match',/newmatch/);
-      cy.contains('Athlete 1').should('exist');
+      cy.url().should('match',/landing/);
+      // cy.contains('Athlete 1').should('exist');
     });
   });
 

@@ -137,8 +137,8 @@ export class MatchDisplayComponent implements OnInit {
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
-                              self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe((user: User) =>{
-                                self.db.getUserByUid(user.getUid()).pipe(take(1)).subscribe(usr => {
+                              self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe((user) =>{
+                                self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
                                   let userInDb: string = usr.id;
                                   let attemptStatus: boolean = true;
                                   if(attemptSuccessful === false){
@@ -161,10 +161,13 @@ export class MatchDisplayComponent implements OnInit {
                 });
               });
             });
-            // console.log("add delay here?");
+            console.log("playing and going back a little?");
+            console.log(currentTime);
+            console.log(Math.max(0,currentTime-5));
             //TODO add 1 second delay?
             // player.resumeVideo();
             player.playVideo();
+            player.seekTo(Math.max(0,currentTime-5));
           });
 
           document.getElementById("pause-vid").addEventListener("click", function() {
@@ -196,8 +199,8 @@ export class MatchDisplayComponent implements OnInit {
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
-        this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((usr: User) =>{
-          this.db.getUserByUid(usr.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+        this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+          this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
             let userInDb: string = usr.id;
             self.db.addMoveInVideoToUser(self.tempMove, userInDb);
           });
@@ -219,8 +222,8 @@ export class MatchDisplayComponent implements OnInit {
 
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.trackerService.currentUserBehaviorSubject.subscribe((usr: User) =>{
-      this.db.getUserByUid(usr.getUid()).pipe(take(1)).subscribe(urs => {
+    this.trackerService.currentUserBehaviorSubject.subscribe(usr =>{
+      this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
         let userInDb: string = urs.id;
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
         this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
@@ -230,8 +233,8 @@ export class MatchDisplayComponent implements OnInit {
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((usr: User) =>{
-      this.db.getUserByUid(usr.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+      this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         let userDbId: string = result.id;
         console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);

@@ -96,17 +96,17 @@ export class CreateAccountComponent implements OnInit {
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     //TODO
 
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User) =>{
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       if(user){
-        if(user.getUid()){
-          console.log("Oh hey! There's a uid, too!: " + user.getUid());
+        if(user.uid){
+          console.log("Oh hey! There's a uid, too!: " + user.uid);
         }
-        // newUser.setUid(user.getUid());
+        // newUser.setUid(user.uid);
         this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
         // self.db.getNodeIdFromEmail(user.getEmail()).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
         //   newUser.setId(result.id);
         //   this.db.updateUserInDb(newUser);
-        //   this.db.setUidFromNodeId(user.getUid(),result.id);
+        //   this.db.setUidFromNodeId(user.uid,result.id);
         // });
       }
       //@TODO test whether trying to create a second account under the same email messes up

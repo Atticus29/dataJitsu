@@ -46,6 +46,8 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     //   }
     // });
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+      console.log("user in currentUserBehaviorSubject from trackerService from all-matches component");
+      console.log(user);
       this.user = user;
       if(user && user.uid){
         this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{

@@ -34,28 +34,28 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUserObservable.subscribe(result =>{
-      console.log("result in currentUserObservable in login component happens: ");
+      // console.log("result in currentUserObservable in app component happens: ");
       if(result){
-        console.log(result);
+        // console.log(result);
         this.db.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
-          console.log("dbUser in getUserByUid of app.component:");
-          console.log(dbUser);
+          // console.log("dbUser in getUserByUid of app.component:");
+          // console.log(dbUser);
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!
         });
       }
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
-      console.log("currentUser in trackerService as seen in app.component: ");
-      console.log(currentUser);
+      // console.log("currentUser in trackerService as seen in app.component: ");
+      // console.log(currentUser);
       if(currentUser && currentUser.uid){
-        console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
+        // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
         this.authenticationStatus = true;
         this.db.getUserByUid(currentUser.uid).subscribe(dbUser =>{
           this.user = dbUser;
           this.name = dbUser.name;
-          console.log("db user from getUserByUid in app.component is:");
-          console.log(dbUser);
+          // console.log("db user from getUserByUid in app.component is:");
+          // console.log(dbUser);
           this.shouldAnnotate = dbUser.paymentStatus;
           this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
             this.isAdmin = status;

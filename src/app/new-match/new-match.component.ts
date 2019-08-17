@@ -25,7 +25,6 @@ declare var $:any;
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.scss'],
-  providers: [DatabaseService, AuthorizationService, ProtectionGuard, TrackerService]
 })
 
 export class NewMatchComponent implements OnInit {
@@ -67,15 +66,19 @@ export class NewMatchComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
 
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User) =>{
-      this.db.getUserByUid(user.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-        this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
-          this.hasPaid = paymentStatus;
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
+      console.log("currentUser in new-match component:");
+      console.log(currentUser);
+      if(currentUser && currentUser.uid){
+        this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+          this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
+            this.hasPaid = paymentStatus;
+          });
+          this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            this.isAdmin = status;
+          });
         });
-        this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-          this.isAdmin = status;
-        });
-      });
+      }
     });
 
     this.genders = ["Female", "Male"];
@@ -146,11 +149,12 @@ export class NewMatchComponent implements OnInit {
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo) => {
-      console.log("got userInfo in new-match component. Looking for email from here");
-      console.log(userInfo.email);
+      // console.log("got userInfo in new-match component. Looking for email from here");
+      // console.log(userInfo.email);
         return Observable.create(obs=>{
-        this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{ //TODO make robust
-          let match = new Match(matchDeets, snapshot.key, moves);
+        this.db.getNodeIdFromEmail(userInfo.email).pipe(takeUntil(this.ngUnsubscribe)).subscribe((nodeId: string)=>{ //TODO make robust
+          // console.log("nodeId is: " + nodeId);
+          let match = new Match(matchDeets, nodeId, moves);
           obs.next(match);
         });
         });

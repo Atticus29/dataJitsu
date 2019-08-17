@@ -67,9 +67,9 @@ export class DynamicDataSource {
    */
 
     jsonToStrMap(jsonStr) {
-      // console.log("Got into jsonToStrMap");
-      // console.log(jsonStr);
-      // console.log(Object.entries(jsonStr));
+      console.log("Got into jsonToStrMap");
+      console.log(jsonStr);
+      console.log(Object.entries(jsonStr));
       let map = null;
       try {
         map = new Map(Object.entries(jsonStr));
@@ -84,18 +84,20 @@ export class DynamicDataSource {
     }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    // console.log(node.item);
+    console.log(node.item);
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
+      console.log("results in toggleNode getMovesSubsetAsObject call");
+      console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
         children = results;
       } else{
         try {
-          // console.log("results before conversion:");
-          // console.log(results);
+          console.log("results before conversion:");
+          console.log(results);
           results = this.jsonToStrMap(results);
-          // console.log("jsonToStrMap successful:");
-          // console.log(results);
+          console.log("jsonToStrMap successful:");
+          console.log(results);
           children = results;
         }
         catch(error) {

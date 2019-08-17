@@ -17,6 +17,7 @@ Cypress.Commands.add("login", (email, pass) => {
   cy.get('input[id=dialog-email-input]').type(email);
   cy.get('input[id=dialog-pw-input]').type(pass);
   cy.get('button[id=dialog-submit-button]').click();
+  cy.wait(1000);
   cy.contains("Log Out").should('exist');
   cy.contains("Rank").should('exist');
 });

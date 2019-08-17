@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Write a test to annotate two moves in a row, both with a move deep in the tree
 - [ ] Figure out why creating a new user works fine manually but not with the cypress test in login.spec
 - [ ] Add some way of preventing users from simply making one shitty annotation and getting in
   - [ ] Add some way of disabling them for a punishingly long time if they do it
