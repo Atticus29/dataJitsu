@@ -148,9 +148,9 @@ export class DatabaseService {
     let ref = firebase.database().ref('matches/' + matchId + '/moves');
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
-        console.log("getMainAnnotatorOfMatch snapshot:");
-        console.log(snapshot.val());
-        console.log(snapshot.numChildren());
+        // console.log("getMainAnnotatorOfMatch snapshot:");
+        // console.log(snapshot.val());
+        // console.log(snapshot.numChildren());
         //TODO flesh out
         observer.next(snapshot.val());
       });
@@ -200,7 +200,7 @@ export class DatabaseService {
   hasUserPaid(userId: string){
     let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
     let resultObservable = Observable.create(observer =>{
-      ref.on("value", snapshot => {
+      ref.on("child_added", snapshot => { //TODO ???
         // console.log(snapshot);
         status = snapshot.val();
         observer.next(status);
@@ -217,11 +217,13 @@ export class DatabaseService {
     return this.db.object('/matches/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  getUserByUid(uid: string){
-    let ref = firebase.database().ref('users/');
-    let user: User = null;
+  getUserByUid(uid: string) : Observable<any>{
+    let ref = firebase.database().ref('/users/');
+    let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
+        console.log("query result in getUserByUid in databaseService: ");
+        console.log(snapshot.val());
         user = snapshot.val();
         observer.next(user);
       });
@@ -236,14 +238,16 @@ export class DatabaseService {
 
   //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
-    console.log("got to getNodeIdFromEmail in database service");
-    let ref = firebase.database().ref('users/');
-    let user: User = null;
+    // console.log("got to getNodeIdFromEmail in database service");
+    // console.log("email passed in is: " + email);
+    let ref = firebase.database().ref('/users/');
+    let nodeId: string = null;
     let resultObservable = Observable.create(observer =>{
       return ref.orderByChild('email').equalTo(email).limitToFirst(1).on("child_added", snapshot => {
-        console.log("got to snapshot in getNodeIdFromEmail in database service");
-        user = snapshot.val();
-        observer.next(user);
+        // console.log("got to snapshot in getNodeIdFromEmail in database service: ");
+        // console.log(snapshot.val().id);
+        nodeId = snapshot.val().id;
+        observer.next(nodeId);
       });
     });
     return resultObservable;
@@ -263,8 +267,15 @@ export class DatabaseService {
   }
 
   getUserById(userId: string){
-    let retrievedUser = this.db.object('users/' + userId);
-    return retrievedUser;
+    let ref = firebase.database().ref('users/' + userId);
+    let resultObservable = Observable.create(observer =>{
+      return ref.on("value", snapshot => {
+        // console.log("got to snapshot in getUserById in database service");
+        let user = snapshot.val();
+        observer.next(user);
+      });
+    });
+    return resultObservable;
   }
 
   addMatchToDb(match: any){
@@ -305,7 +316,7 @@ export class DatabaseService {
   }
 
   addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){
-    console.log("entered addMoveInVideoToUser");
+    // console.log("entered addMoveInVideoToUser");
     let now: string = new Date().toJSON();
     // let newMove = {move, dateAdded:now};
     let matchId = move.getMatchId();
@@ -313,7 +324,7 @@ export class DatabaseService {
     let moveId = ref.push(move).key;
     let updates = {};
     updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
-    console.log(updates);
+    // console.log(updates);
     firebase.database().ref().update(updates);
     //Now update dateLastAnnotated
     ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
@@ -323,7 +334,7 @@ export class DatabaseService {
   }
 
   updateUserInDb(user: User){
-    console.log("userId in updateUserInDb calll in database service: " + user.getId());
+    // console.log("userId in updateUserInDb calll in database service: " + user.getId());
     let updates = {};
     updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);
@@ -571,9 +582,9 @@ export class DatabaseService {
   }
 
   setUidFromNodeId(uid: string, nodeId: string){
-    console.log("grr this is happening. I don't know what's going on!");
-    console.log(nodeId);
-    console.log(uid);
+    // console.log("grr this is happening. I don't know what's going on!");
+    // console.log(nodeId);
+    // console.log(uid);
     let updates = {};
     updates['/users/' + nodeId + '/uid'] = uid;
     firebase.database().ref().update(updates);

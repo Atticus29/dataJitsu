@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../database.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import * as firebase from 'firebase/app';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { AuthorizationService } from '../authorization.service';
-import * as firebase from 'firebase/app';
 import { constants } from '../constants';
-import { ChangeDetectorRef } from '@angular/core';
+import { DatabaseService } from '../database.service';
+import { TrackerService } from '../tracker.service';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-user-status-report',
@@ -15,28 +19,26 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class UserStatusReportComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  user: any = null;
+  user: User = null;
   userLoggedIn: boolean = false;
   userObjFromDb;
   shouldAnnotate: boolean = false;
   paidStatus: any = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService) { }
 
   ngOnInit() {
     // this.db.hasUserPaid()
     // console.log("ngOnInit user-status-report is called");
     // this.paidStatus = false;
     //TODO put this in a try catch and send to error page upon catch
-    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
-      // console.log("user in authService of user-status-report: ");
-      // console.log(user);
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User)=>{
       this.user = user;
       if (this.user) {
         this.userLoggedIn = true;
         let ref = firebase.database().ref('users/');
         ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
-          this.db.getUserById(snapshot.key).valueChanges().subscribe(result => {
+          this.db.getUserById(snapshot.key).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
             this.userObjFromDb = result;
             this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md

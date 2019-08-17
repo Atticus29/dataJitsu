@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../database.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
-import { User } from '../user.model';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+import { DatabaseService } from '../database.service';
+import { User } from '../user.model';
+import { TrackerService } from '../tracker.service';
 import { ValidationService } from '../validation.service';
 import { AuthorizationService } from '../authorization.service';
 
@@ -12,11 +15,10 @@ import { AuthorizationService } from '../authorization.service';
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.scss'],
-  providers: [DatabaseService, ValidationService, AuthorizationService]
+  providers: [DatabaseService, ValidationService, AuthorizationService, TrackerService]
 })
 export class CreateAccountComponent implements OnInit {
 
-  //@TODO add the opposite of protection guard in the routing for this component (swap true and false), because otherwise a user currently logged in will be able to "create a new account" that will override their existing user specs
   //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   newUserForm: FormGroup;
@@ -31,10 +33,8 @@ export class CreateAccountComponent implements OnInit {
   disabledNoGiRank: boolean = false;
   disabledGiRank: boolean = false;
   disabledAgeClass: boolean = false;
-  // disabledWeightClass: boolean = false;
 
-
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService) { }
 
   ngOnInit() {
     for (var i = 3; i <= 110; i++) {
@@ -67,11 +67,6 @@ export class CreateAccountComponent implements OnInit {
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });
-
-    // this.db.getWeightClasses().takeUntil(this.ngUnsubscribe).subscribe(weightClasses=>{
-    //   this.weightClasses = weightClasses;
-    //   this.disabledWeightClass = true;
-    // });
   }
 
   getValues(){
@@ -97,35 +92,51 @@ export class CreateAccountComponent implements OnInit {
     let self = this;
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
-    this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser);
+    this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     //TODO
 
-    this.as.currentUserObservable.subscribe(user=>{
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User) =>{
       if(user){
-        // console.log("user in currentUserObservable in create-account component");
-        // console.log(user);
-        // console.log("user.uid in create-account component: " + user.uid);
-        // console.log(user);
-        // console.log("user email: " + user.email);
-        newUser.setUid(user.uid);
+        if(user.getUid()){
+          console.log("Oh hey! There's a uid, too!: " + user.getUid());
+        }
+        // newUser.setUid(user.getUid());
         this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
-        // console.log(newUser);
-        self.db.getNodeIdFromEmail(user.email).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
-          // console.log("got to getNodeIdFromEmail results");
-          // console.log(result);
-          // console.log(result.id);
-          newUser.setId(result.id);
-          this.db.updateUserInDb(newUser);
-          this.db.setUidFromNodeId(user.uid,result.id)
-        });
+        // self.db.getNodeIdFromEmail(user.getEmail()).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
+        //   newUser.setId(result.id);
+        //   this.db.updateUserInDb(newUser);
+        //   this.db.setUidFromNodeId(user.getUid(),result.id);
+        // });
       }
       //@TODO test whether trying to create a second account under the same email messes up
     });
 
-    this.router.navigate(['landing']);
-
-    //@TODO return to main or login results/welcome page
+    // this.as.currentUserObservable.subscribe(user=>{
+    //   if(user){
+    //     // console.log("user in currentUserObservable in create-account component");
+    //     // console.log(user);
+    //     // console.log("user.uid in create-account component: " + user.uid);
+    //     // console.log(user);
+    //     // console.log("user email: " + user.email);
+    //     newUser.setUid(user.uid);
+    //     this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
+    //     // console.log(newUser);
+    //     self.db.getNodeIdFromEmail(user.email).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
+    //       // console.log("got to getNodeIdFromEmail results");
+    //       // console.log(result);
+    //       // console.log(result.id);
+    //       newUser.setId(result.id);
+    //       this.db.updateUserInDb(newUser);
+    //       this.db.setUidFromNodeId(user.uid,result.id)
+    //     });
+    //   }
+    //   //@TODO test whether trying to create a second account under the same email messes up
+    // });
+  //
+  //   this.router.navigate(['landing']);
+  //
+  //   //@TODO return to main or login results/welcome page
   }
 
   allValid(){
@@ -136,6 +147,5 @@ export class CreateAccountComponent implements OnInit {
       return false;
     }
   }
-
 
 }

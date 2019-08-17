@@ -4,7 +4,7 @@ export class User {
   private id: string;
   private weightClass: string;
   private ageClass: string;
-  private uid: string;
+  public uid: string;
   private privileges: {};
   private votingInfo: {};
   private paymentStatus: boolean;
@@ -37,8 +37,16 @@ export class User {
     this.id = id;
   }
 
+  getName(){
+    return this.name;
+  }
+
   getId(){
     return this.id;
+  }
+
+  getUid(): string{
+    return this.uid;
   }
 
   setWeightClass(weightClass: string){

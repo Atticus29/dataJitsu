@@ -37,6 +37,7 @@ const appRoutes: Routes = [
 },{
   path: 'createaccount',
   component: CreateAccountComponent,
+  ...canActivate(redirectLoggedInTo(['landing'])),
   pathMatch: 'full'
 },{
   path: 'populatedb',

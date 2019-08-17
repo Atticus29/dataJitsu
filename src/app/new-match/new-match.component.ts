@@ -11,6 +11,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
+import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
@@ -24,7 +25,7 @@ declare var $:any;
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.scss'],
-  providers: [DatabaseService, AuthorizationService, ProtectionGuard]
+  providers: [DatabaseService, AuthorizationService, ProtectionGuard, TrackerService]
 })
 
 export class NewMatchComponent implements OnInit {
@@ -56,7 +57,7 @@ export class NewMatchComponent implements OnInit {
 
   newRankForm: FormGroup; //TODO what is this?
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService) {
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);
@@ -66,8 +67,8 @@ export class NewMatchComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
 
-    this.as.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
-      this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User) =>{
+      this.db.getUserByUid(user.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
         this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
           this.hasPaid = paymentStatus;
         });
@@ -144,9 +145,9 @@ export class NewMatchComponent implements OnInit {
     this.rankBound = rankBound==undefined ? "" : rankBound;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.as.currentUserObservable.pipe(switchMap(userInfo => {
+    return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo: User) => {
       console.log("got userInfo in new-match component. Looking for email from here");
-      console.log(userInfo.email);
+      console.log(userInfo.getEmail());
         return Observable.create(obs=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{ //TODO make robust
           let match = new Match(matchDeets, snapshot.key, moves);

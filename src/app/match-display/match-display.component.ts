@@ -14,6 +14,7 @@ import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
+import { User } from '../user.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { constants } from '../constants';
@@ -122,7 +123,7 @@ export class MatchDisplayComponent implements OnInit {
             //TODO reset the tree and the submission status (and the annotation move just to be safe?)
           });
           document.getElementById("end-move").addEventListener("click", function() {
-            // player.pauseVideo();
+            player.pauseVideo();
             let currentTime = player.getCurrentTime();
             self.trackerService.endTimePoint.next(player.getCurrentTime());
             // self.finishAnnotation(currentTime);
@@ -136,8 +137,8 @@ export class MatchDisplayComponent implements OnInit {
                         self.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{
                           self.trackerService.submission.pipe(take(1)).subscribe(submission =>{
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
-                              self.authService.currentUserObservable.pipe(take(1)).subscribe(user =>{
-                                self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+                              self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe((user: User) =>{
+                                self.db.getUserByUid(user.getUid()).pipe(take(1)).subscribe(usr => {
                                   let userInDb: string = usr.id;
                                   let attemptStatus: boolean = true;
                                   if(attemptSuccessful === false){
@@ -163,6 +164,7 @@ export class MatchDisplayComponent implements OnInit {
             // console.log("add delay here?");
             //TODO add 1 second delay?
             // player.resumeVideo();
+            player.playVideo();
           });
 
           document.getElementById("pause-vid").addEventListener("click", function() {
@@ -171,7 +173,6 @@ export class MatchDisplayComponent implements OnInit {
         }
 
         function onPlayerStateChange(event){
-          // console.log("happens!");
           if (event.data == window['YT'].PlayerState.PAUSED) {
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           };
@@ -195,13 +196,9 @@ export class MatchDisplayComponent implements OnInit {
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
-        this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-          this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-            console.log("getUserByUid is ");
-            console.log(usr);
+        this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((usr: User) =>{
+          this.db.getUserByUid(usr.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
             let userInDb: string = usr.id;
-            console.log("user is: ");
-            console.log(userInDb);
             self.db.addMoveInVideoToUser(self.tempMove, userInDb);
           });
         });
@@ -222,8 +219,8 @@ export class MatchDisplayComponent implements OnInit {
 
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.authService.currentUserObservable.subscribe(usr =>{
-      this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
+    this.trackerService.currentUserBehaviorSubject.subscribe((usr: User) =>{
+      this.db.getUserByUid(usr.getUid()).pipe(take(1)).subscribe(urs => {
         let userInDb: string = urs.id;
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
         this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
@@ -232,26 +229,16 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
-    // console.log("got into onRateAnnotation");
     let newRating = $event.newValue;
-    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-      // console.log("usr from auth service is: ");
-      // console.log(usr);
-      // console.log("usr.uid is "+ usr.uid);
-      this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        // console.log("result of getUserByUid is: ");
-        // console.log(result);
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((usr: User) =>{
+      this.db.getUserByUid(usr.getUid()).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         let userDbId: string = result.id;
         console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
         this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
         if($event.newValue > 4){
-          // console.log("rating is over 4");
           this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
-            // console.log("major annotator is ");
-            // console.log(majorityAnnotator.annotatorUserId);
             if(majorityAnnotator.annotatorUserId !== userDbId){
-              // console.log()
               this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
             }
             if(majorityAnnotator.annotatorUserId === userDbId){

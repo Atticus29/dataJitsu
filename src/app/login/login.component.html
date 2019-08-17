@@ -4,7 +4,7 @@
   </div>
   <div class="flexbox-vertical grey" *ngIf="!showLoader">
     <div *ngIf="user; else showLogin">
-      <h1>Hello {{ user.displayName }}!</h1>
+      <h1>Hello {{ user.getName() }}!</h1>
       <button (click)="logout()">Logout</button>
     </div>
     <ng-template #showLogin>

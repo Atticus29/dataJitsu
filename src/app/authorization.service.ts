@@ -5,9 +5,11 @@ import { auth } from 'firebase/app';
 import { Router } from "@angular/router";
 // import * as firebase from 'firebase';
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
+import { DatabaseService } from './database.service';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class AuthorizationService {
   public authenticated: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router:Router, public ngZone: NgZone) {
+  constructor(private afAuth: AngularFireAuth, private afdb: AngularFireDatabase, private router:Router, public ngZone: NgZone, private dbService: DatabaseService) {
     this.afAuth.authState.subscribe(user => {
       if(user){
         this.authenticated = true;
@@ -58,8 +60,8 @@ export class AuthorizationService {
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.afAuth.authState.subscribe(auth =>{
-        // console.log("user in currentUserObservable: ");
-        // console.log(auth);
+        console.log("user in currentUserObservable: ");
+        console.log(auth);
         observer.next(auth);
       });
     });
@@ -110,8 +112,8 @@ export class AuthorizationService {
       .then((result) =>  {
         this.ngZone.run(() =>{
           this.authState = result.user;
-          console.log("result.user in socialSignIn:");
-          console.log(result.user);
+          // console.log("result.user in socialSignIn:");
+          // console.log(result.user);
           this.router.navigate(['landing']);
           //TODO switch user to the one in the db
           // this.updateUserData()
@@ -139,9 +141,18 @@ export class AuthorizationService {
   //// Email/Password Auth ////
 
   emailSignUp(email:string, password:string) {
+    let self = this;
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.authState = result.user;
+        this.dbService.getNodeIdFromEmail(result.user.email).pipe(take(1)).subscribe((nodeId: string) =>{
+          // console.log("nodeId is " + nodeId);
+          this.dbService.getUserById(nodeId).pipe(take(1)).subscribe((user: User) =>{
+            // console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
+            // console.log(user);
+            this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+          });
+        });
         this.sendVerificationEmail();
         // this.updateUserData()
       })
@@ -173,8 +184,8 @@ export class AuthorizationService {
      return this.afAuth.auth.signInWithEmailAndPassword(email, password)
        .then((result) => {
          this.ngZone.run(() =>{
-           console.log("user in emailLogin in authorization service");
-           console.log(result);
+           // console.log("user in emailLogin in authorization service");
+           // console.log(result);
            this.authState = result; //TODO?
            this.router.navigate(['matches']);
          });
@@ -220,7 +231,7 @@ export class AuthorizationService {
   }
   //// Helpers ////
 
-  private updateUserData(user: any): void {
+  // private updateUserData(user: any): void {
   //   SetUserData(user) {
   //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
   //   const userData: User = {
@@ -235,16 +246,16 @@ export class AuthorizationService {
   //   })
   // }
     // this.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-      let path = `users/${user.id}`; // Endpoint on firebase
-      let data = {
-                    email: user.email,
-                    name: user.displayName ? user.displayName : "Nameless User",
-                    uid: user.uid,
-                    photoURL: user.photoURL,
-                    emailVerified: user.emailVerified
-                  }
-      this.db.object(path).update(data)
-      .catch(error => console.log(error));
+      // let path = `users/${user.id}`; // Endpoint on firebase
+      // let data = {
+      //               email: user.email,
+      //               name: user.displayName ? user.displayName : "Nameless User",
+      //               uid: user.uid,
+      //               photoURL: user.photoURL,
+      //               emailVerified: user.emailVerified
+      //             }
+      // this.dbService.object(path).update(data)
+      // .catch(error => console.log(error));
     // });
   // Writes user name and email to realtime db
   // useful if your app displays information about users or for admin features
@@ -255,5 +266,5 @@ export class AuthorizationService {
     //             }
     // this.db.object(path).update(data)
     // .catch(error => console.log(error));
-  }
+  // }
 }
