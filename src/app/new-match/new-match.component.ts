@@ -145,9 +145,9 @@ export class NewMatchComponent implements OnInit {
     this.rankBound = rankBound==undefined ? "" : rankBound;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo: User) => {
+    return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo) => {
       console.log("got userInfo in new-match component. Looking for email from here");
-      console.log(userInfo.getEmail());
+      console.log(userInfo.email);
         return Observable.create(obs=>{
         this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{ //TODO make robust
           let match = new Match(matchDeets, snapshot.key, moves);
