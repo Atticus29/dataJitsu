@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil, first } from 'rxjs/operators';
+import { takeUntil, take, first } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -248,7 +248,6 @@ export class DatabaseService {
     return this.retrievedMatch;
   }
 
-  //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
     // console.log("got to getNodeIdFromEmail in database service");
     // console.log("email passed in is: " + email);
@@ -319,12 +318,52 @@ export class DatabaseService {
   }
 
   addMoveInVideoToMatch(move: MoveInVideo){
-    let matchId = move.getMatchId();
-    let ref = this.db.list('/matches/' + matchId + '/moves');
-    let moveId = ref.push(move).key;
-    let updates = {};
-    updates['/matches/' + matchId + '/moves/' + moveId] = move;
-    firebase.database().ref().update(updates);
+    //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
+    this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+      if(uniqueEnough){
+        let matchId = move.getMatchId();
+        let ref = this.db.list('/matches/' + matchId + '/moves');
+        let moveId = ref.push(move).key;
+        let updates = {};
+        updates['/matches/' + matchId + '/moves/' + moveId] = move;
+        firebase.database().ref().update(updates);
+      } else {
+        if(uniqueEnough == false){
+          // TODO add toast thing saying as much
+          alert("this should only happen if move is not unique enough!");
+        } else{
+          //just hasn't shown up yet, be patient
+        }
+      }
+    });
+  }
+
+  moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
+    let resultObservable = Observable.create(observer =>{
+      this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
+        console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
+        console.log(moves);
+        let moveCount = 0;
+        for(let item in moves){
+          console.log(moves[item].dateAdded);
+          // console.log(item.dateAdded);
+          //TODO if calculateDaysSinceLastAnnotation and name is the same as current move, next false. Otherwise, next true
+        }
+        observer.next(true);
+      });
+    });
+    return resultObservable;
+  }
+
+  getAnnotations(matchId: string){
+    let ref = firebase.database().ref('matches/' + matchId + '/moves/');
+    let resultObservable = Observable.create(observer =>{
+      return ref.on("value", snapshot => {
+        let moves = snapshot.val();
+        observer.next(moves);
+      });
+    });
+    return resultObservable;
   }
 
   addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){

@@ -1,5 +1,7 @@
 # TODO high priority
+- [ ] Tests to tell whether someone with paidStatus true can see matches but not delete, someone who has not paid cannot see matches
 - [ ] Write a test to annotate two moves in a row, both with a move deep in the tree
+- [ ] info for ratings (1 annotation hasn't been rated or is annotated mostly incorrectly, 4 is annotated everything that the ref scores, 5 is annotated beyond that with more details)
 - [ ] Figure out why creating a new user works fine manually but not with the cypress test in login.spec
 - [ ] Add some way of preventing users from simply making one shitty annotation and getting in
   - [ ] Add some way of disabling them for a punishingly long time if they do it
@@ -66,6 +68,7 @@
 - [x] Fix test for clicking pause
 
 # Specs
+- [ ] An annotation is not made if a similar enough one has already been made by someone else
 - [ ] Admin status is tracked and admin can remove matches
 - [ ] User can filter annotations by ones that scored points
 - [ ] There's a way for a user to undo the most recent annotation they made?

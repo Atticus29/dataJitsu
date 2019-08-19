@@ -4,7 +4,7 @@ import {MatSnackBar} from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
 
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, last } from 'rxjs/operators';
 
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
@@ -56,6 +56,7 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   ngOnDestroy(){
+    console.log("ngOnDestroy in match-display entered");
 
   }
 
@@ -139,17 +140,19 @@ export class MatchDisplayComponent implements OnInit {
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
                               self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe((user) =>{
                                 self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
-                                  let userInDb: string = usr.id;
-                                  let attemptStatus: boolean = true;
-                                  if(attemptSuccessful === false){
-                                    attemptStatus = false
+                                  if(usr){
+                                    let userInDb: string = usr.id;
+                                    let attemptStatus: boolean = true;
+                                    if(attemptSuccessful === false){
+                                      attemptStatus = false
+                                    }
+                                    let submissionStatus: boolean = false;
+                                    if(submission === "Yes"){
+                                      submissionStatus = true;
+                                    }
+                                    self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus, attemptStatus, userInDb); //TODO update this once you add performers
+                                    self.moveAssembledStatus.next(true);
                                   }
-                                  let submissionStatus: boolean = false;
-                                  if(submission === "Yes"){
-                                    submissionStatus = true;
-                                  }
-                                  self.tempMove = new MoveInVideo(moveName, performer, recipient, startTime, endTime, points, matchId, submissionStatus, attemptStatus, userInDb); //TODO update this once you add performers
-                                  self.moveAssembledStatus.next(true);
                                 });
                               });
                             });
@@ -163,11 +166,11 @@ export class MatchDisplayComponent implements OnInit {
             });
             console.log("playing and going back a little?");
             console.log(currentTime);
-            console.log(Math.max(0,currentTime-5));
+            console.log(Math.max(0.5,currentTime-5));
             //TODO add 1 second delay?
             // player.resumeVideo();
             player.playVideo();
-            player.seekTo(Math.max(0,currentTime-5));
+            player.seekTo(Math.max(0.5,currentTime-5));
           });
 
           document.getElementById("pause-vid").addEventListener("click", function() {
@@ -200,10 +203,12 @@ export class MatchDisplayComponent implements OnInit {
       if(status && this.moveCompletelyLegit()){
         self.db.addMoveInVideoToMatch(this.tempMove);
         this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-          this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-            let userInDb: string = usr.id;
-            self.db.addMoveInVideoToUser(self.tempMove, userInDb);
-          });
+          if(usr){
+            this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+              let userInDb: string = usr.id;
+              self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+            });
+          }
         });
         this.moveAssembledStatus.next(false);
         self.trackerService.resetAllExceptCurrentMatch();

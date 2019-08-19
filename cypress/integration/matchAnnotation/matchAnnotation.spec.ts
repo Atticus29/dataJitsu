@@ -139,8 +139,31 @@ describe ('Match annotation tests', () =>{
    cy.get('div[id=annotationModal]').should('not.be.visible');
   });
 
-  it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+  it('can click into the deepest part of the tree', function(){
     cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').eq(5).click({force:true});
+    cy.get('mat-icon').eq(6).click({force:true});
+    cy.contains('Annotation Selected: Ankle Lock').should('not.exist');
+    cy.contains('Ankle Lock').first().click();
+    cy.contains('Annotation Selected: Ankle Lock').should('exist');
+  });
+
+});
+
+
+describe ('Match annotation tests with no afterEach', () =>{
+  beforeEach(()=>{
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+    });
+  });
+
+  it.only('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+    cy.get('a[name=videoClick]').first().click();
+    cy.wait(3000);
+    cy.get('a[id=play]').click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').first().click({force:true});
@@ -154,10 +177,13 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click();
     cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.wait(2000);
-    cy.get('button[id=end-move]').click({force:true});
-    cy.wait(2000);
+    cy.wait(1000);
+    cy.get('button[id=end-move]').click(); //{force:true}
+    // cy.wait(1000);
+    cy.visit('http://localhost:4200/login');
+
     cy.logout();
+    // cy.wait(2000);
 
     //And then again
     cy.log("Second part");
@@ -170,17 +196,7 @@ describe ('Match annotation tests', () =>{
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').first().click({force:true});
     cy.contains('Annotation Selected: Advantage').should('not.exist');
+    cy.get('button[id=modal-cancel-button]').click();
+    cy.logout();
   });
-
-  it('can click into the deepest part of the tree', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').eq(5).click({force:true});
-    cy.get('mat-icon').eq(6).click({force:true});
-    cy.contains('Annotation Selected: Ankle Lock').should('not.exist');
-    cy.contains('Ankle Lock').first().click();
-    cy.contains('Annotation Selected: Ankle Lock').should('exist');
-  });
-
 });
