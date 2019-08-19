@@ -84,6 +84,7 @@ export class DynamicDataSource {
     }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
+    node.isLoading = true;
     console.log(node.item);
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
       console.log("results in toggleNode getMovesSubsetAsObject call");
@@ -93,8 +94,8 @@ export class DynamicDataSource {
         children = results;
       } else{
         try {
-          console.log("results before conversion:");
-          console.log(results);
+          // console.log("results before conversion:");
+          // console.log(results);
           results = this.jsonToStrMap(results);
           console.log("jsonToStrMap successful:");
           console.log(results);
@@ -126,9 +127,11 @@ export class DynamicDataSource {
           && this.data[i].level > node.level; i++, count++) {}
         this.data.splice(index + 1, count);
       }
+      console.log("got to dataChange");
       this.dataChange.next(this.data);
+      console.log("got to changing node isLoading to false");
       node.isLoading = false;
     });
-    node.isLoading = true;
+    // node.isLoading = true;
   }
 }
