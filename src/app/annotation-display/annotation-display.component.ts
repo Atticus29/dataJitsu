@@ -52,7 +52,7 @@ export class AnnotationDisplayComponent implements OnInit {
   private points = new FormControl('', [Validators.required, Validators.min(0)]);
   private performerFg = new FormControl('', [Validators.required]);
   private submissionStatus: string = "No";
-  private attemptStatus: boolean = true;
+  private attemptStatus: string = "Yes";
   private pointsEntered: number = -1;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
@@ -128,6 +128,8 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.performer.next(result.performerValue);
     this.trackerService.points.next(result.pointValue);
     this.trackerService.submission.next(result.theSubmissionStatus);
+    console.log("attempt successful?");
+    console.log(result.theAttemptStatus);
     this.trackerService.attemptStatus.next(result.theAttemptStatus);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);

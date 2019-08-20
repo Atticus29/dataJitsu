@@ -17,7 +17,7 @@ export class TrackerService {
   public videoResumeStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public submission: BehaviorSubject<string> = new BehaviorSubject<string>("No");
   public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public attemptStatus: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  public attemptStatus: BehaviorSubject<string> = new BehaviorSubject("Yes");
   public currentUserBehaviorSubject: BehaviorSubject<User> = new BehaviorSubject(null);
 
   constructor() { }
@@ -33,7 +33,7 @@ export class TrackerService {
     this.videoResumeStatus.next(false);
     this.submission.next("No");
     this.annotationBegun.next(false);
-    this.attemptStatus.next(true);
+    this.attemptStatus.next("Yes");
   }
 
   resetAll(){
@@ -47,7 +47,7 @@ export class TrackerService {
     this.matchId.next("tmpId");
     this.videoResumeStatus.next(false);
     this.submission.next("No");
-    this.attemptStatus.next(true);
+    this.attemptStatus.next("Yes");
     this.annotationBegun.next(false);
   };
 }

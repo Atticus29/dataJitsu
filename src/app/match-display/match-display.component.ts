@@ -143,8 +143,8 @@ export class MatchDisplayComponent implements OnInit {
                                   if(usr){
                                     let userInDb: string = usr.id;
                                     let attemptStatus: boolean = true;
-                                    if(attemptSuccessful === false){
-                                      attemptStatus = false
+                                    if(attemptSuccessful === "No"){
+                                      attemptStatus = false;
                                     }
                                     let submissionStatus: boolean = false;
                                     if(submission === "Yes"){
