@@ -1,42 +1,43 @@
 # Known issues
-- [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't swtich disabled
-- [ ] Logging in after creating user and logging out changes paid status to trip
-- [ ] My admin user is being either removed or replaced by the next one?
-- [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
-- [ ] TODO make the signs up a new user test pass
-
-- [ ] Deleting a user from the db when they're logged in creates a payment entry in the db
-- [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
-- [ ] Need a way to handle things like missing uid in users
-- [ ] If user is logged in and navigates to /login, it will still show them login stuff
-- [ ] Original poster ID is "users" right now and should be updated to the actual user's id
-- [ ] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?
-- [ ] If you navigate to matches/undefined, it still shows something that looks somewhat like a match
-- [ ] Second time you annotate a move, whether submission and whether successful not at their default values
-- [ ] Changing the annotation rating resets the video
-- [ ] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
-- [ ] the timeline for a previous match might persist when a new match is clicked
-- [ ] submission status in the form stays imprinted on the previously annotated move
-- [ ] Currently, lets you create multiple duplicate accounts
-- [ ] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
-- [ ] Sometimes (but not always?), clicking the end move stops the video entirely
-- [ ] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process
-- [ ] Clicking play doesn't play a video... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
-- [ ] Tooltips in match-display are very inconsistent
-- [ ] Datatable doesn't respond to deleted matches in real time
-- [ ] Creating new account makes status stuff visible, enables logout button but doesn't have user logged in
-- [ ] Clicking the play button doesn't work
-- [ ] The title in the tab doesn't load
-- [ ] logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
-- [ ] Video icon not displaying on main window
+- [ ] User creation
+    - [ ] Creating a new user doesn't associate uid with them
+    - [ ] Logging in after creating user and logging out changes paid status to trip
+    - [ ] Deleting a user from the db when they're logged in creates a payment entry in the db
+    - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
+    - [ ] Currently, lets you create multiple duplicate accounts (?)
+- [ ] Annotation
+    - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't swtich disabled
+    - [ ] Second time you annotate a move, whether submission and whether successful not at their default values
+- [ ] Video Player
+    - [ ] Changing the annotation rating resets the video
+    - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
+    - [ ] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
+- [ ] Tooltips in match-display are very inconsistent (make sure it's not just when the dev tools are open? Currently seems to be the case)
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
-- [ ] //TODO createMoveInVideo from form submission
-- [ ] Gi/Nogi on match-display says false
 
 # Mysteriously failing tests
 - [ ] TODO make the signs up a new user test pass (see above list [cross-listed])
 
+# Tabled issues
+- [x] the timeline for a previous match might persist when a new match is clicked
+- [x] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
+- [x] Video icon not displaying on main window
+
+# Not sure what this is about anymore
+- [x] //TODO createMoveInVideo from form submission
+
 # Resolved issues
+- [x] Gi/Nogi on match-display says false
+- [x] If you navigate to matches/undefined, it still shows something that looks somewhat like a match
+- [x] Original poster ID is "users" right now and should be updated to the actual user's id
+- [x] My admin user is being either removed or replaced by the next one?
+- [x] If user is logged in and navigates to /login, it will still show them login stuff
+- [x] Some of the tree loads forever (or at least for a long time?) when you're annotating your second+ move?
+- [x] Adding a move to a video adds multiple annotations and it seems to have something to do with the move selection process
+- [x] Datatable doesn't respond to deleted matches in real time
+- [x] Creating new account makes status stuff visible, enables logout button but doesn't have user logged in
+- [x] The title in the tab doesn't load
+- [x] logging out with the dev console open is an issue and sometimes even without, logging out looks inconsistent
 - [x] Creating a user gives them a different uid than they should have?
 - [x] Move not being recorded in database
 - [x] user-status-report stuff is not correctly fetching date from the user's last annotation

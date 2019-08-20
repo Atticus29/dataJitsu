@@ -34,12 +34,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUserObservable.subscribe(result =>{
-      // console.log("result in currentUserObservable in app component happens: ");
+      console.log("result in currentUserObservable in app component happens: ");
       if(result){
-        // console.log(result);
+        console.log(result);
         this.db.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
-          // console.log("dbUser in getUserByUid of app.component:");
-          // console.log(dbUser);
+          console.log("dbUser in getUserByUid of app.component:");
+          console.log(dbUser);
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!
         });
       }

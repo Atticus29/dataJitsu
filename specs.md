@@ -1,4 +1,8 @@
 # TODO high priority
+- [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
+- [ ] TODO make the signs up a new user test pass (currently does not)
+- [ ] Need a way to handle things like missing uid in users
+- [ ] Submission status and success status in the form stays imprinted on the previously annotated move
 - [ ] cannot make the same exact annotation twice test
 - [ ] Tests to tell whether someone with paidStatus true can see matches but not delete, someone who has not paid cannot see matches
 - [ ] Write a test to annotate two moves in a row, both with a move deep in the tree
@@ -20,7 +24,6 @@
 - [ ] Admin and moderators have a special area only they can access and do administrative things in
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
 - [ ] Detect when the link url is different but other match specs are the same
-- [ ] Update the weight classes and belts of the matches that have already been made
 - [ ] Tests
   - [ ] Improve deleting a match test
   - [ ] Flesh out 'created match appears on table' test
@@ -44,6 +47,8 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
+- [x] Update the weight classes and belts of the matches that have already been made
 - [x] Fix bugs with logging out (sometimes you have to do it multiply)
 - [x] Get login to display and to successfully navigate both for login and for logout
 - [x] Set up new email login dialog box

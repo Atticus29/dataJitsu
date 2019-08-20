@@ -36,7 +36,7 @@ export class NewMatchComponent implements OnInit {
   ranks: any[];
   giRanks: any[];
   nogiRanks: any[];
-  rankType: string = "Gi";
+  rankType: string = "Nogi";
   genders: any[];
   weightClasses: any[];
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -86,12 +86,13 @@ export class NewMatchComponent implements OnInit {
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
       this.ranks = giRanks;
-      this.disabledGiRank = true;
+      // this.disabledGiRank = true;
     })
 
     this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks;
-      this.disabledNoGiRank = true;
+      this.ranks = noGiRanks;
+      // this.disabledNoGiRank = true;
     })
 
     this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
@@ -144,9 +145,11 @@ export class NewMatchComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound} = result;
+    console.log("createMatchObj in new-match component entered");
+    console.log(result);
+    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
+    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
     return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo) => {
       // console.log("got userInfo in new-match component. Looking for email from here");
@@ -172,17 +175,24 @@ export class NewMatchComponent implements OnInit {
   }
 
   changed(){
-    if(this.rankType === "Gi"){
-      this.rankType = "No gi";
-      this.ranks = this.nogiRanks;
-      this.giStatus = false;
-    } else if(this.rankType === "No gi"){
+    console.log("checked in changed: ");
+    console.log(this.checked);
+    if(this.checked){
       this.rankType = "Gi";
-      this.giStatus = true;
       this.ranks = this.giRanks;
-    } else {
-      console.log ("Something went wrong when toggling between gi and nogi");
+      this.giStatus = true;
+    } else{
+      console.log("nogi selected");
+      this.rankType = "Nogi";
+      this.giStatus = false;
+      this.ranks = this.nogiRanks;
     }
+    // if(this.rankType === "Gi"){
+    //   console.log("gi selected");
+    // } else if(this.rankType === "Nogi"){
+    // } else {
+    //   console.log ("Something went wrong when toggling between gi and nogi");
+    // }
   }
 
   submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter

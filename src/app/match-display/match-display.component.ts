@@ -47,6 +47,7 @@ export class MatchDisplayComponent implements OnInit {
   isExpandable = (node: DynamicFlatNode) => node.expandable;
   private matchAverageRating: number = 0;
   private annotationAverageRating: number = 0;
+  private giStatus: string = "Fetching...";
   // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
@@ -87,6 +88,13 @@ export class MatchDisplayComponent implements OnInit {
         // console.log("getMatchFromNodeKey called and returned: ");
         // console.log(match);
         this.match = match;
+        console.log("hi!:");
+        console.log(match.matchDeets.giStatus);
+        if(match.matchDeets.giStatus){
+          this.giStatus = "Gi";
+        } else{
+          this.giStatus = "Nogi";
+        }
         this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
         // console.log("matchUrl is: " + this.matchUrl);
         document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
