@@ -201,15 +201,20 @@ export class MatchDisplayComponent implements OnInit {
 
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
-        self.db.addMoveInVideoToMatch(this.tempMove);
-        this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-          if(usr){
-            this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-              let userInDb: string = usr.id;
-              self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+        self.db.addMoveInVideoToMatch(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnough =>{
+          if(!matchUniqueEnough){
+            this.snackBar.open("Annotation has already been made by another user");
+          } else{
+            this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+              if(usr){
+                this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+                  let userInDb: string = usr.id;
+                  self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+                });
+              }
             });
           }
-        });
+        })
         this.moveAssembledStatus.next(false);
         self.trackerService.resetAllExceptCurrentMatch();
         self.dataSource.dataChange.next(self.database.initialData());

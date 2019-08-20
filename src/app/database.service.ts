@@ -7,6 +7,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { TextTransformationService } from './text-transformation.service';
+import { DateCalculationsService } from './date-calculations.service';
 import { User } from './user.model';
 import { Match } from './match.model';
 import { constants } from './constants';
@@ -28,7 +29,7 @@ export class DatabaseService {
   matchDetails: Observable<any>;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
+  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
     this.matches = db.list<Match>('/matches').valueChanges();
     this.weightClasses = db.list<String>('/weightClasses').valueChanges();
     this.giRanks = db.list<String>('/giRanks').valueChanges();
@@ -317,25 +318,56 @@ export class DatabaseService {
     return userId;
   }
 
-  addMoveInVideoToMatch(move: MoveInVideo){
-    //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
-    this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
-      if(uniqueEnough){
-        let matchId = move.getMatchId();
-        let ref = this.db.list('/matches/' + matchId + '/moves');
-        let moveId = ref.push(move).key;
-        let updates = {};
-        updates['/matches/' + matchId + '/moves/' + moveId] = move;
-        firebase.database().ref().update(updates);
-      } else {
-        if(uniqueEnough == false){
-          // TODO add toast thing saying as much
-          alert("this should only happen if move is not unique enough!");
-        } else{
-          //just hasn't shown up yet, be patient
+  addMoveInVideoToMatch(move: MoveInVideo): Observable<boolean>{
+    let resultObservable = Observable.create(observer =>{
+      //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
+      this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+        if(uniqueEnough){
+          let matchId = move.getMatchId();
+          let ref = this.db.list('/matches/' + matchId + '/moves');
+          let moveId = ref.push(move).key;
+          let updates = {};
+          updates['/matches/' + matchId + '/moves/' + moveId] = move;
+          firebase.database().ref().update(updates);
+          observer.next(true);
+        } else {
+          if(uniqueEnough == false){
+            // TODO add toast thing saying as much
+            // alert("this should only happen if move is not unique enough!");
+            observer.next(false);
+          } else{
+            //just hasn't shown up yet, be patient
+          }
         }
+      });
+
+    });
+    return resultObservable;
+
+  }
+
+  userHasAnnotatedEnough(userId: string): Observable<boolean>{
+    let ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
+    let resultObservable = Observable.create(observer =>{
+      let moveCount = 0;
+      ref.on("child_added", childSnapshot =>{
+        let move = childSnapshot.val();
+        // console.log("move in userHasAnnotatedEnough");
+        // console.log(move.dateAdded);
+        if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
+          console.log(move.dateAdded + " is recent enough to count. Adding it...");
+          moveCount += 1;
+        } else{
+          //Don't increment
+        }
+      });
+      if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
+        observer.next(false);
+      } else{
+        observer.next(true);
       }
     });
+    return resultObservable;
   }
 
   moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
@@ -343,13 +375,14 @@ export class DatabaseService {
       this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
         console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
         console.log(moves);
-        let moveCount = 0;
         for(let item in moves){
           console.log(moves[item].dateAdded);
-          // console.log(item.dateAdded);
-          //TODO if calculateDaysSinceLastAnnotation and name is the same as current move, next false. Otherwise, next true
+          if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
+            observer.next(true); //TODO this will change
+          } else{
+            observer.next(true);
+          }
         }
-        observer.next(true);
       });
     });
     return resultObservable;

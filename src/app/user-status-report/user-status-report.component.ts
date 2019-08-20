@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
+import { DateCalculationsService } from '../date-calculations.service';
 import { constants } from '../constants';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
@@ -25,7 +26,7 @@ export class UserStatusReportComponent implements OnInit {
   shouldAnnotate: boolean = false;
   paidStatus: any = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService) { }
 
   ngOnInit() {
     // this.db.hasUserPaid()
@@ -54,28 +55,34 @@ export class UserStatusReportComponent implements OnInit {
               }
             });
 
-            this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
-              // console.log("getDateSinceAnnotated call in user-status-report: ");
-              // console.log(date);
-              let dateLastAnnotated: Date = new Date(date.toString()); //TODO this used to be date.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
-              if(dateLastAnnotated.toString() != "Invalid Date"){ //dateLastAnnotated.toString()
-                // console.log("yes");
-                let daysSinceLastAnnotation: number = this.calculateDaysSinceLastAnnotation(dateLastAnnotated);
-                // console.log(daysSinceLastAnnotation);
-                if(!daysSinceLastAnnotation){
-                  this.toggleAnnotationPrompt(true);
-                }
-                if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
-                  // console.log("leak!");
-                  this.toggleAnnotationPrompt(false);
-                } else{
-                  this.toggleAnnotationPrompt(true);
-                }
-              } else{
-                console.log("first timer here!");
-                this.toggleAnnotationPrompt(true); //TODO should this be a thing??? Not clear when this happens
-              }
+            this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
+              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              console.log(hasUserAnnotatedEnough);
+              // if()
             });
+
+            // this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
+            //   // console.log("getDateSinceAnnotated call in user-status-report: ");
+            //   // console.log(date);
+            //   let dateLastAnnotated: Date = new Date(date.toString());
+            //   if(dateLastAnnotated.toString() != "Invalid Date"){ //dateLastAnnotated.toString()
+            //     // console.log("yes");
+            //     let daysSinceLastAnnotation: number = this.dateService.calculateDaysSinceLastAnnotation(dateLastAnnotated);
+            //     // console.log(daysSinceLastAnnotation);
+            //     if(!daysSinceLastAnnotation){
+            //       this.toggleAnnotationPrompt(true);
+            //     }
+            //     if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
+            //       // console.log("leak!");
+            //       this.toggleAnnotationPrompt(false);
+            //     } else{
+            //       this.toggleAnnotationPrompt(true);
+            //     }
+            //   } else{
+            //     console.log("first timer here!");
+            //     this.toggleAnnotationPrompt(true); //TODO should this be a thing??? Not clear when this happens
+            //   }
+            // });
           });
         });
       } else{
@@ -88,33 +95,6 @@ export class UserStatusReportComponent implements OnInit {
     // this.authService.unsubscribe();
   }
 
-  calculateDaysSinceLastAnnotation(date: Date){ //TODO move to service
-    let today: string = new Date().toJSON();
-    // console.log("today");
-    // console.log(today);
-    let parsedToday = this.parseDate(today);
-    // console.log("parsedToday");
-    // console.log(parsedToday);
-    let parsedAnnotationDate = this.parseDate(date.toJSON());
-    let numDays = this.datediff(parsedAnnotationDate, parsedToday);
-    // console.log("numDays: " + numDays);
-    return numDays;
-  }
-
-  parseDate(str: string) { //TODO move to service
-    let mdy = str.split('-');
-    // console.log(mdy);
-    // console.log(mdy[0]);
-    // console.log(mdy[1]);
-    // console.log(mdy[2].substring(0,2));
-    return new Date(Number(mdy[0]), Number(mdy[1])-1, Number(mdy[2].substring(0,2)));
-  }
-
-  datediff(first, second) { //TODO move to service
-    // Take the difference between the dates and divide by milliseconds per day.
-    // Round to nearest whole number to deal with DST.
-    return Math.round((second-first)/(1000*60*60*24));
-  }
 
   toggleAnnotationPrompt(status: boolean){
     //TODO flesh out

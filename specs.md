@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] cannot make the same exact annotation twice test
 - [ ] Tests to tell whether someone with paidStatus true can see matches but not delete, someone who has not paid cannot see matches
 - [ ] Write a test to annotate two moves in a row, both with a move deep in the tree
 - [ ] info for ratings (1 annotation hasn't been rated or is annotated mostly incorrectly, 4 is annotated everything that the ref scores, 5 is annotated beyond that with more details)

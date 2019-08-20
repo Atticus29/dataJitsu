@@ -150,6 +150,27 @@ describe ('Match annotation tests', () =>{
     cy.contains('Annotation Selected: Ankle Lock').should('exist');
   });
 
+  it.only('cannot make the same exact annotation twice', function(){
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').eq(6).click({force:true});
+    cy.get('mat-icon').eq(7).click({force:true});
+    // cy.get('mat-icon').eq(6).click({force:true});
+    // cy.contains('Advantage').first().next().click();
+    // cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    // cy.get('button[id=done-button-performers]').should('be.disabled');
+    // cy.get('input[id=points]').type('2');
+    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+    cy.get('button[id=end-move]').should('be.enabled');
+    cy.get('button[id=end-move]').click();
+  });
+
 });
 
 
@@ -160,7 +181,7 @@ describe ('Match annotation tests with no afterEach', () =>{
     });
   });
 
-  it.only('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+  it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
     cy.get('a[name=videoClick]').first().click();
     cy.wait(3000);
     cy.get('a[id=play]').click();
