@@ -12,8 +12,8 @@ export var constants = {
     "Discliplinary Action",
     "Positions With Names That Do Not Score Points In Most Rule Sets",
     "Positional Changes",
-    "Sweeps",
-    "Submissions or Submission Attempts That Scored Points",
+    "Sweeps or Sweep Attempts",
+    "Submissions or Submission Attempts",
     "Take Downs",
     "Guard Passes"
     ],

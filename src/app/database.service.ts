@@ -50,20 +50,22 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
-    // console.log("childNodeName in getMovesSubsetAsObject database service");
-    // console.log(childNodeName);
+    console.log("childNodeName in getMovesSubsetAsObject database service");
+    console.log(childNodeName);
     let ref = firebase.database().ref('/moves/');
     let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
       ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
-        // console.log("getMovesSubsetAsObject special snapshot: ");
-        // console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
+        console.log("getMovesSubsetAsObject special snapshot: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
         observer.next(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
       });
     } else{
       ref.orderByChild('/moves/' + childNodeName).on("value", snapshot =>{
-        // console.log("getMovesSubsetAsObject not special snapshot: ");
-        // console.log(snapshot.val()[childNodeName]);
+        console.log("getMovesSubsetAsObject not special snapshot: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val()[childNodeName]);
         observer.next(snapshot.val()[childNodeName]);
       });
     }
@@ -325,10 +327,10 @@ export class DatabaseService {
       let counter: number = 0;
       //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
       this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
-        console.log("unique enough?");
-        console.log(uniqueEnough);
-        console.log("value of counter: ");
-        console.log(counter);
+        // console.log("unique enough?");
+        // console.log(uniqueEnough);
+        // console.log("value of counter: ");
+        // console.log(counter);
         if(uniqueEnough && counter < 1){
           let matchId = move.getMatchId();
           let ref = this.db.list('/matches/' + matchId + '/moves');
@@ -358,13 +360,13 @@ export class DatabaseService {
 
   moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
     let resultObservable = Observable.create(observer =>{
-      console.log("move.getMatchId(): " + move.getMatchId());
+      // console.log("move.getMatchId(): " + move.getMatchId());
       this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
-        console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
-        console.log(moves);
+        // console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
+        // console.log(moves);
         if(moves){
           for(let item in moves){
-            console.log(moves[item].dateAdded);
+            // console.log(moves[item].dateAdded);
             if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
               observer.next(false); //TODO this will change
               return resultObservable;
