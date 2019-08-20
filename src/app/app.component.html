@@ -11,6 +11,7 @@
       <li *ngIf="authenticationStatus"><a routerLink="newmatch" >New Match</a></li>
       <li *ngIf="authenticationStatus && (paidStatus || isAdmin)"><a routerLink="matches" >View All Matches</a></li>
       <li *ngIf="authenticationStatus"><a (click)="navigateToVideoInNeedOfAnnotation()" >Annotate a video</a></li>
+      <li *ngIf="authenticationStatus && isAdmin"><a routerLink="admin" >Admin Tasks</a></li>
       <li *ngIf="authenticationStatus"><a (click)="logout()" id="logOutLink">Log Out</a></li>
     </ul>
   </div>

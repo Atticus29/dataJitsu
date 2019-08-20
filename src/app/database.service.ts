@@ -50,22 +50,22 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
-    console.log("childNodeName in getMovesSubsetAsObject database service");
-    console.log(childNodeName);
+    // console.log("childNodeName in getMovesSubsetAsObject database service");
+    // console.log(childNodeName);
     let ref = firebase.database().ref('/moves/');
     let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
       ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
-        console.log("getMovesSubsetAsObject special snapshot: ");
-        console.log(snapshot.val());
-        console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
+        // console.log("getMovesSubsetAsObject special snapshot: ");
+        // console.log(snapshot.val());
+        // console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
         observer.next(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
       });
     } else{
       ref.orderByChild('/moves/' + childNodeName).on("value", snapshot =>{
-        console.log("getMovesSubsetAsObject not special snapshot: ");
-        console.log(snapshot.val());
-        console.log(snapshot.val()[childNodeName]);
+        // console.log("getMovesSubsetAsObject not special snapshot: ");
+        // console.log(snapshot.val());
+        // console.log(snapshot.val()[childNodeName]);
         observer.next(snapshot.val()[childNodeName]);
       });
     }

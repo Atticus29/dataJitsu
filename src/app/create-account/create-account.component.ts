@@ -94,49 +94,14 @@ export class CreateAccountComponent implements OnInit {
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.db.addUserToDb(newUser);
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
-    //TODO
-
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       if(user){
         if(user.uid){
-          console.log("Oh hey! There's a uid, too!: " + user.uid);
+          // console.log("Oh hey! There's a uid, too!: " + user.uid);
         }
-        // newUser.setUid(user.uid);
         this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
-        // self.db.getNodeIdFromEmail(user.getEmail()).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
-        //   newUser.setId(result.id);
-        //   this.db.updateUserInDb(newUser);
-        //   this.db.setUidFromNodeId(user.uid,result.id);
-        // });
       }
-      //@TODO test whether trying to create a second account under the same email messes up
     });
-
-    // this.as.currentUserObservable.subscribe(user=>{
-    //   if(user){
-    //     // console.log("user in currentUserObservable in create-account component");
-    //     // console.log(user);
-    //     // console.log("user.uid in create-account component: " + user.uid);
-    //     // console.log(user);
-    //     // console.log("user email: " + user.email);
-    //     newUser.setUid(user.uid);
-    //     this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
-    //     // console.log(newUser);
-    //     self.db.getNodeIdFromEmail(user.email).pipe(takeUntil(self.ngUnsubscribe)).subscribe(result =>{
-    //       // console.log("got to getNodeIdFromEmail results");
-    //       // console.log(result);
-    //       // console.log(result.id);
-    //       newUser.setId(result.id);
-    //       this.db.updateUserInDb(newUser);
-    //       this.db.setUidFromNodeId(user.uid,result.id)
-    //     });
-    //   }
-    //   //@TODO test whether trying to create a second account under the same email messes up
-    // });
-  //
-  //   this.router.navigate(['landing']);
-  //
-  //   //@TODO return to main or login results/welcome page
   }
 
   allValid(){

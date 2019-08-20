@@ -81,6 +81,8 @@ import { AnnotationDataDisplayComponent } from './annotation-data-display/annota
 import { EmailLoginDialogComponent } from './email-login-dialog/email-login-dialog.component';
 import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
 import { PaymentComponent } from './payment/payment.component';
+import { AnnotatedMovesDisplayComponent } from './annotated-moves-display/annotated-moves-display.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 export const firebaseConfig = {
@@ -110,7 +112,9 @@ export const firebaseConfig = {
     HorizontalTimelineComponent,
     EmailLoginDialogComponent,
     VerifyEmailAddressComponent,
-    PaymentComponent
+    PaymentComponent,
+    AnnotatedMovesDisplayComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

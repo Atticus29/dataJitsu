@@ -67,9 +67,9 @@ export class DynamicDataSource {
    */
 
     jsonToStrMap(jsonStr) {
-      console.log("Got into jsonToStrMap");
-      console.log(jsonStr);
-      console.log(Object.entries(jsonStr));
+      // console.log("Got into jsonToStrMap");
+      // console.log(jsonStr);
+      // console.log(Object.entries(jsonStr));
       let map = null;
       try {
         map = new Map(Object.entries(jsonStr));
@@ -85,20 +85,20 @@ export class DynamicDataSource {
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
     node.isLoading = true;
-    console.log(node.item);
+    // console.log(node.item);
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
-      console.log("results in toggleNode getMovesSubsetAsObject call");
-      console.log(results);
+      // console.log("results in toggleNode getMovesSubsetAsObject call");
+      // console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
         children = results;
       } else{
         try {
-          console.log("results before conversion:");
-          console.log(results);
+          // console.log("results before conversion:");
+          // console.log(results);
           results = this.jsonToStrMap(results);
-          console.log("jsonToStrMap successful:");
-          console.log(results);
+          // console.log("jsonToStrMap successful:");
+          // console.log(results);
           children = results;
         }
         catch(error) {
@@ -115,10 +115,10 @@ export class DynamicDataSource {
             new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString())));
           this.data.splice(index + 1, 0, ...nodes);
         } else{
-          console.log("expand is true and children is not an array");
+          // console.log("expand is true and children is not an array");
           const nodes = Array.from(children).map(name => new DynamicFlatNode(name[0], node.level + 1, true));
-          console.log("node after mapping to dynamicFlatNodes: ");
-          console.log(nodes);
+          // console.log("node after mapping to dynamicFlatNodes: ");
+          // console.log(nodes);
           this.data.splice(index + 1, 0, ...nodes); //this.data.splice(index + 1, 0, ...nodes);
         }
       } else {
@@ -127,9 +127,9 @@ export class DynamicDataSource {
           && this.data[i].level > node.level; i++, count++) {}
         this.data.splice(index + 1, count);
       }
-      console.log("got to dataChange");
+      // console.log("got to dataChange");
       this.dataChange.next(this.data);
-      console.log("got to changing node isLoading to false");
+      // console.log("got to changing node isLoading to false");
       node.isLoading = false;
     });
     // node.isLoading = true;

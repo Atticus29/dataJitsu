@@ -67,8 +67,8 @@ export class NewMatchComponent implements OnInit {
     $('.modal').modal();
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
-      console.log("currentUser in new-match component:");
-      console.log(currentUser);
+      // console.log("currentUser in new-match component:");
+      // console.log(currentUser);
       if(currentUser && currentUser.uid){
         this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
           this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
@@ -164,7 +164,7 @@ export class NewMatchComponent implements OnInit {
   onChange(val){
     // console.log(val);
     if(val === "addNew"){
-      console.log("contains add new!");
+      // console.log("contains add new!");
       //TODO new stuff here
     } else{
       //do nothing
@@ -188,10 +188,10 @@ export class NewMatchComponent implements OnInit {
   submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
     let values = this.getValues();
     this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
-      console.log(result);
+      // console.log(result);
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-          console.log(result)
+          // console.log(result)
           let matchId = this.db.addMatchToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.router.navigate(['matches/' + matchId]);
@@ -210,10 +210,10 @@ export class NewMatchComponent implements OnInit {
   }
 
   submitFormAndReturnToMain(){
-    console.log("submitFormAndReturnToMain entered");
+    // console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
-      console.log(result);
+      // console.log(result);
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           this.db.addMatchToDb(result);
@@ -231,20 +231,20 @@ export class NewMatchComponent implements OnInit {
   }
 
   annotateCurrentVideo(){
-    console.log("Annotate"); //@TODO flesh out
+    // console.log("Annotate"); //@TODO flesh out
   }
 
   addToQueueAndReturnToMain(){
-    console.log("Queue"); //@TODO flesh out
+    // console.log("Queue"); //@TODO flesh out
   }
 
   submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch(){
     //TODO flesh out
-    console.log("entered submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch");
+    // console.log("entered submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch");
   }
 
-  // onDestroy(){
-  //
-  // }
+  onDestroy(){
+
+  }
 
 }

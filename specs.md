@@ -20,19 +20,19 @@
 - [ ] Admin and moderators have a special area only they can access and do administrative things in
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
 - [ ] Detect when the link url is different but other match specs are the same
-- [ ] Update the weight classes of the matches that have already been made
+- [ ] Update the weight classes and belts of the matches that have already been made
 - [ ] Tests
   - [ ] Improve deleting a match test
   - [ ] Flesh out 'created match appears on table' test
 - [ ] Reset attemptStatus to true after every finished annotation
 - [ ] Figure out a way to remove the api key and admin email and password from the repo (in an automated way)
-- [ ] Fix bugs with logging out (sometimes you have to do it multiply)
 - [ ] Set up CircleCI deploy to S3
 - [ ] Test logging out from individual match
 - [ ] Test rating the match and annotation (possibly as two different users)
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
 - [ ] Make password toggleable to be visible
+- [ ] //@TODO test whether trying to create a second account under the same email messes up
 
 # TODO low priority
 - [ ] Whether the user has verified their email address or not doesn't matter yet
@@ -44,6 +44,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Fix bugs with logging out (sometimes you have to do it multiply)
 - [x] Get login to display and to successfully navigate both for login and for logout
 - [x] Set up new email login dialog box
 - [x] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation

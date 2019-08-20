@@ -56,8 +56,8 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    console.log("ngOnDestroy in match-display entered");
-
+    // this.ngUnsubscribe.next();
+    // this.ngUnsubscribe.complete();
   }
 
   ngOnInit() {

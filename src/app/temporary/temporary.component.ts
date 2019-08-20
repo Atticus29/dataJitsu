@@ -13,7 +13,7 @@ export class TemporaryComponent implements OnInit {
 
   ngOnInit() {
     this.dbService.getMovesAsList().subscribe(results =>{
-      console.log(results);
+      // console.log(results);
       this.displayText = results.toString();
     });
   }

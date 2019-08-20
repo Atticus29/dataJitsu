@@ -56,7 +56,7 @@ export class AnnotationDataDisplayComponent implements OnInit {
           }
           // this.timeline.push({caption: move.moveName, startTime: tracker, title: move.moveName, content: move.moveName + " performed by " + move.actor + " at " + move.timeInitiated + ". Scored " + move.points + " points."})
           tracker += 1;
-          console.log("tracker is " + tracker);
+          // console.log("tracker is " + tracker);
         });
       });
     });
