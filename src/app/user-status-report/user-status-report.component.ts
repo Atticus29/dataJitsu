@@ -58,7 +58,12 @@ export class UserStatusReportComponent implements OnInit {
             this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
               console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
               console.log(hasUserAnnotatedEnough);
-              // if()
+              if(!hasUserAnnotatedEnough){
+                this.toggleAnnotationPrompt(true);
+                this.togglePayMentPrompt(true);
+              } else{
+                this.toggleAnnotationPrompt(false);
+              }
             });
 
             // this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
@@ -76,7 +81,7 @@ export class UserStatusReportComponent implements OnInit {
             //       // console.log("leak!");
             //       this.toggleAnnotationPrompt(false);
             //     } else{
-            //       this.toggleAnnotationPrompt(true);
+                  // this.toggleAnnotationPrompt(true);
             //     }
             //   } else{
             //     console.log("first timer here!");
@@ -124,6 +129,10 @@ export class UserStatusReportComponent implements OnInit {
     this.db.getLowRatedMatch().subscribe(result =>{
       this.router.navigate(['matches/'+result.id]);
     });
+  }
+
+  sendToMatchToPaymentSubscription(){
+    this.router.navigate(['payment']);
   }
 
 

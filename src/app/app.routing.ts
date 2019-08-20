@@ -12,6 +12,7 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
 import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
+import { PaymentComponent } from './payment/payment.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate } from '@angular/fire/auth-guard';
 
@@ -81,6 +82,11 @@ const appRoutes: Routes = [
 },{
   path: 'verify-email-address',
   component: VerifyEmailAddressComponent,
+},{
+  path: 'payment',
+  component: PaymentComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
 },{
   path: 'error',
   component: NotfoundComponent,

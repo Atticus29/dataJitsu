@@ -5,7 +5,10 @@ export var allCurrentMoves ={
     "Leg Drag",
     "Knee Slice",
     "Back Step",
-    "Over Under Pass"
+    "Over Under Pass",
+    "Double Under Pass",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this guard pass"
   ],
   "Take Downs or Take Down Attempts":[
     "Knee Drop Ogoshi; Knee Drop",
@@ -81,7 +84,9 @@ export var allCurrentMoves ={
     "Hane Goshi Gaeshi",
     "Osoto Makikomi; Major O uter Wrap Around",
     "Harai Makikomi; Sweeping Wraparound",
-    "Sode Tsurikomi Goshi; Sleeve Lifting Pulling Hip"
+    "Sode Tsurikomi Goshi; Sleeve Lifting Pulling Hip",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this take down"
   ],
   "Submissions or Submission Attempts":
     {"Choke Or Cervical Submissions":[
@@ -105,37 +110,55 @@ export var allCurrentMoves ={
       "Loop Choke",
       "Can Opener",
       "Arm Triangle",
-      "Triangle"
+      "Triangle",
+      "Name is missing from this list",
+      "I don't know whether there's a name for this cervical submission"
     ],
     "Elbow":[
     "Arm Bar or Straight Arm Lock",
     "Biceps Slicer",
-    "Dead Orchard"
+    "Dead Orchard",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this elbow submission"
   ],
   "Shoulder":[
     "Americana; Keylock; Paintbrush",
     "Kimura",
     "Omoplata",
-    "Baratoplata"
+    "Baratoplata",
+    "Monoplata",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this shoulder submission"
   ],
   "Knee Ligaments":[
     "Knee Bar",
     "Inside Heel Hook",
     "Toe Hold/Figure 4 Toe Hold",
     "Outside Heel Hook",
-    "Calf Slicer"
+    "Calf Slicer",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this knee submission"
   ],
   "Back":[
-    "Twister; Wrestler’s Guillotine"
+    "Twister; Wrestler’s Guillotine",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this back submission"
   ],
   "Ankle Ligaments":[
     "Ankle Lock",
+    "Texas Cloverleaf",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this ankle submission"
   ],
   "Groin":[
     "Banana Split",
+    "Name is missing from this list",
+    "I don't know whether there's a name for this groin submission"
   ],
   "Wrist":[
-  "Wrist Lock"
+  "Wrist Lock",
+  "Name is missing from this list",
+  "I don't know whether there's a name for this wrist submission"
   ]
 },
 "Sweeps or Sweep Attempts":[
@@ -152,13 +175,16 @@ export var allCurrentMoves ={
   "Plan B Sweep",
   "Sickle Sweep",
   "Sweep from Omoplata",
-  "Sit up sweep; Reversal"
+  "Sit up sweep; Reversal",
+  "Name is missing from this list",
+  "I don't know whether there's a name for this sweep"
 ],
 "Positional Changes":[
   "Back Mount",
   "Back Control",
   "Mount",
-  "Knee on Belly"
+  "Knee on Belly",
+  "Name is missing from this list",
 ],
 "Positions With Names That Do Not Score Points In Most Rule Sets":[
   "Truck",
@@ -182,12 +208,15 @@ export var allCurrentMoves ={
   "50/50",
   "Outside Ashi Garami",
   "4/11; Honey Hole; The Saddle; Inside Sankaku",
-  "Worm Guard"
+  "Worm Guard",
+  "Name is missing from this list",
+  "I don't know whether there's a name for this position"
 ],
 "Discliplinary Action":[
   "Severe Foul",
   "Serious Foul",
   "Combatitiveness Foul; Stalling; Fleeing",
-  "Disqualification"
+  "Disqualification",
+  "Name is missing from this list",
 ]
 }

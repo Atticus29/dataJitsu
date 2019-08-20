@@ -50,6 +50,8 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
+    console.log("childNodeName in getMovesSubsetAsObject database service");
+    console.log(childNodeName);
     let ref = firebase.database().ref('/moves/');
     let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
@@ -322,6 +324,8 @@ export class DatabaseService {
     let resultObservable = Observable.create(observer =>{
       //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
       this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+        console.log("unique enough?");
+        console.log(uniqueEnough);
         if(uniqueEnough){
           let matchId = move.getMatchId();
           let ref = this.db.list('/matches/' + matchId + '/moves');
@@ -330,6 +334,7 @@ export class DatabaseService {
           updates['/matches/' + matchId + '/moves/' + moveId] = move;
           firebase.database().ref().update(updates);
           observer.next(true);
+          uniqueEnough = false;
         } else {
           if(uniqueEnough == false){
             // TODO add toast thing saying as much
@@ -378,7 +383,7 @@ export class DatabaseService {
         for(let item in moves){
           console.log(moves[item].dateAdded);
           if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
-            observer.next(true); //TODO this will change
+            observer.next(false); //TODO this will change
           } else{
             observer.next(true);
           }

@@ -210,6 +210,7 @@ export class MatchDisplayComponent implements OnInit {
                 this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
                   let userInDb: string = usr.id;
                   self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+                  // self.db.addMoveInVideoToMatch(self.tempMove);
                 });
               }
             });

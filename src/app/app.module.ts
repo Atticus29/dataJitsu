@@ -80,6 +80,7 @@ import { TemporaryComponent } from './temporary/temporary.component';
 import { AnnotationDataDisplayComponent } from './annotation-data-display/annotation-data-display.component';
 import { EmailLoginDialogComponent } from './email-login-dialog/email-login-dialog.component';
 import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 export const firebaseConfig = {
@@ -108,7 +109,8 @@ export const firebaseConfig = {
     AnnotationDataDisplayComponent,
     HorizontalTimelineComponent,
     EmailLoginDialogComponent,
-    VerifyEmailAddressComponent
+    VerifyEmailAddressComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
