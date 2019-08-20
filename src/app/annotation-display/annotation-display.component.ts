@@ -118,8 +118,8 @@ export class AnnotationDisplayComponent implements OnInit {
     let theSubmissionStatus = this.submissionStatus;
     let theAttemptStatus = this.attemptStatus;
     let results = {performerValue, pointValue, theSubmissionStatus, theAttemptStatus};
-    console.log("getValues call: ");
-    console.log(results);
+    // console.log("getValues call: ");
+    // console.log(results);
     return results;
   }
 
@@ -128,8 +128,8 @@ export class AnnotationDisplayComponent implements OnInit {
     this.trackerService.performer.next(result.performerValue);
     this.trackerService.points.next(result.pointValue);
     this.trackerService.submission.next(result.theSubmissionStatus);
-    console.log("attempt successful?");
-    console.log(result.theAttemptStatus);
+    // console.log("attempt successful?");
+    // console.log(result.theAttemptStatus);
     this.trackerService.attemptStatus.next(result.theAttemptStatus);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
     this.trackerService.recipient.next(remainder[0]);
@@ -141,17 +141,17 @@ export class AnnotationDisplayComponent implements OnInit {
   }
 
   allValid(): boolean{
-    console.log("allValid called");
+    // console.log("allValid called");
     let submissionStatusValue = this.submissionStatus;
     // console.log("submissionStatusValue from allValid");
     // console.log(submissionStatusValue);
     let attemptStatusValue = this.attemptStatus;
-    console.log("attemptStatusValue from allValid");
-    console.log(attemptStatusValue);
+    // console.log("attemptStatusValue from allValid");
+    // console.log(attemptStatusValue);
     let performerValue = this.performerFg.value;
     let pointValue = this.points.value;
     if(performerValue && pointValue > -1){ //TODO && submissionStatusValue stuff && attemptStatusValue stuff
-      console.log("performerValue true");
+      // console.log("performerValue true");
       return true;
     } else{
       return false;
@@ -159,6 +159,6 @@ export class AnnotationDisplayComponent implements OnInit {
   }
 
   respondToAnnotationCancel(){
-    console.log("Cancel was clicked TODO don't swap the buttons in match display");
+    // console.log("Cancel was clicked TODO don't swap the buttons in match display");
   }
 }

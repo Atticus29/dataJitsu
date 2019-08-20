@@ -50,20 +50,20 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
-    console.log("childNodeName in getMovesSubsetAsObject database service");
-    console.log(childNodeName);
+    // console.log("childNodeName in getMovesSubsetAsObject database service");
+    // console.log(childNodeName);
     let ref = firebase.database().ref('/moves/');
     let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
       ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
-        console.log("getMovesSubsetAsObject special snapshot: ");
-        console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
+        // console.log("getMovesSubsetAsObject special snapshot: ");
+        // console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
         observer.next(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
       });
     } else{
       ref.orderByChild('/moves/' + childNodeName).on("value", snapshot =>{
-        console.log("getMovesSubsetAsObject not special snapshot: ");
-        console.log(snapshot.val()[childNodeName]);
+        // console.log("getMovesSubsetAsObject not special snapshot: ");
+        // console.log(snapshot.val()[childNodeName]);
         observer.next(snapshot.val()[childNodeName]);
       });
     }
@@ -322,11 +322,14 @@ export class DatabaseService {
 
   addMoveInVideoToMatch(move: MoveInVideo): Observable<boolean>{
     let resultObservable = Observable.create(observer =>{
+      let counter: number = 0;
       //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
       this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
         console.log("unique enough?");
         console.log(uniqueEnough);
-        if(uniqueEnough){
+        console.log("value of counter: ");
+        console.log(counter);
+        if(uniqueEnough && counter < 1){
           let matchId = move.getMatchId();
           let ref = this.db.list('/matches/' + matchId + '/moves');
           let moveId = ref.push(move).key;
@@ -334,12 +337,14 @@ export class DatabaseService {
           updates['/matches/' + matchId + '/moves/' + moveId] = move;
           firebase.database().ref().update(updates);
           observer.next(true);
-          uniqueEnough = false;
+          counter += 1;
+          return resultObservable;
         } else {
           if(uniqueEnough == false){
             // TODO add toast thing saying as much
             // alert("this should only happen if move is not unique enough!");
             observer.next(false);
+            return resultObservable;
           } else{
             //just hasn't shown up yet, be patient
           }
@@ -351,42 +356,27 @@ export class DatabaseService {
 
   }
 
-  userHasAnnotatedEnough(userId: string): Observable<boolean>{
-    let ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
-    let resultObservable = Observable.create(observer =>{
-      let moveCount = 0;
-      ref.on("child_added", childSnapshot =>{
-        let move = childSnapshot.val();
-        // console.log("move in userHasAnnotatedEnough");
-        // console.log(move.dateAdded);
-        if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
-          console.log(move.dateAdded + " is recent enough to count. Adding it...");
-          moveCount += 1;
-        } else{
-          //Don't increment
-        }
-      });
-      if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
-        observer.next(false);
-      } else{
-        observer.next(true);
-      }
-    });
-    return resultObservable;
-  }
-
   moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
     let resultObservable = Observable.create(observer =>{
+      console.log("move.getMatchId(): " + move.getMatchId());
       this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
         console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
         console.log(moves);
-        for(let item in moves){
-          console.log(moves[item].dateAdded);
-          if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
-            observer.next(false); //TODO this will change
-          } else{
-            observer.next(true);
+        if(moves){
+          for(let item in moves){
+            console.log(moves[item].dateAdded);
+            if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
+              observer.next(false); //TODO this will change
+              return resultObservable;
+            } else{
+              // observer.next(true);
+            }
           }
+          observer.next(true);
+          return resultObservable;
+        } else{
+          observer.next(true);
+          return resultObservable;
         }
       });
     });
@@ -427,6 +417,30 @@ export class DatabaseService {
     let updates = {};
     updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);
+  }
+
+  userHasAnnotatedEnough(userId: string): Observable<boolean>{
+    let ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
+    let resultObservable = Observable.create(observer =>{
+      let moveCount = 0;
+      ref.on("child_added", childSnapshot =>{
+        let move = childSnapshot.val();
+        // console.log("move in userHasAnnotatedEnough");
+        // console.log(move.dateAdded);
+        if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
+          // console.log(move.dateAdded + " is recent enough to count. Adding it...");
+          moveCount += 1;
+        } else{
+          //Don't increment
+        }
+      });
+      if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
+        observer.next(false);
+      } else{
+        observer.next(true);
+      }
+    });
+    return resultObservable;
   }
 
   addWeightClassToDb(weightClass: string){

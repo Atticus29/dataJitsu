@@ -56,8 +56,8 @@ export class UserStatusReportComponent implements OnInit {
             });
 
             this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              console.log(hasUserAnnotatedEnough);
+              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              // console.log(hasUserAnnotatedEnough);
               if(!hasUserAnnotatedEnough){
                 this.toggleAnnotationPrompt(true);
                 this.togglePayMentPrompt(true);
@@ -112,7 +112,7 @@ export class UserStatusReportComponent implements OnInit {
 
   togglePaid(userId: string, status: boolean){
     this.db.updateUserPaymentStatus(userId, status);
-    console.log("paidStatus changed to " + status);
+    // console.log("paidStatus changed to " + status);
     //TODO other stuff?
   }
 

@@ -67,9 +67,9 @@ export class DynamicDataSource {
    */
 
     jsonToStrMap(jsonStr) {
-      console.log("Got into jsonToStrMap");
-      console.log(jsonStr);
-      console.log(Object.entries(jsonStr));
+      // console.log("Got into jsonToStrMap");
+      // console.log(jsonStr);
+      // console.log(Object.entries(jsonStr));
       let map = null;
       try {
         map = new Map(Object.entries(jsonStr));
@@ -85,10 +85,10 @@ export class DynamicDataSource {
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
     node.isLoading = true;
-    console.log(node.item);
+    // console.log(node.item);
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
-      console.log("results in toggleNode getMovesSubsetAsObject call");
-      console.log(results);
+      // console.log("results in toggleNode getMovesSubsetAsObject call");
+      // console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
         children = results;
@@ -97,8 +97,8 @@ export class DynamicDataSource {
           // console.log("results before conversion:");
           // console.log(results);
           results = this.jsonToStrMap(results);
-          console.log("jsonToStrMap successful:");
-          console.log(results);
+          // console.log("jsonToStrMap successful:");
+          // console.log(results);
           children = results;
         }
         catch(error) {
@@ -127,9 +127,9 @@ export class DynamicDataSource {
           && this.data[i].level > node.level; i++, count++) {}
         this.data.splice(index + 1, count);
       }
-      console.log("got to dataChange");
+      // console.log("got to dataChange");
       this.dataChange.next(this.data);
-      console.log("got to changing node isLoading to false");
+      // console.log("got to changing node isLoading to false");
       node.isLoading = false;
     });
     // node.isLoading = true;

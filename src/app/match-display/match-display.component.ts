@@ -128,7 +128,7 @@ export class MatchDisplayComponent implements OnInit {
             let currentTime = player.getCurrentTime();
             self.trackerService.endTimePoint.next(player.getCurrentTime());
             // self.finishAnnotation(currentTime);
-            self.openSnackBar("Move Recorded");
+            // self.openSnackBar("Move Recorded");
             self.trackerService.startTimePoint.pipe(take(1)).subscribe(startTime =>{
               self.trackerService.endTimePoint.pipe(take(1)).subscribe(endTime =>{
                 self.trackerService.moveName.pipe(take(1)).subscribe(moveName =>{
@@ -164,9 +164,9 @@ export class MatchDisplayComponent implements OnInit {
                 });
               });
             });
-            console.log("playing and going back a little?");
-            console.log(currentTime);
-            console.log(Math.max(0.5,currentTime-5));
+            // console.log("playing and going back a little?");
+            // console.log(currentTime);
+            // console.log(Math.max(0.5,currentTime-5));
             //TODO add 1 second delay?
             // player.resumeVideo();
             player.playVideo();
@@ -210,6 +210,7 @@ export class MatchDisplayComponent implements OnInit {
                 this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
                   let userInDb: string = usr.id;
                   self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+                  self.openSnackBar("Move Recorded");
                   // self.db.addMoveInVideoToMatch(self.tempMove);
                 });
               }
@@ -247,7 +248,7 @@ export class MatchDisplayComponent implements OnInit {
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
       this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         let userDbId: string = result.id;
-        console.log("userDbId is: "+ userDbId);
+        // console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
         this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
         if($event.newValue > 4){
