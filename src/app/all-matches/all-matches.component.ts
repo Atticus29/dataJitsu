@@ -11,10 +11,12 @@ import { MatPaginator } from '@angular/material';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { DatabaseService } from '../database.service';
+import { TrackerService } from '../tracker.service';
 import { D3Service } from '../d3.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-all-matches',
@@ -32,26 +34,30 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router) { }
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService) { }
 
   ngOnInit() {
-    this.authService.authenticated.subscribe(status =>{
-      console.log("authenticated status in all-matches.component:");
-      console.log(status);
-      if(status){
-      } else{
-        this.router.navigate(['login']);
-      }
-    });
-    this.authService.getCurrentUser().pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+    // this.authService.authenticated.subscribe(status =>{
+    //   console.log("authenticated status in all-matches.component:");
+    //   console.log(status);
+    //   if(status){
+    //   } else{
+    //     this.router.navigate(['login']);
+    //   }
+    // });
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+      console.log("user in currentUserBehaviorSubject from trackerService from all-matches component");
+      console.log(user);
       this.user = user;
-      this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
-        if(dbUser.privileges.isAdmin){
-          this.columnsToDisplay.push('deleteMatch');
-        }
-      });
-    },err=>{
-      console.log(err);
+      if(user && user.uid){
+        this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
+          if(dbUser.privileges.isAdmin){
+            this.columnsToDisplay.push('deleteMatch');
+          }
+        });
+      } else{
+        // alert("didn't get a uid in all-matches");
+      }
     });
     this.pageSize = 10;
     this.dataSource = new MatchDataSource(this.dbService);
@@ -67,7 +73,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dbService.getMatches().subscribe(results =>{
       this.loadMatchesPage();
     });
-  }
+  };
 
   ngAfterViewInit(){
     this.paginator.page
@@ -82,7 +88,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(){
-    console.log("onDestroy is called");
+    // console.log("onDestroy is called");
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -90,11 +96,11 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
   deleteMatch(matchId: any){
     let confirmation = confirm("Are you sure you want to delete this match?");
     if(confirmation){
-      console.log("Deleting " + matchId);
+      // console.log("Deleting " + matchId);
       this.dbService.deleteMatch(matchId);
       // this.loadMatchesPage();
     } else{
-      console.log("confirmation denied");
+      // console.log("confirmation denied");
     }
   }
 }

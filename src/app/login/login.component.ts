@@ -1,66 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProtectionGuard } from '../protection.guard';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { auth } from 'firebase/app';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { TrackerService } from '../tracker.service';
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
+import { EmailLoginDialog } from '../emailLoginDialog.model';
+import { EmailLoginDialogComponent } from '../email-login-dialog/email-login-dialog.component';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [ValidationService, AuthorizationService, ProtectionGuard]
+  providers: [ValidationService, AuthorizationService, ProtectionGuard, TrackerService]
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
-  private showLoader: boolean = true;
+  private user: User;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private fb: FormBuilder,private router: Router, private vs: ValidationService, private as: AuthorizationService) { }
+  constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService, public dialog: MatDialog, public trackerService: TrackerService) {
+  }
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      emailBound: ['', Validators.required],
-      passwordBound: ['', Validators.required]
-    });
-    this.as.authenticated.subscribe(status =>{
-      if(status){
-        // this.showLoader = !status;
-        this.router.navigate(['']);
-      } else{
-        this.showLoader = false;
-      }
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+      this.user = result;
     });
   }
 
-  submitLoginForm(){
-    let values = this.getValues();
-    this.as.login(values.emailBound, values.passwordBound);
-    //@TODO flesh me out
+  signInWithGoogle() {
+    this.authService.googleLogin();
   }
 
-  getValues(){
-    let result = this.loginForm.value;
-    return result;
+  logout() {
+    this.authService.signOut();
   }
 
-  allValid(){
-    let values = this.loginForm.value;
-    if(this.vs.validateEmail(values.emailBound) && this.vs.validatePassword(values.passwordBound)){
-      return true;
-    } else{
-      return false;
-    }
+  openSignInWithEmailDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(val => {
+      this.authService.emailLogin(val.email, val.passwd);
+    });
   }
 
   newAccount(){
     this.router.navigate(['createaccount']);
   }
-
-  loginWithGoogle(){
-    this.as.loginGoogle();
-  }
-
 }

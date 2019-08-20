@@ -11,13 +11,13 @@ export class LandingComponent implements OnInit {
 
   constructor(private as: AuthorizationService) {
 
-    this.sub = this.as.subscribe(val => {
-      console.log("got here");
-      console.log(val);
-      if(val.athenticated){
-        console.log("authenticated in landing component");
-      }
-    });
+    // this.sub = this.as.authState.(val => {
+    //   console.log("got here");
+    //   console.log(val);
+    //   if(val){
+    //     console.log("authenticated in landing component");
+    //   }
+    // });
   }
 
 

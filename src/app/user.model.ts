@@ -4,10 +4,11 @@ export class User {
   private id: string;
   private weightClass: string;
   private ageClass: string;
-  private uid: string;
+  public uid: string;
   private privileges: {};
   private votingInfo: {};
-  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: any, public paidStatus: boolean, public gender: string, public dateCreated: any) {
+  private paymentStatus: boolean;
+  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: string, public paidStatus: boolean, public gender: string, public dateCreated: any) {
     this.privileges = {
       isAdmin: false,
       canEditMatches: false,
@@ -21,6 +22,7 @@ export class User {
       annotationVoteQuota: constants.annotationVoteQuota,
       annotationVotesCastToday: 0
     }
+    this.paymentStatus = false;
   }
 
   isValidWeight(): boolean{
@@ -35,8 +37,16 @@ export class User {
     this.id = id;
   }
 
+  getName(){
+    return this.name;
+  }
+
   getId(){
     return this.id;
+  }
+
+  getUid(): string{
+    return this.uid;
   }
 
   setWeightClass(weightClass: string){

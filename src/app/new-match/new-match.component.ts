@@ -11,6 +11,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
+import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
@@ -24,7 +25,6 @@ declare var $:any;
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.scss'],
-  providers: [DatabaseService, AuthorizationService, ProtectionGuard]
 })
 
 export class NewMatchComponent implements OnInit {
@@ -51,10 +51,12 @@ export class NewMatchComponent implements OnInit {
   giStatus: boolean = false;
   checked: boolean = false;
   rankSelection: string;
+  private hasPaid: boolean = false;
+  private isAdmin: boolean = false;
 
   newRankForm: FormGroup; //TODO what is this?
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService) {
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);
@@ -63,6 +65,21 @@ export class NewMatchComponent implements OnInit {
 
   ngOnInit() {
     $('.modal').modal();
+
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
+      console.log("currentUser in new-match component:");
+      console.log(currentUser);
+      if(currentUser && currentUser.uid){
+        this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+          this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
+            this.hasPaid = paymentStatus;
+          });
+          this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            this.isAdmin = status;
+          });
+        });
+      }
+    });
 
     this.genders = ["Female", "Male"];
 
@@ -131,10 +148,13 @@ export class NewMatchComponent implements OnInit {
     this.rankBound = rankBound==undefined ? "" : rankBound;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, this.giStatus, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.as.getCurrentUser().pipe(switchMap(userInfo => {
+    return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo) => {
+      // console.log("got userInfo in new-match component. Looking for email from here");
+      // console.log(userInfo.email);
         return Observable.create(obs=>{
-        this.db.getNodeIdFromEmail(userInfo.email).on("value", snapshot=>{
-          let match = new Match(matchDeets, snapshot.key, moves);
+        this.db.getNodeIdFromEmail(userInfo.email).pipe(takeUntil(this.ngUnsubscribe)).subscribe((nodeId: string)=>{ //TODO make robust
+          // console.log("nodeId is: " + nodeId);
+          let match = new Match(matchDeets, nodeId, moves);
           obs.next(match);
         });
         });
@@ -198,7 +218,7 @@ export class NewMatchComponent implements OnInit {
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           this.db.addMatchToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate(['']);
+          (this.hasPaid||this.isAdmin) ? this.router.navigate(['matches']) : this.router.navigate(['landing']);
         });
       } else{
         this.openSnackBar("Match Already Exists in the Database!", null);

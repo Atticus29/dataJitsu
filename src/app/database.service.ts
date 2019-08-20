@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil, first } from 'rxjs/operators';
+import { takeUntil, take, first } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { TextTransformationService } from './text-transformation.service';
+import { DateCalculationsService } from './date-calculations.service';
 import { User } from './user.model';
 import { Match } from './match.model';
 import { constants } from './constants';
@@ -28,7 +29,7 @@ export class DatabaseService {
   matchDetails: Observable<any>;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService) {
+  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
     this.matches = db.list<Match>('/matches').valueChanges();
     this.weightClasses = db.list<String>('/weightClasses').valueChanges();
     this.giRanks = db.list<String>('/giRanks').valueChanges();
@@ -49,11 +50,25 @@ export class DatabaseService {
 
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
+    console.log("childNodeName in getMovesSubsetAsObject database service");
+    console.log(childNodeName);
+    let ref = firebase.database().ref('/moves/');
+    let obsRet = Observable.create(function(observer){
     if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
-      return this.db.object('/moves/Submissions or Submission Attempts/' + childNodeName).valueChanges();
+      ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
+        console.log("getMovesSubsetAsObject special snapshot: ");
+        console.log(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
+        observer.next(snapshot.val()["Submissions or Submission Attempts"][childNodeName]);
+      });
     } else{
-      return this.db.object('/moves/' + childNodeName).valueChanges();
+      ref.orderByChild('/moves/' + childNodeName).on("value", snapshot =>{
+        console.log("getMovesSubsetAsObject not special snapshot: ");
+        console.log(snapshot.val()[childNodeName]);
+        observer.next(snapshot.val()[childNodeName]);
+      });
     }
+    });
+    return obsRet;
   }
 
   getMatchDetails(matchId: string){
@@ -137,8 +152,8 @@ export class DatabaseService {
   updateUserReputationPoints(userId: string, points: number){
     let updates = {};
     this.getUserReputationPoints(userId).pipe(first()).subscribe(result =>{
-      console.log("reputation points? in updateUserReputationPoints");
-      console.log(result);
+      // console.log("reputation points? in updateUserReputationPoints");
+      // console.log(result);
       updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;
       firebase.database().ref().update(updates);
     });
@@ -148,9 +163,9 @@ export class DatabaseService {
     let ref = firebase.database().ref('matches/' + matchId + '/moves');
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
-        console.log("getMainAnnotatorOfMatch snapshot:");
-        console.log(snapshot.val());
-        console.log(snapshot.numChildren());
+        // console.log("getMainAnnotatorOfMatch snapshot:");
+        // console.log(snapshot.val());
+        // console.log(snapshot.numChildren());
         //TODO flesh out
         observer.next(snapshot.val());
       });
@@ -198,7 +213,15 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string){
-    return this.db.object('/users/'+ userId + '/paidStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+    let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
+    let resultObservable = Observable.create(observer =>{
+      ref.on("child_added", snapshot => { //TODO ???
+        // console.log(snapshot);
+        status = snapshot.val();
+        observer.next(status);
+      });
+    });
+    return resultObservable;
   }
 
   getDateSinceAnnotated(userId: string){
@@ -209,13 +232,13 @@ export class DatabaseService {
     return this.db.object('/matches/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  getUserByUid(uid: string){
-    let ref = firebase.database().ref('users/');
-    let user: User = null;
+  getUserByUid(uid: string) : Observable<any>{
+    let ref = firebase.database().ref('/users/');
+    let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-        console.log("result of query is :");
-        console.log(snapshot.val());
+        // console.log("query result in getUserByUid in databaseService: ");
+        // console.log(snapshot.val());
         user = snapshot.val();
         observer.next(user);
       });
@@ -228,10 +251,20 @@ export class DatabaseService {
     return this.retrievedMatch;
   }
 
-  //@TODO figure out how this is actually done, then replace the code in authorization.service (at least!)
   getNodeIdFromEmail(email: string){
-    let ref = firebase.database().ref('users/');
-    return ref.orderByChild('email').equalTo(email).limitToFirst(1);
+    // console.log("got to getNodeIdFromEmail in database service");
+    // console.log("email passed in is: " + email);
+    let ref = firebase.database().ref('/users/');
+    let nodeId: string = null;
+    let resultObservable = Observable.create(observer =>{
+      return ref.orderByChild('email').equalTo(email).limitToFirst(1).on("child_added", snapshot => {
+        // console.log("got to snapshot in getNodeIdFromEmail in database service: ");
+        // console.log(snapshot.val().id);
+        nodeId = snapshot.val().id;
+        observer.next(nodeId);
+      });
+    });
+    return resultObservable;
   }
 
   addUidToUser(uid: string, userKey: string){
@@ -248,12 +281,19 @@ export class DatabaseService {
   }
 
   getUserById(userId: string){
-    let retrievedUser = this.db.object('users/' + userId);
-    return retrievedUser;
+    let ref = firebase.database().ref('users/' + userId);
+    let resultObservable = Observable.create(observer =>{
+      return ref.on("value", snapshot => {
+        // console.log("got to snapshot in getUserById in database service");
+        let user = snapshot.val();
+        observer.next(user);
+      });
+    });
+    return resultObservable;
   }
 
   addMatchToDb(match: any){
-    console.log("addMatchToDb entered");
+    // console.log("addMatchToDb entered");
     let ref = this.db.list<Match>('/matches');
     let matchId = ref.push(match).key;
     let updates = {};
@@ -280,27 +320,110 @@ export class DatabaseService {
     return userId;
   }
 
-  addMoveInVideoToMatch(move: MoveInVideo){
-    let matchId = move.getMatchId();
-    let ref = this.db.list('/matches/' + matchId + '/moves');
-    let moveId = ref.push(move).key;
-    let updates = {};
-    updates['/matches/' + matchId + '/moves/' + moveId] = move;
-    firebase.database().ref().update(updates);
+  addMoveInVideoToMatch(move: MoveInVideo): Observable<boolean>{
+    let resultObservable = Observable.create(observer =>{
+      //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
+      this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+        console.log("unique enough?");
+        console.log(uniqueEnough);
+        if(uniqueEnough){
+          let matchId = move.getMatchId();
+          let ref = this.db.list('/matches/' + matchId + '/moves');
+          let moveId = ref.push(move).key;
+          let updates = {};
+          updates['/matches/' + matchId + '/moves/' + moveId] = move;
+          firebase.database().ref().update(updates);
+          observer.next(true);
+          uniqueEnough = false;
+        } else {
+          if(uniqueEnough == false){
+            // TODO add toast thing saying as much
+            // alert("this should only happen if move is not unique enough!");
+            observer.next(false);
+          } else{
+            //just hasn't shown up yet, be patient
+          }
+        }
+      });
+
+    });
+    return resultObservable;
+
+  }
+
+  userHasAnnotatedEnough(userId: string): Observable<boolean>{
+    let ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
+    let resultObservable = Observable.create(observer =>{
+      let moveCount = 0;
+      ref.on("child_added", childSnapshot =>{
+        let move = childSnapshot.val();
+        // console.log("move in userHasAnnotatedEnough");
+        // console.log(move.dateAdded);
+        if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
+          console.log(move.dateAdded + " is recent enough to count. Adding it...");
+          moveCount += 1;
+        } else{
+          //Don't increment
+        }
+      });
+      if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
+        observer.next(false);
+      } else{
+        observer.next(true);
+      }
+    });
+    return resultObservable;
+  }
+
+  moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
+    let resultObservable = Observable.create(observer =>{
+      this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
+        console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
+        console.log(moves);
+        for(let item in moves){
+          console.log(moves[item].dateAdded);
+          if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
+            observer.next(false); //TODO this will change
+          } else{
+            observer.next(true);
+          }
+        }
+      });
+    });
+    return resultObservable;
+  }
+
+  getAnnotations(matchId: string){
+    let ref = firebase.database().ref('matches/' + matchId + '/moves/');
+    let resultObservable = Observable.create(observer =>{
+      return ref.on("value", snapshot => {
+        let moves = snapshot.val();
+        observer.next(moves);
+      });
+    });
+    return resultObservable;
   }
 
   addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){
-    let now = new Date().toJSON();
-    let newMove = {move, dateAdded:now};
+    // console.log("entered addMoveInVideoToUser");
+    let now: string = new Date().toJSON();
+    // let newMove = {move, dateAdded:now};
     let matchId = move.getMatchId();
     let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
     let moveId = ref.push(move).key;
     let updates = {};
-    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = newMove;
+    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
+    // console.log(updates);
+    firebase.database().ref().update(updates);
+    //Now update dateLastAnnotated
+    ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
+    updates = {};
+    updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
     firebase.database().ref().update(updates);
   }
 
   updateUserInDb(user: User){
+    // console.log("userId in updateUserInDb calll in database service: " + user.getId());
     let updates = {};
     updates['/users/' + user.getId()] = user;
     firebase.database().ref().update(updates);
@@ -439,11 +562,11 @@ export class DatabaseService {
       ref.orderByChild('/matchDeets/videoUrl').equalTo(videoUrl).limitToFirst(1).once("value", snapshot=>{
         // entranceDetector = 1;
         if(!snapshot.exists()){
-          console.log("snapshot doesn't exist");
+          // console.log("snapshot doesn't exist");
           observer.next(false);
         }
-        console.log("value happens in doesMatchExist inside database service");
-        console.log(snapshot.val());
+        // console.log("value happens in doesMatchExist inside database service");
+        // console.log(snapshot.val());
         if(snapshot.val()){
           observer.next(true);
         }
@@ -472,6 +595,19 @@ export class DatabaseService {
   deleteMatch(matchId: string){
     let ref = firebase.database().ref('matches/' + matchId);
     ref.remove();
+  }
+
+  getMatchInNeedOfAnnotation(){
+    // console.log("got into getMatchInNeedOfAnnotation in database service");
+    let ref = firebase.database().ref('matches/');
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild('matchDeets/annotationRating').limitToFirst(1).on("child_added", result =>{
+        // console.log("child added to getMatchInNeedOfAnnotation query: ");
+        // console.log(result.val());
+        observer.next(result.val());
+      });
+    });
+    return resultObservable;
   }
 
   addAdminStatus(userId: string){
@@ -519,7 +655,7 @@ export class DatabaseService {
                         //TODO
                       } else{
                         if(reputationPoints <= constants.privilegeLevels[1]){
-                          console.log("You don't have a lot of reputation points")
+                          // console.log("You don't have a lot of reputation points")
                         }
                       }
                     }
@@ -531,6 +667,15 @@ export class DatabaseService {
         }
       }
     }
+    firebase.database().ref().update(updates);
+  }
+
+  setUidFromNodeId(uid: string, nodeId: string){
+    // console.log("grr this is happening. I don't know what's going on!");
+    // console.log(nodeId);
+    // console.log(uid);
+    let updates = {};
+    updates['/users/' + nodeId + '/uid'] = uid;
     firebase.database().ref().update(updates);
   }
 

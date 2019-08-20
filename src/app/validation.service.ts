@@ -6,12 +6,20 @@ export class ValidationService {
   constructor() { }
 
   validateEmail(email: string) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email.toLowerCase()) && email;
+    if(email){
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email.toLowerCase()) && email;
+    } else {
+      return false;
+    }
   }
 
   validatePassword(password: string){
-    return password.length > 6 && password;
+    if(password){
+      return password.length > 6 && password;
+    } else {
+      return false;
+    }
   }
 
   validateWeight(weight: number){

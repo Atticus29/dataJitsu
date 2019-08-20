@@ -22,6 +22,7 @@ import { TextTransformationService } from './text-transformation.service';
 import { ValidationService } from './validation.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
+import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { D3Service } from './d3.service';
@@ -35,6 +36,8 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatchDataSource } from './matchDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EmailLoginDialog } from './emailLoginDialog.model';
 
 import {
   MatAutocompleteModule,
@@ -71,10 +74,13 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule,
+  MatTreeModule
 } from '@angular/material';
 import { TemporaryComponent } from './temporary/temporary.component';
 import { AnnotationDataDisplayComponent } from './annotation-data-display/annotation-data-display.component';
+import { EmailLoginDialogComponent } from './email-login-dialog/email-login-dialog.component';
+import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 export const firebaseConfig = {
@@ -101,7 +107,10 @@ export const firebaseConfig = {
     PaymentOrAnnotationDetailsComponent,
     TemporaryComponent,
     AnnotationDataDisplayComponent,
-    HorizontalTimelineComponent
+    HorizontalTimelineComponent,
+    EmailLoginDialogComponent,
+    VerifyEmailAddressComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +128,7 @@ export const firebaseConfig = {
     MatSelectModule,
     MatOptionModule,
     MatInputModule,
+    MatFormFieldModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatTableModule,
@@ -134,9 +144,11 @@ export const firebaseConfig = {
     MatChipsModule,
     MatRippleModule,
     MatRadioModule,
-    RatingModule
+    RatingModule,
+    MatDialogModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase],
-  bootstrap: [AppComponent]
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
+  bootstrap: [AppComponent],
+  entryComponents: [EmailLoginDialogComponent]
 })
 export class AppModule { }

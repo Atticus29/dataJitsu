@@ -1,37 +1,17 @@
-<div class="spinner-container flexbox-item" *ngIf="showLoader" id="spinner-login">
-  <mat-spinner id="spinner"></mat-spinner>
-</div>
-<div class="flexbox-vertical flexbox-item" *ngIf="!showLoader">
-  <div class="flexbox-item">
-    <h1 class="subtitle">Log In</h1>
+<div class="flexbox-item" id="login-flexbox">
+  <div class="spinner-container" *ngIf="showLoader" id="spinner-login">
+    <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <div class="flexbox-item">
-    <form  materialize [formGroup]="loginForm">
-      <div class="subcontainer">
-        <div class="flexbox-item">
-          <div class="input-field">
-            <input formControlName="emailBound" type="email" placeholder="Email address" id="userEmail">
-          </div>
-        </div>
-        <div class="flexbox-item">
-          <div class="input-field">
-            <input formControlName="passwordBound" type="password" placeholder="Password" id="password">
-          </div>
-        </div>
-        <div class="flexbox-item">
-          <button id="loginSubmit" type="submit" (click)="submitLoginForm()" [disabled]="!allValid()" class="btn waves-effect waves-light">Login <i class="material-icons right"></i></button>
-        </div>
-        <!-- <div class="row">
-        <div class="col s1">
-      </div>
-      <button type="submit" (click)="loginWithGoogle()" class="btn col s9 waves-effect blue">Login with Google</button>
-      <div class="col s1">
+  <div class="flexbox-vertical grey" *ngIf="!showLoader">
+    <div *ngIf="user; else showLogin">
+      <h1>Hello {{ user.getName() }}!</h1>
+      <button (click)="logout()">Logout</button>
     </div>
-  </div> -->
-  <div class="flexbox-item">
-    <button id="new-account-button" type="button" (click)="newAccount()" class="btn col s9 waves-effect blue">Create New Account</button>
+    <ng-template #showLogin>
+      <button id="email-dialog-open-button" (click)="openSignInWithEmailDialog()" class="btn waves-effect waves-light button-space">Login with Email <i class="material-icons right">email</i></button>
+      <button id="special-google-button" (click)="signInWithGoogle()" class="icon btn waves-effect waves-light button-space" disabled="true"></button>
+      <!-- <button (click)="signInWithFacebook()" class="btn waves-effect waves-light button-space" disabled="true">Login with Facebook <i class="material-icons right">send</i></button> -->
+      <button id="new-account-button" type="button" (click)="newAccount()" class="btn waves-light blue button-space">Register New Account</button>
+    </ng-template>
   </div>
-</div>
-</form>
-</div>
 </div>

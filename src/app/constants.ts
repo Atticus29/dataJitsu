@@ -1,6 +1,7 @@
 export var constants = {
     title: "Match Annotator",
     numDaysBeforeNewAnnotationNeeded: 30,
+    numberOfCurrentAnnotationsNeeded: 10,
     temp: "hi, Mark",
     monthlyCost: 2,
     halfYearCost: 6,

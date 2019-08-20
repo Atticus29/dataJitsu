@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class TrackerService {
   public submission: BehaviorSubject<string> = new BehaviorSubject<string>("No");
   public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public attemptStatus: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  public currentUserBehaviorSubject: BehaviorSubject<User> = new BehaviorSubject(null);
 
   constructor() { }
 

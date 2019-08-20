@@ -30,7 +30,7 @@ export class YoutubeComponent implements OnInit {
 
     function onPlayerStateChange(event){
       if (event.data == window['YT'].PlayerState.PAUSED) {
-        console.log(player.getCurrentTime());
+        // console.log(player.getCurrentTime());
         this.trackerService.startTimePoint.next(player.getCurrentTime());
       }
     }

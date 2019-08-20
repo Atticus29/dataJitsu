@@ -2,20 +2,21 @@
   <div class="nav-wrapper">
     <ul>
       <li><a href="#" class="brand-logo center">{{title}}</a></li>
+      <li *ngIf="authenticationStatus">Welcome, {{name}}</li>
     </ul>
   </div>
-  <div class="nav-wrapper">
+  <div class="nav-wrapper" *ngIf="user">
     <ul id="nav-mobile" class="left hide-on-med-and-down flexbox-container">
       <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
       <li *ngIf="authenticationStatus"><a routerLink="newmatch" >New Match</a></li>
-      <li *ngIf="authenticationStatus"><a routerLink="matches" >View All Matches</a></li>
-      <li *ngIf="authenticationStatus"><a routerLink="annotate" >Annotate a video</a></li>
+      <li *ngIf="authenticationStatus && (paidStatus || isAdmin)"><a routerLink="matches" >View All Matches</a></li>
+      <li *ngIf="authenticationStatus"><a (click)="navigateToVideoInNeedOfAnnotation()" >Annotate a video</a></li>
       <li *ngIf="authenticationStatus"><a (click)="logout()" id="logOutLink">Log Out</a></li>
     </ul>
   </div>
 </nav>
 <div class="flexbox-item">
-  <app-user-status-report *ngIf="authenticationStatus"></app-user-status-report>
+  <app-user-status-report *ngIf="user"></app-user-status-report>
 </div>
 <div class="flexbox-container-alt">
   <div class="huge-flexbox-item">

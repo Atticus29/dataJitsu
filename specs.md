@@ -1,13 +1,23 @@
 # TODO high priority
+- [ ] cannot make the same exact annotation twice test
+- [ ] Tests to tell whether someone with paidStatus true can see matches but not delete, someone who has not paid cannot see matches
+- [ ] Write a test to annotate two moves in a row, both with a move deep in the tree
+- [ ] info for ratings (1 annotation hasn't been rated or is annotated mostly incorrectly, 4 is annotated everything that the ref scores, 5 is annotated beyond that with more details)
+- [ ] Figure out why creating a new user works fine manually but not with the cypress test in login.spec
+- [ ] Add some way of preventing users from simply making one shitty annotation and getting in
+  - [ ] Add some way of disabling them for a punishingly long time if they do it
 - [ ] Add branching/if statements to cypress login as admin test
+- [ ] Either have a question on the form about whether the match uses points or somehow automate that to prevent users from assigning points in tournament types that don't reward them
 - [ ] getMainAnnotatorOfMatch doesn't work as expected yet
 - [ ] reset annotationVotesCastToday at midnight every night
+- [ ] Add a paid status guard to all matches and stats (when there are stats)
 - [ ] Add onDestroy handling for the memory leakers?
 - [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable (do you unreward if diluted by crap?)
   - [ ] TODO && current rater is not the main annotator
 - [ ] When you rate an annotation with a four and it's not your own, it awards the majority annotator x reputation points TODO hackable? (do you unreward if diluted by crap?)
 - [ ] Monitor user's reputation points and enable privileges when things change
 - [ ] Dialog for adding move names (if certain privileges; else, notify not enough privileges)
+- [ ] Admin and moderators have a special area only they can access and do administrative things in
 - [ ] Separate and gitignore the admin email and password and then go back through and erase
 - [ ] Detect when the link url is different but other match specs are the same
 - [ ] Update the weight classes of the matches that have already been made
@@ -25,6 +35,7 @@
 - [ ] Make password toggleable to be visible
 
 # TODO low priority
+- [ ] Whether the user has verified their email address or not doesn't matter yet
 - [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
 - [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
@@ -33,6 +44,9 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Get login to display and to successfully navigate both for login and for logout
+- [x] Set up new email login dialog box
+- [x] Add match annotations to user upon successful annotation; use this to resolve bug of most recent annotation
 - [x] Annotation includes the annotator's user id
 - [x] Have table auto-update when move details are revised
 - [x] Add cannot create duplicate match test
@@ -55,6 +69,7 @@
 - [x] Fix test for clicking pause
 
 # Specs
+- [ ] An annotation is not made if a similar enough one has already been made by someone else
 - [ ] Admin status is tracked and admin can remove matches
 - [ ] User can filter annotations by ones that scored points
 - [ ] There's a way for a user to undo the most recent annotation they made?
