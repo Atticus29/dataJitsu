@@ -239,8 +239,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-        console.log("query result in getUserByUid in databaseService: ");
-        console.log(snapshot.val());
+        // console.log("query result in getUserByUid in databaseService: ");
+        // console.log(snapshot.val());
         user = snapshot.val();
         user = user[Object.keys(user)[0]];
         observer.next(user);
@@ -402,11 +402,11 @@ export class DatabaseService {
   }
 
   addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string){
-    console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    // console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
     let counter: number = 0;
     this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
       if(uniqueEnough && counter < 1){
-        console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
+        // console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
         let now: string = new Date().toJSON();
         let matchId = move.getMatchId();
         let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');

@@ -49,7 +49,7 @@ const appRoutes: Routes = [
   pathMatch: 'full'
 },{
   path: 'logout',
-  component: LogoutComponent,
+  component: LogoutComponent, //don't redirectUnauthorizedTo with this one. Handled manually. You have already tried this
   pathMatch: 'full'
 },{
   path: 'landing',

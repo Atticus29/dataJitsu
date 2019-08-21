@@ -1,15 +1,9 @@
 # Known issues
-- [ ] Adding an annotation doesn't add it to user correctly, even though it seems to add it to match correctly
-- [ ] logout REST URL doesn't get rid of user in app.component
-
 - [ ] User creation
-    - [ ] Creating a new user doesn't associate uid with them
-    - [ ] Logging in after creating user and logging out changes paid status to trip
-    - [ ] Deleting a user from the db when they're logged in creates a payment entry in the db
     - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
     - [ ] Currently, lets you create multiple duplicate accounts (?)
 - [ ] Annotation
-    - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't swtich disabled
+    - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't switch disabled
     - [ ] Second time you annotate a move, whether submission and whether successful not at their default values
 - [ ] Video Player
     - [ ] Changing the annotation rating resets the video
@@ -30,6 +24,11 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Creating a new user doesn't associate uid with them
+- [x] Logging in after creating user and logging out changes paid status to trip
+- [x] Deleting a user from the db when they're logged in creates a payment entry in the db
+- [x] logout REST URL doesn't get rid of user in app.component
+- [x] Adding an annotation doesn't add it to user correctly, even though it seems to add it to match correctly
 - [x] Gi/Nogi on match-display says false
 - [x] If you navigate to matches/undefined, it still shows something that looks somewhat like a match
 - [x] Original poster ID is "users" right now and should be updated to the actual user's id

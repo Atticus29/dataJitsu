@@ -37,18 +37,18 @@ export class AuthorizationService {
   }
 
   // Returns true if user is logged in
-  get authenticatedObservable(): any {
-    let obsRet = Observable.create(function(observer){
-      this.afAuth.authState.subscribe(result =>{
-        if(result !== null){
-          observer.next(true);
-        } else{
-          observer.next(false);
-        }
-      });
-    });
-    return obsRet;
-  }
+  // get authenticatedObservable(): any {
+  //   let obsRet = Observable.create(function(observer){
+  //     this.afAuth.authState.subscribe(result =>{
+  //       if(result !== null){
+  //         observer.next(true);
+  //       } else{
+  //         observer.next(false);
+  //       }
+  //     });
+  //   });
+  //   return obsRet;
+  // }
 
   // Returns current user data
   get currentUser(): any {
@@ -60,8 +60,8 @@ export class AuthorizationService {
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.afAuth.authState.subscribe(auth =>{
-        // console.log("user in currentUserObservable: ");
-        // console.log(auth);
+        console.log("user in currentUserObservable in authorization service: ");
+        console.log(auth);
         observer.next(auth);
       });
     });
@@ -228,8 +228,8 @@ export class AuthorizationService {
   signOut(): void {
     this.afAuth.auth.signOut();
     this.currentUserObservable.subscribe(currentUsr =>{
-      console.log("currentUsr in signOut in authorization service: ");
-      console.log(currentUsr);
+      // console.log("currentUsr in signOut in authorization service: ");
+      // console.log(currentUsr);
       if(!currentUsr){
         this.router.navigate(['login']);
       }
