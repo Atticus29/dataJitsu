@@ -88,8 +88,7 @@ export class MatchDisplayComponent implements OnInit {
         // console.log("getMatchFromNodeKey called and returned: ");
         // console.log(match);
         this.match = match;
-        console.log("hi!:");
-        console.log(match.matchDeets.giStatus);
+        // console.log(match.matchDeets.giStatus);
         if(match.matchDeets.giStatus){
           this.giStatus = "Gi";
         } else{
@@ -148,6 +147,7 @@ export class MatchDisplayComponent implements OnInit {
                             self.trackerService.attemptStatus.pipe(take(1)).subscribe(attemptSuccessful =>{
                               self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe((user) =>{
                                 self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+                                  // usr = usr[Object.keys(usr)[0]];
                                   if(usr){
                                     let userInDb: string = usr.id;
                                     let attemptStatus: boolean = true;
@@ -209,17 +209,21 @@ export class MatchDisplayComponent implements OnInit {
 
     this.moveAssembledStatus.subscribe(status =>{
       if(status && this.moveCompletelyLegit()){
-        self.db.addMoveInVideoToMatch(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnough =>{
+        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnough =>{
           if(!matchUniqueEnough){
             this.snackBar.open("Annotation has already been made by another user");
           } else{
+            // let counter = 0;
             this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
               if(usr){
                 this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-                  let userInDb: string = usr.id;
-                  self.db.addMoveInVideoToUser(self.tempMove, userInDb);
+                  let userInDbId: string = usr.id;
+                  self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, userInDbId);
                   self.openSnackBar("Move Recorded");
-                  // self.db.addMoveInVideoToMatch(self.tempMove);
+                  // console.log(counter);
+                  // if(counter < 1){
+                    // counter += 1;
+                  // }
                 });
               }
             });
@@ -244,6 +248,7 @@ export class MatchDisplayComponent implements OnInit {
     let newRating = $event.newValue;
     this.trackerService.currentUserBehaviorSubject.subscribe(usr =>{
       this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
+        // usr = usr[Object.keys(usr)[0]];
         let userInDb: string = urs.id;
         this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
         this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
@@ -255,6 +260,7 @@ export class MatchDisplayComponent implements OnInit {
     let newRating = $event.newValue;
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
       this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        // result = result[Object.keys(result)[0]];
         let userDbId: string = result.id;
         // console.log("userDbId is: "+ userDbId);
         this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);

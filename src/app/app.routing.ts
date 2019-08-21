@@ -14,6 +14,7 @@ import { TemporaryComponent } from './temporary/temporary.component';
 import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
 import { PaymentComponent } from './payment/payment.component';
 import { AdminComponent } from './admin/admin.component';
+import { LogoutComponent } from './logout/logout.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate } from '@angular/fire/auth-guard';
 
@@ -45,6 +46,10 @@ const appRoutes: Routes = [
   path: 'populatedb',
   component: TestDbComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
+},{
+  path: 'logout',
+  component: LogoutComponent,
   pathMatch: 'full'
 },{
   path: 'landing',

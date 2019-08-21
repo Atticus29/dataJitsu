@@ -18,7 +18,7 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
 
   ngOnInit() {
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
-      this.databaseService.getAnnotations(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotations =>{
+      this.databaseService.getAnnotations(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotations =>{
         console.log("annotations in AnnotatedMovesDisplayComponent");
         console.log(annotations);
       });

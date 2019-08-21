@@ -1,4 +1,7 @@
 # Known issues
+- [ ] Adding an annotation doesn't add it to user correctly, even though it seems to add it to match correctly
+- [ ] logout REST URL doesn't get rid of user in app.component
+
 - [ ] User creation
     - [ ] Creating a new user doesn't associate uid with them
     - [ ] Logging in after creating user and logging out changes paid status to trip

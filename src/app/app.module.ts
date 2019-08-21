@@ -83,6 +83,7 @@ import { VerifyEmailAddressComponent } from './verify-email-address/verify-email
 import { PaymentComponent } from './payment/payment.component';
 import { AnnotatedMovesDisplayComponent } from './annotated-moves-display/annotated-moves-display.component';
 import { AdminComponent } from './admin/admin.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 export const firebaseConfig = {
@@ -114,7 +115,8 @@ export const firebaseConfig = {
     VerifyEmailAddressComponent,
     PaymentComponent,
     AnnotatedMovesDisplayComponent,
-    AdminComponent
+    AdminComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

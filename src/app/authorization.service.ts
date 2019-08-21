@@ -227,7 +227,13 @@ export class AuthorizationService {
   //// Sign Out ////
   signOut(): void {
     this.afAuth.auth.signOut();
-    this.router.navigate(['login']);
+    this.currentUserObservable.subscribe(currentUsr =>{
+      console.log("currentUsr in signOut in authorization service: ");
+      console.log(currentUsr);
+      if(!currentUsr){
+        this.router.navigate(['login']);
+      }
+    })
   }
   //// Helpers ////
 

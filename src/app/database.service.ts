@@ -238,10 +238,11 @@ export class DatabaseService {
     let ref = firebase.database().ref('/users/');
     let user: User;
     let resultObservable = Observable.create(observer =>{
-      ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("child_added", snapshot => {
-        // console.log("query result in getUserByUid in databaseService: ");
-        // console.log(snapshot.val());
+      ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
+        console.log("query result in getUserByUid in databaseService: ");
+        console.log(snapshot.val());
         user = snapshot.val();
+        user = user[Object.keys(user)[0]];
         observer.next(user);
       });
     });
@@ -305,12 +306,16 @@ export class DatabaseService {
     return matchId;
   }
 
-  addUserToDb(user: User){
+  addUserToDb(user: User): Observable<string>{
     let ref = this.db.list<User>('/users');
     let userId = ref.push(user).key;
     let updates = {};
     updates['/users/'+userId + '/id'] = userId;
     firebase.database().ref().update(updates);
+    let resultObservable = Observable.create(observer =>{
+      observer.next(userId);
+    });
+    return resultObservable;
   }
 
   addUserToDbAndReturnUserId(user: User){
@@ -322,11 +327,11 @@ export class DatabaseService {
     return userId;
   }
 
-  addMoveInVideoToMatch(move: MoveInVideo): Observable<boolean>{
+  addMoveInVideoToMatchIfUniqueEnough(move: MoveInVideo): Observable<boolean>{
     let resultObservable = Observable.create(observer =>{
       let counter: number = 0;
       //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
-      this.moveIsUniqueEnoughToAddToMatch(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+      this.moveIsUniqueEnough(move, 'matches/' + move.getMatchId() + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
         // console.log("unique enough?");
         // console.log(uniqueEnough);
         // console.log("value of counter: ");
@@ -358,10 +363,10 @@ export class DatabaseService {
 
   }
 
-  moveIsUniqueEnoughToAddToMatch(move: MoveInVideo): Observable<boolean>{
+  moveIsUniqueEnough(move: MoveInVideo, path: string): Observable<boolean>{
     let resultObservable = Observable.create(observer =>{
       // console.log("move.getMatchId(): " + move.getMatchId());
-      this.getAnnotations(move.getMatchId()).pipe(take(1)).subscribe(moves =>{
+      this.getAnnotations(move.getMatchId(), path).pipe(take(1)).subscribe(moves =>{
         // console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
         // console.log(moves);
         if(moves){
@@ -385,8 +390,8 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  getAnnotations(matchId: string){
-    let ref = firebase.database().ref('matches/' + matchId + '/moves/');
+  getAnnotations(matchId: string, path: string){
+    let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
     let resultObservable = Observable.create(observer =>{
       return ref.on("value", snapshot => {
         let moves = snapshot.val();
@@ -396,22 +401,28 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  addMoveInVideoToUser(move: MoveInVideo, currentUserId: string){
-    // console.log("entered addMoveInVideoToUser");
-    let now: string = new Date().toJSON();
-    // let newMove = {move, dateAdded:now};
-    let matchId = move.getMatchId();
-    let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
-    let moveId = ref.push(move).key;
-    let updates = {};
-    updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
-    // console.log(updates);
-    firebase.database().ref().update(updates);
-    //Now update dateLastAnnotated
-    ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
-    updates = {};
-    updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
-    firebase.database().ref().update(updates);
+  addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string){
+    console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    let counter: number = 0;
+    this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+      if(uniqueEnough && counter < 1){
+        console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
+        let now: string = new Date().toJSON();
+        let matchId = move.getMatchId();
+        let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
+        let moveId = ref.push(move).key;
+        let updates = {};
+        updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
+        // console.log(updates);
+        firebase.database().ref().update(updates);
+        //Now update dateLastAnnotated
+        ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
+        updates = {};
+        updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
+        firebase.database().ref().update(updates);
+        counter += 1;
+      }
+    });
   }
 
   updateUserInDb(user: User){
