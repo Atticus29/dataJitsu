@@ -60,8 +60,8 @@ export class AuthorizationService {
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.afAuth.authState.subscribe(auth =>{
-        console.log("user in currentUserObservable in authorization service: ");
-        console.log(auth);
+        // console.log("user in currentUserObservable in authorization service: ");
+        // console.log(auth);
         observer.next(auth);
       });
     });

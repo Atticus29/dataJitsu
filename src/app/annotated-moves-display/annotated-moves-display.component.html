@@ -1,1 +1,3 @@
-<p>annotated-moves-display works!</p>
+<mat-chip-list>
+  <mat-chip *ngFor="let annotation of annotations" (click)="playStartingAt(annotation.timeInitiated)">{{annotation.timeInitiated}}: {{annotation.moveName}} performed by {{annotation.actor}}</mat-chip>
+</mat-chip-list>

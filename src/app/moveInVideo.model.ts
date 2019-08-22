@@ -6,4 +6,7 @@ export class MoveInVideo {
   getMatchId(): string{
     return this.associatedMatchId;
   }
+  updateDateAdded(date: string){
+    this.dateAdded = date;
+  }
 }

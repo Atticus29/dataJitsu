@@ -390,10 +390,23 @@ export class DatabaseService {
     return resultObservable;
   }
 
+  getAnnotationsSortedByStartTime(matchId: string, path: string){
+    let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
+    let resultObservable = Observable.create(observer =>{
+      return ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
+        // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
+        // console.log(snapshot.val());
+        let moves = snapshot.val();
+        observer.next(moves);
+      });
+    });
+    return resultObservable;
+  }
+
   getAnnotations(matchId: string, path: string){
     let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
     let resultObservable = Observable.create(observer =>{
-      return ref.on("value", snapshot => {
+      return ref.on("value", snapshot => { //.orderByChild("timeInitiated")
         let moves = snapshot.val();
         observer.next(moves);
       });
@@ -520,17 +533,9 @@ export class DatabaseService {
   }
 
   average(list: any[]){
-    return this.roundToDecimal(list.reduce((prev, curr) => prev + curr) / list.length, 2);
+    return this.dateService.roundToDecimal(list.reduce((prev, curr) => prev + curr) / list.length, 2);
   }
-  roundToDecimal(number,decimal) {
-    var zeros = new String( 1.0.toFixed(decimal) );
-    zeros = zeros.substr(2);
-    var mul_div = parseInt( "1"+zeros );
-    var increment = parseFloat( "."+zeros+"01" );
-    if( ( (number * (mul_div * 10)) % 10) >= 5 )
-      { number += increment; }
-    return Math.round(number * mul_div) / mul_div;
-  }
+
 
   getAverageMatchRating(matchId: string){
     let ref = firebase.database().ref('matches/' + matchId + '/matchRatings/');

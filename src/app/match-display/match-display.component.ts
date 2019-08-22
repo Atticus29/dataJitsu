@@ -219,7 +219,7 @@ export class MatchDisplayComponent implements OnInit {
                 this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
                   let userInDbId: string = usr.id;
                   self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, userInDbId);
-                  self.openSnackBar("Move Recorded");
+                  self.openSnackBar("Annotation Recorded");
                   // console.log(counter);
                   // if(counter < 1){
                     // counter += 1;

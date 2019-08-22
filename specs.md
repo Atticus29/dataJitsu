@@ -1,5 +1,10 @@
 # TODO high priority
-- [ ] Maybe put a delay between the user creation and the user login to avoid the alert popup
+- [ ] Make annotations clickable to take user to that part of the video
+- [ ] Update the check for annotation similarity/merge
+- [ ] Admin section should contain a delete annotation option so that the double annotation functionality can be more rigorously tested
+- [ ] F.A.Q. section
+    - [ ] Why did I lose reputation points?
+- [ ] Update spec list
 - [ ] TODO make the signs up a new user test pass (currently does not)
 - [ ] Need a way to handle things like missing uid in users
 - [ ] Submission status and success status in the form stays imprinted on the previously annotated move
@@ -47,6 +52,8 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Crudely visualize all annotations
+- [x] Maybe put a delay between the user creation and the user login to avoid the alert popup
 - [x] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere
 - [x] Update the weight classes and belts of the matches that have already been made
 - [x] Fix bugs with logging out (sometimes you have to do it multiply)
