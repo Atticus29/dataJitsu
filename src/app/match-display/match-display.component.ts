@@ -184,6 +184,18 @@ export class MatchDisplayComponent implements OnInit {
           document.getElementById("pause-vid").addEventListener("click", function() {
             player.pauseVideo();
           });
+
+          this.trackerService.desiredJumpStartTime.pipe(takeUntil(this.ngUnsubscribe)).subscribe(localDesiredJumpStartTime =>{
+            // console.log("trackerService.desiredJumpStartTime in match display entered");
+            // console.log(localDesiredJumpStartTime);
+            if(localDesiredJumpStartTime){
+              // console.log("trackerService.desiredJumpStartTime in match display entered");
+              // console.log(Number(localDesiredJumpStartTime)); //-0.5
+              // console.log(Number(localDesiredJumpStartTime)-0.5); //-0.5
+              // console.log(Math.max(0.5,Number(localDesiredJumpStartTime)-0.5));
+              player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
+            }
+          });
         }
 
         function onPlayerStateChange(event){

@@ -18,7 +18,8 @@ export class TrackerService {
   public submission: BehaviorSubject<string> = new BehaviorSubject<string>("No");
   public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public attemptStatus: BehaviorSubject<string> = new BehaviorSubject("Yes");
-  public currentUserBehaviorSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  public currentUserBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public desiredJumpStartTime: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   constructor() { }
 

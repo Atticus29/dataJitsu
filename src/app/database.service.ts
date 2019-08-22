@@ -711,4 +711,8 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
+  removeAnnotationInMatchByStartTime(matchId: string, timeInitiated: number){
+    console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
+  }
+
 }

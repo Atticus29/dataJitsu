@@ -1,9 +1,16 @@
 # TODO high priority
 - [ ] Make annotations clickable to take user to that part of the video
+- [ ] Make chips deletable if isAdmin is true (or if certain reputation points exist)
 - [ ] Update the check for annotation similarity/merge
-- [ ] Admin section should contain a delete annotation option so that the double annotation functionality can be more rigorously tested
 - [ ] F.A.Q. section
     - [ ] Why did I lose reputation points?
+    - [ ] What do various tiers of reputations points get me?
+      - [ ] Audit names of moves proposed (TODO check how wikipedia deals with profanity edits, etc.)
+      - [ ] Rate annotations (x per day increases as reputation increases)
+      - [ ] Flag annotations for removal
+      - [ ] Remove annotations
+      - [ ] Search by different criteria? (also available to paying user)
+- [ ] User page; badge with reputation points
 - [ ] Update spec list
 - [ ] TODO make the signs up a new user test pass (currently does not)
 - [ ] Need a way to handle things like missing uid in users

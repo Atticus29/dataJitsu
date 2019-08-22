@@ -68,4 +68,8 @@ export class User {
   getEmail(){
     return this.email;
   }
+
+  getPrivileges(){
+    return this.privileges;
+  }
 }

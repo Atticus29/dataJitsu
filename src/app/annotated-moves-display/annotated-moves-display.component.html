@@ -1,3 +1,13 @@
+<h5>Annotations</h5>
+<hr>
 <mat-chip-list>
-  <mat-chip *ngFor="let annotation of annotations" (click)="playStartingAt(annotation.timeInitiated)">{{annotation.timeInitiated}}: {{annotation.moveName}} performed by {{annotation.actor}}</mat-chip>
+  <mat-chip *ngFor="let annotation of annotations">
+    <span (click)="playStartingAt(annotation.timeInitiated)">
+      {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(annotation.timeInitiated)}}: {{annotation.moveName}} performed by {{annotation.actor}}
+    </span>
+    <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated)">
+      <i class="material-icons right">cancel</i>
+    </span>
+  </mat-chip>
 </mat-chip-list>
+<hr>

@@ -16,6 +16,7 @@ import { MoveInVideo } from '../moveInVideo.model';
 export class AnnotatedMovesDisplayComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private annotations: Array<any> = new Array<any>();
+  private isAdmin: boolean = false;
 
   constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService) { }
 
@@ -36,6 +37,17 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
       });
     });
 
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+      console.log("usr in annotated-moves-display:");
+      usr ? this.isAdmin = usr.privileges.isAdmin: this.isAdmin = false;
+      // if(usr){
+      //   console.log(usr.privileges.isAdmin);
+      //   this.isAdmin = usr.privileges.isAdmin;
+      // } else{
+      //   this.isAdmin = false;
+      // }
+    });
+
   }
 
   ngOnDestroy(){
@@ -44,8 +56,22 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
   }
 
   playStartingAt(time: number){
-    console.log("entered playStartingAt");
-    console.log(time);
+    // console.log("entered playStartingAt");
+    // console.log(time);
+    this.trackerService.desiredJumpStartTime.next(time);
+  }
+
+  removeAnnotation(timeInitiated: number){
+    console.log("clicked removeAnnotation");
+    console.log(timeInitiated);
+    let confirmation = confirm("Are you sure you want to delete this annotation?");
+    if(confirmation){
+      this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
+        this.databaseService.removeAnnotationInMatchByStartTime(matchId, timeInitiated);
+      });
+    } else{
+      // console.log("confirmation denied");
+    }
   }
 
 }

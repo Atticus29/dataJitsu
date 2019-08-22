@@ -41,4 +41,15 @@ export class DateCalculationsService {
     return Math.round(number * mul_div) / mul_div;
   }
 
+  convertSecondsToMinutesAndSeconds(inputSeconds: number): string{
+    // let convertedSeconds = Number(inputSeconds);
+    let minutes = Math.floor(inputSeconds / 60);
+    let seconds = Math.floor(inputSeconds - (minutes*60));
+    return this.str_pad_left(minutes,'0',2)+':'+ this.str_pad_left(seconds,'0',2);
+  }
+
+  str_pad_left(string,pad,length) {
+    return (new Array(length+1).join(pad)+string).slice(-length);
+  }
+
 }
