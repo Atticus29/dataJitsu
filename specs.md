@@ -1,7 +1,8 @@
 # TODO high priority
-- [ ] Make annotations clickable to take user to that part of the video
 - [ ] Make chips deletable if isAdmin is true (or if certain reputation points exist)
 - [ ] Update the check for annotation similarity/merge
+- [ ] Set up tutorial mode
+- [ ] Edit user details page
 - [ ] F.A.Q. section
     - [ ] Why did I lose reputation points?
     - [ ] What do various tiers of reputations points get me?
@@ -59,6 +60,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Make annotations clickable to take user to that part of the video
 - [x] Crudely visualize all annotations
 - [x] Maybe put a delay between the user creation and the user login to avoid the alert popup
 - [x] When you submit a match, it asks you if you want to annotate, and if you click annotate, it doesn't take you anywhere

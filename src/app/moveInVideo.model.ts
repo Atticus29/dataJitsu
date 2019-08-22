@@ -9,4 +9,8 @@ export class MoveInVideo {
   updateDateAdded(date: string){
     this.dateAdded = date;
   }
+
+  getMoveName(){
+    return this.moveName;
+  }
 }

@@ -3,9 +3,9 @@
 <mat-chip-list>
   <mat-chip *ngFor="let annotation of annotations">
     <span (click)="playStartingAt(annotation.timeInitiated)">
-      {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(annotation.timeInitiated)}}: {{annotation.moveName}} performed by {{annotation.actor}}
+      {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}: {{annotation.moveName}} performed by {{annotation.actor}}
     </span>
-    <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated)">
+    <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated, annotation.annotatorUserId)">
       <i class="material-icons right">cancel</i>
     </span>
   </mat-chip>

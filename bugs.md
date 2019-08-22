@@ -1,8 +1,13 @@
 # Known issues
+- [ ] Reputation and tracking
+  - [ ] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
+
 - [ ] User creation
     - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
     - [ ] Currently, lets you create multiple duplicate accounts (?)
 - [ ] Annotation
+    - [ ] Removing an annotation currently creates a new annotation in user that's blank but not null
+    - [ ] Annotating a second time below the submission multi-tree doesn't work
     - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't switch disabled
     - [ ] Second time you annotate a move, whether submission and whether successful not at their default values
 - [ ] Video Player
