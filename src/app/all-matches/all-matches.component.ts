@@ -51,6 +51,11 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       this.user = user;
       if(user && user.uid){
         this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
+          if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches){
+            //can see things
+          } else{
+            this.router.navigate(['landing']);
+          }
           if(dbUser.privileges.isAdmin){
             this.columnsToDisplay.push('deleteMatch');
           }

@@ -9,13 +9,13 @@ export var constants = {
     requiredAnnotationsPerMonth: 1,
     rootNodes: [
     "Advantage",
-    "Discliplinary Action",
-    "Positions With Names That Do Not Score Points In Most Rule Sets",
-    "Positional Changes",
-    "Sweeps or Sweep Attempts",
-    "Submissions or Submission Attempts",
+    "Guard Passes or Guard Pass Attempts",
     "Take Downs or Take Down Attempts",
-    "Guard Passes or Guard Pass Attempts"
+    "Submissions or Submission Attempts",
+    "Sweeps or Sweep Attempts",
+    "Positional Changes",
+    "Positions With Names That Do Not Score Points In Most Rule Sets",
+    "Discliplinary Action",
     ],
     privilegeLevels: {
       1: 100,

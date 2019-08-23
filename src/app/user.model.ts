@@ -16,7 +16,8 @@ export class User {
       canRateMatches: true,
       canRateAnnotations: false,
       canFlagAnnotations: false,
-      canFlagUsers: false
+      canFlagUsers: false,
+      canViewAllMatches: false
     };
     this.votingInfo = {
       annotationVoteQuota: constants.annotationVoteQuota,

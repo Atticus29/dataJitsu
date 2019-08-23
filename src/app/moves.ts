@@ -1,3 +1,5 @@
+import { constants } from './constants';
+
 export var allCurrentMoves ={
   "Advantage": ["Advantage"],
   "Guard Passes or Guard Pass Attempts":[
