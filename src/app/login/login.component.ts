@@ -23,6 +23,7 @@ import { User } from '../user.model';
 })
 export class LoginComponent implements OnInit {
   private user: User;
+  private loggedIn: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService, public dialog: MatDialog, public trackerService: TrackerService) {
@@ -31,6 +32,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.user = result;
+      if(result){
+        this.loggedIn = true;
+      }else{
+        this.loggedIn = false;
+      }
     });
   }
 

@@ -14,8 +14,8 @@ export var constants = {
     "Positional Changes",
     "Sweeps or Sweep Attempts",
     "Submissions or Submission Attempts",
-    "Take Downs",
-    "Guard Passes"
+    "Take Downs or Take Down Attempts",
+    "Guard Passes or Guard Pass Attempts"
     ],
     privilegeLevels: {
       1: 100,

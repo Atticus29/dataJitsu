@@ -37,6 +37,7 @@ export class CreateAccountComponent implements OnInit {
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService) { }
 
   ngOnInit() {
+    
     for (var i = 3; i <= 110; i++) {
       this.ages.push(i);
     }
@@ -84,25 +85,25 @@ export class CreateAccountComponent implements OnInit {
   //@TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
-    // console.log("loginImprovements entered");
+    console.log("processFormInputsToDB entered");
     let result = this.getValues();
     let newUser: User = this.createUserObj(result);
-    // console.log("newUser from processFormInputsToDB: ");
-    // console.log(newUser);
+    console.log("newUser from processFormInputsToDB: ");
+    console.log(newUser);
     let self = this;
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
-      // console.log("dbUserId in create-account component");
-      // console.log(dbUserId);
+      console.log("dbUserId in create-account component");
+      console.log(dbUserId);
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
         if(user){
           if(user.uid){
-            // console.log(user.uid);
-            // console.log(newUser.getId());
+            console.log("user uid in trackerService.currentUserBehaviorSubject in create-account component");
+            console.log(user.uid);
+            console.log(newUser.getId());
             this.db.addUidToUser(user.uid, dbUserId);
-
             // console.log("Oh hey! There's a uid, too!: " + user.uid);
           }
           this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it

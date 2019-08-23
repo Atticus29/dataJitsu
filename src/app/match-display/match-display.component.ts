@@ -57,8 +57,8 @@ export class MatchDisplayComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    // this.ngUnsubscribe.next();
-    // this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit() {
@@ -193,6 +193,7 @@ export class MatchDisplayComponent implements OnInit {
               // console.log(Number(localDesiredJumpStartTime)); //-0.5
               // console.log(Number(localDesiredJumpStartTime)-0.5); //-0.5
               // console.log(Math.max(0.5,Number(localDesiredJumpStartTime)-0.5));
+              player.playVideo();
               player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
             }
           });
@@ -230,8 +231,11 @@ export class MatchDisplayComponent implements OnInit {
               if(usr){
                 this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
                   let userInDbId: string = usr.id;
-                  self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, userInDbId);
-                  self.openSnackBar("Annotation Recorded");
+                  self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnoughInUser =>{
+                    if(matchUniqueEnoughInUser){
+                      self.openSnackBar("Annotation Recorded");
+                    }
+                  });
                   // console.log(counter);
                   // if(counter < 1){
                     // counter += 1;
@@ -316,6 +320,5 @@ export class MatchDisplayComponent implements OnInit {
       duration: 3000,
     });
   }
-
 
 }

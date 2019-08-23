@@ -23,10 +23,10 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
 
   ngOnInit() {
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
-      console.log("got into currentMatch: " + matchId);
+      // console.log("got into currentMatch: " + matchId);
       this.databaseService.getAnnotationsSortedByStartTime(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotations =>{
-        console.log("annotations in AnnotatedMovesDisplayComponent");
-        console.log(annotations);
+        // console.log("annotations in AnnotatedMovesDisplayComponent");
+        // console.log(annotations);
         this.matchId = matchId;
         this.annotations = new Array();
         if(annotations){
@@ -36,7 +36,7 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
             this.annotations.push(currentMoveInVideo);//[Object.keys(annotation)[0]]
           });
         }
-        console.log(this.annotations);
+        // console.log(this.annotations);
         // Object.keys(annotations).forEach(key =>{
         //   console.log(annotations[key]);
         // });

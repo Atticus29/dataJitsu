@@ -239,8 +239,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-        // console.log("query result in getUserByUid in databaseService: ");
-        // console.log(snapshot.val());
+        console.log("query result in getUserByUid in databaseService: ");
+        console.log(snapshot.val());
         user = snapshot.val();
         user = user[Object.keys(user)[0]];
         observer.next(user);
@@ -394,13 +394,13 @@ export class DatabaseService {
     let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild("timeInitiated").on("value", snapshot => { //
-          console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
-          console.log(snapshot.val());
+          // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
+          // console.log(snapshot.val());
           let snapshotVals = snapshot.val();
           let theObjects = new Array();
           if(snapshotVals){
             Object.keys(snapshotVals).forEach(key =>{
-              console.log(snapshotVals[key]);
+              // console.log(snapshotVals[key]);
               let tmpObj = snapshotVals[key]
               // let newMove = new MoveInVideo(...snapshotVals[key]);
               // console.log(newMove);
@@ -435,30 +435,40 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string){
-    // console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
-    let counter: number = 0;
-    if(move.getMoveName() !== "No Annotation Currently Selected"){
-      this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
-        if(uniqueEnough && counter < 1){
-          // console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
-          let now: string = new Date().toJSON();
-          let matchId = move.getMatchId();
-          let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
-          let moveId = ref.push(move).key;
-          let updates = {};
-          updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
-          // console.log(updates);
-          firebase.database().ref().update(updates);
-          //Now update dateLastAnnotated
-          ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
-          updates = {};
-          updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
-          firebase.database().ref().update(updates);
-          counter += 1;
+  addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string): Observable<boolean>{
+    console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    let resultObservable = Observable.create(observer =>{
+        let counter: number = 0;
+        if(move.getMoveName() !== "No Annotation Currently Selected"){
+          this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+            if(uniqueEnough && counter < 1){
+              observer.next(true);
+              console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
+              let now: string = new Date().toJSON();
+              let matchId = move.getMatchId();
+              let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
+              let moveId = ref.push(move).key;
+              let updates = {};
+              updates['/users/' + currentUserId + '/movesAnnotated/' + moveId] = move;
+              // console.log(updates);
+              firebase.database().ref().update(updates);
+              //Now update dateLastAnnotated
+              ref = this.db.list('/users/' + currentUserId + '/dateLastAnnotated');
+              updates = {};
+              updates['/users/' + currentUserId + '/dateLastAnnotated'] = now;
+              firebase.database().ref().update(updates);
+              counter += 1;
+            } else{
+              observer.next(false);
+              return resultObservable;
+            }
+          });
+        } else{
+          observer.next(false);
+          return resultObservable;
         }
-      });
-    }
+    });
+    return resultObservable;
   }
 
   updateUserInDb(user: User){
@@ -735,9 +745,9 @@ export class DatabaseService {
   }
 
   removeAnnotationInMatchAndUserByStartTime(matchId: string, timeInitiated: number, userId: string){ //TODO AndUser
-    console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
-    console.log(matchId);
-    console.log(timeInitiated);
+    // console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
+    // console.log(matchId);
+    // console.log(timeInitiated);
     let ref = firebase.database().ref('matches/' + matchId + '/moves/');
     ref.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
       // console.log("found record in question: ");
@@ -747,9 +757,9 @@ export class DatabaseService {
     });
     let newRef = firebase.database().ref('users/' + userId + '/movesAnnotated/');
     newRef.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
-      console.log("found record in question for user: ");
-      console.log(snapshot.val());
-      console.log(snapshot.key);
+      // console.log("found record in question for user: ");
+      // console.log(snapshot.val());
+      // console.log(snapshot.key);
       newRef.child(snapshot.key).remove();
     });
   }

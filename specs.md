@@ -1,5 +1,6 @@
 # TODO high priority
-- [ ] Make chips deletable if isAdmin is true (or if certain reputation points exist)
+- [ ] Add guard to matches for people who haven't earned it yet
+- [ ] Make it so that annotations appear in match chronological order not addition chronological order
 - [ ] Update the check for annotation similarity/merge
 - [ ] Set up tutorial mode
 - [ ] Edit user details page
@@ -60,6 +61,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Make chips deletable if isAdmin is true (or if certain reputation points exist)
 - [x] Make annotations clickable to take user to that part of the video
 - [x] Crudely visualize all annotations
 - [x] Maybe put a delay between the user creation and the user login to avoid the alert popup

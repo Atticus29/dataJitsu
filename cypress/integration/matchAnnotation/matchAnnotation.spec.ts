@@ -154,10 +154,10 @@ describe ('Match annotation tests', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').eq(6).click({force:true});
-    // cy.get('mat-icon').eq(7).click({force:true});
-    // cy.get('mat-icon').eq(6).click({force:true});
-    cy.contains('Scissor Sweep').first().click();
+    cy.get('mat-icon').eq(5).click({force:true});
+    cy.get('mat-icon').eq(8).click({force:true});
+    cy.wait(1000);
+    cy.contains('div','Cross Collar Choke').first().click({force: true});
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
