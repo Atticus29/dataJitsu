@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { TrackerService } from '../tracker.service';
+import { AnnotationLegendDialogComponent } from '../annotation-legend-dialog/annotation-legend-dialog.component';
 import { DatabaseService } from '../database.service';
 import { DateCalculationsService } from '../date-calculations.service';
 import { MoveInVideo } from '../moveInVideo.model';
@@ -20,7 +22,7 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
   private matchId: string = null;
   private test: boolean = false;
 
-  constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService) { }
+  constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
@@ -74,6 +76,21 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
     } else{
       // console.log("confirmation denied");
     }
+  }
+
+  // displayLegend(){
+  //   alert("moused over!");
+  //   //TODO
+  // }
+
+  openLegendDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = false;
+    // dialogConfig.width = '250px';
+    // dialogConfig.position = "left";
+    // dialogConfig.data = {};
+    const dialogRef = this.dialog.open(AnnotationLegendDialogComponent, dialogConfig);
   }
 
 }

@@ -86,6 +86,8 @@ import { AdminComponent } from './admin/admin.component';
 import { LogoutComponent } from './logout/logout.component';
 import { BaseComponent } from './base/base.component';
 import { UnsuccessfulAnnotationDirective } from './unsuccessful-annotation.directive';
+import { AnnotationLegendDialogComponent } from './annotation-legend-dialog/annotation-legend-dialog.component';
+import { SubmissionAnnotationDirective } from './submission-annotation.directive';
 
 
 export const firebaseConfig = {
@@ -120,7 +122,9 @@ export const firebaseConfig = {
     AdminComponent,
     LogoutComponent,
     BaseComponent,
-    UnsuccessfulAnnotationDirective
+    UnsuccessfulAnnotationDirective,
+    AnnotationLegendDialogComponent,
+    SubmissionAnnotationDirective
   ],
   imports: [
     BrowserModule,
@@ -160,6 +164,6 @@ export const firebaseConfig = {
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent]
 })
 export class AppModule { }

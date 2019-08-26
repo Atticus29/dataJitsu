@@ -34,6 +34,12 @@ $primary-color: green;
   justify-content: flex-start;
 }
 
+.flexbox-container-vertical-left{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
 .flexbox-container-alt{
   width: 100%;
   display: flex;
