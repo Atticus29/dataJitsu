@@ -18,6 +18,7 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
   private annotations: Array<any> = new Array<any>();
   private isAdmin: boolean = false;
   private matchId: string = null;
+  private test: boolean = false;
 
   constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService) { }
 

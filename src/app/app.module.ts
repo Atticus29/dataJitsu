@@ -85,6 +85,7 @@ import { AnnotatedMovesDisplayComponent } from './annotated-moves-display/annota
 import { AdminComponent } from './admin/admin.component';
 import { LogoutComponent } from './logout/logout.component';
 import { BaseComponent } from './base/base.component';
+import { UnsuccessfulAnnotationDirective } from './unsuccessful-annotation.directive';
 
 
 export const firebaseConfig = {
@@ -118,7 +119,8 @@ export const firebaseConfig = {
     AnnotatedMovesDisplayComponent,
     AdminComponent,
     LogoutComponent,
-    BaseComponent
+    BaseComponent,
+    UnsuccessfulAnnotationDirective
   ],
   imports: [
     BrowserModule,

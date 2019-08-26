@@ -1,7 +1,7 @@
 <h5>Annotations</h5>
 <hr>
 <mat-chip-list>
-  <mat-chip *ngFor="let annotation of annotations">
+  <mat-chip *ngFor="let annotation of annotations" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt">
     <span (click)="playStartingAt(annotation.timeInitiated)">
       {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}: {{annotation.moveName}} performed by {{annotation.actor}}
     </span>

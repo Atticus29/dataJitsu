@@ -9,6 +9,7 @@ export var allCurrentMoves ={
     "Back Step",
     "Over Under Pass",
     "Double Under Pass",
+    "Toreando Pass",
     "Name is missing from this list",
     "I don't know whether there's a name for this guard pass"
   ],
