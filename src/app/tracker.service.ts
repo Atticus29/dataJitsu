@@ -25,8 +25,8 @@ export class TrackerService {
 
   resetAllExceptCurrentMatch(){
     console.log("resetAllExceptCurrentMatch has been called");
-    this.startTimePoint.next(0);
-    this.endTimePoint.next(1);
+    this.startTimePoint.next(-1);
+    this.endTimePoint.next(-1);
     this.points.next(-1);
     this.moveName.next("No Annotation Currently Selected");
     this.performer.next("Nobody");
@@ -39,8 +39,8 @@ export class TrackerService {
   }
 
   resetAll(){
-    this.startTimePoint.next(0);
-    this.endTimePoint.next(1);
+    this.startTimePoint.next(-1);
+    this.endTimePoint.next(-1);
     this.points.next(-1);
     this.moveName.next("No Annotation Currently Selected");
     this.currentMatch.next("currentMatch");

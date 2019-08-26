@@ -152,6 +152,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             // console.log("pause beginning of move");
             let currentTime = player.getCurrentTime();
             self.trackerService.startTimePoint.next(player.getCurrentTime());
+            self.trackerService.endTimePoint.next(-1);
             //TODO reset the tree and the submission status (and the annotation move just to be safe?)
           });
           document.getElementById("end-move").addEventListener("click", function() {
@@ -438,16 +439,16 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
   asssembleCheck(): Boolean{
    console.log("check made in asssembleCheck");
-   // console.log(this.moveName);
-   // console.log(this.performer);
-   // console.log(this.recipient);
-   // console.log(this.startTime);
-   // console.log(this.endTime);
-   // console.log(this.points);
-   // console.log(this.matchId);
-   // console.log(this.submissionStatus != null);
-   // console.log(this.attemptStatus != null);
-   // console.log(this.userInDbId);
+   console.log(this.moveName);
+   console.log(this.performer);
+   console.log(this.recipient);
+   console.log(this.startTime);
+   console.log(this.endTime);
+   console.log(this.points);
+   console.log(this.matchId);
+   console.log(this.submissionStatus != null);
+   console.log(this.attemptStatus != null);
+   console.log(this.userInDbId);
     if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
       console.log("everything is true in asssembleCheck");
       return true;
