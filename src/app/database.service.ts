@@ -372,8 +372,8 @@ export class DatabaseService {
         if(moves){
           for(let item in moves){
             // console.log(moves[item].dateAdded);
-            if (moves[item].moveName === move.moveName && moves[item].actor === move.actor){ //TODO and start time is within 2 seconds of start time and same with end time
-              observer.next(false); //TODO this will change
+            if (moves[item].moveName === move.moveName && moves[item].actor === move.actor && this.annotationWithinTimeRange(moves[item], move)){ //TODO and start time is within 2 seconds of start time and same with end time
+              observer.next(false);
               return resultObservable;
             } else{
               // observer.next(true);
@@ -388,6 +388,14 @@ export class DatabaseService {
       });
     });
     return resultObservable;
+  }
+
+  annotationWithinTimeRange(oldMove: MoveInVideo, candidateNewMove: MoveInVideo): boolean{
+    let candidateNewMoveDoesNotStartTooEarly = oldMove.timeInitiated - constants.numberOfSecondsToleratedToBeCalledSameAnnotation <= candidateNewMove.timeInitiated;
+    let candidateNewMoveDoesNotStartTooLate = oldMove.timeInitiated + constants.numberOfSecondsToleratedToBeCalledSameAnnotation >= candidateNewMove.timeInitiated;
+    let candidateNewMoveDoesNotEndTooEarly = oldMove.timeCompleted - constants.numberOfSecondsToleratedToBeCalledSameAnnotation <= candidateNewMove.timeCompleted;
+    let candidateNewMoveDoesNotEndTooLate = oldMove.timeCompleted + constants.numberOfSecondsToleratedToBeCalledSameAnnotation >= candidateNewMove.timeCompleted;
+    return (candidateNewMoveDoesNotStartTooEarly && candidateNewMoveDoesNotStartTooLate && candidateNewMoveDoesNotEndTooEarly && candidateNewMoveDoesNotEndTooLate);
   }
 
   getAnnotationsSortedByStartTime(matchId: string, path: string){

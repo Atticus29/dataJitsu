@@ -1,7 +1,8 @@
 # TODO high priority
+- [ ] Update the check for annotation merge
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Make it so that annotations appear in match chronological order not addition chronological order
-- [ ] Update the check for annotation similarity/merge
+- [ ] extend baseComponent in other components
 - [ ] Set up tutorial mode
 - [ ] Edit user details page
 - [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
@@ -70,6 +71,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Update the check for annotation similarity
 - [x] Add way to prevent ppl from seeing matches if they haven't earned it yet
 - [x] Make chips deletable if isAdmin is true (or if certain reputation points exist)
 - [x] Make annotations clickable to take user to that part of the video

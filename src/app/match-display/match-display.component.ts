@@ -70,11 +70,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     this.dataSource.data = database.initialData();
   }
 
-  // ngOnDestroy(){
-  //   this.ngUnsubscribe.next();
-  //   this.ngUnsubscribe.complete();
-  // }
-
   ngOnInit() {
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       console.log(user);
@@ -232,7 +227,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             self.moveAssembledStatus.subscribe(status =>{
               if(status && self.moveCompletelyLegit()){
                 player.playVideo();
-                player.seekTo(Math.max(0.5,currentTime-7));
+                player.seekTo(Math.max(0.5,currentTime-5));
               }
             });
           });
@@ -286,7 +281,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             // console.log("match not Unique Enough");
             if(annotationMadeCounter < 1){
               this.snackBar.open("Annotation has already been made by another user");
+              annotationMadeCounter ++ ;
             }
+            // this.snackBar.open("Annotation has already been made by another user");
             self.moveName = null;
             self.performer = null;
             self.recipient = null;
@@ -297,13 +294,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             self.trackerService.resetAllExceptCurrentMatch();
             // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
             self.moveAssembledStatus.next(false);
-            // self.ngUnsubscribe.next();
-            // self.ngUnsubscribe.complete();
           } else{
             // console.log("match IS Unique Enough in match");
-            //------------------------------------------
             self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnoughInUser =>{
               if(matchUniqueEnoughInUser){
+                self.openSnackBar("Annotation Recorded");
                 // console.log("match IS Unique Enough in user");
                 // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
                 annotationMadeCounter ++;
@@ -317,12 +312,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trackerService.resetAllExceptCurrentMatch();
                 // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
                 self.moveAssembledStatus.next(false);
-                // self.ngUnsubscribe.next();
-                // self.ngUnsubscribe.complete();
-
-                //-------------------------------------
-
-                //-------------------------------------
               }else{
                 // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
                 self.moveName = null;
@@ -339,32 +328,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 // self.ngUnsubscribe.complete();
               }
             });
-            //----------------------------------------------
-
-            // this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-            //   if(usr){
-            //     if(!this.userInDbId){
-            //       console.log("this.userInDbId did not yet exist"); //TODO I'm guessing this never happens
-            //       this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-            //         console.log("getUserByUid in tracker service; adding user id to this.userInDbId");
-            //         this.userInDbId = usr.id;
-            //         });
-            //     } else{
-            //       console.log("this.userInDbId exists and is " + this.userInDbId);
-            //       // self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnoughInUser =>{
-            //       //   if(matchUniqueEnoughInUser){
-            //       //     self.openSnackBar("Annotation Recorded");
-            //       //     self.trackerService.resetAllExceptCurrentMatch();
-            //       //     // self.trigger.next(true);
-            //       //     self.tempMove = null;
-            //       //     self.moveAssembledStatus.next(false);
-            //       //   }else{
-            //       //     console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
-            //       //   }
-            //       // });
-            //     }
-            //   }
-            // });
           }
         });
         this.moveAssembledStatus.next(false);
