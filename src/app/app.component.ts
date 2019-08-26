@@ -36,16 +36,16 @@ export class AppComponent implements OnInit {
     let self = this;
     this.authService.currentUserObservable.subscribe(result =>{
       self.afAuth.authState.subscribe(authState =>{
-        console.log("result of currentUserObservable in app.component: ");
-        console.log(result);
-        console.log("authState in app.component: ");
-        console.log(authState);
+        // console.log("result of currentUserObservable in app.component: ");
+        // console.log(result);
+        // console.log("authState in app.component: ");
+        // console.log(authState);
         if(result && result.uid && authState){
           // console.log("result in currentUserObservable in app component happens: ");
           // console.log(result);
           this.db.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
-            console.log("dbUser in getUserByUid of app.component updated:");
-            console.log(dbUser);
+            // console.log("dbUser in getUserByUid of app.component updated:");
+            // console.log(dbUser);
             this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!
           });
         } else{

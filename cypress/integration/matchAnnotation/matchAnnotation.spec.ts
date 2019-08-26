@@ -153,11 +153,12 @@ describe ('Match annotation tests', () =>{
   it.only('cannot make the same exact annotation twice', function(){
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.get('mat-icon').eq(5).click({force:true});
     cy.get('mat-icon').eq(8).click({force:true});
     cy.wait(1000);
-    cy.contains('div','Cross Collar Choke').first().click({force: true});
+    cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click();
+    cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
@@ -168,10 +169,52 @@ describe ('Match annotation tests', () =>{
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
     cy.get('button[id=end-move]').click();
-    cy.contains("Annotation Recorded");
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
+    cy.contains("Annotation Recorded").should('exist');
 
     cy.log("Second time through");
+    cy.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+    cy.wait(1000);
+    cy.get('button[id=begin-move]').should('be.visible');
+    cy.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+    cy.get('button[id=begin-move]').click();
+    cy.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+    cy.get('div[id=annotationModal]').should('be.visible');
+    cy.get('mat-icon').eq(5).click({force:true});
+    cy.get('mat-icon').eq(8).click({force:true});
+    cy.wait(1000);
+    cy.contains('Cross Collar Choke').click({force: true});
+    cy.log('mat chip');
+    cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+    cy.get('input[id=points]').type('2');
+    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+    cy.get('button[id=end-move]').should('be.enabled');
+
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
+    cy.contains("Annotation has already been made by another user").should('exist');
+
+    //TODO now login as admin and remove the annotation entirely
   });
 
 });

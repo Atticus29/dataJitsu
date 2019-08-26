@@ -24,6 +24,7 @@ export class TrackerService {
   constructor() { }
 
   resetAllExceptCurrentMatch(){
+    console.log("resetAllExceptCurrentMatch has been called");
     this.startTimePoint.next(0);
     this.endTimePoint.next(1);
     this.points.next(-1);

@@ -84,6 +84,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { AnnotatedMovesDisplayComponent } from './annotated-moves-display/annotated-moves-display.component';
 import { AdminComponent } from './admin/admin.component';
 import { LogoutComponent } from './logout/logout.component';
+import { BaseComponent } from './base/base.component';
 
 
 export const firebaseConfig = {
@@ -116,7 +117,8 @@ export const firebaseConfig = {
     PaymentComponent,
     AnnotatedMovesDisplayComponent,
     AdminComponent,
-    LogoutComponent
+    LogoutComponent,
+    BaseComponent
   ],
   imports: [
     BrowserModule,

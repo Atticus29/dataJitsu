@@ -3,6 +3,8 @@
 - [ ] Update the check for annotation similarity/merge
 - [ ] Set up tutorial mode
 - [ ] Edit user details page
+- [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
+- [ ] User page; badge with reputation points
 - [ ] F.A.Q. section
     - [ ] Why did I lose reputation points?
     - [ ] What do various tiers of reputations points get me?
@@ -11,7 +13,13 @@
       - [ ] Flag annotations for removal
       - [ ] Remove annotations
       - [ ] Search by different criteria? (also available to paying user)
-- [ ] User page; badge with reputation points
+    - [ ] How do I earn reputation?
+      - [ ] Submitting matches
+      - [ ] Approving new move names
+      - [ ] Flagging new move names as vulgar or inappropriate
+      - [ ] Annotating matches
+        - [ ] You get more points for well-rated annotations
+      - [ ] Rating matches?
 - [ ] Update spec list
 - [ ] TODO make the signs up a new user test pass (currently does not)
 - [ ] Need a way to handle things like missing uid in users
@@ -51,6 +59,7 @@
 - [ ] //@TODO test whether trying to create a second account under the same email messes up
 
 # TODO low priority
+- [ ] Add spinner while annotation deletion occurs (nvm it's for admins and therefore low priority)
 - [ ] Whether the user has verified their email address or not doesn't matter yet
 - [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff

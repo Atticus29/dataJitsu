@@ -67,6 +67,7 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
     let confirmation = confirm("Are you sure you want to delete this annotation?");
     if(confirmation){
       this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
+        console.log("matchId from tracker service in annotated moves display about to call removeAnnotationInMatchAndUserByStartTime: " + matchId);
         this.databaseService.removeAnnotationInMatchAndUserByStartTime(matchId, timeInitiated, annotatorUserId);
       });
     } else{
