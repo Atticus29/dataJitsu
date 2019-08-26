@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Make it so that annotations appear in match chronological order not addition chronological order
 - [ ] Update the check for annotation similarity/merge
 - [ ] Set up tutorial mode

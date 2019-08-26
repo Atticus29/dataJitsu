@@ -138,6 +138,7 @@ export class AppComponent implements OnInit {
     if (confirmation == true) {
       this.authService.signOut();
       this.trackerService.currentUserBehaviorSubject.next(null); //TODO why necessary?
+      location.reload();
     } else {
     }
   };

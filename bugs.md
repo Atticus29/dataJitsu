@@ -1,6 +1,6 @@
 # Known issues
 - [ ] Current most pressing
-  - [ ] Second time you annotate a move, it doesn't wait for end time and might have other issues as well in terms of mixing data with the previous entry (cross-listed below)
+  - [ ] Rating a match toggles back and forth between your current vote and your old vote
 - [ ] Testing
   - [ ] Tests are failing because of unsubscription error
 - [ ] Reputation and tracking
@@ -9,10 +9,8 @@
     - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
     - [ ] Currently, lets you create multiple duplicate accounts (?)
 - [ ] Annotation
-    - [x] Deleting an annotation causes many many queries
     - [ ] Deleting an annotation made by another user logs you in as that user (but you refresh as the original user)
     - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't switch disabled
-    - [ ] Second time you annotate a move, it doesn't wait for end time and might have other issues as well in terms of mixing data with the previous entry
 - [ ] Video Player
     - [ ] Changing the annotation rating resets the video
     - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
@@ -32,6 +30,8 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Deleting an annotation causes many many queries
+- [x] Second time you annotate a move, it doesn't wait for end time and might have other issues as well in terms of mixing data with the previous entry
 - [x] Removing an annotation currently creates a new annotation in user that's blank but not null
 - [x] Annotating a second time below the submission multi-tree doesn't work
 - [x] Creating a new user doesn't associate uid with them

@@ -76,10 +76,20 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   // }
 
   ngOnInit() {
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
+      console.log(user);
+      if(user){
+        this.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+          usr ? this.userInDbId = usr.id : this.userInDbId = null;
+          // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+          // this.trigger.next(true);
+        });
+      }
+    });
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
-      console.log("trigger check called");
+      // console.log("trigger check called");
       if(this.asssembleCheck()){
-        console.log("assemble check true in trigger observable");
+        // console.log("assemble check true in trigger observable");
         self.tempMove = new MoveInVideo(this.moveName, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         self.moveAssembledStatus.next(true);
       } else{
@@ -161,60 +171,64 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             let currentTime = player.getCurrentTime();
             self.trackerService.endTimePoint.next(player.getCurrentTime());
             self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
-              console.log("startTime in trackerService is " + startTime);
+              // console.log("startTime in trackerService is " + startTime);
               self.startTime = startTime;
               self.trigger.next(true);
             });
             self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
-              console.log("endTime in trackerService is " + endTime);
+              // console.log("endTime in trackerService is " + endTime);
               self.endTime = endTime;
               self.trigger.next(true);
             });
             self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
-              console.log("moveName in trackerService is " + moveName);
+              // console.log("moveName in trackerService is " + moveName);
               self.moveName = moveName;
               self.trigger.next(true);
             });
             self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
-              console.log("performer in trackerService is " + performer);
+              // console.log("performer in trackerService is " + performer);
               self.performer = performer;
               self.trigger.next(true);
             });
             self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
-              console.log("recipient in trackerService is " + recipient);
+              // console.log("recipient in trackerService is " + recipient);
               self.recipient = recipient;
               self.trigger.next(true);
             });
             self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
-              console.log("points in trackerService is " + points);
+              // console.log("points in trackerService is " + points);
               self.points = points;
               self.trigger.next(true);
             });
             self.trackerService.currentMatch.pipe(takeUntil(self.ngUnsubscribe)).subscribe(matchId =>{
-              console.log("matchId in trackerService is " + matchId);
+              // console.log("matchId in trackerService is " + matchId);
               self.matchId = matchId;
               self.trigger.next(true);
             });
             self.trackerService.submission.pipe(takeUntil(self.ngUnsubscribe)).subscribe(submission =>{
-              console.log("submission in trackerService is " + submission);
+              // console.log("submission in trackerService is " + submission);
               submission === "Yes" ? self.submissionStatus = true: self.submissionStatus = false;
               self.trigger.next(true);
             });
             self.trackerService.attemptStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(attemptSuccessful =>{
-              console.log("attemptSuccessful in trackerService is " + attemptSuccessful);
+              // console.log("attemptSuccessful in trackerService is " + attemptSuccessful);
               attemptSuccessful === "Yes" ? self.attemptStatus = true: self.attemptStatus = false;
               self.trigger.next(true);
             });
-            self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(user =>{
-              console.log("user in trackerService is:");
-              console.log(user);
-              // console.log("this should happen just once?");
-              self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
-                usr ? self.userInDbId = usr.id : self.userInDbId = null;
-                console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
-                self.trigger.next(true);
+            if(self.userInDbId){
+              //DO nothing? Trigger?
+            }else{
+              self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(user =>{
+                // console.log("user in trackerService is:");
+                // console.log(user);
+                // console.log("this should happen just once?");
+                self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+                  usr ? self.userInDbId = usr.id : self.userInDbId = null;
+                  // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+                  self.trigger.next(true);
+                });
               });
-            });
+            }
             self.moveAssembledStatus.subscribe(status =>{
               if(status && self.moveCompletelyLegit()){
                 player.playVideo();
@@ -263,13 +277,13 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.moveAssembledStatus.subscribe(status =>{
-      console.log("entered moveAssembledStatus subscription");
+      // console.log("entered moveAssembledStatus subscription");
       if(status && this.moveCompletelyLegit()){
-        console.log("move assembled and completely legit");
+        // console.log("move assembled and completely legit");
         let annotationMadeCounter: number = 0;
         self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnough =>{
           if(!matchUniqueEnough){
-            console.log("match not Unique Enough");
+            // console.log("match not Unique Enough");
             if(annotationMadeCounter < 1){
               this.snackBar.open("Annotation has already been made by another user");
             }
@@ -286,12 +300,12 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             // self.ngUnsubscribe.next();
             // self.ngUnsubscribe.complete();
           } else{
-            console.log("match IS Unique Enough in match");
+            // console.log("match IS Unique Enough in match");
             //------------------------------------------
             self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnoughInUser =>{
               if(matchUniqueEnoughInUser){
-                console.log("match IS Unique Enough in user");
-                console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
+                // console.log("match IS Unique Enough in user");
+                // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
                 annotationMadeCounter ++;
                 self.moveName = null;
                 self.performer = null;
@@ -310,7 +324,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
                 //-------------------------------------
               }else{
-                console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
+                // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
                 self.moveName = null;
                 self.performer = null;
                 self.recipient = null;
@@ -370,7 +384,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         });
         self.dataSource.dataChange.next(flatNodeArray);
       } else{
-        console.log("either status is false or moveCompletelyLegit is false");
+        // console.log("either status is false or moveCompletelyLegit is false");
         //Nothing
       }
     });
@@ -378,37 +392,59 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.trackerService.currentUserBehaviorSubject.subscribe(usr =>{
-      this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
-        // usr = usr[Object.keys(usr)[0]];
-        let userInDb: string = urs.id;
-        this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
-        this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
+    if(this.userInDbId){
+      console.log("userInDbId already existed");
+      this.db.addMatchRatingToUser(this.userInDbId, this.matchId, $event.newValue);
+      this.db.addMatchRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
+    }else{
+      console.log("had to make userInDbId from scratch");
+      this.trackerService.currentUserBehaviorSubject.subscribe(usr =>{
+        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
+          // usr = usr[Object.keys(usr)[0]];
+          let userInDb: string = urs.id;
+          this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
+          this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
         });
-    });
+      });
+    }
   }
 
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-      this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        // result = result[Object.keys(result)[0]];
-        let userDbId: string = result.id;
-        // console.log("userDbId is: "+ userDbId);
-        this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
-        this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
-        if($event.newValue > 4){
-          this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
-            if(majorityAnnotator.annotatorUserId !== userDbId){
-              this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
-            }
-            if(majorityAnnotator.annotatorUserId === userDbId){
-              console.log("bish just upvoted their own shit");
-            }
-          });
-        }
+    if(this.userInDbId){
+      console.log("userInDbId already existed");
+      this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.matchId, $event.newValue);
+      this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
+      if($event.newValue > 4){
+        this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
+          if(majorityAnnotator.annotatorUserId !== this.userInDbId){
+            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
+          }
+          if(majorityAnnotator.annotatorUserId === this.userInDbId){
+            console.log("bish just upvoted their own shit");
+          }
         });
-    });
+      }
+    }else{
+      console.log("had to make userInDbId from scratch");
+      this.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(usr =>{
+        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(result => {
+          let userDbId: string = result.id;
+          this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
+          this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
+          if($event.newValue > 4){
+            this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
+              if(majorityAnnotator.annotatorUserId !== userDbId){
+                this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
+              }
+              if(majorityAnnotator.annotatorUserId === userDbId){
+                console.log("bish just upvoted their own shit");
+              }
+            });
+          }
+        });
+      });
+    }
   }
 
   moveCompletelyLegit(): boolean{
@@ -438,22 +474,22 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   asssembleCheck(): Boolean{
-   console.log("check made in asssembleCheck");
-   console.log(this.moveName);
-   console.log(this.performer);
-   console.log(this.recipient);
-   console.log(this.startTime);
-   console.log(this.endTime);
-   console.log(this.points);
-   console.log(this.matchId);
-   console.log(this.submissionStatus != null);
-   console.log(this.attemptStatus != null);
-   console.log(this.userInDbId);
+   // console.log("check made in asssembleCheck");
+   // console.log(this.moveName);
+   // console.log(this.performer);
+   // console.log(this.recipient);
+   // console.log(this.startTime);
+   // console.log(this.endTime);
+   // console.log(this.points);
+   // console.log(this.matchId);
+   // console.log(this.submissionStatus != null);
+   // console.log(this.attemptStatus != null);
+   // console.log(this.userInDbId);
     if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
-      console.log("everything is true in asssembleCheck");
+      // console.log("everything is true in asssembleCheck");
       return true;
     } else{
-      console.log("asssembleCheck is false");
+      // console.log("asssembleCheck is false");
       return false;
     }
   }
