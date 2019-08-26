@@ -400,34 +400,32 @@ export class DatabaseService {
 
   getAnnotationsSortedByStartTime(matchId: string, path: string){
     let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
+    let theObjects = new Array();
     let resultObservable = Observable.create(observer =>{
-      ref.orderByChild("timeInitiated").on("value", snapshot => { //
+      ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
           // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
           // console.log(snapshot.val());
           let snapshotVals = snapshot.val();
-          let theObjects = new Array();
-          if(snapshotVals){
-            Object.keys(snapshotVals).forEach(key =>{
-              // console.log(snapshotVals[key]);
-              let tmpObj = snapshotVals[key]
-              // let newMove = new MoveInVideo(...snapshotVals[key]);
-              // console.log(newMove);
-              theObjects.push(tmpObj);
-            });
-          }
-          observer.next(theObjects);
+          // theObjects.push(snapshotVals);
+          // console.log(theObjects);
+          // let theObjects = new Array();
+          // if(snapshotVals){
+          //   Object.keys(snapshotVals).forEach(key =>{
+          //     // console.log(snapshotVals[key]);
+          //     let tmpObj = snapshotVals[key]
+          //     // let newMove = new MoveInVideo(...snapshotVals[key]);
+          //     // console.log(newMove);
+          //     theObjects.push(tmpObj);
+          //   });
+          // }
+          observer.next(snapshotVals);
       });
-      // ref.orderByChild("timeInitiated").on("child_removed", snapshot => {
-      //   // console.log("oh no child snapshot in getAnnotationsSortedByStartTime in database service is removed!");
-      //   // console.log(snapshot.val());
-      //   //Hacky but child_changed wasn't working for me
-      //   ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
-      //       // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
-      //       // console.log(snapshot.val());
-      //       let moves = snapshot.val();
-      //       observer.next(moves);
-      //   });
-      // });
+    // ref.orderByChild("timeInitiated").on("child_changed", snapshot =>{
+    //   let snapshotVals = snapshot.val();
+    //   observer.next(snapshotVals);
+    // });
+      // console.log(theObjects);
+      // observer.next(theObjects);
     });
     return resultObservable;
   }
@@ -752,24 +750,37 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
-  removeAnnotationInMatchAndUserByStartTime(matchId: string, timeInitiated: number, annotatorUserId: string){ //TODO AndUser
-    console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
-    console.log(matchId);
-    console.log(timeInitiated);
-    let ref = firebase.database().ref('matches/' + matchId + '/moves/');
-    ref.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
-      // console.log("found record in question: ");
-      // console.log(snapshot.val());
-      // console.log(snapshot.key);
-      ref.child(snapshot.key).remove();
+  removeAnnotationInMatchAndUserByStartTime(matchId: string, timeInitiated: number, annotatorUserId: string): Observable<boolean>{ //TODO AndUser
+    let resultObservable = Observable.create(observer =>{
+      console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
+      console.log(matchId);
+      console.log(timeInitiated);
+      let ref = firebase.database().ref('matches/' + matchId + '/moves/');
+      ref.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
+        // console.log("found record in question: ");
+        // console.log(snapshot.val());
+        if(snapshot.val()){
+          // console.log(snapshot.key);
+          ref.child(snapshot.key).remove();
+          // observer.next(true);
+        }else{
+          // observer.next(false);
+        }
+      });
+      let newRef = firebase.database().ref('users/' + annotatorUserId + '/movesAnnotated/');
+      newRef.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
+        // console.log("found record in question for user: ");
+        // console.log(snapshot.val());
+        // console.log(snapshot.key);
+        if(snapshot.val()){
+          newRef.child(snapshot.key).remove();
+          observer.next(true);
+        } else{
+          observer.next(false);
+        }
+      });
     });
-    let newRef = firebase.database().ref('users/' + annotatorUserId + '/movesAnnotated/');
-    newRef.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
-      // console.log("found record in question for user: ");
-      // console.log(snapshot.val());
-      // console.log(snapshot.key);
-      newRef.child(snapshot.key).remove();
-    });
+    return resultObservable;
   }
 
 }

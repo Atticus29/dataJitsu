@@ -25,31 +25,22 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
   constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService, public dialog: MatDialog) { }
 
   ngOnInit() {
+    // let self = this;
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
+      this.matchId = matchId;
       // console.log("got into currentMatch: " + matchId);
-      this.databaseService.getAnnotationsSortedByStartTime(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotations =>{
-        // console.log("annotations in AnnotatedMovesDisplayComponent");
-        // console.log(annotations);
-        this.matchId = matchId;
-        this.annotations = new Array();
-        if(annotations){
-          annotations.forEach(annotation =>{
-            let currentMoveInVideo = new MoveInVideo(annotation.moveName, annotation.actor, annotation.recipient, annotation.timeInitiated, annotation.timeCompleted, annotation.points, annotation.associatedMatchId, annotation.isASubmission, annotation.isSuccessfulAttempt, annotation.annotatorUserId);
-            currentMoveInVideo.updateDateAdded(annotation.dateAdded);
-            this.annotations.push(currentMoveInVideo);//[Object.keys(annotation)[0]]
-          });
-        }
-        // console.log(this.annotations);
-        // Object.keys(annotations).forEach(key =>{
-        //   console.log(annotations[key]);
-        // });
-        // [Object.keys(dbUser)[0]]
-        // console.log(annotations);
-      });
+      this.fetchAnnotations(this.matchId);
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
       usr ? this.isAdmin = usr.privileges.isAdmin: this.isAdmin = false;
+    });
+
+    this.trackerService.fetchNewAnnotations.pipe(takeUntil(this.ngUnsubscribe)).subscribe(shouldFetch =>{
+      if(shouldFetch){
+        this.fetchAnnotations(this.matchId);
+        this.trackerService.fetchNewAnnotations.next(false);
+      }
     });
   }
 
@@ -71,7 +62,11 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
     if(confirmation){
       this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
         console.log("matchId from tracker service in annotated moves display about to call removeAnnotationInMatchAndUserByStartTime: " + matchId);
-        this.databaseService.removeAnnotationInMatchAndUserByStartTime(matchId, timeInitiated, annotatorUserId);
+        this.databaseService.removeAnnotationInMatchAndUserByStartTime(matchId, timeInitiated, annotatorUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+          if(status){
+              this.fetchAnnotations(this.matchId);
+          }
+        });
       });
     } else{
       // console.log("confirmation denied");
@@ -91,6 +86,24 @@ export class AnnotatedMovesDisplayComponent implements OnInit {
     // dialogConfig.position = "left";
     // dialogConfig.data = {};
     const dialogRef = this.dialog.open(AnnotationLegendDialogComponent, dialogConfig);
+  }
+
+  fetchAnnotations(matchId: string){
+    if(matchId){
+      this.annotations = new Array();
+      this.databaseService.getAnnotationsSortedByStartTime(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotation =>{
+        console.log("annotations in AnnotatedMovesDisplayComponent");
+        console.log(annotation);
+        if(annotation){
+          if(this.annotations.includes(annotation)){
+            this.annotations = new Array();
+          }
+          let currentMoveInVideo = new MoveInVideo(annotation.moveName, annotation.actor, annotation.recipient, annotation.timeInitiated, annotation.timeCompleted, annotation.points, annotation.associatedMatchId, annotation.isASubmission, annotation.isSuccessfulAttempt, annotation.annotatorUserId);
+          currentMoveInVideo.updateDateAdded(annotation.dateAdded);
+          this.annotations.push(annotation);
+        }
+      });
+    }
   }
 
 }

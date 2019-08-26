@@ -312,6 +312,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trackerService.resetAllExceptCurrentMatch();
                 // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
                 self.moveAssembledStatus.next(false);
+                self.triggerNewAnnotationFetch();
               }else{
                 // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
                 self.moveName = null;
@@ -324,6 +325,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trackerService.resetAllExceptCurrentMatch();
                 // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
                 self.moveAssembledStatus.next(false);
+                self.triggerNewAnnotationFetch();
                 // self.ngUnsubscribe.next();
                 // self.ngUnsubscribe.complete();
               }
@@ -455,5 +457,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       // console.log("asssembleCheck is false");
       return false;
     }
+  }
+
+  triggerNewAnnotationFetch(){
+    this.trackerService.fetchNewAnnotations.next(true);
   }
 }

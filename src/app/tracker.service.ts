@@ -20,6 +20,7 @@ export class TrackerService {
   public attemptStatus: BehaviorSubject<string> = new BehaviorSubject("Yes");
   public currentUserBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public desiredJumpStartTime: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  public fetchNewAnnotations: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
