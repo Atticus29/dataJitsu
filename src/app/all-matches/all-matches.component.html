@@ -6,72 +6,75 @@
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
 <br>
 <div class="" *ngIf='user'>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
   <div class="spinner-container" *ngIf="showLoader">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
     <!-- TODO add paidStatus to ngIf -->
     <ng-container matColumnDef="rank">
-      <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.rank}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.rank}} </td>
     </ng-container>
     <ng-container matColumnDef="weightClass">
-      <mat-header-cell *matHeaderCellDef> Weight Class </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.weightClass}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight Class </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.weightClass}} </td>
     </ng-container>
     <ng-container matColumnDef="ageClass">
-      <mat-header-cell *matHeaderCellDef> Age Class </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.ageClass}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Age Class </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.ageClass}} </td>
     </ng-container>
     <ng-container matColumnDef="athlete1Name">
-      <mat-header-cell *matHeaderCellDef> Athlete 1 </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.athlete1Name}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Athlete 1 </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.athlete1Name}} </td>
     </ng-container>
     <ng-container matColumnDef="athlete2Name">
-      <mat-header-cell *matHeaderCellDef> Athlete 2 </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.athlete2Name}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Athlete 2 </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.athlete2Name}} </td>
     </ng-container>
     <ng-container matColumnDef="gender">
-      <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.gender}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.gender}} </td>
     </ng-container>
     <ng-container matColumnDef="location">
-      <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.location}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.location}} </td>
     </ng-container>
     <ng-container matColumnDef="tournamentName">
-      <mat-header-cell *matHeaderCellDef> Tournament </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.tournamentName}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tournament </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.tournamentName}} </td>
     </ng-container>
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.date | date:'shortDate'}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.date | date:'shortDate'}} </td>
     </ng-container>
     <ng-container matColumnDef="matchRating">
-      <mat-header-cell *matHeaderCellDef> Match Rating </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.matchRating}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Match Rating </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.matchRating}}</td>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="annotationRating">
-      <mat-header-cell *matHeaderCellDef> Annotation Rating </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.annotationRating}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Annotation Rating </th>
+      <td mat-cell *matCellDef="let entry"> {{entry.matchDeets.annotationRating}}</td>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="videoUrl">
-      <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> <a routerLink="/matches/{{entry.id}}" name="videoClick">Click</a></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Video </th>
+      <td mat-cell *matCellDef="let entry"> <a routerLink="/matches/{{entry.matchDeets.id}}" name="videoClick">Click</a></td>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="deleteMatch">
-      <mat-header-cell *matHeaderCellDef> Delete Match </mat-header-cell>
-      <mat-cell *matCellDef="let entry" id={{entry.athlete1Name}}>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete Match </th>
+      <td mat-cell *matCellDef="let entry" id={{entry.matchDeet.id}}>
         <button id="delete-button" class="btn waves-effect waves-light" (click)="deleteMatch(entry.id)">Delete Match</button>
-      </mat-cell>
+      </td>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
-  </mat-table>
+    <th mat-header-row *matHeaderRowDef="columnsToDisplay"></th>
+    <td mat-row *matRowDef="let row; columns: columnsToDisplay;"></td>
+  </table>
 </div>
-<mat-paginator [length]='matchCount' [pageSize]="10" [pageSizeOptions]="[2, 10, 20, 50]"></mat-paginator>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
