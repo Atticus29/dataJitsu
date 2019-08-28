@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { MatTableDataSource, MatSort } from '@angular/material';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+// import * as firebase from 'firebase/app';
+
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+// import { MatPaginatorModule } from '@angular/material/paginator';
 // import { DataSource } from '@angular/cdk/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { tap, takeUntil } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { DatabaseService } from '../database.service';
@@ -20,39 +22,40 @@ import { User } from '../user.model';
 import { MatchDetails } from '../matchDetails.model';
 import { MoveInVideo } from '../moveInVideo.model';
 
-// export interface MatchData {
-//   rank: string;
-//   weightClass: string;
-//   ageClass: string;
-//   athlete1Name: string;
-//   athlete2Name: string;
-//   gender: string;
-//   location: string;
-//   date: string; //???
-//   matchRating: number;
-//   annotationRating: number;
-//   videoUrl: string;
-// }
+export interface MatchData {
+  rank: string;
+  weightClass: string;
+  ageClass: string;
+  athlete1Name: string;
+  athlete2Name: string;
+  gender: string;
+  location: string;
+  date: string; //???
+  matchRating: number;
+  annotationRating: number;
+  videoUrl: string;
+}
 
 @Component({
   selector: 'app-all-matches',
   templateUrl: './all-matches.component.html',
   styleUrls: ['./all-matches.component.scss']
 })
-export class AllMatchesComponent implements OnInit, OnDestroy {
-  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow
+export class AllMatchesComponent implements OnInit {
+  columnsToDisplay: string[] = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow //private
+  dataSource: MatTableDataSource<any>;
+  private pageSize: number = 5;
   // private loading = true;
   // private showLoader: any;
   user: any = null;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   // private matchCount: number;
   // private pageSize: number;
-  dataSource: MatTableDataSource<Match>
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService) {
+  constructor(private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, private cdf: ChangeDetectorRef) {
     let matchDeets1: MatchDetails = new MatchDetails("IBJJF Worlds", "los angeles, california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     let matchDeets2: MatchDetails = new MatchDetails("ADCC", "los angeles, california", new Date().toJSON(), "mendes", "gracie", "feather", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     let matchDeets3: MatchDetails = new MatchDetails("JKLM", "los angeles, california", new Date().toJSON(), "mendes", "gracie", "feather", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
@@ -92,12 +95,14 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
     matchArray.push(match10);
 
     console.log(matchArray);
-
     // this.pageSize = 5;
     this.dataSource = new MatTableDataSource(matchArray);
   }
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       if(user && user.uid){
@@ -130,9 +135,6 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
     // this.dbService.getMatches().subscribe(results =>{
     //   this.loadMatchesPage();
     // });
-
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   // ngAfterViewInit(){
@@ -147,11 +149,11 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
   //   this.dataSource.loadMatches('TODO', '', 'asc', this.paginator.pageIndex, this.paginator.pageSize);
   // }
 
-  ngOnDestroy(){
-    // console.log("onDestroy is called");
-    // this.ngUnsubscribe.next();
-    // this.ngUnsubscribe.complete();
-  }
+  // ngOnDestroy(){
+  //   // console.log("onDestroy is called");
+  //   // this.ngUnsubscribe.next();
+  //   // this.ngUnsubscribe.complete();
+  // }
 
   deleteMatch(matchId: any){
     let confirmation = confirm("Are you sure you want to delete this match?");
@@ -165,7 +167,10 @@ export class AllMatchesComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(filterValue: string) {
+    // this.filter = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = this.filter;
+    // this.cdf.detectChanges();
     console.log(this.dataSource.filter);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
