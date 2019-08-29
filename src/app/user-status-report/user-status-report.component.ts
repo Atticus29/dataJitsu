@@ -4,7 +4,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
 import { DateCalculationsService } from '../date-calculations.service';
@@ -29,67 +29,28 @@ export class UserStatusReportComponent implements OnInit {
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService) { }
 
   ngOnInit() {
-    // this.db.hasUserPaid()
     // console.log("ngOnInit user-status-report is called");
-    // this.paidStatus = false;
-    //TODO put this in a try catch and send to error page upon catch
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User)=>{
       this.user = user;
       if (this.user) {
         this.userLoggedIn = true;
-        let ref = firebase.database().ref('users/');
-        ref.orderByChild('uid').equalTo(this.user.uid).limitToFirst(1).on("child_added", snapshot => {
-          this.db.getUserById(snapshot.key).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-            this.userObjFromDb = result;
-            this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-              if(status){ 
-                // console.log("user has paid");
-                this.togglePaid(this.userObjFromDb.id, true);
-                this.togglePayMentPrompt(false);
-                this.paidStatus = status;
-              } else{
-                // console.log("user has not paid");
-                this.togglePaid(this.userObjFromDb.id, false);
-                this.togglePayMentPrompt(true);
-                this.paidStatus = false;
-              }
-            });
-
+        if(this.user.uid){
+          this.db.getUserByUid(this.user.uid).pipe(take(1)).subscribe(dbUser =>{
+            this.userObjFromDb = dbUser;
+            this.togglePaymentThings();
             this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              // console.log(hasUserAnnotatedEnough);
+              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              console.log(hasUserAnnotatedEnough);
               if(!hasUserAnnotatedEnough){
                 this.toggleAnnotationPrompt(true);
                 this.togglePayMentPrompt(true);
               } else{
                 this.toggleAnnotationPrompt(false);
+                this.togglePayMentPrompt(false);
               }
             });
-
-            // this.db.getDateSinceAnnotated(this.userObjFromDb.id).valueChanges().pipe(takeUntil(this.ngUnsubscribe)).subscribe(date =>{
-            //   // console.log("getDateSinceAnnotated call in user-status-report: ");
-            //   // console.log(date);
-            //   let dateLastAnnotated: Date = new Date(date.toString());
-            //   if(dateLastAnnotated.toString() != "Invalid Date"){ //dateLastAnnotated.toString()
-            //     // console.log("yes");
-            //     let daysSinceLastAnnotation: number = this.dateService.calculateDaysSinceLastAnnotation(dateLastAnnotated);
-            //     // console.log(daysSinceLastAnnotation);
-            //     if(!daysSinceLastAnnotation){
-            //       this.toggleAnnotationPrompt(true);
-            //     }
-            //     if(daysSinceLastAnnotation <= constants.numDaysBeforeNewAnnotationNeeded){
-            //       // console.log("leak!");
-            //       this.toggleAnnotationPrompt(false);
-            //     } else{
-                  // this.toggleAnnotationPrompt(true);
-            //     }
-            //   } else{
-            //     console.log("first timer here!");
-            //     this.toggleAnnotationPrompt(true); //TODO should this be a thing??? Not clear when this happens
-            //   }
-            // });
           });
-        });
+        }
       } else{
         this.userLoggedIn = false;
       }
@@ -111,8 +72,8 @@ export class UserStatusReportComponent implements OnInit {
   }
 
   togglePaid(userId: string, status: boolean){
+    console.log("paidStatus changed to " + status);
     this.db.updateUserPaymentStatus(userId, status);
-    // console.log("paidStatus changed to " + status);
     //TODO other stuff?
   }
 
@@ -133,6 +94,22 @@ export class UserStatusReportComponent implements OnInit {
 
   sendToMatchToPaymentSubscription(){
     this.router.navigate(['payment']);
+  }
+
+  togglePaymentThings(){
+    this.db.hasUserPaid(this.userObjFromDb.id).pipe(take(1)).subscribe(status =>{
+      if(status == true){
+        // console.log("user has paid");
+        // this.togglePaid(this.userObjFromDb.id, true);
+        this.togglePayMentPrompt(false);
+        this.paidStatus = status;
+      } else{
+        // console.log("user has not paid");
+        // this.togglePaid(this.userObjFromDb.id, false);
+        this.togglePayMentPrompt(true);
+        this.paidStatus = false;
+      }
+    });
   }
 
 

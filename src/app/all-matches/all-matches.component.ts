@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -34,7 +34,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService) { }
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) { }
 
   ngOnInit() {
     // this.authService.authenticated.subscribe(status =>{
@@ -54,7 +54,9 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
           if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches){
             //can see things
           } else{
+            this.ngZone.run(() =>{
             this.router.navigate(['landing']);
+            });
           }
           if(dbUser.privileges.isAdmin){
             this.columnsToDisplay.push('deleteMatch');

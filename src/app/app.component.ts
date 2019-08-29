@@ -71,11 +71,17 @@ export class AppComponent implements OnInit {
             // console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
             this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-              this.isAdmin = status;
+              console.log("isAdmin? " + status);
+              if(status == true){
+                console.log("setting isAdmin to true");
+                this.isAdmin = status;
+              }
             });
             this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-              if(paymentStatus){
-                this.paidStatus = Boolean(paymentStatus);
+              console.log("hasUserPaid? " + paymentStatus);
+              if(paymentStatus == true){
+                console.log("setting paidStatus to true...");
+                this.paidStatus = paymentStatus;
               }else{
                 this.paidStatus = false;
               }
@@ -93,40 +99,6 @@ export class AppComponent implements OnInit {
         this.name = "Anonymous User";
       }
     });
-    // this.authService.currentUserObservable.subscribe(user=>{
-      // // console.log("currentUserObservable in ngOnInit in app.component ")
-      // // console.log(user);
-      // // this.user = user;
-      // if(user && user.uid){
-      //   console.log("currentUserObservable user.uid in ngOnInit in app.component: " + user.uid);
-      //   // console.log("user exists");
-      //   this.authenticationStatus = true;
-      //   this.db.getUserByUid(user.uid).subscribe(dbUser =>{
-      //     this.user = dbUser;
-      //     this.name = dbUser.name;
-      //     console.log("db user from getUserByUid in app.component is:");
-      //     console.log(dbUser);
-      //     this.shouldAnnotate = dbUser.paymentStatus;
-      //     // this.router.navigate(['matches']);
-      //     this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-      //       this.isAdmin = status;
-      //     });
-      //     this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-      //       if(paymentStatus){
-      //         this.paidStatus = Boolean(paymentStatus);
-      //       }else{
-      //         this.paidStatus = false;
-      //       }
-      //     });
-      //     this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
-      //       this.db.updatePrivileges(dbUser, Number(reputation));
-      //       //TODO update reputation points privileges
-      //     })
-      //   });
-      // } else {
-      //   this.authenticationStatus = false;
-      // }
-    // });
   }
 
   loginGoogleComponent(){
@@ -137,7 +109,7 @@ export class AppComponent implements OnInit {
     let confirmation = confirm("Are you sure you want to log out?");
     if (confirmation == true) {
       this.authService.signOut();
-      this.trackerService.currentUserBehaviorSubject.next(null); //TODO why necessary?
+      this.trackerService.currentUserBehaviorSubject.next(null); //TODO necessary?
       location.reload();
     } else {
     }

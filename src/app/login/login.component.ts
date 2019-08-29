@@ -22,7 +22,7 @@ import { User } from '../user.model';
   providers: [ValidationService, AuthorizationService, ProtectionGuard, TrackerService]
 })
 export class LoginComponent implements OnInit {
-  private user: User;
+  private user: User = null;
   private loggedIn: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 

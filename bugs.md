@@ -6,6 +6,7 @@
 - [ ] Reputation and tracking
   - [ ] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
 - [ ] User creation
+    - [ ] Dropdown menus need double clicking rn.
     - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
     - [ ] Currently, lets you create multiple duplicate accounts (?)
 - [ ] Annotation

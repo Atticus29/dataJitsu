@@ -1,5 +1,6 @@
 export var constants = {
     title: "Match Annotator",
+    minPwLength: 7,
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 10,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,

@@ -7,8 +7,9 @@ export class User {
   public uid: string;
   private privileges: {};
   private votingInfo: {};
-  private paymentStatus: boolean;
-  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: string, public paidStatus: boolean, public gender: string, public dateCreated: any) {
+  private paidStatus: boolean;
+  private annotatedEnoughOverride: boolean;
+  constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: string, public gender: string, public dateCreated: any) {
     this.privileges = {
       isAdmin: false,
       canEditMatches: false,
@@ -23,7 +24,8 @@ export class User {
       annotationVoteQuota: constants.annotationVoteQuota,
       annotationVotesCastToday: 0
     }
-    this.paymentStatus = false;
+    this.paidStatus = false;
+    this.annotatedEnoughOverride = false;
   }
 
   isValidWeight(): boolean{

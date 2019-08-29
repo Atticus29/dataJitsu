@@ -16,7 +16,7 @@ export class ValidationService {
 
   validatePassword(password: string){
     if(password){
-      return password.length > 6 && password;
+      return password.length > 6;
     } else {
       return false;
     }

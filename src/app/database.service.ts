@@ -215,10 +215,10 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string){
-    let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
+    let ref = firebase.database().ref('users/' + userId + '/paidStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => { //TODO ???
-        // console.log(snapshot);
+        console.log(snapshot);
         status = snapshot.val();
         observer.next(status);
       });
@@ -485,25 +485,37 @@ export class DatabaseService {
   }
 
   userHasAnnotatedEnough(userId: string): Observable<boolean>{
-    let ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
+    let skipTheActualCalculationBecauseOfOverride: boolean = false;
     let resultObservable = Observable.create(observer =>{
-      let moveCount = 0;
-      ref.on("child_added", childSnapshot =>{
-        let move = childSnapshot.val();
-        // console.log("move in userHasAnnotatedEnough");
-        // console.log(move.dateAdded);
-        if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
-          // console.log(move.dateAdded + " is recent enough to count. Adding it...");
-          moveCount += 1;
-        } else{
-          //Don't increment
+      let ref = firebase.database().ref('users/' + userId + '/annotatedEnoughOverride/');
+      ref.on("value", status =>{
+        console.log("value of annotatedEnoughOverride: " + status.val());
+        if(status.val() == true){
+          skipTheActualCalculationBecauseOfOverride = true;
+          observer.next(true);
+          return resultObservable;
+        }
+        if(!skipTheActualCalculationBecauseOfOverride){
+          ref = firebase.database().ref('users/' + userId + '/movesAnnotated/');
+          let moveCount = 0;
+          ref.on("child_added", childSnapshot =>{
+            let move = childSnapshot.val();
+            // console.log("move in userHasAnnotatedEnough");
+            // console.log(move.dateAdded);
+            if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
+              // console.log(move.dateAdded + " is recent enough to count. Adding it...");
+              moveCount += 1;
+            } else{
+              //Don't increment
+            }
+          });
+          if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
+            observer.next(false);
+          } else{
+            observer.next(true);
+          }
         }
       });
-      if(moveCount < constants.numberOfCurrentAnnotationsNeeded){
-        observer.next(false);
-      } else{
-        observer.next(true);
-      }
     });
     return resultObservable;
   }

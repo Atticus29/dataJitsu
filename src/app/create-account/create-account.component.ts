@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormGroupDirective, NgForm} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material';
 
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+import { constants } from '../constants';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { TrackerService } from '../tracker.service';
@@ -33,18 +35,21 @@ export class CreateAccountComponent implements OnInit {
   disabledNoGiRank: boolean = false;
   disabledGiRank: boolean = false;
   disabledAgeClass: boolean = false;
+  private passwordBoundFc: FormControl = new FormControl('', [Validators.required, Validators.minLength(7)]);
+  private userNameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private userEmailBoundFc: FormControl = new FormControl('', [Validators.required, Validators.email]);
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) { }
 
   ngOnInit() {
-    
+
     for (var i = 3; i <= 110; i++) {
       this.ages.push(i);
     }
     this.newUserForm = this.fb.group({
-      userNameBound: ['', Validators.required],
-      userEmailBound: ['', Validators.required],
-      passwordBound: ['', Validators.required],
+      // userNameBound: ['', Validators.required],
+      // userEmailBound: ['', Validators.required],
+      // passwordBound: ['', [Validators.required, Validators.minLength(7)]],
       userAffiliationBound: ['', Validators.required],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
@@ -70,15 +75,44 @@ export class CreateAccountComponent implements OnInit {
     });
   }
 
+  getErrorMessage() {
+    let errorMessage: string = "A form error has occurred";
+    if(this.passwordBoundFc.hasError('required')){
+      errorMessage = 'You must enter a value';
+    }
+    if(this.passwordBoundFc.hasError('minlength')){
+      errorMessage = 'Password must be at least ' + constants.minPwLength + ' characters long';
+    }
+    if(this.userNameBoundFc.hasError('required')){
+      errorMessage = 'Email must have a value';
+    }
+    if(this.userEmailBoundFc.hasError('email')){
+      errorMessage = 'Email must be a valid email address';
+    }
+    return  errorMessage;
+  }
+  // get f() { return this.newUserForm.controls; }
+
+  // errorPWTooSmall = {
+  //   isErrorState: (control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean => {
+  //     let pwLength : number = this.newUserForm.value.passwordBound;
+  //     console.log("pwLength: " + pwLength);
+  //     return(pwLength >= constants.minPwLength);
+  //   }
+  // }
+
   getValues(){
-    let result = this.newUserForm.value;
-    return result;
+    let passwordBound = this.passwordBoundFc.value;
+    let userNameBound = this.userNameBoundFc.value;
+    let userEmailBound = this.userEmailBoundFc.value;
+    let otherResults = this.newUserForm.value;
+    return {passwordBound, userNameBound, userEmailBound, ...otherResults};
   }
 
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
     let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", false, genderBound, new Date().toJSON());
-    // console.log(newUser);
+    console.log(newUser);
     return newUser;
   }
 
@@ -87,6 +121,7 @@ export class CreateAccountComponent implements OnInit {
   processFormInputsToDB(){
     console.log("processFormInputsToDB entered");
     let result = this.getValues();
+    console.log(result);
     let newUser: User = this.createUserObj(result);
     console.log("newUser from processFormInputsToDB: ");
     console.log(newUser);
@@ -114,7 +149,8 @@ export class CreateAccountComponent implements OnInit {
   }
 
   allValid(){
-    let values = this.newUserForm.value;
+    let values = this.getValues();
+    console.log(values)
     if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       return true;
     } else{

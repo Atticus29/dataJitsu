@@ -1,4 +1,6 @@
 # TODO high priority
+- [ ] Improve form validation for create account form
+- [ ] Add confirm password field
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Finish writing the double annotation test
