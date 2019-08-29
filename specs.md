@@ -1,9 +1,14 @@
 # TODO high priority
+- [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
+- [ ] Get rid of subscription errors so that tests can pass
+- [ ] Finish writing the double annotation test
+- [ ] Troubleshoot/edit the currently existing tests
+- [ ] Set up tutorial mode
+
+- [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Flag annotation for improvement
 - [ ] Update the check for annotation merge
-- [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] extend baseComponent in other components
-- [ ] Set up tutorial mode
 - [ ] Edit user details page
 - [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
 - [ ] User page; badge with reputation points

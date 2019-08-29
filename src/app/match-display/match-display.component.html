@@ -19,6 +19,26 @@
           <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
             <i class="material-icons">pause</i>
           </a>
+          <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideo()" matTooltip="Flag Video as Removed" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
+            <i class="material-icons">videocam_off</i>
+          </button>
+          <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideoInappropriate()" matTooltip="Flag Video as Inappropriate" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
+            <i class="material-icons">flag</i>
+          </button>
+          <div id="missing-video-section">
+            <mat-chip-list *ngIf="showFlagChips">
+              <mat-chip *ngIf="showRemovedFlagChip">
+                <span>
+                  {{flaggedRemovedStatus}}
+                </span>
+              </mat-chip>
+              <mat-chip *ngIf="showInappropriateFlagChip">
+                <span>
+                  {{flaggedInappropriateStatus}}
+                </span>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
           <span>
             <p>Current Move Being Annotated: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
           </span>

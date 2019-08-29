@@ -160,7 +160,9 @@ export const firebaseConfig = {
     MatRadioModule,
     RatingModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
   bootstrap: [AppComponent],

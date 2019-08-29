@@ -61,6 +61,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private matchAverageRating: number = 0;
   private annotationAverageRating: number = 0;
   private giStatus: string = "Fetching...";
+  private flaggedRemovedStatus: string = "Fetching...";
+  private flaggedInappropriateStatus: string = "Fetching...";
+  private showFlagChips: boolean = false;
+  private showInappropriateFlagChip = false;
+  private showRemovedFlagChip = false;
   // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
@@ -71,6 +76,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       console.log(user);
       if(user){
@@ -106,6 +112,35 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.router.navigate(['error']);
       }
       // console.log("matchID is: " + this.matchId);
+      if(this.matchId){
+        this.db.getVideoRemovedFlagStatus(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+          if(status){
+            this.showFlagChips = true;
+            this.showRemovedFlagChip = true;
+            this.flaggedRemovedStatus = "This video has been flagged as missing";
+          }else{
+            if(!this.showInappropriateFlagChip){
+              this.showFlagChips = false;
+            }
+            // this.showFlagChips = false;
+            this.showRemovedFlagChip = false;
+            this.flaggedRemovedStatus = "";
+          }
+        });
+        this.db.getInappropriateFlagStatus(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+          if(status){
+            this.showFlagChips = true;
+            this.showInappropriateFlagChip = true;
+            this.flaggedInappropriateStatus = "This video has been flagged as inappropriate";
+          }else{
+            if(!this.showRemovedFlagChip){
+              this.showFlagChips = false;
+            }
+            this.showInappropriateFlagChip = false;
+            this.flaggedInappropriateStatus = "";
+          }
+        });
+      }
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
         this.matchAverageRating = average;
       });
@@ -461,5 +496,35 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
   triggerNewAnnotationFetch(){
     this.trackerService.fetchNewAnnotations.next(true);
+  }
+
+  flagVideo(){
+    if(this.matchId){
+      this.db.getVideoRemovedFlagStatus(this.matchId).pipe(take(1)).subscribe(status =>{
+        status ? this.db.flagVideoRemovedInMatch(this.matchId, false): this.db.flagVideoRemovedInMatch(this.matchId, true);
+        // if(status){
+        //   this.db.flagVideoInMatch(this.matchId, true);
+        // }else{
+        //   this.db.flagVideoInMatch(this.matchId, false);
+        // }
+      });
+    } else{
+      console.log("video has been flagged as removed, but matchId could not be found");
+    }
+  }
+
+  flagVideoInappropriate(){
+    if(this.matchId){
+      this.db.getInappropriateFlagStatus(this.matchId).pipe(take(1)).subscribe(status =>{
+        status ? this.db.flagVideoInappropriateInMatch(this.matchId, false): this.db.flagVideoInappropriateInMatch(this.matchId, true);
+        // if(status){
+        //   this.db.flagVideoInMatch(this.matchId, true);
+        // }else{
+        //   this.db.flagVideoInMatch(this.matchId, false);
+        // }
+      });
+    } else{
+      console.log("video has been flagged as removed, but matchId could not be found");
+    }
   }
 }

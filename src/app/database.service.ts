@@ -783,4 +783,48 @@ export class DatabaseService {
     return resultObservable;
   }
 
+  flagVideoRemovedInMatch(matchId: string, status: boolean){
+    let updates = {};
+    updates['/matches/' + matchId + '/matchDeets/flaggedAsMissing'] = status;
+    firebase.database().ref().update(updates);
+  }
+
+  getVideoRemovedFlagStatus(matchId: string){
+    let resultObservable = Observable.create(observer =>{
+      let ref = firebase.database().ref('/matches/' + matchId + '/matchDeets/flaggedAsMissing');
+      ref.on("value", snapshot =>{
+        if(snapshot.val()){
+          // console.log("results in getVideoRemovedFlagStatus call:");
+          // console.log(snapshot.val());
+          observer.next(Boolean(snapshot.val()));
+        }else{
+          observer.next(false);
+        }
+      });
+      });
+    return resultObservable;
+  }
+
+  getInappropriateFlagStatus(matchId: string){
+    let resultObservable = Observable.create(observer =>{
+      let ref = firebase.database().ref('/matches/' + matchId + '/matchDeets/flaggedAsInappropriate');
+      ref.on("value", snapshot =>{
+        if(snapshot.val()){
+          // console.log("results in getInappropriateFlagStatus call:");
+          // console.log(snapshot.val());
+          observer.next(Boolean(snapshot.val()));
+        }else{
+          observer.next(false);
+        }
+      });
+      });
+    return resultObservable;
+  }
+
+  flagVideoInappropriateInMatch(matchId: string, status: boolean){
+    let updates = {};
+    updates['/matches/' + matchId + '/matchDeets/flaggedAsInappropriate'] = status;
+    firebase.database().ref().update(updates);
+  }
+
 }
