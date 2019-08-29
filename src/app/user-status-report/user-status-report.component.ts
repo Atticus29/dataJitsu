@@ -42,7 +42,7 @@ export class UserStatusReportComponent implements OnInit {
           this.db.getUserById(snapshot.key).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
             this.userObjFromDb = result;
             this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-              if(status){ //TODO this used to be status.$value, but wit this refactor might be broken now https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md
+              if(status){ 
                 // console.log("user has paid");
                 this.togglePaid(this.userObjFromDb.id, true);
                 this.togglePayMentPrompt(false);

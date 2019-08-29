@@ -217,7 +217,7 @@ export class DatabaseService {
   hasUserPaid(userId: string){
     let ref = firebase.database().ref('users/' + userId + '/paymentStatus');
     let resultObservable = Observable.create(observer =>{
-      ref.on("child_added", snapshot => { //TODO ???
+      ref.on("value", snapshot => { //TODO ???
         // console.log(snapshot);
         status = snapshot.val();
         observer.next(status);

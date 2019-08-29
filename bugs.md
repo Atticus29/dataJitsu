@@ -10,6 +10,7 @@
     - [ ] Currently, lets you create multiple duplicate accounts (?)
 - [ ] Annotation
     - [ ] Deleting an annotation made by another user logs you in as that user (but you refresh as the original user)
+    - [ ] Deleting several annotations (or certain annotations?) at least sometimes doesn't remove the chip from the DOM
     - [ ] Ending an annotation now does not pause and reset, but there's no delay and also the arrows don't switch disabled
 - [ ] Video Player
     - [ ] Changing the annotation rating resets the video
