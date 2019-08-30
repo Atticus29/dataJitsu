@@ -89,6 +89,7 @@ import { UnsuccessfulAnnotationDirective } from './unsuccessful-annotation.direc
 import { AnnotationLegendDialogComponent } from './annotation-legend-dialog/annotation-legend-dialog.component';
 import { SubmissionAnnotationDirective } from './submission-annotation.directive';
 import { NewsComponent } from './news/news.component';
+import { FaqComponent } from './faq/faq.component';
 
 
 export const firebaseConfig = {
@@ -126,7 +127,8 @@ export const firebaseConfig = {
     UnsuccessfulAnnotationDirective,
     AnnotationLegendDialogComponent,
     SubmissionAnnotationDirective,
-    NewsComponent
+    NewsComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { AdminComponent } from './admin/admin.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NewsComponent } from './news/news.component';
+import { FaqComponent } from './faq/faq.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate } from '@angular/fire/auth-guard';
 
@@ -36,6 +37,11 @@ const appRoutes: Routes = [
 },{
   path: 'newmatch',
   component: NewMatchComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
+},{
+  path: 'faq',
+  component: FaqComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{

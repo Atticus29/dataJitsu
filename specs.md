@@ -1,8 +1,9 @@
 # TODO high priority
-- [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
-- [ ] Get rid of subscription errors so that tests can pass
 - [ ] Finish writing the double annotation test
+  - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
+- [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
+- [ ] Track categories as well as move names (//TODO get category from item)
 - [ ] Set up tutorial mode
 
 - [ ] Add form validation to newMatch

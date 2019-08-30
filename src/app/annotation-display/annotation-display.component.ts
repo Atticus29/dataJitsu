@@ -110,6 +110,8 @@ export class AnnotationDisplayComponent implements OnInit {
 
   selectItem(item: string){
     this.trackerService.moveName.next(item);
+    console.log("item selected: " + item);
+    //TODO get category from item
   }
 
   getValues(){
