@@ -32,11 +32,12 @@ export class TrackerService {
     this.moveName.next("No Annotation Currently Selected");
     this.performer.next("Nobody");
     this.recipient.next("Nobody");
-    this.matchId.next("tmpId");
+    // this.matchId.next("tmpId");
     this.videoResumeStatus.next(false);
     this.submission.next("No");
     this.annotationBegun.next(false);
     this.attemptStatus.next("Yes");
+    console.log("resetAllExceptCurrentMatch has been completed");
   }
 
   resetAll(){

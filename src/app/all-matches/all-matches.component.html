@@ -59,7 +59,13 @@
     </ng-container>
     <ng-container matColumnDef="videoUrl">
       <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> <a routerLink="/matches/{{entry.id}}" name="videoClick">Click</a></mat-cell>
+      <mat-cell *matCellDef="let entry">
+        <a routerLink="/matches/{{entry.id}}" name="videoClick">
+          <!-- <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Click To View Match In Detail"> -->
+            <i class="material-icons right">movie</i>
+          <!-- </button> -->
+        </a>
+      </mat-cell>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="deleteMatch">

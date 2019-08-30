@@ -197,9 +197,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           });
           document.getElementById("end-move").addEventListener("click", function() {
             player.pauseVideo();
-            let endMoveClickCounter = 0;
-            let currentTime = player.getCurrentTime();
-            self.trackerService.endTimePoint.next(player.getCurrentTime());
+            let endMoveClickCounter: number = 0;
+            let currentTime: number = player.getCurrentTime();
+            self.trackerService.endTimePoint.next(currentTime);
             self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
               // console.log("startTime in trackerService is " + startTime);
               self.startTime = startTime;
@@ -298,6 +298,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         }
 
         if (!window['YT']){
+          console.log("no window[YT]!!");
           var tag = document.createElement('script');
           tag.src = "//www.youtube.com/player_api";
           var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -311,12 +312,13 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(status && this.moveCompletelyLegit()){
         // console.log("move assembled and completely legit");
         let annotationMadeCounter: number = 0;
-        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnough =>{
-          if(!matchUniqueEnough){
-            // console.log("match not Unique Enough");
+        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(take(1)).subscribe(moveUniqueEnough =>{ //takeUntil(this.ngUnsubscribe) ?? TODO
+          if(!moveUniqueEnough){
+            console.log("match not Unique Enough");
             if(annotationMadeCounter < 1){
               this.snackBar.open("Annotation has already been made by another user");
               annotationMadeCounter ++ ;
+              console.log("annotationMadeCounter is " + annotationMadeCounter);
             }
             // this.snackBar.open("Annotation has already been made by another user");
             self.moveName = null;
@@ -330,9 +332,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
             self.moveAssembledStatus.next(false);
           } else{
-            // console.log("match IS Unique Enough in match");
-            self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUniqueEnoughInUser =>{
-              if(matchUniqueEnoughInUser){
+            console.log("match IS Unique Enough in match");
+            self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+              if(moveUniqueEnoughInUser){
                 self.openSnackBar("Annotation Recorded");
                 // console.log("match IS Unique Enough in user");
                 // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
@@ -468,6 +470,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     player.playVideo();
   }
   openSnackBar(message: string) {
+    console.log("openSnackBar called");
     this.snackBar.open(message, '', {
       duration: 3000,
     });

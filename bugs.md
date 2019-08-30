@@ -26,12 +26,12 @@
 # Tabled issues
 - [x] the timeline for a previous match might persist when a new match is clicked
 - [x] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
-- [x] Video icon not displaying on main window
 
 # Not sure what this is about anymore
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Video icon not displaying on main window
 - [x] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
 - [x] Deleting an annotation causes many many queries
 - [x] Second time you annotate a move, it doesn't wait for end time and might have other issues as well in terms of mixing data with the previous entry
