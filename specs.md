@@ -1,13 +1,14 @@
 # TODO high priority
-- [ ] Add confirm password field
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Finish writing the double annotation test
 - [ ] Troubleshoot/edit the currently existing tests
 - [ ] Set up tutorial mode
 
+- [ ] Add form validation to newMatch
 - [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Flag annotation for improvement
+- [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
 - [ ] extend baseComponent in other components
 - [ ] Edit user details page
@@ -76,6 +77,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Add confirm password field
 - [x] Make password toggleable to be visible
 - [x] Improve form validation for create account form
 - [x] Make it so that annotations appear in match chronological order not addition chronological order

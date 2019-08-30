@@ -51,9 +51,6 @@ export class CreateAccountComponent implements OnInit {
       this.ages.push(i);
     }
     this.newUserForm = this.fb.group({
-      // userNameBound: ['', Validators.required],
-      // userEmailBound: ['', Validators.required],
-      // passwordBound: ['', [Validators.required, Validators.minLength(7)]],
       userAffiliationBound: ['', Validators.required],
       genderBound: ['', Validators.required],
       ageClassBound: ['', Validators.required],
@@ -104,15 +101,6 @@ export class CreateAccountComponent implements OnInit {
     }
     return  errorMessage;
   }
-  // get f() { return this.newUserForm.controls; }
-
-  // errorPWTooSmall = {
-  //   isErrorState: (control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean => {
-  //     let pwLength : number = this.newUserForm.value.passwordBound;
-  //     console.log("pwLength: " + pwLength);
-  //     return(pwLength >= constants.minPwLength);
-  //   }
-  // }
 
   getValues(){
     let passwordBound = this.passwordBoundFc.value;
@@ -126,32 +114,32 @@ export class CreateAccountComponent implements OnInit {
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
     let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", genderBound, new Date().toJSON());
-    console.log(newUser);
+    // console.log(newUser);
     return newUser;
   }
 
   //@TODO see whether you can get it to re-direct from here if you're logged in
 
   processFormInputsToDB(){
-    console.log("processFormInputsToDB entered");
+    // console.log("processFormInputsToDB entered");
     let result = this.getValues();
     console.log(result);
     let newUser: User = this.createUserObj(result);
-    console.log("newUser from processFormInputsToDB: ");
-    console.log(newUser);
+    // console.log("newUser from processFormInputsToDB: ");
+    // console.log(newUser);
     let self = this;
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
     this.db.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
-      console.log("dbUserId in create-account component");
-      console.log(dbUserId);
+      // console.log("dbUserId in create-account component");
+      // console.log(dbUserId);
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
         if(user){
           if(user.uid){
-            console.log("user uid in trackerService.currentUserBehaviorSubject in create-account component");
-            console.log(user.uid);
-            console.log(newUser.getId());
+            // console.log("user uid in trackerService.currentUserBehaviorSubject in create-account component");
+            // console.log(user.uid);
+            // console.log(newUser.getId());
             this.db.addUidToUser(user.uid, dbUserId);
             // console.log("Oh hey! There's a uid, too!: " + user.uid);
           }
@@ -165,14 +153,14 @@ export class CreateAccountComponent implements OnInit {
   allValid(){
     let values = this.getValues();
     let confirmPasswordBound = this.confirmPasswordBoundFc.value;
-    console.log(confirmPasswordBound);
+    // console.log(confirmPasswordBound);
     // console.log(values)
     if(values.passwordBound !== confirmPasswordBound){
-      console.log("passwordsNotEqual");
+      // console.log("passwordsNotEqual");
       this.passwordsNotEqual = true;
     }
     if(values.passwordBound === confirmPasswordBound){
-      console.log("passwords Equal");
+      // console.log("passwords Equal");
       this.passwordsNotEqual = false;
     }
     if(values.passwordBound===confirmPasswordBound && values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
