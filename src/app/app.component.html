@@ -9,7 +9,7 @@
     <ul id="nav-mobile" class="left hide-on-med-and-down flexbox-container">
       <li><a routerLink="matches" *ngIf="paidStatus"><i class="material-icons">home</i></a></li>
       <li *ngIf="authenticationStatus"><a routerLink="newmatch" >New Match</a></li>
-      <li *ngIf="paidStatus || isAdmin"><a routerLink="matches" >View All Matches</a></li>
+      <li *ngIf="paidStatus || isAdmin || canViewAllMatches"><a routerLink="matches" >View All Matches</a></li>
       <li *ngIf="authenticationStatus"><a (click)="navigateToVideoInNeedOfAnnotation()" >Annotate a video</a></li>
       <li><a routerLink="news">News</a></li>
       <li *ngIf="authenticationStatus && isAdmin"><a routerLink="admin" >Admin Tasks</a></li>

@@ -1,5 +1,6 @@
 # Known issues
 - [ ] Current most pressing
+  - [ ] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
   - [ ] Rating a match toggles back and forth between your current vote and your old vote
 - [ ] Testing
   - [ ] Tests are failing because of unsubscription error

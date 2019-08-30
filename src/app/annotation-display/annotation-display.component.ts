@@ -1,9 +1,8 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-
 import { MatIconModule } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
@@ -11,11 +10,11 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angular
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
+import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { TrackerService } from '../tracker.service';
 import { ValidationService } from '../validation.service';
-
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
 import { DynamicDataSource } from '../dynamicDataSource.model';
@@ -32,12 +31,12 @@ declare var $:any;
   styleUrls: ['./annotation-display.component.scss']
   // providers: [DynamicDatabase]
 })
-export class AnnotationDisplayComponent implements OnInit {
+export class AnnotationDisplayComponent extends BaseComponent implements OnInit {
   @Output() moveSelected = new EventEmitter<MoveInVideo>();
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private moveCategories: string[];
   isExpandable = (node: DynamicFlatNode) => node.expandable;
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
@@ -56,6 +55,7 @@ export class AnnotationDisplayComponent implements OnInit {
   private pointsEntered: number = -1;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
+    super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, this.database, this.db);
     this.dataSource.data = this.database.initialData();

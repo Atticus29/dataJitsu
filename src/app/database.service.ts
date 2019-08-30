@@ -399,6 +399,33 @@ export class DatabaseService {
     return (candidateNewMoveDoesNotStartTooEarly && candidateNewMoveDoesNotStartTooLate && candidateNewMoveDoesNotEndTooEarly && candidateNewMoveDoesNotEndTooLate);
   }
 
+  getAnnotationsSortedByStartTimeV2(matchId: string, path: string){
+    let annotations = new Array();
+    let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
+    let theObjects = new Array();
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
+          console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
+          console.log(snapshot.val());
+          if(snapshot){
+            if(snapshot.val()){
+              let snapshotVals = snapshot.val();
+              if(annotations.includes(snapshotVals)){
+                annotations = new Array();
+              }
+              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
+              currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
+              console.log("move in video being added to annotations array:");
+              console.log(currentMoveInVideo)
+              annotations.push(currentMoveInVideo);
+            }
+          }
+      });
+      observer.next(annotations);
+    });
+    return resultObservable;
+  }
+
   getAnnotationsSortedByStartTime(matchId: string, path: string){
     let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
     let theObjects = new Array();
@@ -406,7 +433,12 @@ export class DatabaseService {
       ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
           // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
           // console.log(snapshot.val());
-          let snapshotVals = snapshot.val();
+          if(snapshot){
+            if(snapshot.val()){
+              let snapshotVals = snapshot.val();
+              observer.next(snapshotVals);
+            }
+          }
           // theObjects.push(snapshotVals);
           // console.log(theObjects);
           // let theObjects = new Array();
@@ -419,7 +451,6 @@ export class DatabaseService {
           //     theObjects.push(tmpObj);
           //   });
           // }
-          observer.next(snapshotVals);
       });
     // ref.orderByChild("timeInitiated").on("child_changed", snapshot =>{
     //   let snapshotVals = snapshot.val();

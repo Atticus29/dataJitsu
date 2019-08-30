@@ -12,6 +12,7 @@ import { AuthorizationService } from './authorization.service';
 import { DatabaseService } from './database.service';
 import { TrackerService } from './tracker.service';
 import { User } from './user.model';
+import { BaseComponent } from './base/base.component';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,8 @@ import { User } from './user.model';
   styleUrls: ['./app.component.scss'],
   providers:[AuthorizationService, ProtectionGuard]
 })
-export class AppComponent implements OnInit {
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+export class AppComponent extends BaseComponent implements OnInit {
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
@@ -29,8 +30,11 @@ export class AppComponent implements OnInit {
   title: string = constants.title;
   authenticationStatus: boolean =false;
   shouldAnnotate: boolean = false;
+  private canViewAllMatches: boolean = false; //TODO flesh out
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService){}
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService){
+    super();
+  }
 
   ngOnInit() {
     let self = this;
@@ -111,7 +115,7 @@ export class AppComponent implements OnInit {
     if (confirmation == true) {
       this.authService.signOut();
       this.trackerService.currentUserBehaviorSubject.next(null); //TODO necessary?
-      location.reload();
+      // location.reload();
     } else {
     }
   };

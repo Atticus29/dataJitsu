@@ -29,10 +29,9 @@ export class AuthorizationService {
         this.authenticated = false;
       }
     });
-    this.authError.pipe(takeUntil(this.ngUnsubscribe)).subscribe(errorResults =>{
-      //TODO uncomment back in after 08/15/2019
-      // console.log("errorResults");
-      // console.log(errorResults);
+    this.authError.subscribe(errorResults =>{  //.pipe(takeUntil(this.ngUnsubscribe))
+      console.log("errorResults");
+      console.log(errorResults);
     });
   }
 

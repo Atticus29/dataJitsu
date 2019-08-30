@@ -10,6 +10,7 @@ import { tap, takeUntil } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material';
 import { ChangeDetectorRef } from '@angular/core';
 
+import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { D3Service } from '../d3.service';
@@ -23,18 +24,20 @@ import { User } from '../user.model';
   templateUrl: './all-matches.component.html',
   styleUrls: ['./all-matches.component.scss']
 })
-export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AllMatchesComponent extends BaseComponent implements OnInit, OnDestroy, AfterViewInit {
   private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   private showLoader: any;
   user: any = null;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private matchCount: number;
   private pageSize: number;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) { }
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
+    super();
+  }
 
   ngOnInit() {
     // this.authService.authenticated.subscribe(status =>{
@@ -74,7 +77,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.dataSource.loading$.subscribe(result =>{
       this.showLoader = result;
-      // this.cdr.detectChanges();
+      this.cdr.detectChanges();
     });
 
     this.dbService.getMatches().subscribe(results =>{
