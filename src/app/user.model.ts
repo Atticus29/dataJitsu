@@ -1,13 +1,13 @@
 import { constants } from './constants';
 
 export class User {
-  private id: string;
+  public id: string;
   private weightClass: string;
   private ageClass: string;
   public uid: string;
   private privileges: {};
   private votingInfo: {};
-  private paidStatus: boolean;
+  public paidStatus: boolean;
   private annotatedEnoughOverride: boolean;
   constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: string, public gender: string, public dateCreated: any) {
     this.privileges = {

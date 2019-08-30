@@ -214,12 +214,13 @@ export class DatabaseService {
   // getMatchesFiltered(matchId: string, filter: string, sortDirection: string, pageIndex: number, pageSize: number){ //TODO remove or fix
   // }
 
-  hasUserPaid(userId: string){
+  hasUserPaid(userId: string): Observable<boolean>{
     let ref = firebase.database().ref('users/' + userId + '/paidStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => { //TODO ???
-        console.log(snapshot);
-        status = snapshot.val();
+        console.log("result in hasUserPaid: ");
+        console.log(snapshot.val());
+        let status: boolean = snapshot.val();
         observer.next(status);
       });
     });
@@ -661,7 +662,7 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  isAdmin(userId: string){
+  isAdmin(userId: string): Observable<boolean>{
     let ref = firebase.database().ref('users/' + userId + '/privileges/isAdmin');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot=>{

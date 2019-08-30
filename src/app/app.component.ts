@@ -66,20 +66,21 @@ export class AppComponent implements OnInit {
           this.db.getUserByUid(currentUser.uid).subscribe(dbUser =>{
             this.user = dbUser;
             this.name = dbUser.name;
-            // this.name = dbUser.name;
             // console.log("db user from getUserByUid in app.component is:");
             // console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
             this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               console.log("isAdmin? " + status);
-              if(status == true){
+              console.log(typeof(status));
+              if(status === true){
                 console.log("setting isAdmin to true");
                 this.isAdmin = status;
               }
             });
             this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
               console.log("hasUserPaid? " + paymentStatus);
-              if(paymentStatus == true){
+              console.log(typeof(paymentStatus));
+              if(paymentStatus === true){
                 console.log("setting paidStatus to true...");
                 this.paidStatus = paymentStatus;
               }else{

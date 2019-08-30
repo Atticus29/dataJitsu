@@ -78,16 +78,19 @@ export class CreateAccountComponent implements OnInit {
   getErrorMessage() {
     let errorMessage: string = "A form error has occurred";
     if(this.passwordBoundFc.hasError('required')){
-      errorMessage = 'You must enter a value';
+      errorMessage = 'You must enter a password';
     }
     if(this.passwordBoundFc.hasError('minlength')){
       errorMessage = 'Password must be at least ' + constants.minPwLength + ' characters long';
     }
     if(this.userNameBoundFc.hasError('required')){
-      errorMessage = 'Email must have a value';
+      errorMessage = 'User Name must have a value';
     }
     if(this.userEmailBoundFc.hasError('email')){
       errorMessage = 'Email must be a valid email address';
+    }
+    if(this.userEmailBoundFc.hasError('required')){
+      errorMessage = 'Email address required';
     }
     return  errorMessage;
   }
@@ -111,7 +114,7 @@ export class CreateAccountComponent implements OnInit {
 
   createUserObj(result: any){
     let {userNameBound, userEmailBound, passwordBound, userAffiliationBound, genderBound, ageClassBound, giRankBound, noGiRankBound, weightBound, ageBound} = result;
-    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", false, genderBound, new Date().toJSON());
+    let newUser = new User(userNameBound, userEmailBound, passwordBound, giRankBound, noGiRankBound, userAffiliationBound, Number(ageBound), weightBound, 100, "", genderBound, new Date().toJSON());
     console.log(newUser);
     return newUser;
   }

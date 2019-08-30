@@ -51,7 +51,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
       this.user = user;
       if(user && user.uid){
         this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
-          if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches){
+          if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches || dbUser.paidStatus){
             //can see things
           } else{
             this.ngZone.run(() =>{
@@ -74,7 +74,7 @@ export class AllMatchesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.dataSource.loading$.subscribe(result =>{
       this.showLoader = result;
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges();
     });
 
     this.dbService.getMatches().subscribe(results =>{
