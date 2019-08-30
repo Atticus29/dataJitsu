@@ -41,6 +41,7 @@ export class CreateAccountComponent implements OnInit {
   private userEmailBoundFc: FormControl = new FormControl('', [Validators.required, Validators.email]);
   private hide: boolean = true;
   private hideConfirm: boolean = true;
+  private passwordsNotEqual: boolean = false;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) { }
 
@@ -164,7 +165,16 @@ export class CreateAccountComponent implements OnInit {
   allValid(){
     let values = this.getValues();
     let confirmPasswordBound = this.confirmPasswordBoundFc.value;
-    console.log(values)
+    console.log(confirmPasswordBound);
+    // console.log(values)
+    if(values.passwordBound !== confirmPasswordBound){
+      console.log("passwordsNotEqual");
+      this.passwordsNotEqual = true;
+    }
+    if(values.passwordBound === confirmPasswordBound){
+      console.log("passwords Equal");
+      this.passwordsNotEqual = false;
+    }
     if(values.passwordBound===confirmPasswordBound && values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       return true;
     } else{

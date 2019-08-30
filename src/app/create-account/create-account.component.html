@@ -86,6 +86,9 @@
         </div>
       </div>
       <div class="row">
+        <mat-error *ngIf="passwordsNotEqual">Passwords are not equal</mat-error>
+      </div>
+      <div class="row">
         <button [disabled]="!allValid()"  class="btn waves-effect waves-light" (click)="processFormInputsToDB()" id="create-button">Create
           <i class="material-icons right">send</i>
         </button>
