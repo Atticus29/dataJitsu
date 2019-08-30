@@ -10,6 +10,7 @@ export var allCurrentMoves ={
     "Over Under Pass",
     "Double Under Pass",
     "Toreando Pass",
+    "Guard Pass from Berimbolo or Inverted Position",
     "Name is missing from this list",
     "I don't know whether there's a name for this guard pass"
   ],

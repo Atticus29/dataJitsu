@@ -27,7 +27,7 @@ export class DatabaseService {
   retrievedMatch:Observable<any>;
   movesAsObject: Observable<any>;
   matchDetails: Observable<any>;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
     this.matches = db.list<Match>('/matches').valueChanges();
@@ -218,8 +218,8 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/' + userId + '/paidStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => { //TODO ???
-        console.log("result in hasUserPaid: ");
-        console.log(snapshot.val());
+        // console.log("result in hasUserPaid: ");
+        // console.log(snapshot.val());
         let status: boolean = snapshot.val();
         observer.next(status);
       });
@@ -329,10 +329,11 @@ export class DatabaseService {
   }
 
   addMoveInVideoToMatchIfUniqueEnough(move: MoveInVideo): Observable<boolean>{
+    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
       let counter: number = 0;
       //TODO if(moveIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
-      this.moveIsUniqueEnough(move, 'matches/' + move.getMatchId() + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+      this.moveIsUniqueEnough(move, 'matches/' + move.getMatchId() + '/moves/').pipe(takeUntil(localUnsubscribeSubject)).subscribe(uniqueEnough =>{
         // console.log("unique enough?");
         // console.log(uniqueEnough);
         // console.log("value of counter: ");
@@ -346,12 +347,16 @@ export class DatabaseService {
           firebase.database().ref().update(updates);
           observer.next(true);
           counter += 1;
+          localUnsubscribeSubject.next();
+          localUnsubscribeSubject.complete();
           return resultObservable;
         } else {
           if(uniqueEnough == false){
             // TODO add toast thing saying as much
             // alert("this should only happen if move is not unique enough!");
             observer.next(false);
+            localUnsubscribeSubject.next();
+            localUnsubscribeSubject.complete();
             return resultObservable;
           } else{
             //just hasn't shown up yet, be patient
@@ -360,30 +365,39 @@ export class DatabaseService {
       });
 
     });
+    localUnsubscribeSubject.next();
+    localUnsubscribeSubject.complete();
     return resultObservable;
 
   }
 
   moveIsUniqueEnough(move: MoveInVideo, path: string): Observable<boolean>{
+    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
-      // console.log("move.getMatchId(): " + move.getMatchId());
-      this.getAnnotations(move.getMatchId(), path).pipe(take(1)).subscribe(moves =>{
-        // console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
-        // console.log(moves);
+      console.log("move.getMatchId(): " + move.getMatchId());
+      this.getAnnotations(move.getMatchId(), path).pipe(takeUntil(localUnsubscribeSubject)).subscribe(moves =>{
+        console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
+        console.log(moves);
         if(moves){
           for(let item in moves){
             // console.log(moves[item].dateAdded);
             if (moves[item].moveName === move.moveName && moves[item].actor === move.actor && this.annotationWithinTimeRange(moves[item], move)){ //TODO and start time is within 2 seconds of start time and same with end time
               observer.next(false);
+              localUnsubscribeSubject.next();
+              localUnsubscribeSubject.complete();
               return resultObservable;
             } else{
               // observer.next(true);
             }
           }
           observer.next(true);
+          localUnsubscribeSubject.next();
+          localUnsubscribeSubject.complete();
           return resultObservable;
         } else{
           observer.next(true);
+          localUnsubscribeSubject.next();
+          localUnsubscribeSubject.complete();
           return resultObservable;
         }
       });
@@ -474,11 +488,12 @@ export class DatabaseService {
   }
 
   addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string): Observable<boolean>{
-    // console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
         let counter: number = 0;
         if(move.getMoveName() !== "No Annotation Currently Selected"){
-          this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(uniqueEnough =>{
+          this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(localUnsubscribeSubject)).subscribe(uniqueEnough =>{
             if(uniqueEnough && counter < 1){
               // console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
               let now: string = new Date().toJSON();
@@ -496,16 +511,25 @@ export class DatabaseService {
               firebase.database().ref().update(updates);
               counter += 1;
               observer.next(true);
+              localUnsubscribeSubject.next();
+              localUnsubscribeSubject.complete();
+              return resultObservable;
             } else{
               observer.next(false);
+              localUnsubscribeSubject.next();
+              localUnsubscribeSubject.complete();
               return resultObservable;
             }
           });
         } else{
           observer.next(false);
+          localUnsubscribeSubject.next();
+          localUnsubscribeSubject.complete();
           return resultObservable;
         }
     });
+    localUnsubscribeSubject.next();
+    localUnsubscribeSubject.complete();
     return resultObservable;
   }
 
@@ -521,7 +545,7 @@ export class DatabaseService {
     let resultObservable = Observable.create(observer =>{
       let ref = firebase.database().ref('users/' + userId + '/annotatedEnoughOverride/');
       ref.on("value", status =>{
-        console.log("value of annotatedEnoughOverride: " + status.val());
+        // console.log("value of annotatedEnoughOverride: " + status.val());
         if(status.val() == true){
           skipTheActualCalculationBecauseOfOverride = true;
           observer.next(true);

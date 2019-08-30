@@ -18,6 +18,7 @@
 - [ ] F.A.Q. section
     - [ ] Why did I lose reputation points?
     - [ ] What do various tiers of reputations points get me?
+      - [ ] Add new move names
       - [ ] Audit names of moves proposed (TODO check how wikipedia deals with profanity edits, etc.)
       - [ ] Rate annotations (x per day increases as reputation increases)
       - [ ] Flag annotations for removal

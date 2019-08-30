@@ -12,21 +12,24 @@ import { constants } from '../constants';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { User } from '../user.model';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-user-status-report',
   templateUrl: './user-status-report.component.html',
   styleUrls: ['./user-status-report.component.scss']
 })
-export class UserStatusReportComponent implements OnInit {
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+export class UserStatusReportComponent extends BaseComponent implements OnInit {
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: User = null;
   userLoggedIn: boolean = false;
   userObjFromDb;
   shouldAnnotate: boolean = false;
   paidStatus: any = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService) { }
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService) {
+    super();
+  }
 
   ngOnInit() {
     // console.log("ngOnInit user-status-report is called");
@@ -39,8 +42,8 @@ export class UserStatusReportComponent implements OnInit {
             this.userObjFromDb = dbUser;
             this.togglePaymentThings();
             this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              console.log(hasUserAnnotatedEnough);
+              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              // console.log(hasUserAnnotatedEnough);
               if(!hasUserAnnotatedEnough){
                 this.toggleAnnotationPrompt(true);
                 this.togglePayMentPrompt(true);
@@ -97,7 +100,7 @@ export class UserStatusReportComponent implements OnInit {
   }
 
   togglePaymentThings(){
-    this.db.hasUserPaid(this.userObjFromDb.id).pipe(take(1)).subscribe(status =>{
+    this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
       if(status == true){
         // console.log("user has paid");
         // this.togglePaid(this.userObjFromDb.id, true);

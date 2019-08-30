@@ -74,18 +74,18 @@ export class AppComponent extends BaseComponent implements OnInit {
             // console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
             this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-              console.log("isAdmin? " + status);
-              console.log(typeof(status));
+              // console.log("isAdmin? " + status);
+              // console.log(typeof(status));
               if(status === true){
-                console.log("setting isAdmin to true");
+                // console.log("setting isAdmin to true");
                 this.isAdmin = status;
               }
             });
             this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-              console.log("hasUserPaid? " + paymentStatus);
-              console.log(typeof(paymentStatus));
+              // console.log("hasUserPaid? " + paymentStatus);
+              // console.log(typeof(paymentStatus));
               if(paymentStatus === true){
-                console.log("setting paidStatus to true...");
+                // console.log("setting paidStatus to true...");
                 this.paidStatus = paymentStatus;
               }else{
                 this.paidStatus = false;

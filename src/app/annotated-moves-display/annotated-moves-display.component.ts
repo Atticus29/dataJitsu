@@ -31,7 +31,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     // let self = this;
     this.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{ //takeUntil(this.ngUnsubscribe)
       this.matchId = matchId;
-      console.log("got into currentMatch: " + matchId);
+      console.log("got into currentMatch: " + this.matchId);
       this.fetchAnnotations(this.matchId);
     });
 
@@ -88,16 +88,13 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = false;
-    // dialogConfig.width = '250px';
-    // dialogConfig.position = "left";
-    // dialogConfig.data = {};
     const dialogRef = this.dialog.open(AnnotationLegendDialogComponent, dialogConfig);
   }
 
   fetchAnnotations(matchId: string){
     if(matchId){
       this.annotations = new Array();
-      this.databaseService.getAnnotationsSortedByStartTimeV2(matchId, 'matches/' + matchId + '/moves/').pipe(take(1)).subscribe(annotationResults =>{ //annotation //takeUntil(this.ngUnsubscribe)
+      this.databaseService.getAnnotationsSortedByStartTimeV2(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
         if(annotationResults){
           console.log("annotationResults in AnnotatedMovesDisplayComponent:");
           console.log(annotationResults);
@@ -105,20 +102,6 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
         }else{
           console.log("annotationResults don't exist in getAnnotationsSortedByStartTimeV2 call in AnnotatedMovesDisplayComponent");
         }
-        // console.log("annotations in AnnotatedMovesDisplayComponent");
-        // console.log(annotation);
-        // if(annotation){
-        //   console.log("is the error here?");
-        //   if(this.annotations.includes(annotation)){
-        //     this.annotations = new Array();
-        //   }
-        //   let currentMoveInVideo = new MoveInVideo(annotation.moveName, annotation.actor, annotation.recipient, annotation.timeInitiated, annotation.timeCompleted, annotation.points, annotation.associatedMatchId, annotation.isASubmission, annotation.isSuccessfulAttempt, annotation.annotatorUserId);
-        //   console.log("or here?");
-        //   currentMoveInVideo.updateDateAdded(annotation.dateAdded);
-        //   console.log("or perhaps here?");
-        //   this.annotations.push(annotation);
-        //   console.log("or even here?");
-        // }
       });
     }
   }

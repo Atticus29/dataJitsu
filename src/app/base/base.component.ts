@@ -16,8 +16,16 @@ export class BaseComponent implements OnDestroy {
   }
 
   ngOnDestroy(){
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    // this.ngUnsubscribe.subscribe(result =>{
+    //   console.log("got into ngOnDestroy:");
+    //   console.log(result); //result is undefined
+    // });
+    if(this.ngUnsubscribe){
+      this.ngUnsubscribe.next();
+      this.ngUnsubscribe.complete();
+    } else{
+      console.log("ngUnsubscribe was null");
+    }
   }
 
 }

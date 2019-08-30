@@ -80,7 +80,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       console.log(user);
       if(user){
-        this.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+        this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr => {
           usr ? this.userInDbId = usr.id : this.userInDbId = null;
           // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
           // this.trigger.next(true);
@@ -246,15 +246,17 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               self.trigger.next(true);
             });
             if(self.userInDbId){
+              console.log("self.userInDbId already exists and is: ");
+              console.log(self.userInDbId);
               //DO nothing? Trigger?
             }else{
-              self.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(user =>{
-                // console.log("user in trackerService is:");
-                // console.log(user);
+              self.trackerService.currentUserBehaviorSubject.pipe(takeUntil(self.ngUnsubscribe)).subscribe(user =>{
+                console.log("user in trackerService crazy branching is:");
+                console.log(user);
                 // console.log("this should happen just once?");
                 self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
                   usr ? self.userInDbId = usr.id : self.userInDbId = null;
-                  // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+                  console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
                   self.trigger.next(true);
                 });
               });
@@ -312,7 +314,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(status && this.moveCompletelyLegit()){
         // console.log("move assembled and completely legit");
         let annotationMadeCounter: number = 0;
-        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(take(1)).subscribe(moveUniqueEnough =>{ //takeUntil(this.ngUnsubscribe) ?? TODO
+        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+          console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
+          console.log(moveUniqueEnough);
           if(!moveUniqueEnough){
             console.log("match not Unique Enough");
             if(annotationMadeCounter < 1){
@@ -321,6 +325,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               console.log("annotationMadeCounter is " + annotationMadeCounter);
             }
             // this.snackBar.open("Annotation has already been made by another user");
+
             self.moveName = null;
             self.performer = null;
             self.recipient = null;
@@ -328,6 +333,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             self.endTime = null;
             self.points = null;
             self.submissionStatus = null;
+            self.attemptStatus = null;
             self.trackerService.resetAllExceptCurrentMatch();
             // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
             self.moveAssembledStatus.next(false);
@@ -339,6 +345,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 // console.log("match IS Unique Enough in user");
                 // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
                 annotationMadeCounter ++;
+
                 self.moveName = null;
                 self.performer = null;
                 self.recipient = null;
@@ -346,12 +353,14 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.endTime = null;
                 self.points = null;
                 self.submissionStatus = null;
+                self.attemptStatus = null;
                 self.trackerService.resetAllExceptCurrentMatch();
                 // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
                 self.moveAssembledStatus.next(false);
                 self.triggerNewAnnotationFetch();
               }else{
                 // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
+
                 self.moveName = null;
                 self.performer = null;
                 self.recipient = null;
@@ -359,6 +368,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.endTime = null;
                 self.points = null;
                 self.submissionStatus = null;
+                self.attemptStatus = null;
                 self.trackerService.resetAllExceptCurrentMatch();
                 // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
                 self.moveAssembledStatus.next(false);
@@ -400,10 +410,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       this.db.addMatchRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
     }else{
       console.log("had to make userInDbId from scratch");
-      this.trackerService.currentUserBehaviorSubject.subscribe(usr =>{
-        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(urs => {
-          // usr = usr[Object.keys(usr)[0]];
-          let userInDb: string = urs.id;
+      this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
+        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(uzr => {
+          let userInDb: string = uzr.id;
           this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
           this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);
         });

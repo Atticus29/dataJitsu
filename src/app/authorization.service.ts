@@ -19,7 +19,7 @@ export class AuthorizationService {
   private authError: BehaviorSubject<any> = new BehaviorSubject(null);
   private authState: any = null;
   public authenticated: boolean = false;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private afAuth: AngularFireAuth, private afdb: AngularFireDatabase, private router:Router, public ngZone: NgZone, private dbService: DatabaseService) {
     this.afAuth.authState.subscribe(user => {
@@ -140,20 +140,33 @@ export class AuthorizationService {
   //// Email/Password Auth ////
 
   emailSignUp(email:string, password:string) {
+    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let self = this;
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.authState = result.user;
-        this.dbService.getNodeIdFromEmail(result.user.email).pipe(take(1)).subscribe((nodeId: string) =>{
-          // console.log("nodeId is " + nodeId);
-          this.dbService.getUserById(nodeId).pipe(take(1)).subscribe((user: User) =>{
-            // console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
-            // console.log(user);
-            this.dbService.setUidFromNodeId(result.user.uid,nodeId);
-          });
-        });
-        this.sendVerificationEmail();
-        // this.updateUserData()
+        if(result){
+          if(result.user){
+            this.authState = result.user;
+            this.dbService.getNodeIdFromEmail(result.user.email).pipe(takeUntil(localUnsubscribeSubject)).subscribe((nodeId: string) =>{
+              console.log("nodeId is " + nodeId);
+              if(nodeId){
+                this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+                localUnsubscribeSubject.next();
+                localUnsubscribeSubject.complete();
+                // this.dbService.getUserById(nodeId).pipe().subscribe((user: User) =>{
+                  //   console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
+                  //   console.log(user);
+                  //   if(user){
+                    //
+                    //   }
+                    //   this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+                    // });
+                  }
+                });
+                this.sendVerificationEmail();
+                // this.updateUserData()
+          }
+        }
       })
       .catch(error => {
         window.alert(error.message);
