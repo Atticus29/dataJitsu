@@ -36,8 +36,11 @@ export class CreateAccountComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledAgeClass: boolean = false;
   private passwordBoundFc: FormControl = new FormControl('', [Validators.required, Validators.minLength(7)]);
+  private confirmPasswordBoundFc: FormControl = new FormControl('', [Validators.required, Validators.minLength(7)]);
   private userNameBoundFc: FormControl = new FormControl('', [Validators.required]);
   private userEmailBoundFc: FormControl = new FormControl('', [Validators.required, Validators.email]);
+  private hide: boolean = true;
+  private hideConfirm: boolean = true;
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) { }
 
@@ -78,7 +81,7 @@ export class CreateAccountComponent implements OnInit {
   getErrorMessage() {
     let errorMessage: string = "A form error has occurred";
     if(this.passwordBoundFc.hasError('required')){
-      errorMessage = 'You must enter a password';
+      errorMessage = 'Password required';
     }
     if(this.passwordBoundFc.hasError('minlength')){
       errorMessage = 'Password must be at least ' + constants.minPwLength + ' characters long';
@@ -91,6 +94,12 @@ export class CreateAccountComponent implements OnInit {
     }
     if(this.userEmailBoundFc.hasError('required')){
       errorMessage = 'Email address required';
+    }
+    if(this.confirmPasswordBoundFc.hasError('required')){
+      errorMessage = 'Confirm password required';
+    }
+    if(this.confirmPasswordBoundFc.hasError('minlength')){
+      errorMessage = 'Confirm password must be at least ' + constants.minPwLength + ' characters long';
     }
     return  errorMessage;
   }
@@ -106,6 +115,7 @@ export class CreateAccountComponent implements OnInit {
 
   getValues(){
     let passwordBound = this.passwordBoundFc.value;
+    // let confirmPasswordBound = this.confirmPasswordBoundFc.value;
     let userNameBound = this.userNameBoundFc.value;
     let userEmailBound = this.userEmailBoundFc.value;
     let otherResults = this.newUserForm.value;
@@ -153,8 +163,9 @@ export class CreateAccountComponent implements OnInit {
 
   allValid(){
     let values = this.getValues();
+    let confirmPasswordBound = this.confirmPasswordBoundFc.value;
     console.log(values)
-    if(values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
+    if(values.passwordBound===confirmPasswordBound && values.userNameBound && this.vs.validateEmail(values.userEmailBound) && this.vs.validatePassword(values.passwordBound) && values.genderBound && values.ageClassBound && this.vs.validateWeight(values.weightBound) && values.giRankBound && values.noGiRankBound && values.ageBound && values.userAffiliationBound){
       return true;
     } else{
       return false;

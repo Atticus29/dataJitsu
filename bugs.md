@@ -4,7 +4,7 @@
 - [ ] Testing
   - [ ] Tests are failing because of unsubscription error
 - [ ] Reputation and tracking
-  - [ ] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
+  - [ ]
 - [ ] User creation
     - [ ] Dropdown menus need double clicking rn.
     - [ ] If you create a user, then log in via google with that same user, then try to log in again with email and password instead of google, it won't work (looking at firebase, I can see the user authenticated gets converted to a google user. This does not happen with this person's example app https://github.com/SinghDigamber/angularfirebase-authentication [although, they're using fireStore])
@@ -32,6 +32,7 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
 - [x] Deleting an annotation causes many many queries
 - [x] Second time you annotate a move, it doesn't wait for end time and might have other issues as well in terms of mixing data with the previous entry
 - [x] Removing an annotation currently creates a new annotation in user that's blank but not null

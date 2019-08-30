@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Improve form validation for create account form
 - [ ] Add confirm password field
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Get rid of subscription errors so that tests can pass
@@ -64,7 +63,6 @@
 - [ ] Test rating the match and annotation (possibly as two different users)
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
-- [ ] Make password toggleable to be visible
 - [ ] //@TODO test whether trying to create a second account under the same email messes up
 
 # TODO low priority
@@ -78,6 +76,8 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Make password toggleable to be visible
+- [x] Improve form validation for create account form
 - [x] Make it so that annotations appear in match chronological order not addition chronological order
 - [x] Update the check for annotation similarity
 - [x] Add way to prevent ppl from seeing matches if they haven't earned it yet

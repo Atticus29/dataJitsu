@@ -15,6 +15,7 @@ import { VerifyEmailAddressComponent } from './verify-email-address/verify-email
 import { PaymentComponent } from './payment/payment.component';
 import { AdminComponent } from './admin/admin.component';
 import { LogoutComponent } from './logout/logout.component';
+import { NewsComponent } from './news/news.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate } from '@angular/fire/auth-guard';
 
@@ -70,6 +71,10 @@ const appRoutes: Routes = [
   path: 'matches/:matchId',
   component: MatchDisplayComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
+},{
+  path: 'news',
+  component: NewsComponent,
   pathMatch: 'full'
 },{
   path: 'youtube',

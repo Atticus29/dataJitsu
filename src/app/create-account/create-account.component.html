@@ -7,24 +7,36 @@
   <div class="row">
     <form class="col s12" materialize [formGroup]="newUserForm">
       <div class="row">
-        <div class="input-field col m4 s12">
+        <div class="input-field col m6 s12">
           <!-- <mat-form-field> -->
             <input matInput [formControl]="userNameBoundFc" type="text" placeholder="E.g., Eddie Bravo" id="userName" required>
             <label for="userName" class="active" data-error="Not valid" data-success="Valid">User Name</label>
             <mat-error *ngIf="userNameBoundFc.invalid">{{getErrorMessage()}}</mat-error>
           <!-- </mat-form-field> -->
         </div>
-        <div class="input-field col m4 s12">
+        <div class="input-field col m6 s12">
           <input matInput [formControl]="userEmailBoundFc" type="email" placeholder="E.g., Eddie.bravo@gmail.com" id="email" required>
           <label for="email" class="active" data-error="Not valid" data-success="Valid">Email Address</label>
           <mat-error *ngIf="userEmailBoundFc.invalid">{{getErrorMessage()}}</mat-error>
         </div>
-        <div class="input-field col m4 s12">
+        <div class="input-field col m6 s12">
           <!-- <mat-form-field hintLabel="At least 7 characters"> -->
-            <input matInput #pwInput [formControl]="passwordBoundFc" type="password" placeholder="Password" id="password" required>
+            <input matInput #pwInput [formControl]="passwordBoundFc" type="password" placeholder="Password" id="password" required [type]="hide ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' :
+               'visibility_off'}}</mat-icon>
             <label for="password">Password</label>
             <mat-hint align="end">{{pwInput.value?.length || 0}}/7</mat-hint>
             <mat-error *ngIf="passwordBoundFc.invalid">{{getErrorMessage()}}</mat-error>
+          <!-- </mat-form-field> -->
+        </div>
+        <div class="input-field col m6 s12">
+          <!-- <mat-form-field hintLabel="At least 7 characters"> -->
+            <input matInput #confirmPwInput [formControl]="confirmPasswordBoundFc" type="password" placeholder="Confirm Password" id="confirm-password" required [type]="hideConfirm ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hideConfirm = !hideConfirm">{{hideConfirm ? 'visibility' :
+               'visibility_off'}}</mat-icon>
+            <label for="confirm-password">Confirm Password</label>
+            <mat-hint align="end">{{confirmPwInput.value?.length || 0}}/7</mat-hint>
+            <mat-error *ngIf="confirmPasswordBoundFc.invalid">{{getErrorMessage()}}</mat-error>
           <!-- </mat-form-field> -->
         </div>
       </div>
