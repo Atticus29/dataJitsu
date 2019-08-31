@@ -7,16 +7,18 @@ import { Subject } from 'rxjs';
 
 import { AuthorizationService } from '../authorization.service';
 import { TrackerService } from '../tracker.service';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.scss']
 })
-export class LogoutComponent implements OnInit {
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+export class LogoutComponent extends BaseComponent implements OnInit {
 
-  constructor(private authService: AuthorizationService, private trackerService: TrackerService, private router:Router) { }
+  constructor(private authService: AuthorizationService, private trackerService: TrackerService, private router:Router) {
+    super();
+  }
 
   ngOnInit() {
       let confirmation = confirm("Are you sure you want to log out?");

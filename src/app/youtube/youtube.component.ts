@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Match } from '../match.model';
 import { MatchDetails } from '../matchDetails.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { User } from '../user.model';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
+import { BaseComponent } from '../base/base.component';
+
 
 @Component({
   selector: 'app-youtube',
@@ -12,9 +15,11 @@ import { TrackerService } from '../tracker.service';
   styleUrls: ['./youtube.component.scss'],
   providers: [DatabaseService]
 })
-export class YoutubeComponent implements OnInit {
+export class YoutubeComponent extends BaseComponent implements OnInit {
 
-  constructor(private db:DatabaseService, private trackerService: TrackerService) { }
+  constructor(private db:DatabaseService, private trackerService: TrackerService) {
+    super();
+  }
 
   ngOnInit() {
     var player;

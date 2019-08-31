@@ -18,6 +18,7 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
+import { BaseComponent } from '../base/base.component';
 
 declare var $:any;
 
@@ -27,7 +28,7 @@ declare var $:any;
   styleUrls: ['./new-match.component.scss'],
 })
 
-export class NewMatchComponent implements OnInit {
+export class NewMatchComponent extends BaseComponent implements OnInit {
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
   private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
@@ -39,7 +40,6 @@ export class NewMatchComponent implements OnInit {
   rankType: string = "Nogi";
   genders: any[];
   weightClasses: any[];
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: any = null;
@@ -57,6 +57,7 @@ export class NewMatchComponent implements OnInit {
   newRankForm: FormGroup; //TODO what is this?
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService) {
+    super();
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
     //   console.log(result);

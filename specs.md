@@ -6,12 +6,12 @@
 - [ ] Track categories as well as move names (//TODO get category from item)
 - [ ] Set up tutorial mode
 
+- [ ] Tracks who deletes matches in user node
 - [ ] Add form validation to newMatch
 - [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Flag annotation for improvement
 - [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
-- [ ] extend baseComponent in other components
 - [ ] Edit user details page
 - [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
 - [ ] User page; badge with reputation points
@@ -79,6 +79,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] extend baseComponent in other components
 - [x] Add confirm password field
 - [x] Make password toggleable to be visible
 - [x] Improve form validation for create account form

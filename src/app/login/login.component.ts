@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { TrackerService } from '../tracker.service';
+import { BaseComponent } from '../base/base.component';
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
 import { EmailLoginDialog } from '../emailLoginDialog.model';
@@ -21,12 +22,12 @@ import { User } from '../user.model';
   styleUrls: ['./login.component.scss'],
   providers: [ValidationService, AuthorizationService, ProtectionGuard, TrackerService]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent implements OnInit {
   private user: User = null;
   private loggedIn: boolean = false;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService, public dialog: MatDialog, public trackerService: TrackerService) {
+    super();
   }
 
   ngOnInit() {

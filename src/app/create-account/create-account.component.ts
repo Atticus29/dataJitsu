@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { constants } from '../constants';
+import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { TrackerService } from '../tracker.service';
@@ -19,10 +20,9 @@ import { AuthorizationService } from '../authorization.service';
   styleUrls: ['./create-account.component.scss'],
   providers: [DatabaseService, ValidationService, AuthorizationService, TrackerService]
 })
-export class CreateAccountComponent implements OnInit {
+export class CreateAccountComponent extends BaseComponent implements OnInit {
 
   //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
   newUserForm: FormGroup;
   title: string = "Create an Account";
   genders: Array<string> = ["Female", "Male"];
@@ -43,7 +43,9 @@ export class CreateAccountComponent implements OnInit {
   private hideConfirm: boolean = true;
   private passwordsNotEqual: boolean = false;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) { }
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) {
+    super();
+  }
 
   ngOnInit() {
 

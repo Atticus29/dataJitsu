@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
 import { DatabaseService } from '../database.service';
+import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { TimelineElement } from '../horizontal-timeline/timeline-element';
 import { MoveInVideo } from '../moveInVideo.model';
@@ -14,13 +15,14 @@ import { MoveInVideo } from '../moveInVideo.model';
   templateUrl: './annotation-data-display.component.html',
   styleUrls: ['./annotation-data-display.component.scss']
 })
-export class AnnotationDataDisplayComponent implements OnInit {
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+export class AnnotationDataDisplayComponent extends BaseComponent implements OnInit {
   private matchId: string;
   private timeline: TimelineElement[] = [];
   content = `Lorem ipsum dolor sit amet`;
 
-  constructor(private dbService: DatabaseService, private route: ActivatedRoute) { }
+  constructor(private dbService: DatabaseService, private route: ActivatedRoute) {
+    super();
+  }
 
   ngOnInit() {
     this.load();

@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+
 import { MatchDetails } from '../matchDetails.model';
 import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { allCurrentMoves } from '../moves';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-test-db',
@@ -13,14 +16,16 @@ import { allCurrentMoves } from '../moves';
   styleUrls: ['./test-db.component.scss'],
   providers: [DatabaseService]
 })
-export class TestDbComponent implements OnInit {
+export class TestDbComponent extends BaseComponent implements OnInit {
   ages: Array<string>;
   giRanks: Array<string>;
   nogiRanks: Array<string>;
   genders: Array<string>;
   weightClasses: Array<string>;
 
-  constructor(private db: DatabaseService) { }
+  constructor(private db: DatabaseService) {
+    super();
+  }
 
   ngOnInit() {
     // console.log(allCurrentMoves);
