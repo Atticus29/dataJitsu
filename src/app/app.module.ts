@@ -90,6 +90,7 @@ import { AnnotationLegendDialogComponent } from './annotation-legend-dialog/anno
 import { SubmissionAnnotationDirective } from './submission-annotation.directive';
 import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
+import { AnnotationScoredPointsDirective } from './annotation-scored-points.directive';
 
 
 export const firebaseConfig = {
@@ -128,7 +129,8 @@ export const firebaseConfig = {
     AnnotationLegendDialogComponent,
     SubmissionAnnotationDirective,
     NewsComponent,
-    FaqComponent
+    FaqComponent,
+    AnnotationScoredPointsDirective
   ],
   imports: [
     BrowserModule,

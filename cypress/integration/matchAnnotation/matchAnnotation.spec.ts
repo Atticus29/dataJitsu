@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 describe ('Match annotation tests', () =>{
 
   beforeEach(()=>{
@@ -11,14 +12,15 @@ describe ('Match annotation tests', () =>{
     cy.logout();
   });
 
-  it('annotates a match with a move', ()=>{
+  it.only('annotates a match with a move', ()=>{
     cy.contains('Match Rating');
-    cy.contains('Click');
+    cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').first().click({force:true});
-    cy.contains('Advantage').first().next().click();
+    cy.get('div[id=annotationModal]').contains('Advantage').first().next().click();
+    // cy.contains('Advantage').next().click(); //.first()
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
@@ -30,6 +32,24 @@ describe ('Match annotation tests', () =>{
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
     cy.get('button[id=end-move]').click();
+    // cy.contains("Annotation Recorded").should('exist');
+
+    //Delete annotation
+    cy.get('a[id=logOutLink]').click();
+    // cy.visit('http://localhost:4200/login');
+    // cy.wait(2000);
+    cy.get('button[id=email-dialog-open-button]').click();
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);
+      cy.get('input[id=dialog-pw-input]').type(cypressConstants.adminPassword);
+    });
+    cy.get('button[id=dialog-submit-button]').click();
+    // cy.wait(1000);
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('mat-chip').contains('Advantage').should('exist');
+    cy.get('mat-chip').contains('Advantage').find('span[name=]').click();
+    cy.get('mat-chip').contains('Advantage').should('not.exist');
+
   });
 
 

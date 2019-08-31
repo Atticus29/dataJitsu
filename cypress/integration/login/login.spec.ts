@@ -88,7 +88,7 @@ describe ('Login tests', () =>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
     cy.contains('Match Rating');
-    cy.contains('Click');
+    cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();
     cy.contains('vs.');
     cy.contains('Age Class');
@@ -100,7 +100,7 @@ describe ('Login tests', () =>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });;
     cy.contains('Match Rating');
-    cy.contains('Click');
+    cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();
     cy.contains('vs.');
     cy.wait(2000);
@@ -115,7 +115,7 @@ describe ('Login tests', () =>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
     cy.contains('Match Rating');
-    cy.contains('Click');
+    cy.contains('Video');
     cy.visit('http://localhost:4200/');
     cy.contains('Match Rating');
     cy.contains('Adult'); //TODO improve

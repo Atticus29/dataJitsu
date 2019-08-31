@@ -299,7 +299,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
           }
         }
-
         if (!window['YT']){
           console.log("no window[YT]!!");
           var tag = document.createElement('script');
