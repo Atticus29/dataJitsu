@@ -29,7 +29,6 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
   private loading = true;
   private showLoader: any;
   user: any = null;
-  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private matchCount: number;
   private pageSize: number;
 
@@ -40,20 +39,12 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnInit() {
-    // this.authService.authenticated.subscribe(status =>{
-    //   console.log("authenticated status in all-matches.component:");
-    //   console.log(status);
-    //   if(status){
-    //   } else{
-    //     this.router.navigate(['login']);
-    //   }
-    // });
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       // console.log("user in currentUserBehaviorSubject from trackerService from all-matches component");
       // console.log(user);
       this.user = user;
       if(user && user.uid){
-        this.dbService.getUserByUid(user.uid).subscribe(dbUser =>{
+        this.dbService.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
           if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches || dbUser.paidStatus){
             //can see things
           } else{
@@ -72,15 +63,15 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
     this.pageSize = 10;
     this.dataSource = new MatchDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
-    this.dbService.getMatchCount().subscribe(results=>{
+    this.dbService.getMatchCount().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
       this.matchCount = results;
     });
-    this.dataSource.loading$.subscribe(result =>{
+    this.dataSource.loading$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.showLoader = result;
       this.cdr.detectChanges();
     });
 
-    this.dbService.getMatches().subscribe(results =>{
+    this.dbService.getMatches().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
       this.loadMatchesPage();
     });
   };
@@ -95,12 +86,6 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
 
   loadMatchesPage(){
     this.dataSource.loadMatches('TODO', '', 'asc', this.paginator.pageIndex, this.paginator.pageSize);
-  }
-
-  ngOnDestroy(){
-    // console.log("onDestroy is called");
-    // this.ngUnsubscribe.next();
-    // this.ngUnsubscribe.complete();
   }
 
   deleteMatch(matchId: any){

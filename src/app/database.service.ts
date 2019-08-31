@@ -153,7 +153,7 @@ export class DatabaseService {
 
   updateUserReputationPoints(userId: string, points: number){
     let updates = {};
-    this.getUserReputationPoints(userId).pipe(first()).subscribe(result =>{
+    this.getUserReputationPoints(userId).pipe(take(1)).subscribe(result =>{ //used to be first()
       // console.log("reputation points? in updateUserReputationPoints");
       // console.log(result);
       updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;

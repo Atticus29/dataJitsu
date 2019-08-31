@@ -63,21 +63,21 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
   ngOnInit() {
     $('.modal').modal();
-    let categories = this.db.getMovesKeys().subscribe(results=>{
+    let categories = this.db.getMovesKeys().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
       this.moveCategories = results;
     });
-    let results = this.db.getMoves().subscribe(stuff=>{
+    let results = this.db.getMoves().pipe(takeUntil(this.ngUnsubscribe)).subscribe(stuff=>{
       for(let index in stuff){
         //TODO ??
       }
     });
     this.trackerService.startTimePoint.next(1);
-    this.trackerService.moveName.subscribe(moveName =>{
+    this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
           if(moveName !== "No Annotation Currently Selected"){
             this.moveValidSubject.next(true);
           }
     });
-    this.trackerService.currentMatch.subscribe(matchId =>{
+    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
         // console.log(matchDeets);
@@ -87,7 +87,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         this.performers = thePerformers;
       });
     });
-    this.moveValidSubject.subscribe(status =>{
+    this.moveValidSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
       if(status){
         this.moveValidStatus = true;
       } else{

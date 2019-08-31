@@ -98,7 +98,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       }
     });
     let self = this;
-    this.trackerService.annotationBegun.subscribe(status =>{
+    this.trackerService.annotationBegun.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
       if(status){
         this.annotationFinishButtonDisabled = false;
       }
@@ -170,11 +170,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           });
         }
 
-        this.trackerService.moveName.subscribe(moveName =>{
+        this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
           this.selectedAnnotation = moveName;
         })
 
-        this.trackerService.videoResumeStatus.subscribe(videoResumeStatus =>{
+        this.trackerService.videoResumeStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoResumeStatus =>{
           if(videoResumeStatus){
             player.playVideo();
           }
@@ -254,14 +254,14 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 console.log("user in trackerService crazy branching is:");
                 console.log(user);
                 // console.log("this should happen just once?");
-                self.db.getUserByUid(user.uid).pipe(take(1)).subscribe(usr => {
+                self.db.getUserByUid(user.uid).pipe(takeUntil(self.ngUnsubscribe)).subscribe(usr => {
                   usr ? self.userInDbId = usr.id : self.userInDbId = null;
                   console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
                   self.trigger.next(true);
                 });
               });
             }
-            self.moveAssembledStatus.subscribe(status =>{
+            self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
               if(status && self.moveCompletelyLegit()){
                 player.playVideo();
                 player.seekTo(Math.max(0.5,currentTime-5));
@@ -309,7 +309,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       });
     });
 
-    this.moveAssembledStatus.subscribe(status =>{
+    this.moveAssembledStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
       // console.log("entered moveAssembledStatus subscription");
       if(status && this.moveCompletelyLegit()){
         // console.log("move assembled and completely legit");
@@ -411,7 +411,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     }else{
       console.log("had to make userInDbId from scratch");
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(uzr => {
+        this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
           let userInDb: string = uzr.id;
           this.db.addMatchRatingToUser(userInDb, this.matchId, $event.newValue);
           this.db.addMatchRatingToMatch(userInDb, this.matchId, $event.newValue);

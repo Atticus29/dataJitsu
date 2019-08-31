@@ -22,9 +22,12 @@ export class AuthorizationService {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private afAuth: AngularFireAuth, private afdb: AngularFireDatabase, private router:Router, public ngZone: NgZone, private dbService: DatabaseService) {
-    this.afAuth.authState.subscribe(user => {
+    // let localUnsubscribeSubject: Subject<void> = new Subject<void>();
+    this.afAuth.authState.subscribe(user => { //.pipe(takeUntil(localUnsubscribeSubject))
       if(user){
         this.authenticated = true;
+        // localUnsubscribeSubject.next();
+        // localUnsubscribeSubject.complete();
       } else{
         this.authenticated = false;
       }
@@ -238,11 +241,14 @@ export class AuthorizationService {
 
   //// Sign Out ////
   signOut(): void {
+    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     this.afAuth.auth.signOut();
-    this.currentUserObservable.subscribe(currentUsr =>{
+    this.currentUserObservable.pipe(takeUntil(localUnsubscribeSubject)).subscribe(currentUsr =>{
       // console.log("currentUsr in signOut in authorization service: ");
       // console.log(currentUsr);
       if(!currentUsr){
+        localUnsubscribeSubject.next();
+        localUnsubscribeSubject.complete();
         this.router.navigate(['login']);
       }
     })

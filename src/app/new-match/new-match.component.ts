@@ -71,7 +71,7 @@ export class NewMatchComponent implements OnInit {
       // console.log(currentUser);
       if(currentUser && currentUser.uid){
         this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-          this.db.hasUserPaid(dbUser.id).subscribe(paymentStatus =>{
+          this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
             this.hasPaid = paymentStatus;
           });
           this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
@@ -197,7 +197,7 @@ export class NewMatchComponent implements OnInit {
 
   submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
     let values = this.getValues();
-    this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
+    this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       // console.log(result);
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
@@ -222,7 +222,7 @@ export class NewMatchComponent implements OnInit {
   submitFormAndReturnToMain(){
     // console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
-    this.db.doesMatchExist(values.matchUrlBound).subscribe(result =>{
+    this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       // console.log(result);
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{

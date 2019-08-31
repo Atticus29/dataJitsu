@@ -90,7 +90,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   sendToMatchToAnnotate(){
-    this.db.getLowRatedMatch().subscribe(result =>{
+    this.db.getLowRatedMatch().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.router.navigate(['matches/'+result.id]);
     });
   }

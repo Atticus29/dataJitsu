@@ -42,7 +42,7 @@ export class AnnotationDataDisplayComponent implements OnInit {
       { caption: '3 Mar', startTime:  12, title: 'Event title here', content: this.content },
     ];
     let tracker: number = 2;
-    this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.matchId = params['matchId'];
       this.dbService.getMovesInMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
         // console.log("move from within AnnotationDataDisplayComponent:");

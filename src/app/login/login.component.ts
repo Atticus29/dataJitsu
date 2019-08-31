@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(val => {
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       this.authService.emailLogin(val.email, val.passwd);
     });
   }

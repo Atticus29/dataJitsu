@@ -38,8 +38,8 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     let self = this;
-    this.authService.currentUserObservable.subscribe(result =>{
-      self.afAuth.authState.subscribe(authState =>{
+    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+      self.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(authState =>{
         // console.log("result of currentUserObservable in app.component: ");
         // console.log(result);
         // console.log("authState in app.component: ");
@@ -67,7 +67,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         if(currentUser.uid){
           // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
           this.authenticationStatus = true;
-          this.db.getUserByUid(currentUser.uid).subscribe(dbUser =>{
+          this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
             this.user = dbUser;
             this.name = dbUser.name;
             // console.log("db user from getUserByUid in app.component is:");
@@ -91,7 +91,7 @@ export class AppComponent extends BaseComponent implements OnInit {
                 this.paidStatus = false;
               }
             });
-            this.db.getUserReputationPoints(dbUser.id).subscribe(reputation =>{
+            this.db.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
               this.db.updatePrivileges(dbUser, Number(reputation));
             });
           })
