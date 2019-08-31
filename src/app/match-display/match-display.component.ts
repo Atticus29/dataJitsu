@@ -314,81 +314,14 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       // console.log("entered moveAssembledStatus subscription");
       if(status && this.moveCompletelyLegit()){
         // console.log("move assembled and completely legit");
-        let annotationMadeCounter: number = 0;
-        this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-          console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
-          console.log(moveUniqueEnough);
-          if(!moveUniqueEnough){
-            console.log("match not Unique Enough match");
-            if(annotationMadeCounter < 1){
-              console.log("Annotation has already been made by another user");
-              this.openSnackBar("Annotation has already been made by another user");
-              annotationMadeCounter ++ ;
-              console.log("annotationMadeCounter is " + annotationMadeCounter);
-            }
-            self.moveName = null;
-            self.performer = null;
-            self.recipient = null;
-            self.startTime = null;
-            self.endTime = null;
-            self.points = null;
-            self.submissionStatus = null;
-            self.attemptStatus = null;
-            self.trackerService.resetAllExceptCurrentMatch();
-            // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
-            self.moveAssembledStatus.next(false);
-          } else{
-            console.log("match IS Unique Enough in match");
-            this.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
-              if(moveUniqueEnoughInUser){
-                self.openSnackBar("Annotation Recorded");
-                // console.log("match IS Unique Enough in user");
-                // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
-                annotationMadeCounter ++;
-
-                self.moveName = null;
-                self.performer = null;
-                self.recipient = null;
-                self.startTime = null;
-                self.endTime = null;
-                self.points = null;
-                self.submissionStatus = null;
-                self.attemptStatus = null;
-                self.trackerService.resetAllExceptCurrentMatch();
-                // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
-                self.moveAssembledStatus.next(false);
-                self.triggerNewAnnotationFetch();
-              }else{
-                // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
-
-                self.moveName = null;
-                self.performer = null;
-                self.recipient = null;
-                self.startTime = null;
-                self.endTime = null;
-                self.points = null;
-                self.submissionStatus = null;
-                self.attemptStatus = null;
-                self.trackerService.resetAllExceptCurrentMatch();
-                // self.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
-                self.moveAssembledStatus.next(false);
-                self.triggerNewAnnotationFetch();
-                // self.ngUnsubscribe.next();
-                // self.ngUnsubscribe.complete();
-              }
-            });
-          }
-        });
-
-        // this.moveAssembledStatus.next(false);
-        // self.moveName = null;
-        // self.performer = null;
-        // self.recipient = null;
-        // self.startTime = null;
-        // self.endTime = null;
-        // self.points = null;
-        // self.submissionStatus = null;
-
+      try {
+        this.processMatchEntryInDatabase();
+      }
+      catch(error) {
+        console.error(error);
+        // expected output: ReferenceError: nonExistentFunction is not defined
+        // Note - error messages will vary depending on browser
+      }
         self.dataSource.dataChange.next(self.database.initialData());
         let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
         constants.rootNodes.forEach(rootNode =>{ //headers
@@ -539,5 +472,73 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     } else{
       console.log("video has been flagged as removed, but matchId could not be found");
     }
+  }
+
+  processMatchEntryInDatabase(){
+    let annotationMadeCounter: number = 0;
+    this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+          console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
+          console.log(moveUniqueEnough);
+          if(!moveUniqueEnough){
+            console.log("match not Unique Enough match");
+            if(annotationMadeCounter < 1){
+              console.log("Annotation has already been made by another user");
+              this.openSnackBar("Annotation has already been made by another user");
+              annotationMadeCounter ++ ;
+              console.log("annotationMadeCounter is " + annotationMadeCounter);
+            }
+            this.moveName = null;
+            this.performer = null;
+            this.recipient = null;
+            this.startTime = null;
+            this.endTime = null;
+            this.points = null;
+            this.submissionStatus = null;
+            this.attemptStatus = null;
+            this.trackerService.resetAllExceptCurrentMatch();
+            // this.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
+            this.moveAssembledStatus.next(false);
+          } else{
+            console.log("match IS Unique Enough in match");
+            this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+              if(moveUniqueEnoughInUser){
+                this.openSnackBar("Annotation Recorded");
+                // console.log("match IS Unique Enough in user");
+                // console.log("annotationMadeCounter in match is unique enough in user " + annotationMadeCounter);
+                annotationMadeCounter ++;
+
+                this.moveName = null;
+                this.performer = null;
+                this.recipient = null;
+                this.startTime = null;
+                this.endTime = null;
+                this.points = null;
+                this.submissionStatus = null;
+                this.attemptStatus = null;
+                this.trackerService.resetAllExceptCurrentMatch();
+                // this.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
+                this.moveAssembledStatus.next(false);
+                this.triggerNewAnnotationFetch();
+              }else{
+                // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
+
+                this.moveName = null;
+                this.performer = null;
+                this.recipient = null;
+                this.startTime = null;
+                this.endTime = null;
+                this.points = null;
+                this.submissionStatus = null;
+                this.attemptStatus = null;
+                this.trackerService.resetAllExceptCurrentMatch();
+                // this.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
+                this.moveAssembledStatus.next(false);
+                this.triggerNewAnnotationFetch();
+                // this.ngUnsubscribe.next();
+                // this.ngUnsubscribe.complete();
+              }
+            });
+          }
+        });
   }
 }
