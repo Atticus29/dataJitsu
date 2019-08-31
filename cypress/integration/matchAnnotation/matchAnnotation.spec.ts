@@ -150,7 +150,7 @@ describe ('Match annotation tests', () =>{
     cy.contains('Annotation Selected: Ankle Lock').should('exist');
   });
 
-  it.only('cannot make the same exact annotation twice', function(){
+  it('cannot make the same exact annotation twice', function(){
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()

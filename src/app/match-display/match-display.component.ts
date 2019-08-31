@@ -263,6 +263,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             }
             self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
               if(status && self.moveCompletelyLegit()){
+                console.log("should play video now!");
                 player.playVideo();
                 player.seekTo(Math.max(0.5,currentTime-5));
               }
@@ -314,18 +315,17 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(status && this.moveCompletelyLegit()){
         // console.log("move assembled and completely legit");
         let annotationMadeCounter: number = 0;
-        self.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+        this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
           console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
           console.log(moveUniqueEnough);
           if(!moveUniqueEnough){
-            console.log("match not Unique Enough");
+            console.log("match not Unique Enough match");
             if(annotationMadeCounter < 1){
-              this.snackBar.open("Annotation has already been made by another user");
+              console.log("Annotation has already been made by another user");
+              this.openSnackBar("Annotation has already been made by another user");
               annotationMadeCounter ++ ;
               console.log("annotationMadeCounter is " + annotationMadeCounter);
             }
-            // this.snackBar.open("Annotation has already been made by another user");
-
             self.moveName = null;
             self.performer = null;
             self.recipient = null;
@@ -339,7 +339,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             self.moveAssembledStatus.next(false);
           } else{
             console.log("match IS Unique Enough in match");
-            self.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+            this.db.addMoveInVideoToUserIfUniqueEnough(self.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
               if(moveUniqueEnoughInUser){
                 self.openSnackBar("Annotation Recorded");
                 // console.log("match IS Unique Enough in user");
@@ -379,15 +379,16 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             });
           }
         });
-        this.moveAssembledStatus.next(false);
-        // self.trackerService.resetAllExceptCurrentMatch();
-        self.moveName = null;
-        self.performer = null;
-        self.recipient = null;
-        self.startTime = null;
-        self.endTime = null;
-        self.points = null;
-        self.submissionStatus = null;
+
+        // this.moveAssembledStatus.next(false);
+        // self.moveName = null;
+        // self.performer = null;
+        // self.recipient = null;
+        // self.startTime = null;
+        // self.endTime = null;
+        // self.points = null;
+        // self.submissionStatus = null;
+
         self.dataSource.dataChange.next(self.database.initialData());
         let flatNodeArray: DynamicFlatNode[] = new Array<DynamicFlatNode>();
         constants.rootNodes.forEach(rootNode =>{ //headers
