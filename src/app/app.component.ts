@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ChangeDetectorRef } from '@angular/core';
@@ -126,4 +126,5 @@ export class AppComponent extends BaseComponent implements OnInit {
       this.router.navigate(['matches/' + match.id]);
     });
   }
+
 }

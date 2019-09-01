@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import * as firebase from 'firebase/app';
@@ -26,8 +26,9 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   userObjFromDb;
   shouldAnnotate: boolean = false;
   paidStatus: any = false;
+  private notificationsSeen: boolean = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService) {
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService, public ngZone: NgZone) {
     super();
   }
 
@@ -112,6 +113,16 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
         this.togglePayMentPrompt(true);
         this.paidStatus = false;
       }
+    });
+  }
+
+  toggleNotificationsSeenToTrue(){
+    this.notificationsSeen = true;
+  }
+
+  sendToPaymentSubscription(){
+    this.ngZone.run(() =>{
+      this.router.navigate(['payment']);
     });
   }
 

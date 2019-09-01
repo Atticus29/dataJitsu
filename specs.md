@@ -5,6 +5,7 @@
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 - [ ] Track categories as well as move names (//TODO get category from item)
 - [ ] Set up tutorial mode
+- [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
