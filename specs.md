@@ -1,4 +1,8 @@
 # TODO high priority
+- [ ] Float menu buttons inwards more
+- [ ] Alternating hues in rows
+
+- [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
@@ -12,7 +16,6 @@
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
 - [ ] Think about and possibly implement users submitting videos that don't appear in the main table but still get used for analytics
 - [ ] Add form validation to newMatch
-- [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Flag annotation for improvement
 - [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
@@ -28,6 +31,7 @@
       - [ ] Flag annotations for removal
       - [ ] Remove annotations
       - [ ] Search by different criteria? (also available to paying user)
+      - [ ] Edit move details
     - [ ] How do I earn reputation?
       - [ ] Submitting matches
       - [ ] Approving new move names
@@ -83,6 +87,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Bring annotations closer to video
 - [x] extend baseComponent in other components
 - [x] Add confirm password field
 - [x] Make password toggleable to be visible

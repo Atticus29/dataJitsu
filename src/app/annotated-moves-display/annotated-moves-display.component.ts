@@ -29,7 +29,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
 
   ngOnInit() {
     // let self = this;
-    this.trackerService.currentMatch.pipe(take(1)).subscribe(matchId =>{ //takeUntil(this.ngUnsubscribe)
+    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{ //takeUntil(this.ngUnsubscribe)
       this.matchId = matchId;
       console.log("got into currentMatch: " + this.matchId);
       this.fetchAnnotations(this.matchId);

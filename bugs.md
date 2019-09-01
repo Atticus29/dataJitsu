@@ -32,6 +32,7 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Viewing Dirt's video and then clicking annotate a video takes you to a new video but doesn't update the annotations
 - [x] Video icon not displaying on main window
 - [x] Admin has more than 5 annotations, and it's still telling me to annotate (look at userHasAnnotatedEnough in database.service)
 - [x] Deleting an annotation causes many many queries
