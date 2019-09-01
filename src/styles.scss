@@ -64,10 +64,19 @@ $primary-color: green;
   border: 5px solid #fffff;
 }
 
-huge-flexbox-item{
+.huge-flexbox-item{
   flex-grow: 1
+  // width: 75%;
+}
+
+.small-flexbox-item{
+  width: 25%;
 }
 
 .button-space{
   margin: 1.2em;
+}
+
+.align-right{
+  float: right;
 }

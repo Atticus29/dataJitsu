@@ -6,7 +6,10 @@
 - [ ] Track categories as well as move names (//TODO get category from item)
 - [ ] Set up tutorial mode
 
-- [ ] Tracks who deletes matches in user node
+- [ ] Tracks who deletes matches and annotations in user node
+- [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
+  - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
+- [ ] Think about and possibly implement users submitting videos that don't appear in the main table but still get used for analytics
 - [ ] Add form validation to newMatch
 - [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Flag annotation for improvement

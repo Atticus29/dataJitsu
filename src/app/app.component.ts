@@ -26,7 +26,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
   user: any = null;
   private name: string = "Anonymous User";
-  userObjFromDb;
+  userObjFromDb: any = null;
   title: string = constants.title;
   authenticationStatus: boolean =false;
   shouldAnnotate: boolean = false;
@@ -51,6 +51,7 @@ export class AppComponent extends BaseComponent implements OnInit {
             // console.log("dbUser in getUserByUid of app.component updated:");
             // console.log(dbUser);
             this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!
+            this.userObjFromDb = dbUser;
           });
         } else{
           this.trackerService.currentUserBehaviorSubject.next(null);

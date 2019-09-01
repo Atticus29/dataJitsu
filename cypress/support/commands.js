@@ -55,7 +55,7 @@ Cypress.Commands.add("loginAsAdmin", () => {
 
 Cypress.Commands.add("logout", () => {
   // cy.visit('http://localhost:4200/login');
-  cy.get('a[id=logOutLink]').click({force:true});
+  cy.get('button[id=logOutLink]').click({force:true});
   cy.wait(1000);
   cy.get('button[id=email-dialog-open-button]').should('exist');
 });
