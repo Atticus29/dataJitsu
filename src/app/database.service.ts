@@ -168,7 +168,7 @@ export class DatabaseService {
         // console.log("getMainAnnotatorOfMatch snapshot:");
         // console.log(snapshot.val());
         // console.log(snapshot.numChildren());
-        //TODO flesh out
+        //TODO flesh out getMainAnnotatorOfMatch
         observer.next(snapshot.val());
       });
     });

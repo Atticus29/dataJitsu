@@ -1,8 +1,8 @@
 # TODO high priority
-- [ ] Float menu buttons inwards more
+- [ ] Push margins of menu buttons inwards more
 - [ ] Alternating hues in rows
+- [ ] 3 sec. rewind and ff buttons
 
-- [ ] If it's their own video submission, they can't rate the annotation
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
@@ -11,6 +11,7 @@
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
+- [ ] //TODO flesh out getMainAnnotatorOfMatch
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
@@ -87,6 +88,7 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] If it is their own video submission, they cannot rate the annotation
 - [x] Bring annotations closer to video
 - [x] extend baseComponent in other components
 - [x] Add confirm password field

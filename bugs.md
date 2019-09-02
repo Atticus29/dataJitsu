@@ -1,4 +1,8 @@
 # Known issues
+- [ ] Upon rating an annotation previously unrated, it will navigate you to another unrated video (possibly the next unrated video??)
+- [ ] If watching video and rate, navigates you to near end of video (may latest watched?)
+- [ ] If one user rates a video, it stops for the other user
+
 - [ ] Current most pressing
   - [ ] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
   - [ ] Rating a match toggles back and forth between your current vote and your old vote

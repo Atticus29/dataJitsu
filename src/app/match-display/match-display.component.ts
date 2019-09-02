@@ -43,13 +43,13 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private points: number = null;
   private submissionStatus: boolean = null;
   private attemptStatus: boolean = null;
-  // private userInDb: any = null; //TODO update for accuracy
   private trigger: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private userInDbId: string = null;
+  private originalPosterId: string = null;
+  private displayAnnotationRating: boolean = true;
 
   private annotationFinishButtonDisabled: boolean = true;
   // player: any;
-  // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private shouldVideoResume: boolean = false;
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -66,6 +66,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private showFlagChips: boolean = false;
   private showInappropriateFlagChip = false;
   private showRemovedFlagChip = false;
+  private isAdmin: boolean = false;
   // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
@@ -78,13 +79,20 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   ngOnInit() {
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
+      console.log("user in currentUserBehaviorSubject in trackerService in match-display component");
       console.log(user);
       if(user){
-        this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr => {
-          usr ? this.userInDbId = usr.id : this.userInDbId = null;
-          // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
-          // this.trigger.next(true);
-        });
+        user.id ? this.userInDbId = user.id: this.userInDbId = null;
+        if(user.privileges.isAdmin){
+          this.isAdmin = true;
+        } else{
+          this.isAdmin = false;
+        }
+        // this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr => {
+        //   usr ? this.userInDbId = usr.id : this.userInDbId = null;
+        //   // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+        //   // this.trigger.next(true);
+        // });
       }
     });
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
@@ -148,163 +156,176 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.annotationAverageRating = average;
       })
       this.trackerService.currentMatch.next(this.matchId);
-      this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        // console.log("getMatchFromNodeKey called and returned: ");
-        // console.log(match);
-        this.match = match;
-        // console.log(match.matchDeets.giStatus);
-        if(match.matchDeets.giStatus){
-          this.giStatus = "Gi";
+      this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(mainAnnotator =>{
+        // console.log("mainAnnotator is: " + mainAnnotator.annotatorUserId);
+        // console.log();
+        // console.log("this.this.userInDbId is " + this.userInDbId);
+        if(mainAnnotator.annotatorUserId === this.userInDbId && !this.isAdmin){
+          this.displayAnnotationRating = false;
         } else{
-          this.giStatus = "Nogi";
+          this.displayAnnotationRating = true;
         }
-        this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
-        // console.log("matchUrl is: " + this.matchUrl);
-        document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
-        window['onYouTubeIframeAPIReady'] = function() {
-          player = new window['YT'].Player('videoIframe', {
-            events: {
-              'onReady': onPlayerReady,
-              // 'onStateChange': onPlayerStateChange
-            }
-          });
-        }
+      });
+      this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+        if(match){
+          // console.log("getMatchFromNodeKey called and returned: ");
+          // console.log(match);
 
-        this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
-          this.selectedAnnotation = moveName;
-        })
-
-        this.trackerService.videoResumeStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoResumeStatus =>{
-          if(videoResumeStatus){
-            player.playVideo();
+          this.match = match;
+          // console.log(match.matchDeets.giStatus);
+          if(match.matchDeets.giStatus){
+            this.giStatus = "Gi";
+          } else{
+            this.giStatus = "Nogi";
           }
-        });
-
-        let onPlayerReady = (event) => {
-          document.getElementById("play").addEventListener("click", function() {
-            player.playVideo();
-            // console.log("you clicked play");
-          });
-          let pause = document.getElementById("begin-move").addEventListener("click", function() {
-            //TODO add 1 second rewind?
-            player.pauseVideo();
-            // self.dataSource.data = self.database.initialData();
-            // console.log("pause beginning of move");
-            let currentTime = player.getCurrentTime();
-            self.trackerService.startTimePoint.next(player.getCurrentTime());
-            self.trackerService.endTimePoint.next(-1);
-            //TODO reset the tree and the submission status (and the annotation move just to be safe?)
-          });
-          document.getElementById("end-move").addEventListener("click", function() {
-            player.pauseVideo();
-            let endMoveClickCounter: number = 0;
-            let currentTime: number = player.getCurrentTime();
-            self.trackerService.endTimePoint.next(currentTime);
-            self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
-              // console.log("startTime in trackerService is " + startTime);
-              self.startTime = startTime;
-              self.trigger.next(true);
-            });
-            self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
-              // console.log("endTime in trackerService is " + endTime);
-              self.endTime = endTime;
-              self.trigger.next(true);
-            });
-            self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
-              // console.log("moveName in trackerService is " + moveName);
-              self.moveName = moveName;
-              self.trigger.next(true);
-            });
-            self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
-              // console.log("performer in trackerService is " + performer);
-              self.performer = performer;
-              self.trigger.next(true);
-            });
-            self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
-              // console.log("recipient in trackerService is " + recipient);
-              self.recipient = recipient;
-              self.trigger.next(true);
-            });
-            self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
-              // console.log("points in trackerService is " + points);
-              self.points = points;
-              self.trigger.next(true);
-            });
-            self.trackerService.currentMatch.pipe(takeUntil(self.ngUnsubscribe)).subscribe(matchId =>{
-              // console.log("matchId in trackerService is " + matchId);
-              self.matchId = matchId;
-              self.trigger.next(true);
-            });
-            self.trackerService.submission.pipe(takeUntil(self.ngUnsubscribe)).subscribe(submission =>{
-              // console.log("submission in trackerService is " + submission);
-              submission === "Yes" ? self.submissionStatus = true: self.submissionStatus = false;
-              self.trigger.next(true);
-            });
-            self.trackerService.attemptStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(attemptSuccessful =>{
-              // console.log("attemptSuccessful in trackerService is " + attemptSuccessful);
-              attemptSuccessful === "Yes" ? self.attemptStatus = true: self.attemptStatus = false;
-              self.trigger.next(true);
-            });
-            if(self.userInDbId){
-              console.log("self.userInDbId already exists and is: ");
-              console.log(self.userInDbId);
-              //DO nothing? Trigger?
-            }else{
-              self.trackerService.currentUserBehaviorSubject.pipe(takeUntil(self.ngUnsubscribe)).subscribe(user =>{
-                console.log("user in trackerService crazy branching is:");
-                console.log(user);
-                // console.log("this should happen just once?");
-                self.db.getUserByUid(user.uid).pipe(takeUntil(self.ngUnsubscribe)).subscribe(usr => {
-                  usr ? self.userInDbId = usr.id : self.userInDbId = null;
-                  console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
-                  self.trigger.next(true);
-                });
-              });
-            }
-            self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
-              if(status && self.moveCompletelyLegit()){
-                console.log("should play video now!");
-                player.playVideo();
-                player.seekTo(Math.max(0.5,currentTime-5));
+          this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
+          // console.log("matchUrl is: " + this.matchUrl);
+          document.getElementById('videoIframe').setAttribute("src", this.matchUrl);
+          window['onYouTubeIframeAPIReady'] = function() {
+            player = new window['YT'].Player('videoIframe', {
+              events: {
+                'onReady': onPlayerReady,
+                // 'onStateChange': onPlayerStateChange
               }
             });
-          });
+          }
 
-          document.getElementById("pause-vid").addEventListener("click", function() {
-            player.pauseVideo();
-          });
+          this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
+            this.selectedAnnotation = moveName;
+          })
 
-          this.trackerService.desiredJumpStartTime.pipe(takeUntil(this.ngUnsubscribe)).subscribe(localDesiredJumpStartTime =>{
-            // console.log("trackerService.desiredJumpStartTime in match display entered");
-            // console.log(localDesiredJumpStartTime);
-            if(localDesiredJumpStartTime){
-              // console.log("trackerService.desiredJumpStartTime in match display entered");
-              // console.log(Number(localDesiredJumpStartTime)); //-0.5
-              // console.log(Number(localDesiredJumpStartTime)-0.5); //-0.5
-              // console.log(Math.max(0.5,Number(localDesiredJumpStartTime)-0.5));
+          this.trackerService.videoResumeStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoResumeStatus =>{
+            if(videoResumeStatus){
               player.playVideo();
-              player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
             }
           });
-        }
 
-        function onPlayerStateChange(event){
-          if (event.data == window['YT'].PlayerState.PAUSED) {
-            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
-          };
-          if(event.data==window['YT'].PlayerState.PLAYING){
-            self.playCount = self.playCount + 1;
+          let onPlayerReady = (event) => {
+            document.getElementById("play").addEventListener("click", function() {
+              player.playVideo();
+              // console.log("you clicked play");
+            });
+            let pause = document.getElementById("begin-move").addEventListener("click", function() {
+              //TODO add 1 second rewind?
+              player.pauseVideo();
+              // self.dataSource.data = self.database.initialData();
+              // console.log("pause beginning of move");
+              let currentTime = player.getCurrentTime();
+              self.trackerService.startTimePoint.next(player.getCurrentTime());
+              self.trackerService.endTimePoint.next(-1);
+              //TODO reset the tree and the submission status (and the annotation move just to be safe?)
+            });
+            document.getElementById("end-move").addEventListener("click", function() {
+              player.pauseVideo();
+              let endMoveClickCounter: number = 0;
+              let currentTime: number = player.getCurrentTime();
+              self.trackerService.endTimePoint.next(currentTime);
+              self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
+                // console.log("startTime in trackerService is " + startTime);
+                self.startTime = startTime;
+                self.trigger.next(true);
+              });
+              self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
+                // console.log("endTime in trackerService is " + endTime);
+                self.endTime = endTime;
+                self.trigger.next(true);
+              });
+              self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
+                // console.log("moveName in trackerService is " + moveName);
+                self.moveName = moveName;
+                self.trigger.next(true);
+              });
+              self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
+                // console.log("performer in trackerService is " + performer);
+                self.performer = performer;
+                self.trigger.next(true);
+              });
+              self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
+                // console.log("recipient in trackerService is " + recipient);
+                self.recipient = recipient;
+                self.trigger.next(true);
+              });
+              self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
+                // console.log("points in trackerService is " + points);
+                self.points = points;
+                self.trigger.next(true);
+              });
+              self.trackerService.currentMatch.pipe(takeUntil(self.ngUnsubscribe)).subscribe(matchId =>{
+                // console.log("matchId in trackerService is " + matchId);
+                self.matchId = matchId;
+                self.trigger.next(true);
+              });
+              self.trackerService.submission.pipe(takeUntil(self.ngUnsubscribe)).subscribe(submission =>{
+                // console.log("submission in trackerService is " + submission);
+                submission === "Yes" ? self.submissionStatus = true: self.submissionStatus = false;
+                self.trigger.next(true);
+              });
+              self.trackerService.attemptStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(attemptSuccessful =>{
+                // console.log("attemptSuccessful in trackerService is " + attemptSuccessful);
+                attemptSuccessful === "Yes" ? self.attemptStatus = true: self.attemptStatus = false;
+                self.trigger.next(true);
+              });
+              if(self.userInDbId){
+                console.log("self.userInDbId already exists and is: ");
+                console.log(self.userInDbId);
+                //DO nothing? Trigger?
+              }else{
+                self.trackerService.currentUserBehaviorSubject.pipe(takeUntil(self.ngUnsubscribe)).subscribe(user =>{
+                  console.log("user in trackerService crazy branching is:");
+                  console.log(user);
+                  // console.log("this should happen just once?");
+                  self.db.getUserByUid(user.uid).pipe(takeUntil(self.ngUnsubscribe)).subscribe(usr => {
+                    usr ? self.userInDbId = usr.id : self.userInDbId = null;
+                    console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+                    self.trigger.next(true);
+                  });
+                });
+              }
+              self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
+                if(status && self.moveCompletelyLegit()){
+                  console.log("should play video now!");
+                  player.playVideo();
+                  player.seekTo(Math.max(0.5,currentTime-5));
+                }
+              });
+            });
+
+            document.getElementById("pause-vid").addEventListener("click", function() {
+              player.pauseVideo();
+            });
+
+            this.trackerService.desiredJumpStartTime.pipe(takeUntil(this.ngUnsubscribe)).subscribe(localDesiredJumpStartTime =>{
+              // console.log("trackerService.desiredJumpStartTime in match display entered");
+              // console.log(localDesiredJumpStartTime);
+              if(localDesiredJumpStartTime){
+                // console.log("trackerService.desiredJumpStartTime in match display entered");
+                // console.log(Number(localDesiredJumpStartTime)); //-0.5
+                // console.log(Number(localDesiredJumpStartTime)-0.5); //-0.5
+                // console.log(Math.max(0.5,Number(localDesiredJumpStartTime)-0.5));
+                player.playVideo();
+                player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
+              }
+            });
           }
-          if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
-            //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+
+          function onPlayerStateChange(event){
+            if (event.data == window['YT'].PlayerState.PAUSED) {
+              //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+            };
+            if(event.data==window['YT'].PlayerState.PLAYING){
+              self.playCount = self.playCount + 1;
+            }
+            if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
+              //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+            }
           }
-        }
-        if (!window['YT']){
-          console.log("no window[YT]!!");
-          var tag = document.createElement('script');
-          tag.src = "//www.youtube.com/player_api";
-          var firstScriptTag = document.getElementsByTagName('script')[0];
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          if (!window['YT']){
+            console.log("no window[YT]!!");
+            var tag = document.createElement('script');
+            tag.src = "//www.youtube.com/player_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          }
         }
       });
     });
