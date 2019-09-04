@@ -122,7 +122,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   };
 
   navigateToVideoInNeedOfAnnotation(){
-    this.db.getMatchInNeedOfAnnotation().pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+    this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
       this.router.navigate(['matches/' + match.id]);
     });
   }

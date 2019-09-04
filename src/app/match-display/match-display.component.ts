@@ -381,9 +381,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.matchId, $event.newValue);
       this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
       if($event.newValue > 4){
-        this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
+      	console.log("rating is greater than 4");
+        this.db.getMainAnnotatorOfMatch(this.matchId).pipe(take(1)).subscribe(majorityAnnotator =>{
+	  console.log("main annotator of match in match-display.ts is " + majorityAnnotator);
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
-            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
+            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 6);
           }
           if(majorityAnnotator.annotatorUserId === this.userInDbId){
             console.log("bish just upvoted their own shit");
