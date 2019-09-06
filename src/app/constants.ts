@@ -5,6 +5,7 @@ export var constants = {
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 10,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,
+    defaultVideoUrlCode: "OXcM9hE5wUk",
     temp: "hi, Mark",
     monthlyCost: 2,
     halfYearCost: 6,

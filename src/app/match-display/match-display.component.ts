@@ -47,6 +47,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private userInDbId: string = null;
   private originalPosterId: string = null;
   private displayAnnotationRating: boolean = true;
+  private defaultUrl: string = "https://www.youtube.com/embed/"+constants.defaultVideoUrlCode +"?enablejsapi=1&html5=1&";
 
   private annotationFinishButtonDisabled: boolean = true;
   // player: any;
@@ -383,7 +384,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if($event.newValue > 4){
       	console.log("rating is greater than 4");
         this.db.getMainAnnotatorOfMatch(this.matchId).pipe(take(1)).subscribe(majorityAnnotator =>{
-	  console.log("main annotator of match in match-display.ts is " + majorityAnnotator);
+	        console.log("main annotator of match in match-display.ts is ");
+          console.log(majorityAnnotator);
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
             this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 6);
           }

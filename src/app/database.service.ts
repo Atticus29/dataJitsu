@@ -163,6 +163,16 @@ export class DatabaseService {
 
   getMainAnnotatorOfMatch(matchId: string){
     let ref = firebase.database().ref('matches/' + matchId + '/moves');
+    let annotators: Array<string> = new Array<string>();
+    ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
+      let annotation: any = snapshot.val();
+      console.log("all moves in getMainAnnotatorOfMatch");
+      console.log(annotation.annotatorUserId);
+      annotators.push(annotation.annotatorUserId);
+      // majorityAnnotator.annotatorUserId
+    });
+    console.log("annotators accumulated:");
+    console.log(annotators); //TODO LEFT OFF HERE 
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
         // console.log("getMainAnnotatorOfMatch snapshot:");
