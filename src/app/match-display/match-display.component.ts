@@ -309,17 +309,17 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             });
           }
 
-          function onPlayerStateChange(event){
-            if (event.data == window['YT'].PlayerState.PAUSED) {
-              //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
-            };
-            if(event.data==window['YT'].PlayerState.PLAYING){
-              self.playCount = self.playCount + 1;
-            }
-            if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
-              //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
-            }
-          }
+          // onPlayerStateChange(event){
+          //   if (event.data == window['YT'].PlayerState.PAUSED) {
+          //     //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+          //   };
+          //   if(event.data==window['YT'].PlayerState.PLAYING){
+          //     self.playCount = self.playCount + 1;
+          //   }
+          //   if (event.data == window['YT'].PlayerState.PLAYING && self.playCount >= 1) {
+          //     //public moveID, moveName, actor, recipient(can be inferred), timeInitiated, timeCompleted, points, associatedMatchDetailsId, isASubmission
+          //   }
+          // }
           if (!window['YT']){
             console.log("no window[YT]!!");
             var tag = document.createElement('script');
