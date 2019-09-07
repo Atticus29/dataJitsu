@@ -195,6 +195,7 @@ export var allCurrentMoves ={
   "Guard Jump",
   "Guard Pull",
   "Half-Guard Pull",
+  "Spider Guard",
   "Pitstop",
   "New York",
   "Crackhead Control",
