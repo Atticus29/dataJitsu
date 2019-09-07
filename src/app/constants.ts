@@ -13,6 +13,7 @@ export var constants = {
     requiredAnnotationsPerMonth: 1,
     rootNodes: [
     "Advantage",
+    "Match Outcome",
     "Guard Passes or Guard Pass Attempts",
     "Take Downs or Take Down Attempts",
     "Submissions or Submission Attempts",

@@ -2,7 +2,9 @@
 - [ ] Push margins of menu buttons inwards more
 - [ ] Alternating hues in rows
 - [ ] 3 sec. rewind and ff buttons
+- [ ] Test the new root node works (by annotating multiple times deep in the tree)
 
+- [ ] Document how to annotate a win or draw somewhere (i.e., specify that it should be worth no points, not be called a submission, and should be marked successful even if draw)
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
