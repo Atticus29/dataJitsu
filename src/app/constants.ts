@@ -34,5 +34,7 @@ export var constants = {
       9: 5000,
       10: 10000
     },
-    annotationVoteQuota: 10
+    annotationVoteQuota: 10,
+    numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: 3,
+    numberOfPointsToDeductForBadAnnotation: 50
   };

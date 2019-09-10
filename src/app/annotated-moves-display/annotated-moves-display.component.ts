@@ -10,6 +10,7 @@ import { DatabaseService } from '../database.service';
 import { DateCalculationsService } from '../date-calculations.service';
 import { MoveInVideo } from '../moveInVideo.model';
 import { BaseComponent } from '../base/base.component';
+import { constants } from '../constants';
 
 @Component({
   selector: 'app-annotated-moves-display',
@@ -22,6 +23,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   private isAdmin: boolean = false;
   private matchId: string = null;
   private test: boolean = false;
+  private localUserId: string = null;
 
   constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private dateCalculationsService: DateCalculationsService, public dialog: MatDialog) {
     super();
@@ -37,6 +39,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
       usr ? this.isAdmin = usr.privileges.isAdmin: this.isAdmin = false;
+      usr ? this.localUserId = usr.id: this.localUserId = null;
     });
 
     this.trackerService.fetchNewAnnotations.pipe(takeUntil(this.ngUnsubscribe)).subscribe(shouldFetch =>{
@@ -103,6 +106,23 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
           console.log("annotationResults don't exist in getAnnotationsSortedByStartTimeV2 call in AnnotatedMovesDisplayComponent");
         }
       });
+    }
+  }
+
+  flagAnnotationForImprovement(matchId: string, timeInitiated: number, annotatorUserId: string){
+    if(this.localUserId){
+      this.databaseService.toggleAnnotationFlag(matchId, timeInitiated, this.localUserId);
+      //if this hits the flag threshold, deduct from annotator's reputation
+      //numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction
+      //numberOfPointsToDeductForBadAnnotation
+      this.databaseService.getNumberOfUniqueAnnotationFlags(matchId, timeInitiated).pipe(take(1)).subscribe(numberOfFlags =>{
+        console.log("numberOfUniqueAnnotationFlags in annotated-moves-display component is " + numberOfFlags);
+        if(numberOfFlags >= constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction){
+          this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1));
+        }
+      });
+    } else{
+      console.log("this flagAnnotationForImprovement branch should never happen");
     }
   }
 

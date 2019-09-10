@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Flag annotation for improvement
 - [ ] Push margins of menu buttons inwards more
 - [ ] Alternating hues in rows
 - [ ] 3 sec. rewind and ff buttons
@@ -19,7 +20,6 @@
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
 - [ ] Think about and possibly implement users submitting videos that don't appear in the main table but still get used for analytics
 - [ ] Add form validation to newMatch
-- [ ] Flag annotation for improvement
 - [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
 - [ ] Edit user details page
