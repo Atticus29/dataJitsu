@@ -247,9 +247,10 @@ export class DatabaseService {
   }
 
   getNumberOfUniqueAnnotationFlags(matchId: string, timeInitiated: number){
+    let self = this;
     let queryObservable = Observable.create(function(observer){
       if(matchId && timeInitiated){
-        this.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
+        self.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
           if(annotationId){
             let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/numFlags');
             ref.on("value", snapshot =>{
