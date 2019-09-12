@@ -545,6 +545,8 @@ export class DatabaseService {
               }
               let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
+              currentMoveInVideo.setIsWin(snapshotVals.isWin);
+              currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
               console.log("move in video being added to annotations array:");
               console.log(currentMoveInVideo)
               annotations.push(currentMoveInVideo);

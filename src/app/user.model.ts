@@ -12,6 +12,7 @@ export class User {
   constructor(public name: string, public email: string, public password:string, public giRank: string, public noGiRank: string, public affiliation: string, public age: number, public weight: number, public reputationPoints: number, public dateLastAnnotated: string, public gender: string, public dateCreated: any) {
     this.privileges = {
       isAdmin: false,
+      isModerator: false, //can confirm removal of move names and downvoted/flagged annotations
       canEditMatches: false,
       canAnnotateVideos: true,
       canRateMatches: true,

@@ -93,6 +93,7 @@ import { FaqComponent } from './faq/faq.component';
 import { AnnotationScoredPointsDirective } from './annotation-scored-points.directive';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { IndividualMatchDataDisplayComponent } from './individual-match-data-display/individual-match-data-display.component';
+import { WinDrawDirective } from './win-draw.directive';
 
 
 export const firebaseConfig = {
@@ -134,7 +135,8 @@ export const firebaseConfig = {
     FaqComponent,
     AnnotationScoredPointsDirective,
     UserInfoComponent,
-    IndividualMatchDataDisplayComponent
+    IndividualMatchDataDisplayComponent,
+    WinDrawDirective
   ],
   imports: [
     AngularFireDatabaseModule,

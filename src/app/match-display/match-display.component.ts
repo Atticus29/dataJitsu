@@ -101,6 +101,12 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(this.asssembleCheck()){
         // console.log("assemble check true in trigger observable");
         self.tempMove = new MoveInVideo(this.moveName, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
+        if(this.moveName === "Win"){
+          self.tempMove.setIsWin(true);
+        }
+        if(this.moveName == "Tie; Draw"){
+          self.tempMove.setIsDraw(true);
+        }
         self.moveAssembledStatus.next(true);
       } else{
         //Do nothing

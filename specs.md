@@ -1,8 +1,8 @@
 # TODO high priority
-- [ ] Flag annotation for improvement
-- [ ] Push margins of menu buttons inwards more
 - [ ] Alternating hues in rows
+- [ ] Push margins of menu buttons inwards more
 - [ ] 3 sec. rewind and ff buttons
+
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
 
 - [ ] Document how to annotate a win or draw somewhere (i.e., specify that it should be worth no points, not be called a submission, and should be marked successful even if draw)
@@ -15,6 +15,8 @@
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
 - [ ] //TODO flesh out getMainAnnotatorOfMatch
+- [ ] Test for five annotation flags
+- [ ] Test for annotation flag on and off
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
@@ -84,12 +86,12 @@
 - [ ] Whether the user has verified their email address or not doesn't matter yet
 - [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
-- [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes to moves.ts
-- [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
+- [x] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
+- [x] Flag annotation for improvement
 - [x] If it is their own video submission, they cannot rate the annotation
 - [x] Bring annotations closer to video
 - [x] extend baseComponent in other components
@@ -129,6 +131,9 @@
 - [x] Add move to the user who made it, and include a timestamp in the entry as well
 - [x] //TODO make record of video here
 - [x] Fix test for clicking pause
+
+# Tabled specs and TODOs
+- [x] Remove match and annotation rating from matchDeets because they live elsewhere now
 
 # Specs
 - [ ] An annotation is not made if a similar enough one has already been made by someone else
