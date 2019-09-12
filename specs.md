@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Alternating hues in rows
 - [ ] Push margins of menu buttons inwards more
 - [ ] 3 sec. rewind and ff buttons
 
@@ -91,6 +90,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Alternating hues in rows
 - [x] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 - [x] Flag annotation for improvement
 - [x] If it is their own video submission, they cannot rate the annotation
