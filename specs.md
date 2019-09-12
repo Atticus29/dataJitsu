@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Push margins of menu buttons inwards more
 - [ ] 3 sec. rewind and ff buttons
 
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
@@ -90,6 +89,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Push margins of menu buttons inwards more
 - [x] Alternating hues in rows
 - [x] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 - [x] Flag annotation for improvement
