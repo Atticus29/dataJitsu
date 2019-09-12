@@ -32,7 +32,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   shouldAnnotate: boolean = false;
   private canViewAllMatches: boolean = false; //TODO flesh out
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService){
+  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone){
     super();
   }
 
@@ -123,7 +123,9 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   navigateToVideoInNeedOfAnnotation(){
     this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
-      this.router.navigate(['matches/' + match.id]);
+      this.ngZone.run(() =>{
+        this.router.navigate(['matches/' + match.id]);
+      });
     });
   }
 

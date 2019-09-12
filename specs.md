@@ -4,8 +4,8 @@
 - [ ] 3 sec. rewind and ff buttons
 
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
+- [ ] Test isWin and isDraw?
 
-- [ ] Document how to annotate a win or draw somewhere (i.e., specify that it should be worth no points, not be called a submission, and should be marked successful even if draw)
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
@@ -28,6 +28,7 @@
 - [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
 - [ ] User page; badge with reputation points
 - [ ] F.A.Q. section
+    - [ ] Document how to annotate a win or draw somewhere (i.e., specify that it should be worth no points, not be called a submission, and should be marked successful even if draw)
     - [ ] Why did I lose reputation points?
     - [ ] What do various tiers of reputations points get me?
       - [ ] Add new move names
