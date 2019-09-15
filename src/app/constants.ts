@@ -38,5 +38,7 @@ export var constants = {
     },
     annotationVoteQuota: 10,
     numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: 3,
-    numberOfPointsToDeductForBadAnnotation: 50
+    numberOfPointsToDeductForBadAnnotation: 50,
+    numberOfPointsToAwardForAnnotation: 10,
+    minimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: 3.5
   };

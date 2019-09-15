@@ -3,6 +3,7 @@
 
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
+    - [ ] TODO link to how to lose them
   - [ ] 3 sec. rewind and ff buttons
   - [ ] Track categories as well as move names (//TODO get category from item)
   - [ ] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be con
@@ -10,6 +11,8 @@
   - [ ] Add non-binary gender options
 
 - [ ] Add way to handle when someone is not connected
+- [ ] Track who flags things
+- [ ] What happens when a user tries to rate their own annotation currently?
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
 - [ ] Test isWin and isDraw?
 - [ ] Test for annotation flag on and off
