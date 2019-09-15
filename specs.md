@@ -5,6 +5,8 @@
   - [ ] 3 sec. rewind and ff buttons
   - [ ] Track categories as well as move names (//TODO get category from item)
 
+- [ ] Add non-binary gender options
+- [ ] Add way to handle when someone is not connected
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
 - [ ] Test isWin and isDraw?
 - [ ] Test for annotation flag on and off
@@ -19,6 +21,7 @@
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
 - [ ] //TODO flesh out getMainAnnotatorOfMatch
+- [ ] //TODO accommodate vimeo, etc?
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
