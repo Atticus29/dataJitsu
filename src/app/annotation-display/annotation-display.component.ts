@@ -18,8 +18,8 @@ import { ValidationService } from '../validation.service';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
 import { DynamicDataSource } from '../dynamicDataSource.model';
-
 import { allCurrentMoves } from '../moves';
+import { constants } from '../constants';
 
 import { MoveInVideo } from '../moveInVideo.model';
 
@@ -63,9 +63,9 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
   ngOnInit() {
     $('.modal').modal();
-    let categories = this.db.getMovesKeys().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
-      this.moveCategories = results;
-    });
+    // let categories = this.db.getMovesKeys().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
+    //   this.moveCategories = results;
+    // });
     let results = this.db.getMoves().pipe(takeUntil(this.ngUnsubscribe)).subscribe(stuff=>{
       for(let index in stuff){
         //TODO ??
@@ -109,9 +109,15 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
-    this.trackerService.moveName.next(item);
-    console.log("item selected: " + item);
-    //TODO get category from item
+    if(constants.rootNodes.includes(item)){
+      console.log(item + " is in root nodes. Adding to moveCategory...");
+      this.trackerService.moveCategory.next(item);
+    } else{
+      //TODO check whether works
+      this.trackerService.moveName.next(item);
+      console.log("item selected: " + item);
+      //TODO get category from item
+    }
   }
 
   getValues(){

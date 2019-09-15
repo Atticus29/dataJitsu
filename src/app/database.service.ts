@@ -543,7 +543,7 @@ export class DatabaseService {
               if(annotations.includes(snapshotVals)){
                 annotations = new Array();
               }
-              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
+              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.moveCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentMoveInVideo.setIsWin(snapshotVals.isWin);
               currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
@@ -1012,5 +1012,21 @@ export class DatabaseService {
     updates['/matches/' + matchId + '/matchDeets/flaggedAsInappropriate'] = status;
     firebase.database().ref().update(updates);
   }
+
+  // getMoveCategoryFromMoveName(moveName: string){
+  //   let resultObservable = Observable.create(observer =>{
+  //     let ref = firebase.database().ref('/moves/');
+  //     ref.on("value", snapshot =>{
+  //       if(snapshot.val()){
+  //         // console.log("results in getInappropriateFlagStatus call:");
+  //         // console.log(snapshot.val());
+  //         observer.next(Boolean(snapshot.val()));
+  //       }else{
+  //         observer.next(false);
+  //       }
+  //     });
+  //     });
+  //   return resultObservable;
+  // }
 
 }

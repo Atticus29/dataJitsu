@@ -36,6 +36,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   currentTime: string;
   playCount: number = 0;
   private moveName: string = null;
+  private moveCategory: string = null;
   private performer: string = null;
   private recipient: string = null;
   private startTime: number = null;
@@ -100,7 +101,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       // console.log("trigger check called");
       if(this.asssembleCheck()){
         // console.log("assemble check true in trigger observable");
-        self.tempMove = new MoveInVideo(this.moveName, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
+        self.tempMove = new MoveInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         if(this.moveName === "Win"){
           self.tempMove.setIsWin(true);
         }
@@ -208,6 +209,12 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           });
 
           let onPlayerReady = (event) => {
+            document.getElementById("rw-three").addEventListener("click", function() {
+              // player.playVideo(); TODO rewind by three seconds
+            });
+            document.getElementById("ff-three").addEventListener("click", function() {
+              // player.playVideo(); TODO fast_forward by three seconds
+            });
             document.getElementById("play").addEventListener("click", function() {
               player.playVideo();
               // console.log("you clicked play");
@@ -240,6 +247,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
                 // console.log("moveName in trackerService is " + moveName);
                 self.moveName = moveName;
+                self.trigger.next(true);
+              });
+              self.trackerService.moveCategory.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveCategory =>{
+                // console.log("moveName in trackerService is " + moveName);
+                self.moveCategory = moveCategory;
                 self.trigger.next(true);
               });
               self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
@@ -425,7 +437,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   moveCompletelyLegit(): boolean{
     let returnVal = false;
     try {
-      returnVal = ((this.tempMove.actor !== "Nobody") && (this.tempMove.recipient !== "Nobody") && (this.tempMove.points > -1) && (this.tempMove.moveName != null) && (this.tempMove.moveName !== "No Annotation Currently Selected") && (this.tempMove.actor != null) && (this.tempMove.recipient != null) && (this.tempMove.timeInitiated > -1) && (this.tempMove.timeInitiated != null) && (this.tempMove.timeCompleted > -1) && (this.tempMove.timeCompleted != null) && (this.tempMove.points != null) && (this.tempMove.points > -1) && (this.tempMove.associatedMatchId != null) && (this.tempMove.isASubmission != null) && (this.tempMove.isSuccessfulAttempt != null) && (this.tempMove.annotatorUserId != null));
+      returnVal = ((this.tempMove.actor !== "Nobody") && (this.tempMove.recipient !== "Nobody") && (this.tempMove.points > -1) && (this.tempMove.moveName != null) && (this.tempMove.moveName !== "No Annotation Currently Selected") && (this.tempMove.moveCategory != null) && (this.tempMove.moveCategory != "No Category Currently Selected") && (this.tempMove.actor != null) && (this.tempMove.recipient != null) && (this.tempMove.timeInitiated > -1) && (this.tempMove.timeInitiated != null) && (this.tempMove.timeCompleted > -1) && (this.tempMove.timeCompleted != null) && (this.tempMove.points != null) && (this.tempMove.points > -1) && (this.tempMove.associatedMatchId != null) && (this.tempMove.isASubmission != null) && (this.tempMove.isSuccessfulAttempt != null) && (this.tempMove.annotatorUserId != null));
     }
     catch(err) {
       returnVal = false;
@@ -449,7 +461,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     });
   }
 
-  asssembleCheck(): Boolean{
+  asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
    // console.log("check made in asssembleCheck");
    // console.log(this.moveName);
    // console.log(this.performer);
@@ -461,7 +473,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
    // console.log(this.submissionStatus != null);
    // console.log(this.attemptStatus != null);
    // console.log(this.userInDbId);
-    if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
+    if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.moveCategory && this.moveCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
       // console.log("everything is true in asssembleCheck");
       return true;
     } else{

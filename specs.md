@@ -1,25 +1,28 @@
 # TODO high priority
-- [ ] 3 sec. rewind and ff buttons
+- [ ] Add form validation to newMatch
+
+- [ ] Once you have internet
+  - [ ] 3 sec. rewind and ff buttons
+  - [ ] Track categories as well as move names (//TODO get category from item)
 
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
 - [ ] Test isWin and isDraw?
+- [ ] Test for annotation flag on and off
+- [ ] Test for five annotation flags
 
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
-- [ ] Track categories as well as move names (//TODO get category from item)
+
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
 - [ ] //TODO flesh out getMainAnnotatorOfMatch
-- [ ] Test for five annotation flags
-- [ ] Test for annotation flag on and off
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
 - [ ] Think about and possibly implement users submitting videos that don't appear in the main table but still get used for analytics
-- [ ] Add form validation to newMatch
 - [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
 - [ ] Edit user details page
