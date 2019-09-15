@@ -1,11 +1,14 @@
 # TODO high priority
-- [ ] Add form validation to newMatch
+- [ ] //TODO flesh out getMainAnnotatorOfMatch
 
 - [ ] Once you have internet
+  - [ ] Update faq component link to different divs in the FAQ
   - [ ] 3 sec. rewind and ff buttons
   - [ ] Track categories as well as move names (//TODO get category from item)
+  - [ ] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be con
+  firmed
+  - [ ] Add non-binary gender options
 
-- [ ] Add non-binary gender options
 - [ ] Add way to handle when someone is not connected
 - [ ] Test the new root node works (by annotating multiple times deep in the tree)
 - [ ] Test isWin and isDraw?
@@ -20,7 +23,6 @@
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
-- [ ] //TODO flesh out getMainAnnotatorOfMatch
 - [ ] //TODO accommodate vimeo, etc?
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
@@ -95,6 +97,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Add form validation to newMatch
 - [x] Push margins of menu buttons inwards more
 - [x] Alternating hues in rows
 - [x] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
