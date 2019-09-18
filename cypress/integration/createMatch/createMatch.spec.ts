@@ -16,6 +16,8 @@ describe ('Tests involving match creation', () =>{
     });
     cy.wait(2000);
     cy.visit('http://localhost:4200/matches');
+    cy.get('div[class=mat-select-arrow]').click();
+    cy.contains('500').click();
     cy.get('mat-cell[id=Alfie]>button').click();
     cy.logout();
   });

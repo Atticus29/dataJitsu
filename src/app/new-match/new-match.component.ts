@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
 import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { Subject ,  Observable } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil, take, switchMap } from 'rxjs/operators';
 
 import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
@@ -53,6 +53,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   rankSelection: string;
   private hasPaid: boolean = false;
   private isAdmin: boolean = false;
+  private localUser: any = null;
 
   newRankForm: FormGroup; //TODO what is this?
   private matchUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
@@ -67,7 +68,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
   private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone) {
     super();
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
@@ -94,9 +95,10 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     $('.modal').modal();
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
-      // console.log("currentUser in new-match component:");
-      // console.log(currentUser);
+      console.log("currentUser in new-match component:");
+      console.log(currentUser);
       if(currentUser && currentUser.uid){
+        this.localUser = currentUser;
         this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
           this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
             this.hasPaid = paymentStatus;
@@ -175,8 +177,8 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   }
 
   allValid(matchForm: FormGroup){
-    let values = matchForm.value;
-    if(this.vs.validateUrl(values.matchUrlBound)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
+    let matchUrlValidCheck = this.matchUrlBoundFc.value;
+    if(this.vs.validateUrl(matchUrlValidCheck)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
       return true;
     } else{
       return false;
@@ -184,23 +186,18 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   }
 
   createMatchObj(result: any){
-    console.log("createMatchObj in new-match component entered");
-    console.log(result);
+    let self = this;
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
     let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
     let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
-    return this.trackerService.currentUserBehaviorSubject.pipe(switchMap((userInfo) => {
-      // console.log("got userInfo in new-match component. Looking for email from here");
-      // console.log(userInfo.email);
-        return Observable.create(obs=>{
-        this.db.getNodeIdFromEmail(userInfo.email).pipe(takeUntil(this.ngUnsubscribe)).subscribe((nodeId: string)=>{ //TODO make robust
-          // console.log("nodeId is: " + nodeId);
-          let match = new Match(matchDeets, nodeId, moves);
-          obs.next(match);
-        });
-        });
-      }));
+    let createMatchObservable = Observable.create(function(observer){
+      if(self.localUser != null){
+        let match = new Match(matchDeets, self.localUser.id, moves);
+        observer.next(match);
+      }
+    });
+    return createMatchObservable;
   }
 
   onChange(val){
@@ -259,15 +256,24 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   }
 
   submitFormAndReturnToMain(){
-    // console.log("submitFormAndReturnToMain entered");
+    console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      // console.log(result);
+      console.log("does match exist result in submitFormAndReturnToMain");
+      console.log(result);
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
+          console.log("got into result for submitFormAndReturnToMain call:");
+          console.log(result);
           this.db.addMatchToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          (this.hasPaid||this.isAdmin) ? this.router.navigate(['matches']) : this.router.navigate(['landing']);
+          this.ngZone.run(() =>{
+            if(this.hasPaid || this.isAdmin){
+              this.router.navigate(['matches'])
+            }else {
+              this.router.navigate(['landing']);
+            }
+          });
         });
       } else{
         this.openSnackBar("Match Already Exists in the Database!", null);

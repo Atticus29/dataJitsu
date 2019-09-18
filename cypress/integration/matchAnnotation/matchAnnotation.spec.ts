@@ -12,7 +12,7 @@ describe ('Match annotation tests', () =>{
     cy.logout();
   });
 
-  it.only('annotates a match with a move', ()=>{
+  it('annotates a match with a move', ()=>{
     cy.contains('Match Rating');
     cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();

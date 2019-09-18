@@ -37,7 +37,7 @@ Cypress.Commands.add("login", (email, pass) => {
   cy.get('input[id=dialog-pw-input]').type(pass);
   cy.get('button[id=dialog-submit-button]').click();
   cy.wait(1000);
-  cy.contains("Log Out").should('exist');
+  // cy.contains("Log Out").should('exist');
   cy.contains("Rank").should('exist');
 });
 
@@ -54,6 +54,7 @@ Cypress.Commands.add("loginAsAdmin", () => {
 });
 
 Cypress.Commands.add("logout", () => {
+  cy.get('button[id=settings-button]').click({force:true});
   // cy.visit('http://localhost:4200/login');
   cy.get('button[id=logOutLink]').click({force:true});
   cy.wait(1000);
