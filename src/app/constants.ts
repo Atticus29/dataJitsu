@@ -1,17 +1,21 @@
 export var constants = {
     title: "Match Annotator",
+    activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",
     numDaysBeforeNewAnnotationNeeded: 30,
-    numberOfCurrentAnnotationsNeeded: 10,
+    numberOfCurrentAnnotationsNeeded: 6,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,
+    defaultVideoUrlCode: "OXcM9hE5wUk",
     temp: "hi, Mark",
     monthlyCost: 2,
+    monthlyCostString: "$2",
     halfYearCost: 6,
     yearlyCost: 10,
     requiredAnnotationsPerMonth: 1,
     rootNodes: [
     "Advantage",
+    "Match Outcome",
     "Guard Passes or Guard Pass Attempts",
     "Take Downs or Take Down Attempts",
     "Submissions or Submission Attempts",
@@ -32,5 +36,9 @@ export var constants = {
       9: 5000,
       10: 10000
     },
-    annotationVoteQuota: 10
+    annotationVoteQuota: 10,
+    numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: 3,
+    numberOfPointsToDeductForBadAnnotation: 50,
+    numberOfPointsToAwardForAnnotation: 10,
+    minimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: 3.5
   };

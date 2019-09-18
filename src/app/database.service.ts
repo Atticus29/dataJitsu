@@ -44,6 +44,22 @@ export class DatabaseService {
     // });
   }
 
+  getMoveIdByMatchIdAndStartTime(matchId: string, timeInitiated: number){
+    let ref = firebase.database().ref('matches/' + matchId + '/moves');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild("timeInitiated").equalTo(timeInitiated).once("child_added", snapshot =>{
+        if(snapshot){
+          if(snapshot.key){
+            console.log(snapshot.key); //TODO get key
+            let annotationId = snapshot.key; //TODO key instead of val
+            observer.next(annotationId);
+          }
+        }
+      });
+    });
+    return obsRet;
+  }
+
   getMovesInMatch(matchId: string): Observable<any>{
     return this.db.list('/matches/' + matchId + '/moves').valueChanges();
   }
@@ -161,8 +177,108 @@ export class DatabaseService {
     });
   }
 
+  // addFlagToAnnotationIfUnique(matchId: string, userId: string, timeInitiated: number){
+  //   let updates = {};
+  //   updates['/matches/' + matchId + '/moves'] = Number(result) + points;
+  //   firebase.database().ref().update(updates);
+  // }
+
+  toggleAnnotationFlag(matchId: string, timeInitiated: number, userId: string){
+    this.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
+      if(annotationId){
+        this.getAnnotationFlagStatus(matchId, annotationId, userId).pipe(take(1)).subscribe(flaggedStatus =>{
+          if(flaggedStatus){
+            this.removeAnnotationFlag(matchId, timeInitiated, userId);
+          } else{
+            this.addAnnotationFlag(matchId, timeInitiated, userId);
+          }
+        });
+      }
+    });
+  }
+
+  addAnnotationFlag(matchId: string, timeInitiated: number, userId: string){
+    //record a flag if it's unique and update numFlags
+    let updates = {};
+    this.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
+      if(annotationId){
+        updates['/matches/' + matchId + '/moves/' + annotationId + '/flags/' + userId] = true;
+        firebase.database().ref().update(updates);
+        this.updateNumFlags(matchId, annotationId, 1);
+      }
+    });
+  }
+
+  removeAnnotationFlag(matchId: string, timeInitiated: number, userId: string){
+    //record a flag if it's unique and update numFlags
+    let updates = {};
+    this.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
+      if(annotationId){
+        updates['/matches/' + matchId + '/moves/' + annotationId + '/flags/' + userId] = false; //TODO LEFT OFF HERE
+        firebase.database().ref().update(updates);
+        this.updateNumFlags(matchId, annotationId, -1);
+      }
+    });
+  }
+
+  updateNumFlags(matchId: string, annotationId: string, points: number){
+    let updates = {};
+    let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/numFlags');
+    ref.once("value", snapshot =>{
+      console.log("updateNumFlags current points snapshot:");
+      let currentVal: number = snapshot.val();
+      console.log(currentVal);
+      updates['/matches/' + matchId + '/moves/' + annotationId + '/numFlags'] = currentVal + points;
+      firebase.database().ref().update(updates);
+    });
+
+  }
+
+  getAnnotationFlagStatus(matchId: string, annotationId: string, userId: string){
+    let queryObservable = Observable.create(function(observer){
+      let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/flags/' + userId);
+      ref.once("value", snapshot =>{
+        console.log("getAnnotationFlagStatus snapshot value: ");
+        console.log(snapshot.val());
+        observer.next(snapshot.val());
+      });
+    });
+    return queryObservable;
+  }
+
+  getNumberOfUniqueAnnotationFlags(matchId: string, timeInitiated: number){
+    let self = this;
+    let queryObservable = Observable.create(function(observer){
+      if(matchId && timeInitiated){
+        self.getMoveIdByMatchIdAndStartTime(matchId, timeInitiated).pipe(take(1)).subscribe(annotationId =>{
+          if(annotationId){
+            let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/numFlags');
+            ref.on("value", snapshot =>{
+              console.log("getNumberOfUniqueAnnotationFlags snapshot:");
+              console.log(snapshot.val());
+              // console.log(snapshot.numChildren());
+              //TODO flesh out getMainAnnotatorOfMatch
+              observer.next(snapshot.val());
+            });
+          }
+        });
+      }
+    });
+    return queryObservable;
+  }
+
   getMainAnnotatorOfMatch(matchId: string){
     let ref = firebase.database().ref('matches/' + matchId + '/moves');
+    let annotators: Array<string> = new Array<string>();
+    ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
+      let annotation: any = snapshot.val();
+      console.log("all moves in getMainAnnotatorOfMatch");
+      console.log(annotation.annotatorUserId);
+      annotators.push(annotation.annotatorUserId);
+      // majorityAnnotator.annotatorUserId
+    });
+    console.log("annotators accumulated:");
+    console.log(annotators); //TODO LEFT OFF HERE
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
         // console.log("getMainAnnotatorOfMatch snapshot:");
@@ -427,8 +543,10 @@ export class DatabaseService {
               if(annotations.includes(snapshotVals)){
                 annotations = new Array();
               }
-              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
+              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.moveCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
+              currentMoveInVideo.setIsWin(snapshotVals.isWin);
+              currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
               console.log("move in video being added to annotations array:");
               console.log(currentMoveInVideo)
               annotations.push(currentMoveInVideo);
@@ -894,5 +1012,21 @@ export class DatabaseService {
     updates['/matches/' + matchId + '/matchDeets/flaggedAsInappropriate'] = status;
     firebase.database().ref().update(updates);
   }
+
+  // getMoveCategoryFromMoveName(moveName: string){
+  //   let resultObservable = Observable.create(observer =>{
+  //     let ref = firebase.database().ref('/moves/');
+  //     ref.on("value", snapshot =>{
+  //       if(snapshot.val()){
+  //         // console.log("results in getInappropriateFlagStatus call:");
+  //         // console.log(snapshot.val());
+  //         observer.next(Boolean(snapshot.val()));
+  //       }else{
+  //         observer.next(false);
+  //       }
+  //     });
+  //     });
+  //   return resultObservable;
+  // }
 
 }

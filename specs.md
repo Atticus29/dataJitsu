@@ -1,31 +1,46 @@
 # TODO high priority
-- [ ] Push margins of menu buttons inwards more
-- [ ] Alternating hues in rows
-- [ ] 3 sec. rewind and ff buttons
+- [ ] //TODO flesh out getMainAnnotatorOfMatch
+
+- [ ] Once you have internet
+  - [ ] Update faq component link to different divs in the FAQ
+    - [ ] TODO link to how to lose them
+  - [ ] 3 sec. rewind and ff buttons
+  - [ ] Track categories as well as move names (//TODO get category from item)
+  - [ ] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be con
+  firmed
+  - [ ] Add non-binary gender options
+
+- [ ] Add way to handle when someone is not connected
+- [ ] Track who flags things
+- [ ] What happens when a user tries to rate their own annotation currently?
+- [ ] Test the new root node works (by annotating multiple times deep in the tree)
+- [ ] Test isWin and isDraw?
+- [ ] Test for annotation flag on and off
+- [ ] Test for five annotation flags
 
 - [ ] Finish writing the double annotation test
   - [ ] Get rid of subscription errors so that tests can pass
 - [ ] Troubleshoot/edit the currently existing tests
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
-- [ ] Track categories as well as move names (//TODO get category from item)
+
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
 - [ ] If they are majority annotator, they cannot rate the annotation
   - [x] get everything to work except getMainAnnotatorOfMatch
   - [ ] //TODO flesh out getMainAnnotatorOfMatch
+- [ ] //TODO accommodate vimeo, etc?
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
 - [ ] Think about and possibly implement users submitting videos that don't appear in the main table but still get used for analytics
-- [ ] Add form validation to newMatch
-- [ ] Flag annotation for improvement
 - [ ] Edit any annotation they themselves made
 - [ ] Update the check for annotation merge
 - [ ] Edit user details page
 - [ ] Update reputation should include an update to privileges and an onChange snackbar to alert user of new privileges
 - [ ] User page; badge with reputation points
 - [ ] F.A.Q. section
+    - [ ] Document how to annotate a win or draw somewhere (i.e., specify that it should be worth no points, not be called a submission, and should be marked successful even if draw)
     - [ ] Why did I lose reputation points?
     - [ ] What do various tiers of reputations points get me?
       - [ ] Add new move names
@@ -84,10 +99,8 @@
 - [ ] Whether the user has verified their email address or not doesn't matter yet
 - [ ] Put number of stars and star votes that result in various reputation rewards in constant.ts
 - [ ] //TODO && submissionStatusValue stuff && attemptStatusValue stuff
-- [ ] Remove match and annotation rating from matchDeets because they live elsewhere now
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes to moves.ts
-- [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
 - [x] Bring annotations closer to video
@@ -128,6 +141,9 @@
 - [x] Add move to the user who made it, and include a timestamp in the entry as well
 - [x] //TODO make record of video here
 - [x] Fix test for clicking pause
+
+# Tabled specs and TODOs
+- [x] Remove match and annotation rating from matchDeets because they live elsewhere now
 
 # Specs
 - [ ] An annotation is not made if a similar enough one has already been made by someone else

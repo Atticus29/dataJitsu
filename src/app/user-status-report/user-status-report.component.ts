@@ -97,6 +97,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   sendToMatchToPaymentSubscription(){
+
     this.router.navigate(['payment']);
   }
 
@@ -126,5 +127,12 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
     });
   }
 
+navigateToVideoInNeedOfAnnotation(){
+  this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
+    this.ngZone.run(() =>{
+      this.router.navigate(['matches/' + match.id]);
+    });
+  });
+}
 
 }

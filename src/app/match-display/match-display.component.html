@@ -5,16 +5,22 @@
         <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
           <div class="video-container">
-            <iframe id="videoIframe" src="https://www.youtube.com/embed/dzVF_uXk3EY?enablejsapi=1&html5=1&" frameborder="0" allowfullscreen="0"></iframe>
+            <iframe id="videoIframe" src=defaultUrl frameborder="0" allowfullscreen="0"></iframe>
           </div>
           <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
+          <button id="rw-three" type="submit" value="rw-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Rewind 3 sec.">
+            <i class="material-icons">fast_rewind</i>
+          </button>
           <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled">
             <i class="material-icons">arrow_drop_up</i>
           </button>
           <button id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" [disabled]="annotationFinishButtonDisabled">
             <i class="material-icons">arrow_drop_down</i>
+          </button>
+          <button id="ff-three" type="submit" value="ff-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Fast Forward 3 sec.">
+            <i class="material-icons">fast_forward</i>
           </button>
           <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
             <i class="material-icons">pause</i>

@@ -1,1 +1,38 @@
-<p>faq works!</p>
+<h2>Frequenty Asked Questions</h2>
+<div class="question">
+  <li>What is {{localTitle}}?</li>
+</div>
+<div class="answer">
+  <li>{{localTitle}} is a tool to crowd-curate and perform data analysis on {{localActvityName}} videos. Users are able to submit videos for annotation and annotate videos themselves. Both videos and analytics will be sortable and filterable by various criteria, including annotations (i.e., by which moves are present in the video).
+  </li>
+</div>
+<div class="question">
+  <li>Why can't I see all of the matches or statistics?</li>
+</div>
+<div class="answer">
+  <li>It may be possible that you have either not earned enough reputation points or have recently had reputation points deducted for past actions</li>
+  <li>TODO link to how to lose them...</li>
+</div>
+<div class="question">
+  <li>How do I earn reputation points?</li>
+</div>
+<div class="answer">
+  <li>Users can
+    <a (click)="navigateToVideoInNeedOfAnnotation()">make {{localNumberOfCurrentAnnotationsNeeded}} annotations on a video</a>
+    . All annotations earn a user {{localNumberOfPointsToAwardForAnnotation}} points. Reputation points expire on a monthly basis.
+  </li>
+  <li>Alternatively, users can <a routerLink="./payment">purchase reputations points with a monthly subscription costing {{localMonthlyCost}}</a></li>
+</div>
+<div class="question">
+  <li>Can I lose reputation points? How?</li>
+</div>
+<div class="answer">
+  <li>Yes, you can. Reputation points are lost in the following ways:
+    <ol>
+      <li>Annotations made by a user are flagged as incorrect by {{localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction}} or more users. Such an event results in a loss of {{localNumberOfPointsToDeductForBadAnnotation}} reputation points</li>
+      <li>User creates a move or rank or weight class name that is flagged by {{localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction}} other users as inappropriate</li>
+      <li>User posts a video that is flagged by {{localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction}} other users as inappropriate</li>
+      <li>User posts a video that is flagged as removed by {{localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction}} other users before being rated with a {{localMinimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction}} or higher</li>
+    </ol>
+  </li>
+</div>

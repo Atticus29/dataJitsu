@@ -55,6 +55,17 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
 
   newRankForm: FormGroup; //TODO what is this?
+  private matchUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private athlete1NameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private athlete2NameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private tournamentNameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private locationBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private tournamentDateBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private giStatusBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private genderBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private ageClassBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService) {
     super();
@@ -63,6 +74,21 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     //   console.log(result);
     // });
   }
+
+  getErrorMessage() {
+    let errorMessage: string = "A form error has occurred";
+    if(this.matchUrlBoundFc.hasError('required')){
+      errorMessage = 'Match URL is required';
+      return  errorMessage;
+    }
+    if(!this.vs.validateUrl(this.matchUrlBoundFc.value)){
+      errorMessage = "Match URL must be a valid YouTube URL"; //TODO accommodate vimeo, etc?
+      return  errorMessage;
+    }
+    //TODO custom url error
+    return  errorMessage;
+  }
+
 
   ngOnInit() {
     $('.modal').modal();
@@ -132,8 +158,20 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   }
 
   getValues(){
-    let result = this.newMatchForm.value;
-    return result;
+    let matchUrlBound = this.matchUrlBoundFc.value;
+    let athlete1NameBound = this.athlete1NameBoundFc.value;
+    let athlete2NameBound = this.athlete2NameBoundFc.value;
+    let tournamentNameBound = this.tournamentNameBoundFc.value;
+    let locationBound = this.locationBoundFc.value;
+    let tournamentDateBound = this.tournamentDateBoundFc.value;
+    let giStatusBound = this.giStatusBoundFc.value;
+    let genderBound = this.genderBoundFc.value;
+    let ageClassBound = this.ageClassBoundFc.value;
+    let rankBound = this.rankBoundFc.value;
+    let weightBound = this.weightBoundFc.value;
+
+    // let otherResults = this.newMatchForm.value;
+    return {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
   }
 
   allValid(matchForm: FormGroup){

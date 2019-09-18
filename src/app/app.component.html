@@ -1,7 +1,7 @@
 <nav>
   <div class="nav-wrapper">
     <div id="menu-wrapper">
-      <button mat-icon-button [matMenuTriggerFor]="mainMenu"><mat-icon>more_vert</mat-icon></button>
+      <button mat-icon-button [matMenuTriggerFor]="mainMenu" id="vertical-button"><mat-icon>more_vert</mat-icon></button>
       <mat-menu #mainMenu>
         <button mat-menu-item *ngIf="authenticationStatus" routerLink="newmatch"><mat-icon>add_circle</mat-icon> New Match</button>
         <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="matches"><mat-icon>home</mat-icon> View All Matches</button>
@@ -13,7 +13,7 @@
       <div class="align-right" id="user-items">
         <span *ngIf="authenticationStatus">{{name}}  </span>
         <app-user-status-report *ngIf="authenticationStatus"></app-user-status-report>
-        <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu"><mat-icon>settings_applications</mat-icon></button>
+        <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu" id="settings-button"><mat-icon>settings_applications</mat-icon></button>
         <mat-menu #userMenu>
           <button mat-menu-item *ngIf="authenticationStatus" routerLink="user/{{userObjFromDb.id}}"><mat-icon>info</mat-icon> User Info.</button>
           <button mat-menu-item *ngIf="authenticationStatus && isAdmin" routerLink="admin"><mat-icon>list</mat-icon> Admin Tasks</button>

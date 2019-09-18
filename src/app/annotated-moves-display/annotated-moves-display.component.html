@@ -2,10 +2,14 @@
   <h5>Annotations <span (mouseover)="openLegendDialog()"><i class="material-icons">info</i></span></h5>
   <hr>
   <mat-chip-list>
-    <mat-chip *ngFor="let annotation of annotations" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission">
+    <mat-chip *ngFor="let annotation of annotations" [appWinDraw]="annotation.isWin || annotation.isDraw" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission">
       <span (click)="playStartingAt(annotation.timeInitiated)">
         {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}: {{annotation.moveName}} performed by {{annotation.actor}}
       </span>
+      <span (click)="flagAnnotationForImprovement(annotation.associatedMatchId,annotation.timeInitiated, annotation.annotatorUserId)" name="flag-annotation-for-improvement" matTooltip="Flag Annotation for Improvement">
+        <i class="material-icons">flag</i>
+      </span>
+      <span>  </span>
       <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated, annotation.annotatorUserId)" name="cancel-annotation">
         <i class="material-icons right">cancel</i>
       </span>
