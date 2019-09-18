@@ -11,7 +11,9 @@
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
-- [ ] //TODO flesh out getMainAnnotatorOfMatch
+- [ ] If they are majority annotator, they cannot rate the annotation
+  - [x] get everything to work except getMainAnnotatorOfMatch
+  - [ ] //TODO flesh out getMainAnnotatorOfMatch
 - [ ] Tracks who deletes matches and annotations in user node
 - [ ] Iron out paidStatus vs. things like canViewAllMatches and somehow manage them easily
   - [ ] Paying attention to the annotatedEnoughOverride and how this is affected
@@ -88,7 +90,6 @@
 - [ ] Add this.ngUnsubscribe.next(); and this.ngUnsubscribe.complete(); to ngOnDestroy in all modules (see all-matches.component.ts)
 
 # Completed TODOs
-- [x] If it is their own video submission, they cannot rate the annotation
 - [x] Bring annotations closer to video
 - [x] extend baseComponent in other components
 - [x] Add confirm password field
