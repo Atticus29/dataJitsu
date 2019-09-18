@@ -16,9 +16,10 @@ describe ('Login tests', () =>{
     cy.logout();
   })
 
-  it('has a title', () =>{
+  it('loads', () =>{
+    cy.contains("Login with Email");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.title).should('exist');
+      // cy.contains(cypressConstants.title).should('exist');
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
   });
