@@ -1,4 +1,5 @@
 export var constants = {
+    genders: ["Female", "Male", "Non-binary", "Trans Female", "Trans Male", "Other"],
     title: "Match Annotator",
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,

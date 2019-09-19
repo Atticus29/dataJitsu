@@ -25,7 +25,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   newUserForm: FormGroup;
   title: string = "Create an Account";
-  genders: Array<string> = ["Female", "Male"];
+  genders: Array<string> = constants.genders;
   weightClasses: any[];
   noGiRanks: any[];
   giRanks: any[];

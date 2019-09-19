@@ -445,6 +445,8 @@ export class DatabaseService {
   }
 
   addMoveInVideoToMatchIfUniqueEnough(move: MoveInVideo): Observable<boolean>{
+    console.log("move to add in addMoveInVideoToMatchIfUniqueEnough:");
+    console.log(move);
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
       let counter: number = 0;

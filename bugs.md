@@ -1,6 +1,4 @@
 # Known issues
--[ ] Ending the annotation not working
-
 - [ ] Router link in faq section goes to faq/payment rather than just payment
 - [ ] If watching video and rate, navigates you to near end of video (may latest watched?)
 - [ ] If one user rates a video, it stops for the other user
@@ -38,6 +36,8 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Winner declaration directive not working
+- [x] Ending the annotation not working
 - [x] Upon rating an annotation previously unrated, it will navigate you to another unrated video (possibly the next unrated video??)
 - [x] Viewing Dirt's video and then clicking annotate a video takes you to a new video but doesn't update the annotations
 - [x] Video icon not displaying on main window

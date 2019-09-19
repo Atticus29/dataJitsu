@@ -19,6 +19,7 @@ import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
 import { BaseComponent } from '../base/base.component';
+import { constants } from '../constants';
 
 declare var $:any;
 
@@ -110,7 +111,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       }
     });
 
-    this.genders = ["Female", "Male"];
+    this.genders = constants.genders;
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;

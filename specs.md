@@ -1,12 +1,11 @@
 # TODO high priority
-- [ ] //TODO flesh out getMainAnnotatorOfMatch
-
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them
   - [ ] 3 sec. rewind and ff buttons
-  - [ ] Add non-binary gender options
+- [ ] Get current tests to pass
 
+  - [ ] //TODO flesh out getMainAnnotatorOfMatch
 - [ ] Improve moveCategory capture with a getCategoryFromItem method... it should use moves.ts, I think
 - [ ] Add way to handle when someone is not connected
 - [ ] Track who flags things
@@ -101,6 +100,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Add non-binary gender options
 - [x] Track categories as well as move names (//TODO get category from item)
 - [x] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be confirmed
 - [x] Bring annotations closer to video

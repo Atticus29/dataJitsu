@@ -95,6 +95,7 @@ export var allCurrentMoves ={
   ],
   "Submissions or Submission Attempts":
     {"Choke Or Cervical Submissions":[
+      "Diesel Squeezel",
       "Bow and Arrow",
       "Cross Collar Choke",
       "Baseball Bat Choke",
