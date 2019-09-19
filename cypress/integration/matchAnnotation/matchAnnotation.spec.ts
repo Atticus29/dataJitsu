@@ -18,7 +18,7 @@ describe ('Match annotation tests', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
+    cy.get('div[id=annotationModal]>mat-icon').first().click({force:true});
     cy.get('div[id=annotationModal]').contains('Advantage').first().next().click();
     // cy.contains('Advantage').next().click(); //.first()
     cy.get('mat-select[id=performer]').click({force:true});

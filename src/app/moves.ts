@@ -1,7 +1,7 @@
 import { constants } from './constants';
 
 export var allCurrentMoves ={
-  "Advantage": ["Advantage"],
+  "Advantage": ["Advantage Awarded"],
   "Match Outcome": ["Win", "Tie; Draw"],
   "Guard Passes or Guard Pass Attempts":[
     "X Pass",

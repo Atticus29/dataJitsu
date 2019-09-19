@@ -98,7 +98,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       }
     });
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
-      // console.log("trigger check called");
+      console.log("trigger check called");
       if(this.asssembleCheck()){
         // console.log("assemble check true in trigger observable");
         self.tempMove = new MoveInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
@@ -250,7 +250,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trigger.next(true);
               });
               self.trackerService.moveCategory.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveCategory =>{
-                // console.log("moveName in trackerService is " + moveName);
+                console.log("moveCategory in trackerService is " + moveCategory);
                 self.moveCategory = moveCategory;
                 self.trigger.next(true);
               });
@@ -341,7 +341,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           if (!window['YT']){
             console.log("no window[YT]!!");
             var tag = document.createElement('script');
-            tag.src = "//www.youtube.com/player_api";
+            tag.src = "https://www.youtube.com/player_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
           }
@@ -462,8 +462,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
-   // console.log("check made in asssembleCheck");
+   console.log("check made in asssembleCheck");
    // console.log(this.moveName);
+   console.log(this.moveCategory);
    // console.log(this.performer);
    // console.log(this.recipient);
    // console.log(this.startTime);
@@ -474,7 +475,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
    // console.log(this.attemptStatus != null);
    // console.log(this.userInDbId);
     if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.moveCategory && this.moveCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
-      // console.log("everything is true in asssembleCheck");
+      console.log("everything is true in asssembleCheck");
       return true;
     } else{
       // console.log("asssembleCheck is false");
@@ -530,6 +531,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               console.log("annotationMadeCounter is " + annotationMadeCounter);
             }
             this.moveName = null;
+            this.moveCategory = null;
             this.performer = null;
             this.recipient = null;
             this.startTime = null;
@@ -550,6 +552,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 annotationMadeCounter ++;
 
                 this.moveName = null;
+                this.moveCategory = null;
                 this.performer = null;
                 this.recipient = null;
                 this.startTime = null;
@@ -565,6 +568,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 // console.log("matchUniqueEnoughInUser is false, but doing nothing about it...");
 
                 this.moveName = null;
+                this.moveCategory = null;
                 this.performer = null;
                 this.recipient = null;
                 this.startTime = null;

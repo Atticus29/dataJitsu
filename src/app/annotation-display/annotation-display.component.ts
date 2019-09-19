@@ -109,14 +109,21 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
-    if(constants.rootNodes.includes(item)){
-      console.log(item + " is in root nodes. Adding to moveCategory...");
-      this.trackerService.moveCategory.next(item);
-    } else{
+    // if(constants.rootNodes.includes(item)){
+    //   console.log(item + " is in root nodes. Adding to moveCategory...");
+    //   this.trackerService.moveCategory.next(item);
+    // } else{
       //TODO check whether works
       this.trackerService.moveName.next(item);
       console.log("item selected: " + item);
       //TODO get category from item
+    // }
+  }
+
+  registerCategory(category: string){
+    if(constants.rootNodes.includes(category)){
+      console.log(category + " from registerCategory function. Adding to moveCategory...");
+      this.trackerService.moveCategory.next(category);
     }
   }
 
