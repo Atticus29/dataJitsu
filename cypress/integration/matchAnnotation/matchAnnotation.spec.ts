@@ -261,14 +261,16 @@ describe ('Match annotation tests with no afterEach', () =>{
     });
   });
 
-  it.only('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+  it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
     cy.get('a[name=videoClick]').first().click();
     cy.wait(3000);
     cy.get('a[id=play]').click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
-    cy.contains('Advantage').first().next().click();
+    cy.wait(1000);
+    cy.selectAdvantageAnnotation();
+    // cy.get('mat-icon').first().click({force:true});
+    // cy.contains('Advantage').first().next().click();
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
@@ -295,8 +297,9 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').first().click({force:true});
-    cy.contains('Annotation Selected: Advantage').should('not.exist');
+    cy.selectAdvantageAnnotation();
+    // cy.get('mat-icon').first().click({force:true});
+    cy.contains('Annotation Selected: Advantage Awarded').should('exist');
     cy.get('button[id=modal-cancel-button]').click();
     cy.logout();
   });
