@@ -37,6 +37,14 @@ Cypress.Commands.add("selectAdvantageAnnotation", () => {
   });
 });
 
+Cypress.Commands.add("selectCrossCollarChoke", () => {
+  cy.get('mat-icon').eq(9).click({force:true});
+  cy.get('mat-icon').eq(12).click({force:true});
+  cy.wait(1000);
+  cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click();
+  cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+});
+
 Cypress.Commands.add("login", (email, pass) => {
   cy.visit('http://localhost:4200/login');
   cy.get('button[id=email-dialog-open-button]').click();
