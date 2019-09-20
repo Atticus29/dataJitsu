@@ -10,8 +10,8 @@
         <i class="material-icons">flag</i>
       </span>
       <span>  </span>
-      <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated, annotation.annotatorUserId)" name="cancel-annotation">
-        <i class="material-icons right">cancel</i>
+      <span *ngIf="isAdmin" (click)="removeAnnotation(annotation.timeInitiated, annotation.annotatorUserId)" name="cancel-annotation" class="cancel-annotation">
+        <i class="material-icons right cancel">cancel</i>
       </span>
     </mat-chip>
   </mat-chip-list>

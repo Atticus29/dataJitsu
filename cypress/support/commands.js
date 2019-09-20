@@ -30,6 +30,13 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   });
 });
 
+Cypress.Commands.add("selectAdvantageAnnotation", () => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('.mat-icon-rtl-mirror').first().click();
+    cy.get('div[id=annotationModal]').contains('Advantage Awarded').click();
+  });
+});
+
 Cypress.Commands.add("login", (email, pass) => {
   cy.visit('http://localhost:4200/login');
   cy.get('button[id=email-dialog-open-button]').click();
@@ -54,7 +61,9 @@ Cypress.Commands.add("loginAsAdmin", () => {
 });
 
 Cypress.Commands.add("logout", () => {
+  cy.wait(500);
   cy.get('button[id=settings-button]').click({force:true});
+  cy.wait(500);
   // cy.visit('http://localhost:4200/login');
   cy.get('button[id=logOutLink]').click({force:true});
   cy.wait(1000);

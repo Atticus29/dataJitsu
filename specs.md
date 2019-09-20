@@ -1,9 +1,9 @@
 # TODO high priority
+- [ ] Get current tests to pass
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them
   - [ ] 3 sec. rewind and ff buttons
-- [ ] Get current tests to pass
 
   - [ ] //TODO flesh out getMainAnnotatorOfMatch
 - [ ] Improve moveCategory capture with a getCategoryFromItem method... it should use moves.ts, I think

@@ -1,4 +1,5 @@
 # Known issues
+- [ ] When another user adds and annotation, it does not appear in chronological order, even though it works fine when you enter them out of order yourself
 - [ ] Router link in faq section goes to faq/payment rather than just payment
 - [ ] If watching video and rate, navigates you to near end of video (may latest watched?)
 - [ ] If one user rates a video, it stops for the other user
