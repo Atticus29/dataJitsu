@@ -249,6 +249,14 @@ describe ('Match annotation tests', () =>{
     cy.contains("Annotation has already been made by another user").should('exist');
 
     //TODO now login as admin and remove the annotation entirely
+    cy.logout();
+    cy.loginAsAdmin();
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+    cy.get('.cancel-annotation').first().click();
+    cy.reload();
+    cy.wait(2000);
+    cy.get('mat-chip').contains('Cross Collar Choke').should('not.exist');
   });
 
 });
