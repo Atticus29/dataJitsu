@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Get current tests to pass
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them
@@ -100,6 +99,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Get current tests to pass
 - [x] Add non-binary gender options
 - [x] Track categories as well as move names (//TODO get category from item)
 - [x] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be confirmed

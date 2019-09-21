@@ -530,6 +530,30 @@ export class DatabaseService {
     let candidateNewMoveDoesNotEndTooLate = oldMove.timeCompleted + constants.numberOfSecondsToleratedToBeCalledSameAnnotation >= candidateNewMove.timeCompleted;
     return (candidateNewMoveDoesNotStartTooEarly && candidateNewMoveDoesNotStartTooLate && candidateNewMoveDoesNotEndTooEarly && candidateNewMoveDoesNotEndTooLate);
   }
+  getSuccessfulAnnotationNamesSortedByStartTime(matchId: string, path: string){
+    let annotationNames = new Array();
+    let ref = firebase.database().ref(path); //'matches/' + matchId + '/moves/'
+    let theObjects = new Array();
+    let resultObservable = Observable.create(observer =>{
+      ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
+          // console.log("child snapshot in getAnnotationNamesSortedByStartTime in database service");
+          // console.log(snapshot.val());
+          if(snapshot){
+            if(snapshot.val()){
+              let snapshotVals = snapshot.val();
+              if(annotationNames.includes(snapshotVals.moveName)){
+                annotationNames = new Array();
+              }
+              if(snapshotVals.isSuccessfulAttempt){
+                annotationNames.push(snapshotVals.moveName);
+              }
+            }
+          }
+      });
+      observer.next(annotationNames);
+    });
+    return resultObservable;
+  }
 
   getAnnotationsSortedByStartTimeV2(matchId: string, path: string){
     let annotations = new Array();

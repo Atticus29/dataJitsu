@@ -25,7 +25,7 @@ import { User } from '../user.model';
   styleUrls: ['./all-matches.component.scss']
 })
 export class AllMatchesComponent extends BaseComponent implements OnInit, OnDestroy, AfterViewInit {
-  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','videoUrl']; //TODO make this dynamic somehow
+  private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'matchRating', 'annotationRating','annotationsInMatch','videoUrl']; //TODO make this dynamic somehow
   private loading = true;
   private showLoader: any;
   user: any = null;

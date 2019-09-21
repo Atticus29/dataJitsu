@@ -57,6 +57,11 @@
       <mat-cell *matCellDef="let entry"> {{entry.annotationRating}}</mat-cell>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
+    <ng-container matColumnDef="annotationsInMatch">
+      <mat-header-cell *matHeaderCellDef> Moves </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.moves}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
     <ng-container matColumnDef="videoUrl">
       <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
       <mat-cell *matCellDef="let entry">

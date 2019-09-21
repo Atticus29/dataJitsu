@@ -1,6 +1,6 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 import { BehaviorSubject ,  Observable , of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, take } from 'rxjs/operators';
 import { Match } from './match.model';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
@@ -34,10 +34,36 @@ export class MatchDataSource implements DataSource<Match> {
         })
       )
       .subscribe(matches => {
+        console.log("matches in loadMatches:");
+        let matchObjKeys = Object.keys(matches);
+        let localSuccessfulAnnotationsArray = new Array<string>();
+        matchObjKeys.forEach(keyId =>{
+          this.dbService.getSuccessfulAnnotationNamesSortedByStartTime(keyId, 'matches/' + keyId + '/moves/').pipe(take(1)).subscribe(individualMatchSuccessfulAnnotationsArray =>{
+          // let localSuccessfulAnnotations =  individualMatchSuccessfulAnnotationsArray;
+          localSuccessfulAnnotationsArray.push(individualMatchSuccessfulAnnotationsArray);
+          // console.log(localSuccessfulAnnotations);
+          });
+        });
         let results = this.makeIntoArray(matches);
+        for(let i=0; i<results.length; i++){
+          // console.log(results[i]);
+          let movesObj = {moves: localSuccessfulAnnotationsArray[i]};
+          console.log(movesObj);
+          results[i] = Object.assign(movesObj, results[i]);
+          // results[i].push(localSuccessfulAnnotationsArray[i]);
+        }
+        console.log(results);
+        // results.push(localSuccessfulAnnotations);
         this.matchesSubject.next(results);
         // console.log("loading done");
         this.loadingMatches.next(false);
+        // matches.forEach(match =>{
+        //   this.dbService.getSuccessfulAnnotationNamesSortedByStartTime(match.id, 'matches/' + match.id + '/moves/').pipe(take(1)).subscribe(successfulAnnotationsArray =>{
+        //     let localSuccessfulAnnotations =  successfulAnnotationsArray;
+        //     console.log(localSuccessfulAnnotations);
+        //   });
+        // });
+
       });
     });
   }
