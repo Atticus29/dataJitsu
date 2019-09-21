@@ -50,7 +50,7 @@ export class DatabaseService {
       ref.orderByChild("timeInitiated").equalTo(timeInitiated).once("child_added", snapshot =>{
         if(snapshot){
           if(snapshot.key){
-            console.log(snapshot.key); //TODO get key
+            // console.log(snapshot.key); //TODO get key
             let annotationId = snapshot.key; //TODO key instead of val
             observer.next(annotationId);
           }
@@ -225,9 +225,9 @@ export class DatabaseService {
     let updates = {};
     let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/numFlags');
     ref.once("value", snapshot =>{
-      console.log("updateNumFlags current points snapshot:");
+      // console.log("updateNumFlags current points snapshot:");
       let currentVal: number = snapshot.val();
-      console.log(currentVal);
+      // console.log(currentVal);
       updates['/matches/' + matchId + '/moves/' + annotationId + '/numFlags'] = currentVal + points;
       firebase.database().ref().update(updates);
     });
@@ -238,8 +238,8 @@ export class DatabaseService {
     let queryObservable = Observable.create(function(observer){
       let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/flags/' + userId);
       ref.once("value", snapshot =>{
-        console.log("getAnnotationFlagStatus snapshot value: ");
-        console.log(snapshot.val());
+        // console.log("getAnnotationFlagStatus snapshot value: ");
+        // console.log(snapshot.val());
         observer.next(snapshot.val());
       });
     });
@@ -254,8 +254,8 @@ export class DatabaseService {
           if(annotationId){
             let ref = firebase.database().ref('matches/' + matchId + '/moves/' + annotationId + '/numFlags');
             ref.on("value", snapshot =>{
-              console.log("getNumberOfUniqueAnnotationFlags snapshot:");
-              console.log(snapshot.val());
+              // console.log("getNumberOfUniqueAnnotationFlags snapshot:");
+              // console.log(snapshot.val());
               // console.log(snapshot.numChildren());
               //TODO flesh out getMainAnnotatorOfMatch
               observer.next(snapshot.val());
@@ -272,8 +272,8 @@ export class DatabaseService {
     let annotators: Array<string> = new Array<string>();
     ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
       let annotation: any = snapshot.val();
-      console.log("all moves in getMainAnnotatorOfMatch");
-      console.log(annotation.annotatorUserId);
+      // console.log("all moves in getMainAnnotatorOfMatch");
+      // console.log(annotation.annotatorUserId);
       annotators.push(annotation.annotatorUserId);
       // majorityAnnotator.annotatorUserId
     });
@@ -492,10 +492,10 @@ export class DatabaseService {
   moveIsUniqueEnough(move: MoveInVideo, path: string): Observable<boolean>{
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
-      console.log("move.getMatchId(): " + move.getMatchId());
+      // console.log("move.getMatchId(): " + move.getMatchId());
       this.getAnnotations(move.getMatchId(), path).pipe(takeUntil(localUnsubscribeSubject)).subscribe(moves =>{
-        console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
-        console.log(moves);
+        // console.log("got into getAnnotations in moveIsUniqueEnoughToAddToMatch:");
+        // console.log(moves);
         if(moves){
           for(let item in moves){
             // console.log(moves[item].dateAdded);
@@ -561,8 +561,8 @@ export class DatabaseService {
     let theObjects = new Array();
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild("timeInitiated").on("child_added", snapshot => { //
-          console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
-          console.log(snapshot.val());
+          // console.log("child snapshot in getAnnotationsSortedByStartTime in database service");
+          // console.log(snapshot.val());
           if(snapshot){
             if(snapshot.val()){
               let snapshotVals = snapshot.val();
@@ -573,8 +573,8 @@ export class DatabaseService {
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentMoveInVideo.setIsWin(snapshotVals.isWin);
               currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
-              console.log("move in video being added to annotations array:");
-              console.log(currentMoveInVideo)
+              // console.log("move in video being added to annotations array:");
+              // console.log(currentMoveInVideo)
               annotations.push(currentMoveInVideo);
             }
           }
@@ -964,9 +964,9 @@ export class DatabaseService {
 
   removeAnnotationInMatchAndUserByStartTime(matchId: string, timeInitiated: number, annotatorUserId: string): Observable<boolean>{ //TODO AndUser
     let resultObservable = Observable.create(observer =>{
-      console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
-      console.log(matchId);
-      console.log(timeInitiated);
+      // console.log("got into removeAnnotationInMatchByStartTime"); //TODO flesh out LEFT OFF HERE
+      // console.log(matchId);
+      // console.log(timeInitiated);
       let ref = firebase.database().ref('matches/' + matchId + '/moves/');
       ref.orderByChild("timeInitiated").equalTo(timeInitiated).on("child_added", snapshot =>{
         // console.log("found record in question: ");

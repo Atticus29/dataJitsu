@@ -176,8 +176,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       });
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         if(match){
-          // console.log("getMatchFromNodeKey called and returned: ");
-          // console.log(match);
+          console.log("getMatchFromNodeKey called and returned: ");
+          console.log(match);
 
           this.match = match;
           // console.log(match.matchDeets.giStatus);
@@ -193,7 +193,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             player = new window['YT'].Player('videoIframe', {
               events: {
                 'onReady': onPlayerReady,
-                // 'onStateChange': onPlayerStateChange
+                'onStateChange': onPlayerStateChange
               }
             });
           }
@@ -207,6 +207,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               player.playVideo();
             }
           });
+
+          let onPlayerStateChange = (event) =>{
+            console.log("player state changes");
+            console.log(event);
+          };
 
           let onPlayerReady = (event) => {
             document.getElementById("rw-three").addEventListener("click", function() {
@@ -228,6 +233,14 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               self.trackerService.startTimePoint.next(player.getCurrentTime());
               self.trackerService.endTimePoint.next(-1);
               //TODO reset the tree and the submission status (and the annotation move just to be safe?)
+            });
+            document.getElementById("rw-three").addEventListener("click", function() {
+              let currentTime = player.getCurrentTime();
+              player.seekTo(Math.max(0.5,currentTime-3));
+            });
+            document.getElementById("ff-three").addEventListener("click", function() {
+              let currentTime = player.getCurrentTime();
+              player.seekTo(Math.max(0.5,currentTime+3));
             });
             document.getElementById("end-move").addEventListener("click", function() {
               player.pauseVideo();

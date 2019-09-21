@@ -1,14 +1,11 @@
 # Known issues
+-[ ] Navigating to another individual match messes with the video's attachment to the dom?
+
 - [ ] When another user adds and annotation, it does not appear in chronological order, even though it works fine when you enter them out of order yourself
 - [ ] Router link in faq section goes to faq/payment rather than just payment
 - [ ] If watching video and rate, navigates you to near end of video (may latest watched?)
 - [ ] If one user rates a video, it stops for the other user
 
-- [ ] Current most pressing
-  - [ ] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
-  - [ ] Rating a match toggles back and forth between your current vote and your old vote
-- [ ] Testing
-  - [ ] Tests are failing because of unsubscription error
 - [ ] Reputation and tracking
   - [ ]
 - [ ] User creation
@@ -37,6 +34,9 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
+- [x] Rating a match toggles back and forth between your current vote and your old vote
+- [x] Tests are failing because of unsubscription error
 - [x] Winner declaration directive not working
 - [x] Ending the annotation not working
 - [x] Upon rating an annotation previously unrated, it will navigate you to another unrated video (possibly the next unrated video??)

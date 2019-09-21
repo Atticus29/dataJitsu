@@ -34,7 +34,7 @@ export class MatchDataSource implements DataSource<Match> {
         })
       )
       .subscribe(matches => {
-        console.log("matches in loadMatches:");
+        // console.log("matches in loadMatches:");
         let matchObjKeys = Object.keys(matches);
         let localSuccessfulAnnotationsArray = new Array<string>();
         matchObjKeys.forEach(keyId =>{
@@ -48,11 +48,11 @@ export class MatchDataSource implements DataSource<Match> {
         for(let i=0; i<results.length; i++){
           // console.log(results[i]);
           let movesObj = {moves: localSuccessfulAnnotationsArray[i]};
-          console.log(movesObj);
+          // console.log(movesObj);
           results[i] = Object.assign(movesObj, results[i]);
           // results[i].push(localSuccessfulAnnotationsArray[i]);
         }
-        console.log(results);
+        // console.log(results);
         // results.push(localSuccessfulAnnotations);
         this.matchesSubject.next(results);
         // console.log("loading done");
