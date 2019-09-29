@@ -94,6 +94,8 @@ import { AnnotationScoredPointsDirective } from './annotation-scored-points.dire
 import { UserInfoComponent } from './user-info/user-info.component';
 import { IndividualMatchDataDisplayComponent } from './individual-match-data-display/individual-match-data-display.component';
 import { WinDrawDirective } from './win-draw.directive';
+import { FlaggedAnnotationDirective } from './flagged-annotation.directive';
+import { AdvantageDirective } from './advantage.directive';
 
 
 export const firebaseConfig = {
@@ -136,7 +138,9 @@ export const firebaseConfig = {
     AnnotationScoredPointsDirective,
     UserInfoComponent,
     IndividualMatchDataDisplayComponent,
-    WinDrawDirective
+    WinDrawDirective,
+    FlaggedAnnotationDirective,
+    AdvantageDirective
   ],
   imports: [
     AngularFireDatabaseModule,

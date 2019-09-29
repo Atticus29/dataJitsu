@@ -33,8 +33,8 @@ export class AuthorizationService {
       }
     });
     this.authError.subscribe(errorResults =>{  //.pipe(takeUntil(this.ngUnsubscribe))
-      console.log("errorResults");
-      console.log(errorResults);
+      // console.log("errorResults");
+      // console.log(errorResults);
     });
   }
 
@@ -151,7 +151,7 @@ export class AuthorizationService {
           if(result.user){
             this.authState = result.user;
             this.dbService.getNodeIdFromEmail(result.user.email).pipe(takeUntil(localUnsubscribeSubject)).subscribe((nodeId: string) =>{
-              console.log("nodeId is " + nodeId);
+              // console.log("nodeId is " + nodeId);
               if(nodeId){
                 this.dbService.setUidFromNodeId(result.user.uid,nodeId);
                 localUnsubscribeSubject.next();

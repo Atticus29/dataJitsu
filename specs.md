@@ -1,4 +1,6 @@
 # TODO high priority
+- [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
+- [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them

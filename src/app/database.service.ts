@@ -277,8 +277,8 @@ export class DatabaseService {
       annotators.push(annotation.annotatorUserId);
       // majorityAnnotator.annotatorUserId
     });
-    console.log("annotators accumulated:");
-    console.log(annotators); //TODO LEFT OFF HERE
+    // console.log("annotators accumulated:");
+    // console.log(annotators); //TODO LEFT OFF HERE
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
         // console.log("getMainAnnotatorOfMatch snapshot:");
@@ -445,8 +445,8 @@ export class DatabaseService {
   }
 
   addMoveInVideoToMatchIfUniqueEnough(move: MoveInVideo): Observable<boolean>{
-    console.log("move to add in addMoveInVideoToMatchIfUniqueEnough:");
-    console.log(move);
+    // console.log("move to add in addMoveInVideoToMatchIfUniqueEnough:");
+    // console.log(move);
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
       let counter: number = 0;
@@ -573,6 +573,7 @@ export class DatabaseService {
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentMoveInVideo.setIsWin(snapshotVals.isWin);
               currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
+              currentMoveInVideo.setNumFlag(snapshotVals.numFlags);
               // console.log("move in video being added to annotations array:");
               // console.log(currentMoveInVideo)
               annotations.push(currentMoveInVideo);
@@ -632,7 +633,7 @@ export class DatabaseService {
   }
 
   addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string): Observable<boolean>{
-    console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+    // console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
         let counter: number = 0;

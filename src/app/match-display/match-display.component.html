@@ -11,7 +11,12 @@
             <i class="material-icons">play_arrow</i>
           </a>
           <button id="rw-three" type="submit" value="rw-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Rewind 3 sec.">
-            <i class="material-icons">fast_rewind</i>
+            <span>
+              <i class="material-icons">fast_rewind</i>
+              <div class="number-in-video-time-button">
+                3
+              </div>
+            </span>
           </button>
           <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled">
             <i class="material-icons">arrow_drop_up</i>
@@ -20,7 +25,12 @@
             <i class="material-icons">arrow_drop_down</i>
           </button>
           <button id="ff-three" type="submit" value="ff-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Fast Forward 3 sec.">
-            <i class="material-icons">fast_forward</i>
+            <span>
+              <i class="material-icons">fast_forward</i>
+              <div class="number-in-video-time-button">
+                3
+              </div>
+            </span>
           </button>
           <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
             <i class="material-icons">pause</i>
@@ -75,9 +85,12 @@
           <br>
           <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
           <br>
+          <span class="match-label">Date: </span>{{match?.matchDeets?.date}}
+          <br>
           <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
           <br>
           <span class="match-label">Rank: </span>{{match?.matchDeets?.rank}}
+
         </div>
       </div>
     </div>

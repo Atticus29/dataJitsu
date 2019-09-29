@@ -107,7 +107,7 @@ export var allCurrentMoves ={
       "Spin Choke",
       "Rodeo Choke",
       "Ezekiel",
-      "North So uth; Munson choke",
+      "North South Choke (gi or nogi); Munson choke",
       "Anaconda",
       "D'arce; Brabo",
       "Guillotine",
@@ -194,6 +194,11 @@ export var allCurrentMoves ={
 ],
 "Positions With Names That Do Not Score Points In Most Rule Sets":[
   "Truck",
+  "Butterfly Guard",
+  "North South",
+  "Standing Guard Break",
+  "X Guard",
+  "Single-leg X Guard",
   "Leg lasso",
   "Guard Jump",
   "Guard Pull",
@@ -217,6 +222,7 @@ export var allCurrentMoves ={
   "Outside Ashi Garami",
   "4/11; Honey Hole; The Saddle; Inside Sankaku",
   "Worm Guard",
+  "Crab Ride",
   "Position name is missing from this list",
   "No known name for this position"
 ],

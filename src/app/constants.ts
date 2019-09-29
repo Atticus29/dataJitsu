@@ -1,5 +1,5 @@
 export var constants = {
-    genders: ["Female", "Male", "Non-binary", "Trans Female", "Trans Male", "Other"],
+    genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
     title: "Match Annotator",
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
@@ -41,5 +41,6 @@ export var constants = {
     numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: 3,
     numberOfPointsToDeductForBadAnnotation: 50,
     numberOfPointsToAwardForAnnotation: 10,
-    minimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: 3.5
+    minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
+    numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1
   };

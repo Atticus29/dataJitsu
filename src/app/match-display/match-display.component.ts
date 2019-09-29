@@ -81,8 +81,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   ngOnInit() {
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
-      console.log("user in currentUserBehaviorSubject in trackerService in match-display component");
-      console.log(user);
+      // console.log("user in currentUserBehaviorSubject in trackerService in match-display component");
+      // console.log(user);
       if(user){
         user.id ? this.userInDbId = user.id: this.userInDbId = null;
         if(user.privileges.isAdmin){
@@ -98,7 +98,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       }
     });
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
-      console.log("trigger check called");
+      // console.log("trigger check called");
       if(this.asssembleCheck()){
         // console.log("assemble check true in trigger observable");
         self.tempMove = new MoveInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
@@ -176,9 +176,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       });
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         if(match){
-          console.log("getMatchFromNodeKey called and returned: ");
-          console.log(match);
-
+          // console.log("getMatchFromNodeKey called and returned: ");
+          // console.log(match);
           this.match = match;
           // console.log(match.matchDeets.giStatus);
           if(match.matchDeets.giStatus){
@@ -209,8 +208,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           });
 
           let onPlayerStateChange = (event) =>{
-            console.log("player state changes");
-            console.log(event);
+            // console.log("player state changes");
+            // console.log(event);
           };
 
           let onPlayerReady = (event) => {
@@ -263,7 +262,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trigger.next(true);
               });
               self.trackerService.moveCategory.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveCategory =>{
-                console.log("moveCategory in trackerService is " + moveCategory);
+                // console.log("moveCategory in trackerService is " + moveCategory);
                 self.moveCategory = moveCategory;
                 self.trigger.next(true);
               });
@@ -298,17 +297,17 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
                 self.trigger.next(true);
               });
               if(self.userInDbId){
-                console.log("self.userInDbId already exists and is: ");
-                console.log(self.userInDbId);
+                // console.log("self.userInDbId already exists and is: ");
+                // console.log(self.userInDbId);
                 //DO nothing? Trigger?
               }else{
                 self.trackerService.currentUserBehaviorSubject.pipe(takeUntil(self.ngUnsubscribe)).subscribe(user =>{
-                  console.log("user in trackerService crazy branching is:");
-                  console.log(user);
+                  // console.log("user in trackerService crazy branching is:");
+                  // console.log(user);
                   // console.log("this should happen just once?");
                   self.db.getUserByUid(user.uid).pipe(takeUntil(self.ngUnsubscribe)).subscribe(usr => {
                     usr ? self.userInDbId = usr.id : self.userInDbId = null;
-                    console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
+                    // console.log("self.userInDbId in trackerService subsearch for getUserByUid is " + self.userInDbId);
                     self.trigger.next(true);
                   });
                 });
@@ -316,8 +315,10 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
                 if(status && self.moveCompletelyLegit()){
                   console.log("should play video now!");
-                  player.playVideo();
+                  console.log(Math.max(0.5,currentTime-5));
+                  console.log(self.tempMove);
                   player.seekTo(Math.max(0.5,currentTime-5));
+                  player.playVideo();
                 }
               });
             });
@@ -330,8 +331,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               // console.log("trackerService.desiredJumpStartTime in match display entered");
               // console.log(localDesiredJumpStartTime);
               if(localDesiredJumpStartTime){
-                // console.log("trackerService.desiredJumpStartTime in match display entered");
-                // console.log(Number(localDesiredJumpStartTime)); //-0.5
+                console.log("trackerService.desiredJumpStartTime in match display entered");
+                console.log(Number(localDesiredJumpStartTime)); //-0.5
                 // console.log(Number(localDesiredJumpStartTime)-0.5); //-0.5
                 // console.log(Math.max(0.5,Number(localDesiredJumpStartTime)-0.5));
                 player.playVideo();
@@ -352,7 +353,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           //   }
           // }
           if (!window['YT']){
-            console.log("no window[YT]!!");
+            // console.log("no window[YT]!!");
             var tag = document.createElement('script');
             tag.src = "https://www.youtube.com/player_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -391,11 +392,11 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
     if(this.userInDbId){
-      console.log("userInDbId already existed");
+      // console.log("userInDbId already existed");
       this.db.addMatchRatingToUser(this.userInDbId, this.matchId, $event.newValue);
       this.db.addMatchRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
     }else{
-      console.log("had to make userInDbId from scratch");
+      // console.log("had to make userInDbId from scratch");
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
         this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
           let userInDb: string = uzr.id;
@@ -409,14 +410,14 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
     let newRating = $event.newValue;
     if(this.userInDbId){
-      console.log("userInDbId already existed");
+      // console.log("userInDbId already existed");
       this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.matchId, $event.newValue);
       this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
       if($event.newValue > 4){
-      	console.log("rating is greater than 4");
+      	// console.log("rating is greater than 4");
         this.db.getMainAnnotatorOfMatch(this.matchId).pipe(take(1)).subscribe(majorityAnnotator =>{
-	        console.log("main annotator of match in match-display.ts is ");
-          console.log(majorityAnnotator);
+	        // console.log("main annotator of match in match-display.ts is ");
+          // console.log(majorityAnnotator);
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
             this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 6);
           }
@@ -426,7 +427,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         });
       }
     }else{
-      console.log("had to make userInDbId from scratch");
+      // console.log("had to make userInDbId from scratch");
       this.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(usr =>{
         this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(result => {
           let userDbId: string = result.id;
@@ -468,16 +469,16 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     player.playVideo();
   }
   openSnackBar(message: string) {
-    console.log("openSnackBar called");
+    // console.log("openSnackBar called");
     this.snackBar.open(message, '', {
       duration: 3000,
     });
   }
 
   asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
-   console.log("check made in asssembleCheck");
+   // console.log("check made in asssembleCheck");
    // console.log(this.moveName);
-   console.log(this.moveCategory);
+   // console.log(this.moveCategory);
    // console.log(this.performer);
    // console.log(this.recipient);
    // console.log(this.startTime);
@@ -488,7 +489,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
    // console.log(this.attemptStatus != null);
    // console.log(this.userInDbId);
     if(this.moveName && this.moveName !=="No Annotation Currently Selected" && this.moveCategory && this.moveCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.matchId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
-      console.log("everything is true in asssembleCheck");
+      // console.log("everything is true in asssembleCheck");
       return true;
     } else{
       // console.log("asssembleCheck is false");
@@ -511,7 +512,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         // }
       });
     } else{
-      console.log("video has been flagged as removed, but matchId could not be found");
+      // console.log("video has been flagged as removed, but matchId could not be found");
     }
   }
 
@@ -526,22 +527,22 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         // }
       });
     } else{
-      console.log("video has been flagged as removed, but matchId could not be found");
+      // console.log("video has been flagged as removed, but matchId could not be found");
     }
   }
 
   processMatchEntryInDatabase(){
     let annotationMadeCounter: number = 0;
     this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-          console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
-          console.log(moveUniqueEnough);
+          // console.log("moveUniqueEnough in addMoveInVideoToMatchIfUniqueEnough is");
+          // console.log(moveUniqueEnough);
           if(!moveUniqueEnough){
-            console.log("match not Unique Enough match");
+            // console.log("match not Unique Enough match");
             if(annotationMadeCounter < 1){
-              console.log("Annotation has already been made by another user");
+              // console.log("Annotation has already been made by another user");
               this.openSnackBar("Annotation has already been made by another user");
               annotationMadeCounter ++ ;
-              console.log("annotationMadeCounter is " + annotationMadeCounter);
+              // console.log("annotationMadeCounter is " + annotationMadeCounter);
             }
             this.moveName = null;
             this.moveCategory = null;
@@ -556,7 +557,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
             // this.tempMove = new MoveInVideo("No Annotation Currently Selected", "Nobody", "Nobody", -1, -1, -1, null, null, null, null);
             this.moveAssembledStatus.next(false);
           } else{
-            console.log("match IS Unique Enough in match");
+            // console.log("match IS Unique Enough in match");
             this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
               if(moveUniqueEnoughInUser){
                 this.openSnackBar("Annotation Recorded");

@@ -26,7 +26,7 @@ export class TrackerService {
   constructor() { }
 
   resetAllExceptCurrentMatch(){
-    console.log("resetAllExceptCurrentMatch has been called");
+    // console.log("resetAllExceptCurrentMatch has been called");
     this.startTimePoint.next(-1);
     this.endTimePoint.next(-1);
     this.points.next(-1);
@@ -39,7 +39,7 @@ export class TrackerService {
     this.submission.next("No");
     this.annotationBegun.next(false);
     this.attemptStatus.next("Yes");
-    console.log("resetAllExceptCurrentMatch has been completed");
+    // console.log("resetAllExceptCurrentMatch has been completed");
   }
 
   resetAll(){

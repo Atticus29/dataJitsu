@@ -11,7 +11,7 @@ export class UnsuccessfulAnnotationDirective {
 
   ngOnInit(){
     if (this.isUnsuccessful) {
-      this.el.nativeElement.style.backgroundColor = "red";
+      this.el.nativeElement.style.backgroundColor = "#D27E91";
       // this.renderer.setElementClass(this.el.nativeElement, 'no-longer-eligible',true);
       //TODO fleshout styling change
     }

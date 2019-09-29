@@ -5,6 +5,7 @@
 - [ ] Router link in faq section goes to faq/payment rather than just payment
 - [ ] If watching video and rate, navigates you to near end of video (may latest watched?)
 - [ ] If one user rates a video, it stops for the other user
+- [ ] Making an annotation sometimes take you back to the startpoint of the previous annotation (even it a different match???)
 
 - [ ] Reputation and tracking
   - [ ]

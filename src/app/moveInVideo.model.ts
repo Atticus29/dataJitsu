@@ -2,9 +2,11 @@ export class MoveInVideo {
   private dateAdded: string;
   public isWin: boolean;
   public isDraw: boolean;
+  public numFlags: number;
   constructor(public moveName: string, public moveCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedMatchId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
     this.dateAdded = new Date().toJSON();
     this.isWin = false;
+    this.numFlags = 0;
   }
 
   setIsWin(status: boolean){
@@ -13,6 +15,10 @@ export class MoveInVideo {
 
   setIsDraw(status: boolean){
     this.isDraw = status;
+  }
+
+  setNumFlag(newVal: number){
+    this.numFlags = newVal;
   }
 
   getMatchId(): string{
