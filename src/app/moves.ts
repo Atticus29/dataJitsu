@@ -9,6 +9,7 @@ export var allCurrentMoves ={
     "Knee Slice",
     "Back Step",
     "Over Under Pass",
+    "Butterfly Guard Pass",
     "Double Under Pass",
     "Toreando Pass",
     "Guard Pass from Berimbolo or Inverted Position",

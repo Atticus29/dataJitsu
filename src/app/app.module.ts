@@ -96,6 +96,7 @@ import { IndividualMatchDataDisplayComponent } from './individual-match-data-dis
 import { WinDrawDirective } from './win-draw.directive';
 import { FlaggedAnnotationDirective } from './flagged-annotation.directive';
 import { AdvantageDirective } from './advantage.directive';
+import { StripeComponent } from './stripe/stripe.component';
 
 
 export const firebaseConfig = {
@@ -140,7 +141,8 @@ export const firebaseConfig = {
     IndividualMatchDataDisplayComponent,
     WinDrawDirective,
     FlaggedAnnotationDirective,
-    AdvantageDirective
+    AdvantageDirective,
+    StripeComponent
   ],
   imports: [
     AngularFireDatabaseModule,
