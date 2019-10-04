@@ -1,12 +1,6 @@
+// require("firebase/functions"); Got this idea from SO, but doesn't recognize require
+
 document.addEventListener('DOMContentLoaded', function() {
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-  // // The Firebase SDK is initialized and available here!
-  // firebase.auth().onAuthStateChanged(user => { });
-  // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-  // firebase.messaging().requestPermission().then(() => { });
-  // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-  //
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
   try {
     let app = firebase.app();
@@ -21,4 +15,31 @@ document.addEventListener('DOMContentLoaded', function() {
   const fun = firebase.functions();
   const auth = firebase.auth();
   const loginBtn = document.getElementById('login');
+  const logoutBtn = document.getElementById('logout');
+  const profile = document.getElementById('profile');
+
+  auth.onAuthStateChanged(user => {
+    if (user){
+      profile.innerHTML = user.uid;
+      loginBtn.style.visibility = 'hidden';
+      logoutBtn.style.visibility = 'visbile';
+    } else{
+      profile.innerHTML = "not logged in";
+      loginBtn.style.visibility = 'visible';
+      logoutBtn.style.visibility = 'hidden';
+    }
+  });
+
+  //Event Handlers
+  loginBtn.onclick = () => auth.signInAnonymously();
+  logoutBtn.onclick = () => auth.signOut();
+
+  //Callable functions
+  const testFun = fun.httpsCallable('testFunction');
+  const testFunButton = document.getElementById('testFunButton');
+
+  document.getElementById('testFunButton').onclick = async () => {
+    const response = await testFun({message: "Howdy!"});
+    console.log(response);
+  };
 });
