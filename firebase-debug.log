@@ -1,0 +1,34 @@
+[debug] [2019-10-04T20:09:30.010Z] ----------------------------------------------------------------------
+[debug] [2019-10-04T20:09:30.016Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2019-10-04T20:09:30.017Z] CLI Version:   7.4.0
+[debug] [2019-10-04T20:09:30.017Z] Platform:      darwin
+[debug] [2019-10-04T20:09:30.017Z] Node Version:  v10.16.0
+[debug] [2019-10-04T20:09:30.018Z] Time:          Fri Oct 04 2019 13:09:30 GMT-0700 (Pacific Daylight Time)
+[debug] [2019-10-04T20:09:30.018Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-10-04T20:09:30.054Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-10-04T20:09:30.055Z] > authorizing via signed-in user
+[debug] [2019-10-04T20:09:30.055Z] [iam] checking project datajitsu for permissions ["firebase.projects.get"]
+[debug] [2019-10-04T20:09:30.062Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/datajitsu:testIamPermissions  
+
+[debug] [2019-10-04T20:09:30.402Z] <<< HTTP RESPONSE 200
+[debug] [2019-10-04T20:09:30.407Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/datajitsu  
+ 
+[debug] [2019-10-04T20:09:30.610Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/mf/Desktop/dataJitsu'...
+[info] 
+[debug] [2019-10-04T20:09:30.622Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/datajitsu/webApps/-/config  
+ 
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "10"
+[info] ✔  functions: Emulator started at http://localhost:5001
+[debug] [2019-10-04T20:09:31.051Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "/Users/mf/Desktop/dataJitsu/functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+[debug] [2019-10-04T20:09:32.308Z] [runtime-status] Functions runtime initialized. {"cwd":"/Users/mf/Desktop/dataJitsu/functions","node_version":"10.16.0"}
+[debug] [2019-10-04T20:09:32.309Z] [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-10-04T20:09:32.316Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.0","resolution":"/Users/mf/Desktop/dataJitsu/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2019-10-04T20:09:32.318Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.2.0","resolution":"/Users/mf/Desktop/dataJitsu/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2019-10-04T20:09:32.321Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.2.0","resolution":"/Users/mf/Desktop/dataJitsu/functions/node_modules/firebase-functions/lib/index.js"}
+[info] ✔  functions[testFunction]: http function initialized (http://localhost:5001/datajitsu/us-central1/testFunction).

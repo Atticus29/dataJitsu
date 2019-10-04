@@ -4,18 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.0.0/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.0.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/7.0.0/firebase-database.js"></script>
-    <script defer src="/__/firebase/7.0.0/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.0.0/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-    <script src="app.js" defer></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" />
     <style media="screen">
       body {
         display: flex;
@@ -25,18 +14,29 @@
         padding-top: 100px;
       }
     </style>
+
+    <script defer src="/__/firebase/7.0.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.0.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.0.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.0.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.0.0/firebase-storage.js"></script>
+    <script defer src="/__/firebase/7.0.0/firebase-functions.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="app.js" defer></script>
   </head>
   <body>
     <h1>
       <span id="profile"></span>
     </h1>
 
-    <button class="btn waves-effect waves-light" id="login">Login</button>
-    <button class="btn waves-effect waves-light danger" id="logout">Logout</button>
+    <button class="button is-info" id="login">Login</button>
+    <button class="button is-danger" id="logout">Logout</button>
 
     <hr>
 
-    <button class="btn waves-effect waves-light" id="testFunButton">Test Callable Function</button>
+    <button class="button" id="testFunButton">Test Callable Function</button>
 
   </body>
 </html>
