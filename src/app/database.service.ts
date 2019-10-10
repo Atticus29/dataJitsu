@@ -64,6 +64,25 @@ export class DatabaseService {
     return this.db.list('/matches/' + matchId + '/moves').valueChanges();
   }
 
+  addAthleteNamesToDb(names: string[]){
+    let updates = {};
+    updates['/athleteNames'] = names;
+    firebase.database().ref().update(updates);
+  }
+
+  getAthleteNames(): any{
+    let ref = firebase.database().ref('/athleteNames/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByValue().on("value", snapshot =>{
+        // console.log("hi there");
+        // console.log(snapshot.val());
+        observer.next(snapshot.val().sort());
+      });
+    });
+    return obsRet;
+    // return this.db.list('/athleteNames/').valueChanges();
+  }
+
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
     // console.log("childNodeName in getMovesSubsetAsObject database service");

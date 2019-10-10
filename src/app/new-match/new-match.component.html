@@ -14,13 +14,35 @@
           <mat-error *ngIf="matchUrlBoundFc.invalid && vs.validateUrl(matchUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
         <!-- </mat-form-field> -->
         <!-- <mat-form-field class="example-full-width col m6 s12"> -->
-          <label for="athlete1Name" class="active" data-error="Not valid" data-success="Valid">Athlete 1 (Left) Name</label>
-          <input matInput [formControl]="athlete1NameBoundFc" type="text" placeholder="Athlete 1 (Left) Name" value="E.g., Rafael Mendes" id="athlete1Name" >
+        
+        <!-- <mat-form-field>
+          <mat-select [formControl]="ageClassBoundFc" id="ageClass" placeholder="Age Class">
+            <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
+            <mat-option *ngFor="let age of ageClasses" [value]="age">{{age}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
+            <mat-option value="(choose)" [disabled]="disabledAthleteName" >Choose athlete 1 name</mat-option>
+            <mat-option *ngFor="let athlete1Name of athleteNames" [value]="athlete1Name">{{athlete1Name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col m6 s12">
+          <!-- <label for="athlete1-select" class="active" data-error="Not valid" data-success="Valid">Athlete 1 (Left) Name</label> -->
+          <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete1-select">
+            <mat-option value="(choose)" [disabled]="disabledAthleteName" >Choose athlete 2 name</mat-option>
+            <mat-option *ngFor="let athlete2Name of athleteNames" [value]="athlete2Name">{{athlete2Name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+          <!-- <label for="athlete1Name" class="active" data-error="Not valid" data-success="Valid">Athlete 1 (Left) Name</label>
+          <input matInput [formControl]="athlete1NameBoundFc" type="text" placeholder="Athlete 1 (Left) Name" value="E.g., Rafael Mendes" id="athlete1Name" > -->
           <!-- <mat-error *ngIf="athlete1NameBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
         <!-- </mat-form-field> -->
         <!-- <mat-form-field class="example-full-width col m6 s12"> -->
-          <label for="athlete2Name" class="active" data-error="Not valid" data-success="Valid">Athlete 2 (Right) Name</label>
-          <input matInput [formControl]="athlete2NameBoundFc" type="text" placeholder="Athlete 2 (Right) Name" value="E.g., Rubens Cobrihna Charles" id="athlete2Name" >
+          <!-- <label for="athlete2Name" class="active" data-error="Not valid" data-success="Valid">Athlete 2 (Right) Name</label>
+          <input matInput [formControl]="athlete2NameBoundFc" type="text" placeholder="Athlete 2 (Right) Name" value="E.g., Rubens Cobrihna Charles" id="athlete2Name" > -->
           <!-- <mat-error *ngIf="athlete2NameBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
         <!-- </mat-form-field> -->
       </div>

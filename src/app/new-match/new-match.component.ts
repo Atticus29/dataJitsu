@@ -36,6 +36,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
   ranks: any[];
+  athleteNames: any[];
   giRanks: any[];
   nogiRanks: any[];
   rankType: string = "Nogi";
@@ -112,6 +113,10 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     });
 
     this.genders = constants.genders;
+
+    this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+      this.athleteNames = athleteNames;
+    })
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
