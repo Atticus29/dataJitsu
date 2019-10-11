@@ -1,4 +1,8 @@
 # TODO high priority
+- [ ] Change athlete names to dropdown menu with option to add more in a dialogue
+  - [x] Dropdown
+  - [ ] Dialogue
+  - [ ] Dialogue adds approval display for admin
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
 - [ ] Once you have internet

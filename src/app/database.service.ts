@@ -1075,4 +1075,16 @@ export class DatabaseService {
   //   return resultObservable;
   // }
 
+  addCandidateNameToDb(name: string){
+    let ref = firebase.database().ref('/candidateAthleteNames/');
+    ref.push(name);
+    // let updates = {};
+    // updates['/candidateAthleteNames/' ] = name;
+    // firebase.database().ref().update(updates);
+  }
+
+  getCandidateAthleteNames(){
+    return this.db.list('/candidateAthleteNames/').valueChanges();
+  }
+
 }

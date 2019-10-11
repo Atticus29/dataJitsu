@@ -96,6 +96,8 @@ import { IndividualMatchDataDisplayComponent } from './individual-match-data-dis
 import { WinDrawDirective } from './win-draw.directive';
 import { FlaggedAnnotationDirective } from './flagged-annotation.directive';
 import { AdvantageDirective } from './advantage.directive';
+import { AthleteNameApprovalComponent } from './athlete-name-approval/athlete-name-approval.component';
+import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-athlete-name-dialog.component';
 
 
 export const firebaseConfig = {
@@ -140,7 +142,9 @@ export const firebaseConfig = {
     IndividualMatchDataDisplayComponent,
     WinDrawDirective,
     FlaggedAnnotationDirective,
-    AdvantageDirective
+    AdvantageDirective,
+    AthleteNameApprovalComponent,
+    NewAthleteNameDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -195,6 +199,6 @@ export const firebaseConfig = {
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent]
 })
 export class AppModule { }
