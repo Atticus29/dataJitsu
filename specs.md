@@ -1,10 +1,15 @@
 # TODO high priority
 - [ ] Change athlete names to dropdown menu with option to add more in a dialogue
   - [x] Dropdown
-  - [ ] Dialogue
-  - [ ] Dialogue adds approval display for admin
+  - [x] Dialogue
+  - [x] Dialogue adds approval display for admin
+  - [ ] Form validation in dialog
+  - [ ] Approval adds to db and removes from candidate list
+  - [ ] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+- [ ] Alphabetize the moves in annotation lists
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
+- [ ] Maybe make a go to end icon on the chips for individual annotations?
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them
@@ -24,9 +29,11 @@
 - [ ] Troubleshoot/edit the currently existing tests
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 
+
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
+- [ ] Add component for adding names to matches with people with unknown names
 - [ ] If they are majority annotator, they cannot rate the annotation
   - [x] get everything to work except getMainAnnotatorOfMatch
   - [ ] //TODO flesh out getMainAnnotatorOfMatch

@@ -71,15 +71,20 @@ export class DatabaseService {
   }
 
   getAthleteNames(): any{
-    let ref = firebase.database().ref('/athleteNames/');
-    let obsRet = Observable.create(function(observer){
-      ref.orderByValue().on("value", snapshot =>{
-        // console.log("hi there");
-        // console.log(snapshot.val());
-        observer.next(snapshot.val().sort());
-      });
-    });
-    return obsRet;
+    return this.db.list('/athleteNames/').valueChanges();
+    // let ref = firebase.database().ref('/athleteNames/');
+    // let obsRet = Observable.create(function(observer){
+    //   // let athleteArray: Array<any> = new Array<any>();
+    //   ref.orderByValue().on("child_added", snapshot =>{
+    //     // console.log("hi there");
+    //     console.log(snapshot.val());
+    //     // athleteArray.push(snapshot.val());
+    //     // let athleteArray:Array<any> = new Array(snapshot.val());
+    //   });
+    //   // observer.next(athleteArray);
+    //   // athleteArray = new Array<any>();
+    // });
+    // return obsRet;
     // return this.db.list('/athleteNames/').valueChanges();
   }
 
@@ -1081,6 +1086,22 @@ export class DatabaseService {
     // let updates = {};
     // updates['/candidateAthleteNames/' ] = name;
     // firebase.database().ref().update(updates);
+  }
+
+  addAthleteNameToDb(name: string){
+    //TODO check whether name already exists!
+    let ref = firebase.database().ref('/athleteNames/');
+    ref.push(name);
+  }
+
+  removeAthleteNameFromCandidateList(name: string){
+    console.log("removeAthleteNameFromCandidateList called");
+    let ref = firebase.database().ref('/athleteNames/');
+    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
+      console.log("found entry in removeAthleteNameFromCandidateList:");
+      console.log(snapshot.val());
+    });
+    //TODO LEFT OFF HERE
   }
 
   getCandidateAthleteNames(){

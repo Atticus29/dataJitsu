@@ -1,14 +1,24 @@
 <h5>Confirm new athlete names:</h5>
 <div class="flexbox-container small-black-border">
   <div class="flexbox-item">
-    <p>For reference:</p>
     <ul>
-      <li *ngFor="let candidateName of localCandidateAthleteNames">{{candidateName}}</li>
+      <li *ngFor="let candidateName of localCandidateAthleteNames">
+        {{candidateName}}
+        <span matTooltip="Approve" (click)="approveName(candidateName)">
+          <i class="material-icons">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveName(candidateName)">
+          <i class="material-icons">thumb_down</i>
+        </span>
+      </li>
     </ul>
   </div>
   <div class="flexbox-item">
+    <p>Athlete names already in the database (for reference):</p>
     <ul>
-      <li *ngFor="let athleteName of localAtheleteNames">{{athleteName}}</li>
+      <li *ngFor="let athleteName of localAtheleteNames">
+        {{athleteName}}
+      </li>
     </ul>
   </div>
 </div>

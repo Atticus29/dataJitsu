@@ -4,6 +4,8 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
+import { constants } from '../constants';
+import { TrackerService } from '../tracker.service';
 
 @Component({
   selector: 'app-athlete-name-approval',
@@ -13,21 +15,51 @@ import { DatabaseService } from '../database.service';
 export class AthleteNameApprovalComponent extends BaseComponent implements OnInit {
   private localCandidateAthleteNames: any = null;
   private localAtheleteNames: any = null;
+  private localUser: any = null;
 
-  constructor(private db: DatabaseService) {
+  constructor(private db: DatabaseService, private trackerService: TrackerService) {
     super();
   }
 
   ngOnInit() {
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
+      if(user){
+        this.localUser = user;
+      }
+    });
     this.db.getCandidateAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
       console.log("candidate name db results");
       console.log(results);
       this.localCandidateAthleteNames = results;
     });
     this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      // console.log(results);
-      this.localAtheleteNames = results;
+      console.log("athlete names db results");
+      console.log(results);
+      this.localAtheleteNames = results.sort();
     });
+  }
+
+  approveName(name: string){
+    // console.log("approve clicked " + name);
+    let confirmation = confirm("Are you sure you want to APPROVE this name?");
+    if(confirmation){
+      this.db.addAthleteNameToDb(name);
+      this.db.removeAthleteNameFromCandidateList(name);
+      if(this.localUser){
+        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
+      }
+      //TODO add to athlete names in database and remove from candidates
+      //award points to current user for flagging
+    }
+  }
+
+  disapproveName(name: string){
+    // console.log("disapprove clicked " + name);
+    let confirmation = confirm("Are you sure you want to DISAPPROVE this name?");
+    if(confirmation){
+      //TODO remove athlete name from matches in database and remove from candidates
+      //award points to current user for flagging
+    }
   }
 
 }
