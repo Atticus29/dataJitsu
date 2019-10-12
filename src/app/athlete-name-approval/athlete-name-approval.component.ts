@@ -58,6 +58,16 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     // console.log("disapprove clicked " + name);
     let confirmation = confirm("Are you sure you want to DISAPPROVE this name?");
     if(confirmation){
+      this.db.getMatchUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+        console.log(urlResult);
+        this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
+          this.db.updateAthleteNameInMatch(matchIdResult, name, "Un-named Athlete");
+        });
+      })
+      this.db.removeAthleteNameFromCandidateList(name);
+      if(this.localUser){
+        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
+      }
       //TODO remove athlete name from matches in database and remove from candidates
       //award points to current user for flagging
     }

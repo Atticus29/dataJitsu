@@ -1099,7 +1099,6 @@ export class DatabaseService {
       console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
-    //TODO LEFT OFF HERE
   }
 
   getCandidateAthleteNames(){
@@ -1107,16 +1106,73 @@ export class DatabaseService {
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('name').on("value", snapshot =>{
         let resultObj = snapshot.val();
-        let names = Object.keys(resultObj).map(index => resultObj[index].name);
-        // let names = Object.keys(namesObjs).map(index => namesObjs[index]);
-        console.log(names);
-        observer.next(names);
-        // console.log(snapshot.val());
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index].name);
+          observer.next(names);
+        } else{
+          observer.next([]);
+        }
       });
     });
     return obsRet;
     // return 'hey';
     // return this.db.list('/candidateAthleteNames/').valueChanges();
+  }
+
+  getMatchUrlFromCandidateAthleteName(name: string){
+    console.log("getMatchUrlFromCandidateAthleteName called");
+    let ref = firebase.database().ref('/candidateAthleteNames/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
+        // console.log("found entry in getMatchUrlFromCandidateAthleteName:");
+        // console.log(snapshot.val().associatedMatchUrl);
+        observer.next(snapshot.val().associatedMatchUrl);
+      });
+    });
+    return obsRet;
+  }
+
+  getMatchIdFromMatchUrl(matchUrl: string){
+    // console.log("getMatchIdFromMatchUrl called");
+    let ref = firebase.database().ref('/matches/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('matchDeets/videoUrl').equalTo(matchUrl).on("child_added", snapshot =>{
+        // console.log(snapshot.val().id);
+        // let names = Object.keys(resultObj).map(index => resultObj[index].name);
+        // let names = Object.keys(namesObjs).map(index => namesObjs[index]);
+        // console.log(names);
+        observer.next(snapshot.val().id);
+        // console.log(snapshot.val());
+      });
+    });
+    return obsRet;
+  }
+
+  updateAthleteNameInMatch(matchId: string, targetName: string, newName: string){
+    console.log("updateAthleteNameInMatch called");
+    console.log("matchId is " + matchId);
+    console.log("target name is " + targetName);
+    let ref = firebase.database().ref('/matches/');
+    ref.orderByChild('matchDeets/athlete1Name').equalTo(targetName).on('child_added', snapshot =>{
+      console.log("child added athlete1");
+      console.log(snapshot.val());
+      if(snapshot.val().id == matchId){
+        console.log("matches athlete1 in known match!");
+        let updates = {};
+        updates['/matches/' + matchId + '/matchDeets/athlete1Name'] = newName;
+        firebase.database().ref().update(updates);
+      }
+    });
+    ref.orderByChild('matchDeets/athlete2Name').equalTo(targetName).on('child_added', snapshot =>{
+      console.log("child added athlete2");
+      console.log(snapshot.val());
+      if(snapshot.val().id == matchId){
+        console.log("matches athlete2 in known match");
+        let updates = {};
+        updates['/matches/' + matchId + '/matchDeets/athlete2Name'] = newName;
+        firebase.database().ref().update(updates);
+      }
+    });
   }
 
 }
