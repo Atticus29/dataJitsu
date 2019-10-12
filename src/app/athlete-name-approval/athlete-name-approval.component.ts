@@ -27,14 +27,15 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
         this.localUser = user;
       }
     });
+    // let candidateNames = await this.db.getCandidateAthleteNames();
     this.db.getCandidateAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("candidate name db results");
-      console.log(results);
-      this.localCandidateAthleteNames = results;
+      // console.log(  "candidate name db results");
+      // console.log(results);
+      this.localCandidateAthleteNames = results.sort();
     });
     this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("athlete names db results");
-      console.log(results);
+      // console.log("athlete names db results");
+      // console.log(results);
       this.localAtheleteNames = results.sort();
     });
   }

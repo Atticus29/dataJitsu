@@ -42,7 +42,7 @@ export class NewAthleteNameDialogComponent extends BaseComponent implements OnIn
   processDialogData(){
     let vals = this.getValues();
     this.sendDataThroughDialog(vals);
-    this.db.addCandidateNameToDb(vals.last + ", " + vals.first);
+    // this.db.addCandidateNameToDb(vals.last + ", " + vals.first);
   }
 
   sendDataThroughDialog(data: any){

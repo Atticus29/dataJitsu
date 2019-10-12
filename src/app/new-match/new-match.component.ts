@@ -186,10 +186,12 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     if(this.localAthlete1Name){
       console.log("localAthlete1Name exists");
       athlete1NameBound = this.localAthlete1Name;
+      this.db.addCandidateNameToDb(athlete1NameBound, matchUrlBound);
     }
     if(this.localAthlete2Name){
       console.log("localAthlete2Name exists");
       athlete2NameBound = this.localAthlete2Name;
+      this.db.addCandidateNameToDb(athlete2NameBound, matchUrlBound);
     }
     console.log(athlete1NameBound);
     console.log(athlete2NameBound);

@@ -72,20 +72,6 @@ export class DatabaseService {
 
   getAthleteNames(): any{
     return this.db.list('/athleteNames/').valueChanges();
-    // let ref = firebase.database().ref('/athleteNames/');
-    // let obsRet = Observable.create(function(observer){
-    //   // let athleteArray: Array<any> = new Array<any>();
-    //   ref.orderByValue().on("child_added", snapshot =>{
-    //     // console.log("hi there");
-    //     console.log(snapshot.val());
-    //     // athleteArray.push(snapshot.val());
-    //     // let athleteArray:Array<any> = new Array(snapshot.val());
-    //   });
-    //   // observer.next(athleteArray);
-    //   // athleteArray = new Array<any>();
-    // });
-    // return obsRet;
-    // return this.db.list('/athleteNames/').valueChanges();
   }
 
   getMovesSubsetAsObject(childNodeName: string){
@@ -1080,9 +1066,20 @@ export class DatabaseService {
   //   return resultObservable;
   // }
 
-  addCandidateNameToDb(name: string){
+  addCandidateNameToDb(name: string, associatedMatchUrl: string){
+    console.log("addCandidateNameToDb called");
+    console.log("name is " + name);
     let ref = firebase.database().ref('/candidateAthleteNames/');
-    ref.push(name);
+    let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    // ref = firebase.database().ref('/candidateAthleteNames/' + keyId + '/name/');
+    // ref.push(name);
+    // let updates = {};
+    // updates['/candidateAthleteNames/' + keyId + '/associatedMatchUrl/'] = associatedMatchUrl;
+    // firebase.database().ref().update(updates);
+    // ref = firebase.database().ref('/candidateAthleteNames/' + keyId + '/associatedMatchUrl/');
+    // ref.push(associatedMatchUrl);
+
+    // ref.push(name);
     // let updates = {};
     // updates['/candidateAthleteNames/' ] = name;
     // firebase.database().ref().update(updates);
@@ -1096,16 +1093,30 @@ export class DatabaseService {
 
   removeAthleteNameFromCandidateList(name: string){
     console.log("removeAthleteNameFromCandidateList called");
-    let ref = firebase.database().ref('/athleteNames/');
-    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
+    let ref = firebase.database().ref('/candidateAthleteNames/');
+    ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
       console.log("found entry in removeAthleteNameFromCandidateList:");
       console.log(snapshot.val());
+      ref.child(snapshot.key).remove();
     });
     //TODO LEFT OFF HERE
   }
 
   getCandidateAthleteNames(){
-    return this.db.list('/candidateAthleteNames/').valueChanges();
+    let ref = firebase.database().ref('/candidateAthleteNames/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('name').on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        let names = Object.keys(resultObj).map(index => resultObj[index].name);
+        // let names = Object.keys(namesObjs).map(index => namesObjs[index]);
+        console.log(names);
+        observer.next(names);
+        // console.log(snapshot.val());
+      });
+    });
+    return obsRet;
+    // return 'hey';
+    // return this.db.list('/candidateAthleteNames/').valueChanges();
   }
 
 }
