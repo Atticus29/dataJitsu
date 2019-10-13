@@ -4,8 +4,10 @@
   - [x] Dialogue
   - [x] Dialogue adds approval display for admin
   - [ ] Form validation in dialog
-  - [ ] Approval adds to db and removes from candidate list
-  - [ ] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+  - [x] Approval adds to db and removes from candidate list
+  - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+  - [ ] Test written to make sure name addition is seen in table
+  - [ ] Test written to make sure name addition is seen in admin list
 - [ ] Alphabetize the moves in annotation lists
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key

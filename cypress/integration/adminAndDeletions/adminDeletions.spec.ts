@@ -24,10 +24,10 @@ describe ('Tests involving admin privleges and deletions', () =>{
     cy.contains("Delete Match").should('exist');
   });
 
-  it('deletes a match containing Alfie as athlete 1', function(){
+  it('deletes a match containing APineappleUnderTheSea as location', function(){
     cy.get('div[class=mat-select-arrow]').click();
     cy.contains('500').click();
     // cy.get('button[class=mat-paginator-navigation-previous]').click();
-    cy.get('mat-cell[id=Alfie]>button').click();
+    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click();
   });
 });
