@@ -19,7 +19,7 @@ export class FaqComponent extends BaseComponent implements OnInit {
   private localNumberOfPointsToAwardForAnnotation: number = constants.numberOfPointsToAwardForAnnotation;
   private localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: number = constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction;
   private localNumberOfPointsToDeductForBadAnnotation: number = constants.numberOfPointsToDeductForBadAnnotation;
-  private localMinimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: number = constants.minimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction;
+  private localMinimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: number = constants.minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction;
 
   constructor(public ngZone: NgZone, private db: DatabaseService, private router: Router) {
     super();

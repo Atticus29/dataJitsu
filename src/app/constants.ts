@@ -41,6 +41,7 @@ export var constants = {
     numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: 3,
     numberOfPointsToDeductForBadAnnotation: 50,
     numberOfPointsToAwardForAnnotation: 10,
+    numberOfPointsToAwardForApprovingCandidateAthleteName: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1
   };
