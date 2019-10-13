@@ -4,6 +4,8 @@
   - [x] Dialogue
   - [x] Dialogue adds approval display for admin
   - [ ] Form validation in dialog
+  - [ ] Doesn't add it and sends a little snackbar saying athlete already exists if so
+  - [ ] Displays the name in the field after it is typed
   - [x] Approval adds to db and removes from candidate list
   - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
   - [ ] Test written to make sure name addition is seen in table
