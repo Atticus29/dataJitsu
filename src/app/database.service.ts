@@ -1175,4 +1175,15 @@ export class DatabaseService {
     });
   }
 
+  deleteAthleteName(name: string){
+    console.log("entered deleteAthleteName");
+    let ref = firebase.database().ref('athleteNames/');
+    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
+      console.log("child added in deleteAthleteName: ");
+      console.log(snapshot.val());
+      ref.child(snapshot.key).remove();
+    });
+    // ref.remove();
+  }
+
 }

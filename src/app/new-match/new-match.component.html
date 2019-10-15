@@ -15,16 +15,16 @@
 
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
-            <mat-option value="(choose)" [disabled]="disabledAthleteName" >Choose athlete 1 name</mat-option>
-            <mat-option value="(choose2)"(click)="openAddNameDialog(1)">Add a new name</mat-option>
+            <mat-option value="(choose)" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>
+            <mat-option value="" (click)="openAddNameDialog(1)" class="attention">Add a new name</mat-option>
             <mat-option *ngFor="let athlete1Name of athleteNames" [value]="athlete1Name">{{athlete1Name}}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
-            <mat-option value="(choose)" [disabled]="disabledAthleteName" >Choose athlete 2 name</mat-option>
-            <mat-option value="(choose3)"(click)="openAddNameDialog(2)">Add a new name</mat-option>
+            <mat-option value="(choose)" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
+            <mat-option value="" (click)="openAddNameDialog(2)" class="attention">Add a new name</mat-option>
             <mat-option *ngFor="let athlete2Name of athleteNames" [value]="localAthlete2Name? localAthlete2Name:athlete2Name">{{localAthlete2Name? localAthlete2Name:athlete2Name}}</mat-option>
           </mat-select>
         </mat-form-field>

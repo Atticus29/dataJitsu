@@ -18,6 +18,9 @@
     <ul>
       <li *ngFor="let athleteName of localAtheleteNames">
         {{athleteName}}
+        <span (click)="deleteAthleteName(athleteName)">
+          <i class="material-icons">delete</i>
+        </span>
       </li>
     </ul>
   </div>

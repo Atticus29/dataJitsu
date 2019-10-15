@@ -73,4 +73,12 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     }
   }
 
+  deleteAthleteName(name: string){
+    console.log("deleteAthleteName clicked! Name is " + name);
+    let confirmation = confirm("Are you sure you want to delete " + name + " from the database?");
+    if(confirmation){
+      this.db.deleteAthleteName(name);
+    }
+  }
+
 }

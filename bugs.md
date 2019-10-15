@@ -23,6 +23,7 @@
     - [ ] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
 - [ ] Tooltips in match-display are very inconsistent (make sure it's not just when the dev tools are open? Currently seems to be the case)
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
+- [ ] Cannot figure out styling for add new athlete dropdown to draw attention (look at attention class in styles.scss and https://github.com/angular/material#building and https://youtu.be/V3WiBs-igaY)
 
 # Mysteriously failing tests
 - [ ] TODO make the signs up a new user test pass (see above list [cross-listed])

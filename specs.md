@@ -3,11 +3,14 @@
   - [x] Dropdown
   - [x] Dialogue
   - [x] Dialogue adds approval display for admin
-  - [ ] Form validation in dialog
-  - [ ] Doesn't add it and sends a little snackbar saying athlete already exists if so
-  - [ ] Displays the name in the field after it is typed
+  - [x] Form validation in dialog
+  - [x] Doesn't add it and sends a little snackbar saying athlete already exists if so
   - [x] Approval adds to db and removes from candidate list
   - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+  - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
+  - [ ] Put delete feature under control of isAdmin (or isModerator?)
+  - [ ] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+  - [ ] Displays the name in the field after it is typed
   - [ ] Test written to make sure name addition is seen in table
   - [ ] Test written to make sure name addition is seen in admin list
 - [ ] Alphabetize the moves in annotation lists

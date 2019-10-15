@@ -73,8 +73,8 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   newRankForm: FormGroup; //TODO what is this?
   private matchUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private athlete1NameBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private athlete2NameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private athlete1NameBoundFc: FormControl = new FormControl('', []);
+  private athlete2NameBoundFc: FormControl = new FormControl('', []);
   private tournamentNameBoundFc: FormControl = new FormControl('', [Validators.required]);
   private locationBoundFc: FormControl = new FormControl('', [Validators.required]);
   private tournamentDateBoundFc: FormControl = new FormControl('', [Validators.required]);
@@ -346,12 +346,25 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to new-match component?:");
       console.log(val);
-      if(athleteNumber == 1){
-        this.localAthlete1Name = val.last + ", " + val.first;
-      }
-      if(athleteNumber == 2){
-        this.localAthlete2Name = val.last + ", " + val.first;
-      }
+      this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+        // console.log(athleteNames);
+        let candidateName = val.last + ", " + val.first;
+        // console.log(candidateName);
+        if(athleteNames.includes(candidateName)){
+          // console.log("name already exits");
+          this.openSnackBar("Name already exists in dropdown menu!", null);
+          this.localAthlete1Name = null;
+          this.localAthlete2Name = null;
+
+        }else{
+          if(athleteNumber == 1){
+            this.localAthlete1Name = val.last + ", " + val.first;
+          }
+          if(athleteNumber == 2){
+            this.localAthlete2Name = val.last + ", " + val.first;
+          }
+        }
+      });
       // this.authService.emailLogin(val.email, val.passwd);
     });
   }
