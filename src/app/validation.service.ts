@@ -7,8 +7,11 @@ export class ValidationService {
 
   validateString(str: string){
     if(str){
+      console.log("str exists and is ");
+      console.log(str);
       return str.length > 0;
     } else{
+      console.log("str doesn't exist");
       return false;
     }
   }

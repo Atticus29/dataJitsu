@@ -67,7 +67,8 @@ export class NewAthleteNameDialogComponent extends BaseComponent implements OnIn
   }
 
   getErrorMessage() {
-    let errorMessage: string = "A form error has occurred";
+    console.log("getErrorMessage entered");
+    let errorMessage: string = "";
     if(this.lastFc.hasError('required')){
       errorMessage = 'Last name is required';
       return  errorMessage;
