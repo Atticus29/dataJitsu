@@ -129,7 +129,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     this.genders = constants.genders;
 
     this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
-      this.athleteNames = athleteNames;
+      this.athleteNames = athleteNames.sort();
     })
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
