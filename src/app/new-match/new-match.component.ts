@@ -19,6 +19,7 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
+import { TextTransformationService } from '../text-transformation.service';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
 import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
@@ -84,7 +85,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
   private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog, private textTransformationService: TextTransformationService) {
     super();
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
@@ -348,6 +349,9 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       console.log(val);
       this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
         // console.log(athleteNames);
+        val.last = this.textTransformationService.capitalizeFirstLetter(val.last);
+        val.first = this.textTransformationService.capitalizeFirstLetter(val.first);
+
         let candidateName = val.last + ", " + val.first;
         // console.log(candidateName);
         if(athleteNames.includes(candidateName)){
