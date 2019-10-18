@@ -10,7 +10,7 @@
   - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
   - [x] Put delete feature under control of isAdmin (or isModerator?)
   - [x] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
-  - [ ] Displays the name in the field after it is typed
+  - [x] Displays the name in the field after it is typed (sort of)
   - [ ] Test written to make sure name addition is seen in table
   - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
 - [ ] Alphabetize the moves in annotation lists

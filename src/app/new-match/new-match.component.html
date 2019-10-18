@@ -34,7 +34,7 @@
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
-            <mat-option value="" (click)="openAddNameDialog(2)" class="attention">
+            <mat-option [value]="localAthlete2Name" (click)="openAddNameDialog(2)" color="accent">
               <button mat-flat-button color="accent">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
@@ -44,6 +44,8 @@
             </mat-option>
             <mat-option *ngFor="let athlete2Name of athleteNames" [value]="localAthlete2Name? localAthlete2Name:athlete2Name">{{localAthlete2Name? localAthlete2Name:athlete2Name}}</mat-option>
           </mat-select>
+          <p *ngIf="localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete2Name}}</mat-chip></span></p>
+          <p *ngIf="athlete2NameBoundFc.value && !localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete2NameBoundFc.value}}</mat-chip></span></p>
         </mat-form-field>
       </div>
       <div class="row">
