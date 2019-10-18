@@ -16,6 +16,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
   private localCandidateAthleteNames: any = null;
   private localAtheleteNames: any = null;
   private localUser: any = null;
+  private localIsAdmin: boolean = false;
 
   constructor(private db: DatabaseService, private trackerService: TrackerService) {
     super();
@@ -25,6 +26,11 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       if(user){
         this.localUser = user;
+        this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+          if(dbUser.privileges.isAdmin){
+            this.localIsAdmin = true;
+          }
+        });
       }
     });
     // let candidateNames = await this.db.getCandidateAthleteNames();

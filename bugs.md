@@ -1,5 +1,6 @@
 # Known issues
--[ ] Navigating to another individual match messes with the video's attachment to the dom?
+- [ ] Navigating to another individual match messes with the video's attachment to the dom?
+- [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
 
 - [ ] When another user adds and annotation, it does not appear in chronological order, even though it works fine when you enter them out of order yourself
 - [ ] Router link in faq section goes to faq/payment rather than just payment

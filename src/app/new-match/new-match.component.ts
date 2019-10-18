@@ -363,9 +363,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
         }else{
           if(athleteNumber == 1){
             this.localAthlete1Name = val.last + ", " + val.first;
+            console.log("localAthlete1Name added; it is " + this.localAthlete1Name);
           }
           if(athleteNumber == 2){
             this.localAthlete2Name = val.last + ", " + val.first;
+            console.log("localAthlete2Name added; it is " + this.localAthlete2Name);
           }
         }
       });

@@ -8,11 +8,11 @@
   - [x] Approval adds to db and removes from candidate list
   - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
   - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
-  - [ ] Put delete feature under control of isAdmin (or isModerator?)
-  - [ ] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+  - [x] Put delete feature under control of isAdmin (or isModerator?)
+  - [x] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
   - [ ] Displays the name in the field after it is typed
   - [ ] Test written to make sure name addition is seen in table
-  - [ ] Test written to make sure name addition is seen in admin list
+  - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
 - [ ] Alphabetize the moves in annotation lists
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
