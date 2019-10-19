@@ -32,6 +32,35 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   });
 });
 
+Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email, pass) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
+    cy.get('mat-select[id=athlete1-select]').click();
+    cy.get('mat-option').first().next().click({force:true});
+    cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete1LastName);
+    cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete1FirstName);
+    cy.get('button[id=dialog-submit-button]').click();
+    cy.get('mat-select[id=athlete2-select]').click();
+    cy.get('mat-option').first().next().click({force: true});
+    cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete2LastName);
+    cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete2FirstName);
+    cy.get('button[id=dialog-submit-button]').click();
+    cy.get('input[id=tournamentName]').click({force:true}).clear().type(cypressConstants.testTournament);
+    cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
+    cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
+    cy.get('mat-select[id=gender-select]').click();
+    cy.get('mat-option').first().next().click({force:true});
+    cy.get('mat-select[id=ageClass]').click();
+    cy.get('mat-option').first().next().click({force:true});
+    cy.get('mat-select[id=rank]').click();
+    cy.get('mat-option').first().next().click({force:true});
+    cy.get('mat-select[id=weight]').click();
+    cy.get('mat-option').first().next().click({force:true});
+  });
+});
+
+
+
 Cypress.Commands.add("selectAdvantageAnnotation", () => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('.mat-icon-rtl-mirror').first().click();
