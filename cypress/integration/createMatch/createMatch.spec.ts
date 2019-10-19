@@ -26,7 +26,7 @@ describe ('Tests involving match creation', () =>{
     cy.logout();
   });
 
-  it.only('creates a match', function(){
+  it('creates a match', function(){
     cy.visit('http://localhost:4200/newmatch');
     cy.fillInMatchCreationDetails();
     cy.get('button[id=new-match-submit-button]').click();

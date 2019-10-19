@@ -36,12 +36,12 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
     cy.get('mat-select[id=athlete1-select]').click();
-    cy.get('mat-option').first().next().click({force:true});
+    cy.get('mat-option').eq(1).click({force:true});
     cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete1LastName);
     cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete1FirstName);
     cy.get('button[id=dialog-submit-button]').click();
     cy.get('mat-select[id=athlete2-select]').click();
-    cy.get('mat-option').first().next().click({force: true});
+    cy.get('mat-option').eq(1).click({force: true});
     cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete2LastName);
     cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete2FirstName);
     cy.get('button[id=dialog-submit-button]').click();
