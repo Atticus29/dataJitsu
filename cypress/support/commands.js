@@ -35,7 +35,7 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2);
     cy.get('mat-select[id=athlete1-select]').click();
     cy.get('mat-option').eq(1).click({force:true});
     cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete1LastName);
