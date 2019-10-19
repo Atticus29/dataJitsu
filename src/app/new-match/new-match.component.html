@@ -16,7 +16,7 @@
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>
-            <mat-option [value]="localAthlete1Name" (click)="openAddNameDialog(1)" color="accent">
+            <mat-option [value]="localAthlete1Name" (click)="openAddNameDialog(1)" color="accent" id="athlete-1-write-in">
               <button mat-flat-button color="accent">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
@@ -24,7 +24,7 @@
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let athlete1Name of athleteNames" [value]="athlete1Name">{{athlete1Name}}</mat-option>
+            <mat-option *ngFor="let athlete1Name of athleteNames" [value]="athlete1Name" id="athlete-1-dropdown">{{athlete1Name}}</mat-option>
           </mat-select>
           <p *ngIf="localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete1Name}}</mat-chip></span></p>
           <p *ngIf="athlete1NameBoundFc.value && !localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete1NameBoundFc.value}}</mat-chip></span></p>
@@ -34,7 +34,7 @@
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
-            <mat-option [value]="localAthlete2Name" (click)="openAddNameDialog(2)" color="accent">
+            <mat-option [value]="localAthlete2Name" (click)="openAddNameDialog(2)" color="accent" id="athlete-2-write-in">
               <button mat-flat-button color="accent">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
@@ -42,7 +42,7 @@
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let athlete2Name of athleteNames" [value]="localAthlete2Name? localAthlete2Name:athlete2Name">{{localAthlete2Name? localAthlete2Name:athlete2Name}}</mat-option>
+            <mat-option *ngFor="let athlete2Name of athleteNames" [value]="localAthlete2Name? localAthlete2Name:athlete2Name" id="athlete-2-dropdown">{{localAthlete2Name? localAthlete2Name:athlete2Name}}</mat-option>
           </mat-select>
           <p *ngIf="localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete2Name}}</mat-chip></span></p>
           <p *ngIf="athlete2NameBoundFc.value && !localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete2NameBoundFc.value}}</mat-chip></span></p>
