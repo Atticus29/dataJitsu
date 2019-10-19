@@ -17,7 +17,7 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.get('mat-select[id=athlete1-select]').click({force: true});
     cy.get('mat-option').eq(3).click({force:true})
     cy.get('mat-select[id=athlete2-select]').click({force:true});
-    cy.get('mat-option').eq(4).click({force: true});
+    cy.get('mat-option').eq(10).click({force: true});
     cy.get('input[id=tournamentName]').click({force:true}).clear().type(cypressConstants.testTournament);
     cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
