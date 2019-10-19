@@ -78,6 +78,7 @@ describe ('Tests involving match creation', () =>{
     });
 
     //go to admin info and thumb down one athlete name, approve the other, than delete it
+    cy.log("go to admin info and thumb down one athlete name, approve the other, than delete it");
     cy.visit('http://localhost:4200/admin');
     cy.wait(2000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
@@ -90,6 +91,7 @@ describe ('Tests involving match creation', () =>{
     });
 
     //check that one is now unknown name and the other is still the same name
+    cy.log("check that one is now unknown name and the other is still the same name");
     cy.visit('http://localhost:4200/matches');
     cy.wait(2000);
     cy.get('div[class=mat-select-arrow]').click();
@@ -99,7 +101,9 @@ describe ('Tests involving match creation', () =>{
       cy.contains(cypressConstants.athlete2FirstName);
       cy.contains(cypressConstants.athlete2LastName);
     });
+
     //delete this match
+    cy.log("delete this match");
     cy.logout();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.adminEmailAddress,cypressConstants.adminPassword);
@@ -108,7 +112,11 @@ describe ('Tests involving match creation', () =>{
     cy.wait(2000);
     cy.get('div[class=mat-select-arrow]').click();
     cy.contains('500').click();
-    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click();
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.get('mat-cell[id=APineappleUnderTheSea]>button').last().click();
+      // cy.contains(cypressConstants.athlete2FirstName).find('button').click();
+      // cy.get('mat-cell>button').contains(cypressConstants.athlete2FirstName).click();
+    });
   });
 
 });
