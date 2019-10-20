@@ -31,6 +31,8 @@ export class AppComponent extends BaseComponent implements OnInit {
   authenticationStatus: boolean =false;
   shouldAnnotate: boolean = false;
   private canViewAllMatches: boolean = false; //TODO flesh out
+  private localReputation: number = null;
+  private localNewReputationCount: number = 0;
 
   constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone){
     super();
@@ -38,7 +40,10 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     let self = this;
+
     this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+      console.log(result);
+      console.log(result.id);
       self.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(authState =>{
         // console.log("result of currentUserObservable in app.component: ");
         // console.log(result);
@@ -48,6 +53,11 @@ export class AppComponent extends BaseComponent implements OnInit {
           // console.log("result in currentUserObservable in app component happens: ");
           // console.log(result);
           this.db.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+            this.db.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
+              console.log("rep points: ");
+              console.log(repPoints);
+              this.localReputation = Number(repPoints);
+            });
             // console.log("dbUser in getUserByUid of app.component updated:");
             // console.log(dbUser);
             this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!

@@ -7,7 +7,18 @@
         <i class="material-icons left">warning</i>
       </span>
       <span (click)="playStartingAt(annotation.timeInitiated)">
-        {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}: {{annotation.moveName}} performed by {{annotation.actor}}
+        <button mat-button class="no-padding" color="primary">
+          {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}
+        </button>
+      </span>
+      <span (click)="playStartingAt(annotation.timeCompleted)">
+        -
+        <button mat-button color="primary" class="no-padding">
+          {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeCompleted,2))}}
+        </button>
+      </span>
+      <span (click)="playStartingAt(annotation.timeInitiated)">
+        : {{annotation.moveName}} performed by {{annotation.actor}}
       </span>
       <span (click)="flagAnnotationForImprovement(annotation.associatedMatchId,annotation.timeInitiated, annotation.annotatorUserId)" name="flag-annotation-for-improvement" matTooltip="Flag Annotation for Improvement">
         <i class="material-icons">flag</i>
