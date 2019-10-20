@@ -1,19 +1,7 @@
 # TODO high priority
-- [ ] Change athlete names to dropdown menu with option to add more in a dialogue
-  - [x] Dropdown
-  - [x] Dialogue
-  - [x] Dialogue adds approval display for admin
-  - [x] Form validation in dialog
-  - [x] Doesn't add it and sends a little snackbar saying athlete already exists if so
-  - [x] Approval adds to db and removes from candidate list
-  - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
-  - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
-  - [x] Put delete feature under control of isAdmin (or isModerator?)
-  - [x] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
-  - [x] Displays the name in the field after it is typed (sort of)
-  - [ ] Test written to make sure name addition is seen in table
-  - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
 - [ ] Alphabetize the moves in annotation lists
+- [ ] Tournaments from a dropdown
+- [ ] Add moves, weight class, tournament, age class, etc.
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
 - [ ] Maybe make a go to end icon on the chips for individual annotations?
@@ -118,6 +106,20 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Change athlete names to dropdown menu with option to add more in a dialogue
+  - [x] Dropdown
+  - [x] Dialogue
+  - [x] Dialogue adds approval display for admin
+  - [x] Form validation in dialog
+  - [x] Doesn't add it and sends a little snackbar saying athlete already exists if so
+  - [x] Approval adds to db and removes from candidate list
+  - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+  - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
+  - [x] Put delete feature under control of isAdmin (or isModerator?)
+  - [x] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+  - [x] Displays the name in the field after it is typed (sort of)
+  - [x] Test written to make sure name addition is seen in table
+  - [x] Test written to make sure name addition is seen in admin list; delete name at the end
 - [x] 3 sec. rewind and ff buttons
 - [x] Get current tests to pass
 - [x] Add non-binary gender options
