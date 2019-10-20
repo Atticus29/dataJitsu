@@ -21,6 +21,7 @@ describe ('Tests involving admin privleges and deletions', () =>{
 
 
   it('sees delete as an option in the table', function(){
+    cy.wait(1000);
     cy.contains("Delete Match").should('exist');
   });
 
