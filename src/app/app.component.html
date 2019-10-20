@@ -12,9 +12,7 @@
       </mat-menu>
       <div class="align-right" id="user-items">
         <span *ngIf="authenticationStatus">
-          <em>
             {{name}}
-          </em>
         </span>
         <span matBadge="{{localNewReputationCount}}" matBadgeOverlap="false">{{localReputation}}</span>
         <app-user-status-report *ngIf="authenticationStatus" class="move-left"></app-user-status-report>
