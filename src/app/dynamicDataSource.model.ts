@@ -26,6 +26,7 @@ export class DynamicDataSource {
     private database: DynamicDatabase, private dbService: DatabaseService) {
       this.dbService.getMovesAsObject().subscribe(results=>{
         let headers: string[] = Object.getOwnPropertyNames(results);
+        headers = headers.sort();
         headers.forEach(item =>{ //headers
           let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
           this.flatNodeArray.push(newDynamicFlatNode);
@@ -91,12 +92,15 @@ export class DynamicDataSource {
       // console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
-        children = results;
+        children = results.sort();
       } else{
         try {
           // console.log("results before conversion:");
           // console.log(results);
           results = this.jsonToStrMap(results);
+          if(Array.isArray(results)){
+            results = results.sort();
+          }
           // console.log("jsonToStrMap successful:");
           // console.log(results);
           children = results;
