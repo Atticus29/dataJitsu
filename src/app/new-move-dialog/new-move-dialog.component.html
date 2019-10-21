@@ -1,0 +1,22 @@
+
+<div class="flexbox-vertical">
+  <h2 mat-dialog-title class="flex-item">Enter new move name</h2>
+  <mat-dialog-content>
+    <form materialize [formGroup]="form">
+      <mat-form-field class="flex-item">
+        <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
+        <input matInput [formControl]="moveFc" placeholder="Move Name" id="moveFc" value="E.g., Triangle" required>
+        <mat-error *ngIf="!vs.validateString(moveFc.value)">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <br>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex-item">
+    <button class="btn waves-effect waves-light button-space" (click)="close()">
+      Close
+    </button>
+    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData()" [disabled]="!allValid()">
+      Submit
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -6,11 +6,14 @@ import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
+import { NewMoveDialogComponent } from '../new-move-dialog/new-move-dialog.component';
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { TrackerService } from '../tracker.service';
@@ -53,8 +56,9 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private submissionStatus: string = "No";
   private attemptStatus: string = "Yes";
   private pointsEntered: number = -1;
+  private localMoveName: string = null;
 
-  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
+  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, private textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService, private _snackBar: MatSnackBar, public dialog: MatDialog) {
     super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, this.database, this.db);
@@ -109,6 +113,9 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
+    if(item.charAt(0)==="A" && item.charAt(0)==="d" && item.charAt(0)==="d"){
+      console.log("add a move reached");
+    }
     // if(constants.rootNodes.includes(item)){
     //   console.log(item + " is in root nodes. Adding to moveCategory...");
     //   this.trackerService.moveCategory.next(item);
@@ -175,5 +182,38 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
   respondToAnnotationCancel(){
     // console.log("Cancel was clicked TODO don't swap the buttons in match display");
+  }
+
+  openAddNameDialog(athleteNumber: number){
+    // console.log("clicked!");
+    console.log("athlete number is " + athleteNumber);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(NewMoveDialogComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
+      console.log("got dialog data to annotation-display component?:");
+      console.log(val);
+      this.db.getMoveNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveNames =>{
+        console.log(moveNames);
+        val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
+
+        if(moveNames.includes(val.move)){
+          // console.log("name already exits");
+          this.openSnackBar("Name already exists in dropdown menu!", null);
+          this.localMoveName = null;
+        }else{
+          this.localMoveName = val.move;
+        }
+      });
+      // this.authService.emailLogin(val.email, val.passwd);
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

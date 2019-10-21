@@ -21,7 +21,7 @@ export var constants = {
     "Take Downs or Take Down Attempts",
     "Submissions or Submission Attempts",
     "Sweeps or Sweep Attempts",
-    "Positional Changes",
+    "Positional Changes That Score Points In Most Rule Sets",
     "Positions With Names That Do Not Score Points In Most Rule Sets",
     "Discliplinary Action",
     ],

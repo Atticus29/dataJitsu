@@ -98,6 +98,7 @@ import { FlaggedAnnotationDirective } from './flagged-annotation.directive';
 import { AdvantageDirective } from './advantage.directive';
 import { AthleteNameApprovalComponent } from './athlete-name-approval/athlete-name-approval.component';
 import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-athlete-name-dialog.component';
+import { NewMoveDialogComponent } from './new-move-dialog/new-move-dialog.component';
 
 
 export const firebaseConfig = {
@@ -144,7 +145,8 @@ export const firebaseConfig = {
     FlaggedAnnotationDirective,
     AdvantageDirective,
     AthleteNameApprovalComponent,
-    NewAthleteNameDialogComponent
+    NewAthleteNameDialogComponent,
+    NewMoveDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -199,6 +201,6 @@ export const firebaseConfig = {
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
 })
 export class AppModule { }

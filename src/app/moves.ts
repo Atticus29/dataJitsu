@@ -13,7 +13,8 @@ export var allCurrentMoves ={
     "Toreando Pass",
     "Guard Pass from Berimbolo or Inverted Position",
     "Guard pass name is missing from this list",
-    "No known name for this guard pass"
+    "No known name for this guard pass",
+    "Add guard pass"
   ],
   "Take Downs or Take Down Attempts":[
     "Knee Drop Ogoshi; Knee Drop",
@@ -90,8 +91,8 @@ export var allCurrentMoves ={
     "Osoto Makikomi; Major O uter Wrap Around",
     "Harai Makikomi; Sweeping Wraparound",
     "Sode Tsurikomi Goshi; Sleeve Lifting Pulling Hip",
-    "Take down name is missing from this list",
-    "No known name for this take down"
+    "Take down name is missing from this list/ no known name",
+    "Add take down"
   ],
   "Submissions or Submission Attempts":
     {"Choke Or Cervical Submissions":[
@@ -117,15 +118,15 @@ export var allCurrentMoves ={
       "Can Opener",
       "Arm Triangle",
       "Triangle",
-      "Cervical submission name is missing from this list",
-      "No known name for this cervical submission"
+      "Cervical submission name is missing from this list/ no known name",
+      "Add cervical submission"
     ],
     "Elbow":[
     "Arm Bar or Straight Arm Lock",
     "Biceps Slicer",
     "Dead Orchard",
-    "Elbow submission name is missing from this list",
-    "No known name for this elbow submission"
+    "Elbow submission name is missing from this list/ no known name",
+    "Add elbow submission"
   ],
   "Shoulder":[
     "Americana; Keylock; Paintbrush",
@@ -133,8 +134,8 @@ export var allCurrentMoves ={
     "Omoplata",
     "Baratoplata",
     "Monoplata",
-    "Shoulder submission name is missing from this list",
-    "No known name for this shoulder submission"
+    "Shoulder submission name is missing from this list/ no known name",
+    "Add shoulder submission"
   ],
   "Knee Ligaments":[
     "Knee Bar",
@@ -142,29 +143,29 @@ export var allCurrentMoves ={
     "Toe Hold/Figure 4 Toe Hold",
     "Outside Heel Hook",
     "Calf Slicer",
-    "Knee submission name is missing from this list",
-    "No known name for this knee submission"
+    "Knee submission name is missing from this list/ no known name",
+    "Add knee ligament submission"
   ],
   "Back":[
     "Twister; Wrestler’s Guillotine",
-    "Back submission name is missing from this list",
-    "No known name for this back submission"
+    "Back submission name is missing from this list/ no known name",
+    "Add back submission"
   ],
   "Ankle Ligaments":[
     "Ankle Lock",
     "Texas Cloverleaf",
-    "Ankle submission name is missing from this list",
-    "No known name for this ankle submission"
+    "Ankle submission name is missing from this list/ no known name",
+    "Add ankle ligament submission"
   ],
   "Groin":[
     "Banana Split",
-    "Groin submission name is missing from this list",
-    "No known name for this groin submission"
+    "Groin submission name is missing from this list/ no known name",
+    "Add groin submission"
   ],
   "Wrist":[
   "Wrist Lock",
-  "Wrist submission name is missing from this list",
-  "No known name for this wrist submission"
+  "Wrist submission name is missing from this list/ no known name",
+  "Add wrist submission"
   ]
 },
 "Sweeps or Sweep Attempts":[
@@ -182,15 +183,16 @@ export var allCurrentMoves ={
   "Sickle Sweep",
   "Sweep from Omoplata",
   "Sit up sweep; Reversal",
-  "Sweep name is missing from this list",
-  "No known name for this sweep"
+  "Sweep name is missing from this list/ no known name",
+  "Add sweep name"
 ],
-"Positional Changes":[
+"Positional Changes That Score Points In Most Rule Sets":[
   "Back Mount",
   "Back Control",
   "Mount",
   "Knee on Belly",
-  "Positional change name is missing from this list",
+  "Positional change name is missing from this list/ no known name",
+  "Add positional change"
 ],
 "Positions With Names That Do Not Score Points In Most Rule Sets":[
   "Truck",
@@ -223,14 +225,15 @@ export var allCurrentMoves ={
   "4/11; Honey Hole; The Saddle; Inside Sankaku",
   "Worm Guard",
   "Crab Ride",
-  "Position name is missing from this list",
-  "No known name for this position"
+  "Position name is missing from this list/ no known name",
+  "Add position name"
 ],
 "Discliplinary Action":[
   "Severe Foul",
   "Serious Foul",
   "Combatitiveness Foul; Stalling; Fleeing",
   "Disqualification",
-  "Disciplinary action name is missing from this list",
+  "Disciplinary action name is missing from this list/ no known name",
+  "Add disciplinary action"
 ]
 }
