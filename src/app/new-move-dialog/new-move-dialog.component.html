@@ -5,9 +5,13 @@
     <form materialize [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
-        <input matInput [formControl]="moveFc" placeholder="Move Name" id="moveFc" value="E.g., Triangle" required>
-        <mat-error *ngIf="!vs.validateString(moveFc.value)">{{getErrorMessage()}}</mat-error>
+        <input matInput [formControl]="moveNameFc" placeholder="Move Name" id="moveNameFc" value="E.g., Triangle" required>
+        <mat-error *ngIf="!vs.validateString(moveNameFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
+      <mat-select [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
+        <mat-option value="" [disabled]="disabledCategoryName">Choose Move Category</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
+      </mat-select>
       <br>
     </form>
   </mat-dialog-content>

@@ -6,6 +6,7 @@ import { ValidationService } from '../validation.service';
 import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
+import { constants } from '../constants';
 
 
 @Component({
@@ -15,21 +16,24 @@ import { DatabaseService } from '../database.service';
 })
 export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   form: FormGroup;
-  private moveFc: FormControl = new FormControl('', [Validators.required]);
+  private moveNameFc: FormControl = new FormControl('', [Validators.required]);
+  private moveCategoryFc: FormControl = new FormControl('', [Validators.required]);
+  private categories: any = constants.rootNodes;
 
-  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
+  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
     super();
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      moveFc: ['', Validators.required],
+      moveNameFc: ['', Validators.required],
     });
   }
 
   getValues(){
-    let move = this.moveFc.value;
-    return {move};
+    let move = this.moveNameFc.value;
+    let moveCategory = this.moveCategoryFc.value;
+    return {move, moveCategory};
   }
 
   processDialogData(){
@@ -47,7 +51,7 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
 
   allValid(){
     let values = this.getValues();
-    if(this.vs.validateString(values.move)){
+    if(this.vs.validateString(values.move) && this.vs.validateString(values.moveCategory)){
       return true;
     } else{
       return false;
@@ -57,8 +61,12 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   getErrorMessage() {
     console.log("getErrorMessage entered");
     let errorMessage: string = "";
-    if(this.moveFc.hasError('required')){
+    if(this.moveNameFc.hasError('required')){
       errorMessage = 'Move name is required';
+      return  errorMessage;
+    }
+    if(this.moveCategoryFc.hasError('required')){
+      errorMessage = 'Move category is required';
       return  errorMessage;
     }
     return  errorMessage;

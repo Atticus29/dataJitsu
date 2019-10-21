@@ -113,6 +113,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
+    console.log("selectItem entered");
+    //TODO LEFT OFF HERE
     if(item.charAt(0)==="A" && item.charAt(0)==="d" && item.charAt(0)==="d"){
       console.log("add a move reached");
     }
@@ -195,19 +197,19 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to annotation-display component?:");
       console.log(val);
-      this.db.getMoveNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveNames =>{
-        console.log(moveNames);
-        val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
-
-        if(moveNames.includes(val.move)){
-          // console.log("name already exits");
-          this.openSnackBar("Name already exists in dropdown menu!", null);
-          this.localMoveName = null;
-        }else{
-          this.localMoveName = val.move;
-        }
-      });
-      // this.authService.emailLogin(val.email, val.passwd);
+      //TODO add maybe a forEach to take through each rootNode and see if it's in its child
+      // this.db.getMoveNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveNames =>{
+      //   console.log(moveNames);
+      //   val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
+      //
+      //   if(moveNames.includes(val.move)){
+      //     // console.log("name already exits");
+      //     this.openSnackBar("Name already exists in dropdown menu!", null);
+      //     this.localMoveName = null;
+      //   }else{
+      //     this.localMoveName = val.move;
+      //   }
+      // });
     });
   }
 
