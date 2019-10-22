@@ -57,6 +57,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private attemptStatus: string = "Yes";
   private pointsEntered: number = -1;
   private localMoveName: string = null;
+  private localUser: any = null;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, private textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService, private _snackBar: MatSnackBar, public dialog: MatDialog) {
     super();
@@ -75,6 +76,11 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     //     //TODO ??
     //   }
     // });
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
+      if(currentUser && currentUser.uid){
+        this.localUser = currentUser;
+      }
+    });
     this.trackerService.startTimePoint.next(1);
     this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
           if(moveName !== "No Annotation Currently Selected"){
@@ -115,18 +121,15 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   selectItem(item: string){
     console.log("selectItem entered");
     //TODO LEFT OFF HERE
-    if(item.charAt(0)==="A" && item.charAt(0)==="d" && item.charAt(0)==="d"){
+    if(item.charAt(0)==="A" && item.charAt(1)==="d" && item.charAt(2)==="d"){
       console.log("add a move reached");
+      this.openAddNameDialog();
+      //TODO eventually when you listen for it to come back, send moveName to tracker service
     }
-    // if(constants.rootNodes.includes(item)){
-    //   console.log(item + " is in root nodes. Adding to moveCategory...");
-    //   this.trackerService.moveCategory.next(item);
-    // } else{
-      //TODO check whether works
+    else{
       this.trackerService.moveName.next(item);
       console.log("item selected: " + item);
-      //TODO get category from item
-    // }
+    }
   }
 
   registerCategory(category: string){
@@ -186,9 +189,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     // console.log("Cancel was clicked TODO don't swap the buttons in match display");
   }
 
-  openAddNameDialog(athleteNumber: number){
-    // console.log("clicked!");
-    console.log("athlete number is " + athleteNumber);
+  openAddNameDialog(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -197,19 +198,18 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to annotation-display component?:");
       console.log(val);
-      //TODO add maybe a forEach to take through each rootNode and see if it's in its child
-      // this.db.getMoveNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveNames =>{
-      //   console.log(moveNames);
-      //   val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
-      //
-      //   if(moveNames.includes(val.move)){
-      //     // console.log("name already exits");
-      //     this.openSnackBar("Name already exists in dropdown menu!", null);
-      //     this.localMoveName = null;
-      //   }else{
-      //     this.localMoveName = val.move;
-      //   }
-      // });
+      // TODO check that it already exists add maybe a forEach to take through each rootNode and see if it's in its child
+      // this.openSnackBar("Name already exists in dropdown menu!", null);
+      val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
+
+      this.trackerService.moveName.next(val.move);
+      this.trackerService.moveCategory.next(val.moveCategory);
+      if(this.localUser.id){
+        console.log("user db id is: ");
+        console.log(this.localUser.id);
+        this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory, this.localUser.id);
+      }
+      //TODO add to an admin component
     });
   }
 

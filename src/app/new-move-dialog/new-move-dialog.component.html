@@ -8,7 +8,7 @@
         <input matInput [formControl]="moveNameFc" placeholder="Move Name" id="moveNameFc" value="E.g., Triangle" required>
         <mat-error *ngIf="!vs.validateString(moveNameFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-select [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
+      <mat-select appendTo="body" [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
         <mat-option value="" [disabled]="disabledCategoryName">Choose Move Category</mat-option>
         <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
       </mat-select>
