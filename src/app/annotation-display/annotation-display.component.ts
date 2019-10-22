@@ -25,6 +25,7 @@ import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
 import { MoveInVideo } from '../moveInVideo.model';
+import { MatchDetails} from '../matchDetails.model';
 
 declare var $:any;
 
@@ -47,7 +48,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private disabledStatus: boolean = true;
   private performers: any[];
-  private localMatchDeets: any[];
+  private localMatchDeets: MatchDetails;
   private disabledPerformer: boolean = false;
   private moveValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private moveValidStatus: boolean = false;
@@ -90,10 +91,12 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        // console.log(matchDeets);
-        let localMatchDeets: any = matchDeets;
+        console.log("HEYOO"); //TODO LEFT OFF HERE TROUBLESHOOTING
+        console.log(matchDeets);
+        console.log(Array.of(matchDeets.json()));
+        this.localMatchDeets =  Array.of(matchDeets.json()).map(MatchDetails.fromJson);
         //TODO maybe a try catch here?
-        let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
+        let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
         this.performers = thePerformers;
       });
     });
@@ -205,9 +208,15 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
       this.trackerService.moveName.next(val.move);
       this.trackerService.moveCategory.next(val.moveCategory);
       if(this.localUser.id){
-        console.log("user db id is: ");
-        console.log(this.localUser.id);
-        this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory, this.localUser.id);
+        // console.log("user db id is: ");
+        // console.log(this.localUser.id);
+        console.log(this.localMatchDeets);
+        if(this.localMatchDeets){
+          console.log("YOOOOOO");
+          console.log(this.localMatchDeets);
+          console.log(this.localMatchDeets.videoUrl);
+          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory, this.localUser.id, this.localMatchDeets.videoUrl);
+        }
       }
       //TODO add to an admin component
     });

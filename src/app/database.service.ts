@@ -1175,33 +1175,33 @@ export class DatabaseService {
   }
 
   // New stuff LEFT OFF here
-  addCandidateMoveInVideoToDb(moveName: string, moveCategory: string, userSubmitting: string){ //TODO associatedMatchUrl
+  addCandidateMoveInVideoToDb(moveName: string, moveCategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
     console.log("addCandidateMoveInVideoToDb called");
     console.log("move name is " + moveName);
     let ref = firebase.database().ref('/candidateMoveNames/');
-    let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'userSubmitting': userSubmitting}); //.key;
+    let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
 
-  addAthleteNameToDb(name: string){
-    //TODO check whether name already exists!
-    let ref = firebase.database().ref('/athleteNames/');
-    ref.push(name);
+  addMoveNameToDb(moveName: string, categoryName: string){
+    //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
+    let ref = firebase.database().ref('/moves/' + categoryName);
+    ref.push(moveName);
   }
 
-  removeAthleteNameFromCandidateList(name: string){
-    console.log("removeAthleteNameFromCandidateList called");
-    let ref = firebase.database().ref('/candidateAthleteNames/');
-    ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
-      console.log("found entry in removeAthleteNameFromCandidateList:");
+  removeMoveNameFromCandidateList(moveName: string){
+    console.log("removeMoveNameFromCandidateList called");
+    let ref = firebase.database().ref('/candidateMoveNames/');
+    ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
+      console.log("found entry in removeMoveNameFromCandidateList:");
       console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
   }
 
-  getCandidateAthleteNames(){
-    let ref = firebase.database().ref('/candidateAthleteNames/');
+  getCandidateMoveNames(){
+    let ref = firebase.database().ref('/candidateMoveNames/');
     let obsRet = Observable.create(function(observer){
-      ref.orderByChild('name').on("value", snapshot =>{
+      ref.orderByChild('moveName').on("value", snapshot =>{
         let resultObj = snapshot.val();
         if(resultObj){
           let names = Object.keys(resultObj).map(index => resultObj[index].name);
@@ -1216,11 +1216,11 @@ export class DatabaseService {
     // return this.db.list('/candidateAthleteNames/').valueChanges();
   }
 
-  getMatchUrlFromCandidateAthleteName(name: string){
-    console.log("getMatchUrlFromCandidateAthleteName called");
-    let ref = firebase.database().ref('/candidateAthleteNames/');
+  getMatchUrlFromCandidateMoveName(moveName: string){
+    console.log("getMatchUrlFromCandidateMoveName called");
+    let ref = firebase.database().ref('/candidateMoveNames/');
     let obsRet = Observable.create(function(observer){
-      ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
+      ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
         // console.log("found entry in getMatchUrlFromCandidateAthleteName:");
         // console.log(snapshot.val().associatedMatchUrl);
         observer.next(snapshot.val().associatedMatchUrl);
@@ -1229,42 +1229,31 @@ export class DatabaseService {
     return obsRet;
   }
 
-  updateAthleteNameInMatch(matchId: string, targetName: string, newName: string){
-    console.log("updateAthleteNameInMatch called");
+  updateMoveNameInMatch(matchId: string, moveId: string, targetName: string, newName: string){
+    console.log("updateMoveNameInMatch called");
     console.log("matchId is " + matchId);
     console.log("target name is " + targetName);
     let ref = firebase.database().ref('/matches/');
-    ref.orderByChild('matchDeets/athlete1Name').equalTo(targetName).on('child_added', snapshot =>{
-      console.log("child added athlete1");
+    ref.orderByChild('matchDeets/moves/' + moveId + '/').equalTo(targetName).on('child_added', snapshot =>{
+      console.log("child added updateMoveNameInMatch");
       console.log(snapshot.val());
       if(snapshot.val().id == matchId){
-        console.log("matches athlete1 in known match!");
+        console.log("matches moveName in known match!");
         let updates = {};
-        updates['/matches/' + matchId + '/matchDeets/athlete1Name'] = newName;
-        firebase.database().ref().update(updates);
-      }
-    });
-    ref.orderByChild('matchDeets/athlete2Name').equalTo(targetName).on('child_added', snapshot =>{
-      console.log("child added athlete2");
-      console.log(snapshot.val());
-      if(snapshot.val().id == matchId){
-        console.log("matches athlete2 in known match");
-        let updates = {};
-        updates['/matches/' + matchId + '/matchDeets/athlete2Name'] = newName;
+        updates['/matches/' + matchId + '/matchDeets/moves/' + moveId] = newName;
         firebase.database().ref().update(updates);
       }
     });
   }
 
-  deleteAthleteName(name: string){
-    console.log("entered deleteAthleteName");
-    let ref = firebase.database().ref('athleteNames/');
-    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
-      console.log("child added in deleteAthleteName: ");
+  deleteMoveName(moveName: string, categoryName: string){
+    console.log("entered deleteMoveName");
+    let ref = firebase.database().ref('moves/' + categoryName + '/');
+    ref.orderByValue().equalTo(moveName).on("child_added", snapshot =>{
+      console.log("child added in deleteMoveName: ");
       console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
-    // ref.remove();
   }
 
 
