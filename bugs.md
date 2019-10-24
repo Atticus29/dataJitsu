@@ -1,4 +1,5 @@
 # Known issues
+
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
 
@@ -37,6 +38,7 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Adding an annotation with a created user doesn't work
 - [x] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
 - [x] Rating a match toggles back and forth between your current vote and your old vote
 - [x] Tests are failing because of unsubscription error

@@ -29,6 +29,8 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
         this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
           if(dbUser.privileges.isAdmin){
             this.localIsAdmin = true;
+          } else{
+            this.localIsAdmin = false;
           }
         });
       }
@@ -55,8 +57,6 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
       if(this.localUser){
         this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
       }
-      //TODO add to athlete names in database and remove from candidates
-      //award points to current user for flagging
     }
   }
 
@@ -74,8 +74,6 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
       if(this.localUser){
         this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
       }
-      //TODO remove athlete name from matches in database and remove from candidates
-      //award points to current user for flagging
     }
   }
 

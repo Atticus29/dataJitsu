@@ -90,11 +90,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     });
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
-        // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        console.log("HEYOO"); //TODO LEFT OFF HERE TROUBLESHOOTING
-        console.log(matchDeets);
-        console.log(Array.of(matchDeets.json()));
-        this.localMatchDeets =  Array.of(matchDeets.json()).map(MatchDetails.fromJson);
+        console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
+        console.log(Array.of(matchDeets));
+        this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
+        console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
         this.performers = thePerformers;
@@ -123,7 +122,6 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
   selectItem(item: string){
     console.log("selectItem entered");
-    //TODO LEFT OFF HERE
     if(item.charAt(0)==="A" && item.charAt(1)==="d" && item.charAt(2)==="d"){
       console.log("add a move reached");
       this.openAddNameDialog();
@@ -212,9 +210,9 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         // console.log(this.localUser.id);
         console.log(this.localMatchDeets);
         if(this.localMatchDeets){
-          console.log("YOOOOOO");
-          console.log(this.localMatchDeets);
-          console.log(this.localMatchDeets.videoUrl);
+          // console.log("YOOOOOO");
+          // console.log(this.localMatchDeets);
+          // console.log(this.localMatchDeets.videoUrl);
           this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }

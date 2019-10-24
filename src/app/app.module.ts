@@ -99,6 +99,7 @@ import { AdvantageDirective } from './advantage.directive';
 import { AthleteNameApprovalComponent } from './athlete-name-approval/athlete-name-approval.component';
 import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-athlete-name-dialog.component';
 import { NewMoveDialogComponent } from './new-move-dialog/new-move-dialog.component';
+import { MoveNameApprovalComponent } from './move-name-approval/move-name-approval.component';
 
 
 export const firebaseConfig = {
@@ -146,7 +147,8 @@ export const firebaseConfig = {
     AdvantageDirective,
     AthleteNameApprovalComponent,
     NewAthleteNameDialogComponent,
-    NewMoveDialogComponent
+    NewMoveDialogComponent,
+    MoveNameApprovalComponent
   ],
   imports: [
     AngularFireDatabaseModule,

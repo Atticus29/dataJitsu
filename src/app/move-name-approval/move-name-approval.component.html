@@ -1,0 +1,28 @@
+<h5>Confirm new move names:</h5>
+<div class="flexbox-container small-black-border">
+  <div class="flexbox-item">
+    <ul>
+      <li *ngFor="let candidateMove of localCandidateMoves">
+        {{candidateMove}}
+        <span matTooltip="Approve" (click)="approveMove(candidateMove)">
+          <i class="material-icons" id="up">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveMove(candidateMove)">
+          <i class="material-icons" id="down">thumb_down</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="flexbox-item">
+    <h5>Move names already in the database (for reference)</h5>
+    <hr>
+    <ul>
+      <li *ngFor="let moveName of localMoveNames">
+        {{moveName}}
+        <span (click)="deleteMoveName(moveName, moveCategory)" *ngIf="localIsAdmin">
+          <i class="material-icons" id="delete">delete</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
