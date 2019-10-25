@@ -288,7 +288,7 @@ export class DatabaseService {
       // majorityAnnotator.annotatorUserId
     });
     // console.log("annotators accumulated:");
-    // console.log(annotators); //TODO LEFT OFF HERE
+    // console.log(annotators); //TODO IS THIS GOOD YET?
     let queryObservable = Observable.create(function(observer){
       ref.orderByChild("annotatorUserId").on("child_added", snapshot =>{
         // console.log("getMainAnnotatorOfMatch snapshot:");
@@ -1174,7 +1174,6 @@ export class DatabaseService {
     // ref.remove();
   }
 
-  // New stuff LEFT OFF here
   addCandidateMoveInVideoToDb(moveName: string, moveCategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
     console.log("addCandidateMoveInVideoToDb called");
     console.log("move name is " + moveName);
@@ -1198,13 +1197,54 @@ export class DatabaseService {
     });
   }
 
-  getCandidateMoveNames(){
+  getCandidateMoves(){
+    // console.log("entered getCandidateMoves");
     let ref = firebase.database().ref('/candidateMoveNames/');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('moveName').on("value", snapshot =>{
         let resultObj = snapshot.val();
+        // console.log(resultObj);
         if(resultObj){
-          let names = Object.keys(resultObj).map(index => resultObj[index].name);
+          // let names = Object.keys(resultObj).map(index => resultObj[index].moveName);
+          // console.log(names);
+          observer.next(resultObj);
+        } else{
+          observer.next([]);
+        }
+      });
+    });
+    return obsRet;
+  }
+
+  getCandidateMoveNames(){
+    // console.log("entered getCandidateMoveNames");
+    let ref = firebase.database().ref('/candidateMoveNames/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('moveName').on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        // console.log(resultObj);
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index].moveName);
+          // console.log(names);
+          observer.next(names);
+        } else{
+          observer.next([]);
+        }
+      });
+    });
+    return obsRet;
+  }
+
+  getMoveNamesFromCategory(category: string){
+    // console.log("entered getMoveNamesFromCategory");
+    let ref = firebase.database().ref('/moves/' + category + '/');
+    let obsRet = Observable.create(function(observer){
+      ref.on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        // console.log(resultObj);
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index]);
+          // console.log(names);
           observer.next(names);
         } else{
           observer.next([]);

@@ -17,6 +17,8 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
   private localMoveNames: any = null;
   private localUser: any = null;
   private localIsAdmin: boolean = false;
+  private localCategoryNames: string[] = constants.rootNodes;
+  private existingMovesObj: {[k:string]: any} = {};
 
   constructor(private db: DatabaseService, private trackerService: TrackerService) {
     super();
@@ -36,14 +38,31 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       }
     });
 
-    this.db.getCandidateMoveNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      // console.log(  "candidate move name db results");
+    this.db.getCandidateMoves().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      // console.log("candidate move  db results");
       // console.log(results);
-      this.localMoveNames = results.sort();
+      // if(Object.keys(results).length == constants.rootNodes.length){
+      let resultArray = Object.keys(results).map(function(candidateMovesObjIndex){
+          let singleCandidateMoveObj = results[candidateMovesObjIndex];
+          return singleCandidateMoveObj;
+      });
+      // console.log(resultArray);
+      // }
+      this.localCandidateMoves = resultArray;
+      console.log(this.localCandidateMoves[0].moveCategory);
+    });
+
+    constants.rootNodes.forEach(category =>{
+      // console.log("category is: " + category);
+      this.db.getMoveNamesFromCategory(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+        this.existingMovesObj[category] = results;
+        // console.log("getMoveNamesFromCategory results:");
+        // console.log(results);
+      });
+      // console.log("existingMovesObj: ");
+      // console.log(this.existingMovesObj);
     });
   }
-
-    //TODO LEFT OFF HERE WRITE OR MAKE GETMOVENAMES METHOD
 
     approveMove(move: string, categoryName: string){
       // console.log("approve clicked " + move);

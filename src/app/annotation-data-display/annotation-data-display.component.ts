@@ -50,7 +50,6 @@ export class AnnotationDataDisplayComponent extends BaseComponent implements OnI
         // console.log("move from within AnnotationDataDisplayComponent:");
         // console.log(moves);
         // let theMoves = new MoveInVideo(moves);
-        //TODO LEFT OFF HERE
         moves.forEach(move =>{
           // console.log(move);
           if(move.timeInitiated <= 0){

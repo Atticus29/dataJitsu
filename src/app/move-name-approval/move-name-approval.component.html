@@ -3,7 +3,7 @@
   <div class="flexbox-item">
     <ul>
       <li *ngFor="let candidateMove of localCandidateMoves">
-        {{candidateMove}}
+        {{candidateMove.moveCategory}} : {{candidateMove.moveName}}
         <span matTooltip="Approve" (click)="approveMove(candidateMove)">
           <i class="material-icons" id="up">thumb_up</i>
         </span>
@@ -17,12 +17,18 @@
     <h5>Move names already in the database (for reference)</h5>
     <hr>
     <ul>
-      <li *ngFor="let moveName of localMoveNames">
+      <li *ngFor="let category of localCategoryNames">
+        {{category}}
+        <ul>
+          <li class="little-list" *ngFor="let moveItem of existingMovesObj[category]">{{moveItem}}</li>
+        </ul>
+      </li>
+      <!-- <li *ngFor="let moveName of localMoveNames">
         {{moveName}}
         <span (click)="deleteMoveName(moveName, moveCategory)" *ngIf="localIsAdmin">
           <i class="material-icons" id="delete">delete</i>
         </span>
-      </li>
+      </li> -->
     </ul>
   </div>
 </div>
