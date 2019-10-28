@@ -1,5 +1,6 @@
 # TODO high priority
 - [ ] Alphabetize the moves in annotation lists
+- [ ] Enter upon password completion for login should trigger login button
 - [ ] Tournaments from a dropdown
 - [ ] Add moves, weight class, tournament, age class, etc.
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back

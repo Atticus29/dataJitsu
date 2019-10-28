@@ -1183,7 +1183,9 @@ export class DatabaseService {
 
   addMoveNameToDb(moveName: string, categoryName: string){
     //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
-    let ref = firebase.database().ref('/moves/' + categoryName);
+    // let updates = {};
+    // updates['/moves/' + categoryName + '/']
+    let ref = firebase.database().ref('/moves/' + categoryName + '/');
     ref.push(moveName);
   }
 

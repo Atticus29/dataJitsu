@@ -4,7 +4,7 @@
     <ul>
       <li *ngFor="let candidateMove of localCandidateMoves">
         {{candidateMove.moveCategory}} : {{candidateMove.moveName}}
-        <span matTooltip="Approve" (click)="approveMove(candidateMove)">
+        <span matTooltip="Approve" (click)="approveMove(candidateMove.moveName, candidateMove.moveCategory)">
           <i class="material-icons" id="up">thumb_up</i>
         </span>
         <span matTooltip="Disapprove" (click)="disapproveMove(candidateMove)">

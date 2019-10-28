@@ -30,7 +30,7 @@ export class TestDbComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     // console.log(allCurrentMoves);
-    this.db.addMovesListToDb(allCurrentMoves); //TODO this is the line to uncomment
+    // this.db.addMovesListToDb(allCurrentMoves); //TODO this is the line to uncomment
 
     this.athleteNames = ["Tonon, Garry", "Gracie, Kron", "Garcia, Marcelo", "Oliveira, Arnaldo", "Cornelius, Kennan", "Lo, Leandro", "Musumeci, Michael", "Miyao, João", "Mendes, Rafael", "Charles, Rubens Cobrihna", "Santana, Murilo", "Barral, Romulo", "Ribeiro, Vitor 'Shaolin'",
      "Augusto, Fernando 'Terere'", "Dern, Mackenzie", "Nicolini, Michelle", "Enick, Trayton", "Deodara, Dirt", "Diógenes de Aquino, Thamires", "Alencar, Ana Talita de Oliveira", "Martinez, Richie 'The Boogeyman'",

@@ -58,21 +58,6 @@
   background-color: #e6e8e7;
 }
 
-.flexbox-item{
-  padding: 0.5em;
-  margin: 0.5em;
-  border: 5px solid #fffff;
-}
-
-.huge-flexbox-item{
-  flex-grow: 1
-  // width: 75%;
-}
-
-.small-flexbox-item{
-  width: 25%;
-}
-
 .button-space{
   margin: 1.2em;
 }
@@ -105,4 +90,21 @@
 .little-list{
   font-size: 80%;
   margin-left: 0.5em;
+}
+
+.flexbox-item{
+  padding: 0.5em;
+  margin: 0.5em;
+  border: 5px solid #fffff;
+}
+
+.huge-flexbox-item{
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+  flex-grow: 1
+  // width: 75%;
+}
+
+.small-flexbox-item{
+  width: 25%;
 }

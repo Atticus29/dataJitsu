@@ -64,13 +64,14 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
     });
   }
 
-    approveMove(move: string, categoryName: string){
+    approveMove(moveName: string, categoryName: string){
       // console.log("approve clicked " + move);
       let confirmation = confirm("Are you sure you want to APPROVE this move?");
       if(confirmation){
-        this.db.addMoveNameToDb(move, categoryName);
-        this.db.removeMoveNameFromCandidateList(move);
+        this.db.addMoveNameToDb(moveName, categoryName);
+        this.db.removeMoveNameFromCandidateList(moveName);
         if(this.localUser){
+          console.log(this.localUser.id);
           this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName)
         }
       }

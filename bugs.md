@@ -1,4 +1,8 @@
 # Known issues
+- [ ] Deal with subcategory for submissions in move-name adding
+  - [ ] Section with move name added now seems expandable in its deepest level, when it should not be
+  - [ ] Trying to collapse an expand fails
+  - [ ] When you try to re-expand, it add items to the array 
 
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.

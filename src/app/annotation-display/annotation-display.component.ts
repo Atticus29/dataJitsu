@@ -90,10 +90,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     });
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
-        console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        console.log(Array.of(matchDeets));
+        // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
+        // console.log(Array.of(matchDeets));
         this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
-        console.log(this.localMatchDeets);
+        // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
         this.performers = thePerformers;
@@ -121,21 +121,21 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
-    console.log("selectItem entered");
+    // console.log("selectItem entered");
     if(item.charAt(0)==="A" && item.charAt(1)==="d" && item.charAt(2)==="d"){
-      console.log("add a move reached");
+      // console.log("add a move reached");
       this.openAddNameDialog();
       //TODO eventually when you listen for it to come back, send moveName to tracker service
     }
     else{
       this.trackerService.moveName.next(item);
-      console.log("item selected: " + item);
+      // console.log("item selected: " + item);
     }
   }
 
   registerCategory(category: string){
     if(constants.rootNodes.includes(category)){
-      console.log(category + " from registerCategory function. Adding to moveCategory...");
+      // console.log(category + " from registerCategory function. Adding to moveCategory...");
       this.trackerService.moveCategory.next(category);
     }
   }
@@ -197,8 +197,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(NewMoveDialogComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
-      console.log("got dialog data to annotation-display component?:");
-      console.log(val);
+      // console.log("got dialog data to annotation-display component?:");
+      // console.log(val);
       // TODO check that it already exists add maybe a forEach to take through each rootNode and see if it's in its child
       // this.openSnackBar("Name already exists in dropdown menu!", null);
       val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
@@ -208,7 +208,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
       if(this.localUser.id){
         // console.log("user db id is: ");
         // console.log(this.localUser.id);
-        console.log(this.localMatchDeets);
+        // console.log(this.localMatchDeets);
         if(this.localMatchDeets){
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
