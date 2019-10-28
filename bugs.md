@@ -1,10 +1,6 @@
 # Known issues
-- [ ] Deal with subcategory for submissions in move-name adding
-  - [ ] Section with move name added now seems expandable in its deepest level, when it should not be
-  - [ ] Trying to collapse an expand fails
-  - [ ] When you try to re-expand, it add items to the array 
-
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
+- [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
 
 - [ ] When another user adds and annotation, it does not appear in chronological order, even though it works fine when you enter them out of order yourself
@@ -42,6 +38,11 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Deal with subcategory for submissions in move-name adding
+  - [x] Section with move name added now seems expandable in its deepest level, when it should not be
+  - [x] Trying to collapse an expand fails
+  - [x] When you try to re-expand, it add items to the array (I think this won't be a problem if the above gets resolved)
+  - [x] Deal with the case in which there are submission sub-trees
 - [x] Adding an annotation with a created user doesn't work
 - [x] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
 - [x] Rating a match toggles back and forth between your current vote and your old vote

@@ -1,5 +1,7 @@
 # TODO high priority
-- [ ] Alphabetize the moves in annotation lists
+- [ ] See what happens when you try to add new submission name
+- [ ] Some annotation manipultations affect video play for another person's instance (test using aws version and localhost version?)
+  - [ ] Characterize the problem better
 - [ ] Enter upon password completion for login should trigger login button
 - [ ] Tournaments from a dropdown
 - [ ] Add moves, weight class, tournament, age class, etc.
@@ -107,6 +109,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Alphabetize the moves in annotation lists
 - [x] Change athlete names to dropdown menu with option to add more in a dialogue
   - [x] Dropdown
   - [x] Dialogue
