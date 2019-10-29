@@ -55,7 +55,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
       this.db.addAthleteNameToDb(name);
       this.db.removeAthleteNameFromCandidateList(name);
       if(this.localUser){
-        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
+        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName);
       }
     }
   }

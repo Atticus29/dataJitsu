@@ -1,4 +1,7 @@
 # Known issues
+- [ ] Dropdown menu for new-move isn't in front
+- [ ] Alphabetical order not happening for moves that don't score points
+
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.

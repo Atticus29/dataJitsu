@@ -25,6 +25,7 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(constants.numberOfPointsToAwardForApprovingMoveName);
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       if(user){
         this.localUser = user;
@@ -49,7 +50,8 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       // console.log(resultArray);
       // }
       this.localCandidateMoves = resultArray;
-      console.log(this.localCandidateMoves[0].moveCategory);
+
+      // console.log(this.localCandidateMoves[0].moveCategory);
     });
 
     constants.rootNodes.forEach(category =>{
@@ -72,7 +74,8 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
         this.db.removeMoveNameFromCandidateList(moveName);
         if(this.localUser){
           console.log(this.localUser.id);
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName)
+          console.log(constants.numberOfPointsToAwardForApprovingMoveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName);
         }
       }
     }
@@ -84,13 +87,20 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
         this.db.getMatchUrlFromCandidateMoveName(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
           console.log(urlResult);
           this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
-            //TODO get moveId
-            this.db.updateMoveNameInMatch(matchIdResult, moveId, move, "Move name has been removed; flag me");
+            this.db.getMoveIdFromMatchId(matchIdResult, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
+              console.log("moveIdResult: " + moveIdResult);
+              //TODO get moveId
+              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, move, "Move name has been removed; flag me");
+            });
           });
         })
         this.db.removeMoveNameFromCandidateList(move);
         if(this.localUser){
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName)
+          // console.log(this.localUser);
+          // console.log(this.localUser.id);
+          console.log(constants.numberOfPointsToAwardForApprovingMoveName);
+          console.log(constants.numberOfPointsToAwardForApprovingMoveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName);
         }
         //TODO remove athlete name from matches in database and remove from candidates
         //award points to current user for flagging
