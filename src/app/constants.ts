@@ -25,6 +25,8 @@ export var constants = {
     "Positions With Names That Do Not Score Points In Most Rule Sets",
     "Discliplinary Action",
     ],
+    rootNodesWithSubcategories: ["Submissions or Submission Attempts"],
+    subCategories: ["Choke Or Cervical Submissions", "Elbow", "Shoulder", "Knee Ligaments", "Back", "Ankle Ligaments", "Groin", "Wrist"],
     privilegeLevels: {
       1: 100,
       2: 200,

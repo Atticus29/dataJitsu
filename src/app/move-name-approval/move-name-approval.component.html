@@ -19,8 +19,19 @@
     <ul>
       <li *ngFor="let category of localCategoryNames">
         {{category}}
+        <ul *ngIf="helperService.hasSubcategories(category)">
+          <li *ngFor="let subcategory of localSubcategories" class="medium-list">{{subcategory}}</li>
+          <ul>
+            <li *ngFor="let item of existingMovesObj[category][subcategory]">{{item}}</li>
+          </ul>
+        </ul>
         <ul>
-          <li class="little-list" *ngFor="let moveItem of existingMovesObj[category]">{{moveItem}}</li>
+          <li class="little-list" *ngFor="let moveItem of existingMovesObj[category]">
+            {{moveItem}}
+            <span (click)="deleteMoveName(moveItem, category)" *ngIf="localIsAdmin">
+              <i class="material-icons" id="delete">delete</i>
+            </span>
+          </li>
         </ul>
       </li>
       <!-- <li *ngFor="let moveName of localMoveNames">

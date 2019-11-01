@@ -120,7 +120,7 @@ export class DynamicDataSource {
           }
           // console.log("jsonToStrMap successful:");
           // console.log(results);
-          children = results;
+          children = results; //.sort();
         }
         catch(error) {
           console.error(error);
@@ -136,17 +136,17 @@ export class DynamicDataSource {
         if(Array.isArray(children)){
           // console.log("children is an array:");
           // console.log(children);
-          const nodes = children.map(name =>
+          const nodes = children.sort().map(name =>
             new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString()))); //TODO why when you change it does it not have the error?
           this.data.splice(index + 1, 0, ...nodes);
         } else{
           // console.log("expand is true and children is not an array");
           // console.log(children);
           // console.log(children.values());
-          let flattenedArray = Array.from(children.values());
+          let flattenedArray = Array.from(children.values()).sort();
           if(Array.isArray(flattenedArray[0])){
             // alert("should only happen with nested things");
-            const nodes = Array.from(children).map(name => new DynamicFlatNode(name[0], node.level + 1, true));
+            const nodes = Array.from(children).sort().map(name => new DynamicFlatNode(name[0], node.level + 1, true));
             this.data.splice(index + 1, 0, ...nodes);
           } else{
 

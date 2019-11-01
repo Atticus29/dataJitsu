@@ -38,6 +38,7 @@ import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-ti
 import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EmailLoginDialog } from './emailLoginDialog.model';
+import { HelperService } from './helper.service';
 
 import {
   MatAutocompleteModule,
@@ -201,7 +202,7 @@ export const firebaseConfig = {
     ReactiveFormsModule,
     routing
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService],
   bootstrap: [AppComponent],
   entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
 })

@@ -1,5 +1,6 @@
 # TODO high priority
 - [ ] See what happens when you try to add new submission name
+- [ ] Add interesting exchange or something like that
 - [ ] Some annotation manipultations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Enter upon password completion for login should trigger login button
@@ -178,7 +179,7 @@
 - [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
-- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
+- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)
 - [ ] Set up unit testing, especially for database stuff
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:

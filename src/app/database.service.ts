@@ -1176,8 +1176,8 @@ export class DatabaseService {
   }
 
   addCandidateMoveInVideoToDb(moveName: string, moveCategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
-    console.log("addCandidateMoveInVideoToDb called");
-    console.log("move name is " + moveName);
+    // console.log("addCandidateMoveInVideoToDb called");
+    // console.log("move name is " + moveName);
     let ref = firebase.database().ref('/candidateMoveNames/');
     let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
@@ -1191,11 +1191,11 @@ export class DatabaseService {
   }
 
   removeMoveNameFromCandidateList(moveName: string){
-    console.log("removeMoveNameFromCandidateList called");
+    // console.log("removeMoveNameFromCandidateList called");
     let ref = firebase.database().ref('/candidateMoveNames/');
     ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
-      console.log("found entry in removeMoveNameFromCandidateList:");
-      console.log(snapshot.val());
+      // console.log("found entry in removeMoveNameFromCandidateList:");
+      // console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
   }
@@ -1279,7 +1279,8 @@ export class DatabaseService {
     firebase.database().ref().update(updates);
   }
 
-  deleteMoveName(moveName: string, categoryName: string){
+  deleteMoveName(moveName: string, categoryName: string, subcategory: string){ //just put '' if there is no subcategory
+    subcategory = subcategory + '/';
     console.log("entered deleteMoveName");
     let ref = firebase.database().ref('moves/' + categoryName + '/');
     ref.orderByValue().equalTo(moveName).on("child_added", snapshot =>{
@@ -1303,5 +1304,18 @@ export class DatabaseService {
     return obsRet;
   }
 
+  getSubcategoryFromMoveAndCategory(category: string, move: string){
+    let ref = firebase.database().ref('moves/' + category + '/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByKey().on("child_added", snapshot =>{
+        // console.log("found entry in getMatchUrlFromCandidateAthleteName:");
+        // console.log("snapshot inside getSubcategoryFromMoveAndCategory:");
+        // console.log(snapshot.val());
+        // console.log(snapshot.key);
+        // observer.next(snapshot.key);
+      });
+    });
+    return obsRet;
+  }
 
 }
