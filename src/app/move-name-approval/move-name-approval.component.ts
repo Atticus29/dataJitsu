@@ -73,18 +73,41 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       // console.log("has subcategory?");
       // console.log(this.helperService.hasSubcategories(category));
       this.db.getMoveNamesFromCategory(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-        console.log(results);
+        // console.log(results);
         if(this.helperService.hasSubcategories(results)){
           // this.localCategoryHasSubcategory = true;
-          // this.localSubcategories = constants.subCategories; //hacky because I don't want to deal with async for this silly thing
-
+          // this.existingMovesObj[category] = results;
+          this.localSubcategories = constants.subCategories; //hacky because I don't want to deal with async for this silly thing
+          this.existingMovesObj[category] = constants.subCategories.reduce((a,b)=> (a[b]='',a),{});
+          // console.log(this.existingMovesObj[category]);
+          this.localSubcategories.forEach(subcategory =>{
+            this.db.getMovesSubsetAsObject(subcategory).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+                // console.log("subcategory: " + subcategory);
+                // console.log("category: " + category);
+                // console.log(result);
+                // console.log(this.existingMovesObj[category]);
+                this.existingMovesObj[category][subcategory] = result;
+                // if(Array.isArray(results)){
+                //   // this.existingMovesObj[category] = results;
+                //   // console.log(this.existingMovesObj[category]);
+                //   // this.existingMovesObj[category].push({subcategory: result});
+                // } else{
+                //   // console.log("got here");
+                //   // console.log(result);
+                //   this.existingMovesObj[category][subcategory] = result;
+                // }
+                //   //TODO LEFT OFF HERE
+                // console.log(this.existingMovesObj);
+            });
+          });
           // this.db.getMovesSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
           //   // console.log("results in getMovesSubsetAsObject call in move-name-approval: ");
           //   // console.log(Object.keys(result));
           //   this.localSubcategories = Object.keys(result);
-          //   //TODO flesh out
           // });
         }else {
+          // console.log("non subcategory results: ");
+          // console.log(results);
           this.existingMovesObj[category] = results;
           // this.localCategoryHasSubcategory = false;
         }
