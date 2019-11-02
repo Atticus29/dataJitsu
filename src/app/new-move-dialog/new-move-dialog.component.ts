@@ -18,7 +18,10 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   form: FormGroup;
   private moveNameFc: FormControl = new FormControl('', [Validators.required]);
   private moveCategoryFc: FormControl = new FormControl('', [Validators.required]);
+  private moveSubcategoryFc: FormControl = new FormControl('');
   private categories: any = constants.rootNodes;
+  private subcategories: any = constants.subCategories;
+  private displaySubcategorySelect: boolean = true;
 
   constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
     super();
@@ -28,12 +31,17 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
     this.form = this.fb.group({
       moveNameFc: ['', Validators.required],
     });
+    //TODO something watching category selected and having that affect displaySubcategorySelect and making it true (default is currently true, and you should change this)
   }
 
   getValues(){
     let move = this.moveNameFc.value;
     let moveCategory = this.moveCategoryFc.value;
-    return {move, moveCategory};
+    let moveSubcategory = this.moveSubcategoryFc.value;
+    if(!moveSubcategory){
+      moveSubcategory = '';
+    }
+    return {move, moveCategory, moveSubcategory};
   }
 
   processDialogData(){
@@ -67,6 +75,10 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
     }
     if(this.moveCategoryFc.hasError('required')){
       errorMessage = 'Move category is required';
+      return  errorMessage;
+    }
+    if(this.moveSubcategoryFc.hasError('required')){
+      errorMessage = 'Move subcategory is required';
       return  errorMessage;
     }
     return  errorMessage;

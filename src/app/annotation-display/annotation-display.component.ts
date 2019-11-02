@@ -205,6 +205,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
       this.trackerService.moveName.next(val.move);
       this.trackerService.moveCategory.next(val.moveCategory);
+      this.trackerService.moveSubcategory.next(val.moveSubcategory);
       if(this.localUser.id){
         // console.log("user db id is: ");
         // console.log(this.localUser.id);
@@ -213,7 +214,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
-          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory, this.localUser.id, this.localMatchDeets.videoUrl);
+          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }
       //TODO add to an admin component

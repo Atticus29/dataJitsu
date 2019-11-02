@@ -30,14 +30,13 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.localSubcategories = constants.subCategories; //hacky because I don't want to deal with async for this silly thing
-    // this.db.getMoveNamesFromCategory("Submissions or Submission Attempts/Elbow").pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-    //   console.log("elbow");
-    //   console.log(results);
-    //   console.log(this.helperService.hasSubcategories(results));
+    // this.db.getSubcategoryFromMoveAndCategory("Submissions or Submission Attempts", "Biceps Slicer").pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    //   console.log("result from getSubcategoryFromMoveAndCategory: ");
+    //   console.log(result);
     // });
-    // this.db.getMoveNamesFromCategory("Submissions or Submission Attempts").pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-    //   console.log(results);
-    //   console.log(this.helperService.hasSubcategories(results));
+    // this.db.getSubcategoryFromMoveAndCategory("Advantage", "Advantage Awarded").pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    //   console.log("result from getSubcategoryFromMoveAndCategory, expecting nothing: ");
+    //   console.log(result);
     // });
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       if(user){
@@ -68,62 +67,44 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
     });
 
     constants.rootNodes.forEach(category =>{
-
       // console.log("category is: " + category);
       // console.log("has subcategory?");
       // console.log(this.helperService.hasSubcategories(category));
       this.db.getMoveNamesFromCategory(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
         // console.log(results);
         if(this.helperService.hasSubcategories(results)){
-          // this.localCategoryHasSubcategory = true;
-          // this.existingMovesObj[category] = results;
           this.localSubcategories = constants.subCategories; //hacky because I don't want to deal with async for this silly thing
           this.existingMovesObj[category] = constants.subCategories.reduce((a,b)=> (a[b]='',a),{});
           // console.log(this.existingMovesObj[category]);
           this.localSubcategories.forEach(subcategory =>{
             this.db.getMovesSubsetAsObject(subcategory).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-                // console.log("subcategory: " + subcategory);
-                // console.log("category: " + category);
-                // console.log(result);
-                // console.log(this.existingMovesObj[category]);
+              // console.log(result)
+              if(Array.isArray(result)){
+                console.log("array happens");
                 this.existingMovesObj[category][subcategory] = result;
-                // if(Array.isArray(results)){
-                //   // this.existingMovesObj[category] = results;
-                //   // console.log(this.existingMovesObj[category]);
-                //   // this.existingMovesObj[category].push({subcategory: result});
-                // } else{
-                //   // console.log("got here");
-                //   // console.log(result);
-                //   this.existingMovesObj[category][subcategory] = result;
-                // }
-                //   //TODO LEFT OFF HERE
-                // console.log(this.existingMovesObj);
+              } else{
+                console.log("non array happens");
+                //TODO LEFT OFF HERE FIGURING OUT WHY KNEE BOOP ISN'T BEING DISPLAYED
+                this.existingMovesObj[category][subcategory] = Object.values(result);
+                // console.log(Object.values(result));
+                // console.log(Object.entries(result).map(entry =>{entry[1]}));
+              }
             });
           });
-          // this.db.getMovesSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-          //   // console.log("results in getMovesSubsetAsObject call in move-name-approval: ");
-          //   // console.log(Object.keys(result));
-          //   this.localSubcategories = Object.keys(result);
-          // });
         }else {
           // console.log("non subcategory results: ");
           // console.log(results);
           this.existingMovesObj[category] = results;
-          // this.localCategoryHasSubcategory = false;
         }
-        // console.log("getMoveNamesFromCategory results:");
-        // console.log(results);
       });
-      // console.log("existingMovesObj: ");
-      // console.log(this.existingMovesObj);
     });
   }
 
-    approveMove(moveName: string, categoryName: string){
-      // console.log("approve clicked " + move);
+    approveMove(moveName: string, categoryName: string, subcategoryName: string){
+      console.log("approve clicked! moveName: + " + moveName + ", categoryName: " + categoryName + ", subcategoryName: " + subcategoryName);
       let confirmation = confirm("Are you sure you want to APPROVE this move?");
       if(confirmation){
-        this.db.addMoveNameToDb(moveName, categoryName);
+        this.db.addMoveNameToDb(moveName, categoryName, subcategoryName);
         this.db.removeMoveNameFromCandidateList(moveName);
         if(this.localUser){
           // console.log(this.localUser.id);

@@ -10,6 +10,7 @@ export class TrackerService {
   public endTimePoint: BehaviorSubject<number> = new BehaviorSubject(1);
   public points: BehaviorSubject<number> = new BehaviorSubject(-1);
   public moveCategory: BehaviorSubject<string> = new BehaviorSubject("No Category Currently Selected");
+  public moveSubcategory: BehaviorSubject<string> = new BehaviorSubject("");
   public moveName: BehaviorSubject<string> = new BehaviorSubject("No Annotation Currently Selected");
   public currentMatch: BehaviorSubject<string> = new BehaviorSubject("currentMatch");
   public performer: BehaviorSubject<string> = new BehaviorSubject("Nobody");
@@ -32,6 +33,7 @@ export class TrackerService {
     this.points.next(-1);
     this.moveName.next("No Annotation Currently Selected");
     this.moveCategory.next("No Category Currently Selected");
+    this.moveSubcategory.next("");
     this.performer.next("Nobody");
     this.recipient.next("Nobody");
     // this.matchId.next("tmpId");
@@ -48,6 +50,7 @@ export class TrackerService {
     this.points.next(-1);
     this.moveName.next("No Annotation Currently Selected");
     this.moveCategory.next("No Category Currently Selected");
+    this.moveSubcategory.next("");
     this.currentMatch.next("currentMatch");
     this.performer.next("Nobody");
     this.recipient.next("Nobody");

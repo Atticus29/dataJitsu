@@ -1175,18 +1175,18 @@ export class DatabaseService {
     // ref.remove();
   }
 
-  addCandidateMoveInVideoToDb(moveName: string, moveCategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
+  addCandidateMoveInVideoToDb(moveName: string, moveCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
     // console.log("addCandidateMoveInVideoToDb called");
     // console.log("move name is " + moveName);
     let ref = firebase.database().ref('/candidateMoveNames/');
-    let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
 
-  addMoveNameToDb(moveName: string, categoryName: string){
+  addMoveNameToDb(moveName: string, categoryName: string, subcategoryName: string){
+    console.log("entered addMoveNameToDb");
+    console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategoryName: " + subcategoryName);
     //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
-    // let updates = {};
-    // updates['/moves/' + categoryName + '/']
-    let ref = firebase.database().ref('/moves/' + categoryName + '/');
+    let ref = firebase.database().ref('/moves/' + categoryName + '/' + subcategoryName + '/');
     ref.push(moveName);
   }
 
@@ -1307,12 +1307,20 @@ export class DatabaseService {
   getSubcategoryFromMoveAndCategory(category: string, move: string){
     let ref = firebase.database().ref('moves/' + category + '/');
     let obsRet = Observable.create(function(observer){
-      ref.orderByKey().on("child_added", snapshot =>{
-        // console.log("found entry in getMatchUrlFromCandidateAthleteName:");
-        // console.log("snapshot inside getSubcategoryFromMoveAndCategory:");
-        // console.log(snapshot.val());
-        // console.log(snapshot.key);
-        // observer.next(snapshot.key);
+      ref.orderByKey().on("value", snapshot =>{
+        let categoryObj = snapshot.val();
+        let arregateArray = Object.keys(categoryObj).map(subcat => categoryObj[subcat]);
+        let allSubcatMoveNames = [];
+        arregateArray.forEach(arrayElem =>{allSubcatMoveNames = allSubcatMoveNames.concat(arrayElem)});
+        if(allSubcatMoveNames.includes(move)){
+          Object.keys(categoryObj).forEach(objKey =>{
+            if(categoryObj[objKey].includes(move)){
+              observer.next(objKey);
+            }
+          });
+        } else{
+          observer.next('');
+        }
       });
     });
     return obsRet;
