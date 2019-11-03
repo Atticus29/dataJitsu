@@ -1282,10 +1282,11 @@ export class DatabaseService {
   deleteMoveName(moveName: string, categoryName: string, subcategory: string){ //just put '' if there is no subcategory
     subcategory = subcategory + '/';
     console.log("entered deleteMoveName");
-    let ref = firebase.database().ref('moves/' + categoryName + '/');
+    console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategory: " + subcategory);
+    let ref = firebase.database().ref('moves/' + categoryName + '/' + subcategory);
     ref.orderByValue().equalTo(moveName).on("child_added", snapshot =>{
-      // console.log("child added in deleteMoveName: ");
-      // console.log(snapshot.val());
+      console.log("child added in deleteMoveName: ");
+      console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
   }
@@ -1305,17 +1306,40 @@ export class DatabaseService {
   }
 
   getSubcategoryFromMoveAndCategory(category: string, move: string){
+    console.log("entered getSubcategoryFromMoveAndCategory");
     let ref = firebase.database().ref('moves/' + category + '/');
     let obsRet = Observable.create(function(observer){
       ref.orderByKey().on("value", snapshot =>{
         let categoryObj = snapshot.val();
+        // console.log(categoryObj);
         let arregateArray = Object.keys(categoryObj).map(subcat => categoryObj[subcat]);
+        // console.log(arregateArray);
         let allSubcatMoveNames = [];
-        arregateArray.forEach(arrayElem =>{allSubcatMoveNames = allSubcatMoveNames.concat(arrayElem)});
+        arregateArray.forEach(arrayElem =>{
+          // console.log(arrayElem);
+          if(Array.isArray(arrayElem)){
+            allSubcatMoveNames = allSubcatMoveNames.concat(arrayElem);
+          } else{
+            let objectVals = Object.values(arrayElem);
+            // console.log(objectVals);
+            allSubcatMoveNames = allSubcatMoveNames.concat(objectVals);
+          }
+        });
+        console.log(allSubcatMoveNames);
         if(allSubcatMoveNames.includes(move)){
           Object.keys(categoryObj).forEach(objKey =>{
-            if(categoryObj[objKey].includes(move)){
-              observer.next(objKey);
+            // console.log(objKey);
+            // console.log(categoryObj[objKey]);
+            if(Array.isArray(categoryObj[objKey])){
+              if(categoryObj[objKey].includes(move)){
+                observer.next(objKey);
+              }
+            } else{
+              let renderedArray = Object.values(categoryObj[objKey]);
+              console.log(renderedArray);
+              if(renderedArray.includes(move)){
+                observer.next(objKey);
+              }
             }
           });
         } else{

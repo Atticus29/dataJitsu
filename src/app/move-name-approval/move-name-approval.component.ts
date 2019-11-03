@@ -80,23 +80,23 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
             this.db.getMovesSubsetAsObject(subcategory).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
               // console.log(result)
               if(Array.isArray(result)){
-                console.log("array happens");
+                // console.log("array happens");
+                // console.log(this.existingMovesObj);
+                // console.log(result);
                 this.existingMovesObj[category][subcategory] = result;
               } else{
-                console.log("non array happens");
-                //TODO LEFT OFF HERE FIGURING OUT WHY KNEE BOOP ISN'T BEING DISPLAYED
                 this.existingMovesObj[category][subcategory] = Object.values(result);
-                // console.log(Object.values(result));
-                // console.log(Object.entries(result).map(entry =>{entry[1]}));
               }
             });
           });
+          // console.log(this.existingMovesObj);
         }else {
           // console.log("non subcategory results: ");
           // console.log(results);
           this.existingMovesObj[category] = results;
         }
       });
+      console.log(this.existingMovesObj); //omg if this console log is missing, sometimes this.existingMovesObj comes out different
     });
   }
 
@@ -142,10 +142,10 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       // console.log("deleteMoveName clicked! Name is " + move + " and category is " + category);
       let confirmation = confirm("Are you sure you want to delete " + move + " from the database?");
       if(confirmation){
-        this.db.getSubcategoryFromMoveAndCategory(category, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-          // console.log("result from getSubcategoryFromMoveAndCategory call: ");
-          // console.log(result);
-          // this.db.deleteMoveName(move, category, result);
+        this.db.getSubcategoryFromMoveAndCategory(category, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(subcategory =>{
+          console.log("result from getSubcategoryFromMoveAndCategory call: ");
+          console.log(subcategory);
+          this.db.deleteMoveName(move, category, subcategory);
         });
       }
     }
