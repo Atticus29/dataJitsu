@@ -68,7 +68,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   ngOnInit() {
-    $('.modal').modal();
+    $('.modal').appendTo('body').modal();
     // let categories = this.db.getMovesKeys().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
     //   this.moveCategories = results;
     // });

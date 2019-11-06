@@ -26,8 +26,12 @@
 }
 
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
-    z-index: 99999 !important;
+    z-index: 5000 !important;
  }
+
+ .select-menu-wrapper {
+     z-index: 9999;
+  }
 
 .flexbox-container{
   display: flex;
@@ -113,3 +117,11 @@
 .small-flexbox-item{
   width: 25%;
 }
+
+// .app-container{
+//   z-index: 1050;
+// }
+
+// ngb-modal-window.test {
+//     z-index: 1;
+// }
