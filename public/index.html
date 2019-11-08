@@ -24,6 +24,7 @@
     <script defer src="/__/firebase/7.0.0/firebase-functions.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -37,6 +38,18 @@
     <hr>
 
     <button class="button" id="testFunButton">Test Callable Function</button>
+
+    <form action="/charge" method="post" id="payment-form">
+      <div class="form-row">
+        <label for="card-element">Credit or debit card</label>
+        <div id="card-element">
+
+        </div>
+        <div id="card-errors" role="alert"></div>
+
+      </div>
+      <button>Attach Source</button>
+    </form>
 
   </body>
 </html>
