@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": false,
+    "target": "es2017",
+    "types": ["jest"],
+    "lib": ["esnext.asynciterable"]
+  },
+  "compileOnSave": true,
+  "include": [
+    "src",
+  ]
+}
