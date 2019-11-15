@@ -10,6 +10,7 @@ import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { AuthorizationService } from '../authorization.service';
+import { TextTransformationService } from '../text-transformation.service';
 
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
@@ -71,7 +72,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
   // private database: DynamicDatabase;
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase) {
+  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService) {
     super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
