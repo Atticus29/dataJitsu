@@ -749,6 +749,13 @@ export class DatabaseService {
   }
 
   getGiRanks(){
+    console.log("got into getGiRanks in database service");
+    this.giRanks.subscribe(results =>{
+      console.log("got up in here");
+      console.log('results in getGiRanks subscription');
+      console.log(results);
+    })
+    // console.log(this.giRanks);
     return this.giRanks;
   }
 

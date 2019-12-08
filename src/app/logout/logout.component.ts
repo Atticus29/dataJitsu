@@ -32,6 +32,7 @@ export class LogoutComponent extends BaseComponent implements OnInit {
         console.log("user in logout component");
         console.log(usr);
         if(!usr){
+          console.log("user doesn't exist now. Should move along...");
           this.router.navigate(['login']);
         }
       });

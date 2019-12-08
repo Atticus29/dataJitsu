@@ -48,7 +48,6 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-
     for (var i = 3; i <= 110; i++) {
       this.ages.push(i);
     }
@@ -63,6 +62,8 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     });
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
+      console.log("giRanks: ");
+      console.log(giRanks);
       this.giRanks = giRanks;
       this.disabledGiRank = true;
     })

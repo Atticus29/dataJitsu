@@ -1,4 +1,7 @@
 # Known issues
+- [ ] Age class dropdown in create account isn't working...none of the database service dependent things are
+- [ ] Login page is blank now when logged out (has something to do with the authGuards)
+- [ ] Reputation points are displayed even if logged out
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
 
