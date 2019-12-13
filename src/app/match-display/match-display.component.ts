@@ -80,7 +80,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
       // console.log("user in currentUserBehaviorSubject in trackerService in match-display component");
       // console.log(user);

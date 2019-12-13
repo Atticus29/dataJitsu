@@ -1,11 +1,33 @@
 # TODO high priority
+- [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] See what happens when you try to add new submission name
 - [ ] Add interesting exchange or something like that
 - [ ] Some annotation manipultations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Enter upon password completion for login should trigger login button
 - [ ] Tournaments from a dropdown
-- [ ] Add moves, weight class, tournament, age class, etc.
+- [ ] Custom categories
+  - [ ] Add moves
+    - [x] Dropdown
+    - [x] Dialogue
+    - [x] Dialogue adds approval display for admin
+    - [x] Form validation in dialog
+    - [x] Form select is dynamic for subcategory
+    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [ ] Approval adds to db and removes from candidate list
+    - [ ] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+    - [ ] Feature to delete move name from move list
+    - [ ] Renames move in the match in which it was originally annotated
+    - [ ] Renames move in the other matches that used it since?
+    - [ ] Put delete feature under control of isAdmin (or isModerator?)
+    - [ ] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+    - [ ] Test written to make sure name addition is seen in match
+    - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
+    - [ ] Test written to make sure name disapproval displays flagged message
+    - [ ] Test written to make sure you can't add a duplicate name
+  - [ ] weight class
+  - [ ] tournament
+  - [ ] age class
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
 - [ ] Maybe make a go to end icon on the chips for individual annotations?

@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
+
+import { takeUntil } from 'rxjs/operators';
 
 import { ValidationService } from '../validation.service';
 import { BaseComponent } from '../base/base.component';
@@ -25,7 +28,7 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   private displaySubcategorySelect: boolean = false;
   private displayCategoryName: boolean = true;
 
-  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
+  constructor(public snackBar: MatSnackBar, private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
     super();
   }
 
@@ -34,16 +37,18 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
       moveNameFc: ['', Validators.required],
     });
 
+    // this.moveNameFc.valueChanges.subscribe(moveCategory => {
+    //   // console.log("moveCategory changed: " + moveCategory);
+    //
+    // });
+
     this.moveCategoryFc.valueChanges.subscribe(moveCategory => {
       if(this.localRootNodesWithSubcategories.includes(moveCategory)){
-        // console.log("on the list");
         this.displaySubcategorySelect = true;
       } else{
-        // console.log("not on the list");
         this.displaySubcategorySelect = false;
       }
     });
-    //TODO something watching category selected and having that affect displaySubcategorySelect and making it true (default is currently true, and you should change this)
   }
 
   getValues(){
@@ -58,7 +63,17 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
 
   processDialogData(){
     let vals = this.getValues();
-    this.sendDataThroughDialog(vals);
+    // console.log(vals.move);
+    this.db.doesMoveNameAlreadyExistInDb(vals.move, vals.moveCategory, vals.moveSubcategory).pipe(takeUntil(this.ngUnsubscribe)).subscribe(doesMoveNameAlreadyExistInDb =>{
+      console.log("doesMoveNameAlreadyExistInDb?");
+      console.log(doesMoveNameAlreadyExistInDb);
+      if(doesMoveNameAlreadyExistInDb){
+        this.openSnackBar("Move already exists in the database. Please find it in the dropdown menu");
+      } else{
+        console.log("this shouldn't happen if there's a match in the db");
+        this.sendDataThroughDialog(vals);
+      }
+    })
   }
 
   sendDataThroughDialog(data: any){
@@ -71,10 +86,18 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
 
   allValid(){
     let values = this.getValues();
-    if(this.vs.validateString(values.move) && this.vs.validateString(values.moveCategory)){
-      return true;
+    if(this.displaySubcategorySelect){
+      if(this.vs.validateString(values.move) && this.vs.validateString(values.moveCategory) && this.vs.validateString(values.moveSubcategory)){
+        return true;
+      } else{
+        return false;
+      }
     } else{
-      return false;
+      if(this.vs.validateString(values.move) && this.vs.validateString(values.moveCategory)){
+        return true;
+      } else{
+        return false;
+      }
     }
   }
 
@@ -94,6 +117,13 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
       return  errorMessage;
     }
     return  errorMessage;
+  }
+
+  openSnackBar(message: string) {
+    // console.log("openSnackBar called");
+    this.snackBar.open(message, '', {
+      duration: 3000,
+    });
   }
 
 

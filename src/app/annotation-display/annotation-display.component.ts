@@ -199,6 +199,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       // console.log("got dialog data to annotation-display component?:");
       // console.log(val);
+      if(!val){return;}
       // TODO check that it already exists add maybe a forEach to take through each rootNode and see if it's in its child
       // this.openSnackBar("Name already exists in dropdown menu!", null);
       val.move = this.textTransformationService.capitalizeFirstLetter(val.move);

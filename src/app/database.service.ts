@@ -1199,6 +1199,40 @@ export class DatabaseService {
     ref.push(moveName);
   }
 
+  doesMoveNameAlreadyExistInDb(moveName: string, categoryName: string, subcategoryName: string): Observable<boolean>{
+    console.log("got into doesMoveNameAlreadyExistInDb");
+    console.log("moveName is " + moveName + ", categoryName is "+ categoryName + ", subcategoryName is " + subcategoryName);
+    let ref = firebase.database().ref('/moves/');
+    let obsRet = Observable.create(function(observer){
+      // observer.next(false);
+      if(subcategoryName){
+        // console.log("got into subcategoryName exists in doesMoveNameAlreadyExistInDb");
+        ref.orderByKey().equalTo(categoryName).on("child_added", snapshot =>{ //.equalTo(moveName)
+          // console.log("subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
+          // console.log(snapshot.val()[subcategoryName]);
+          if(snapshot.val()[subcategoryName].includes(moveName)){
+            observer.next(true);
+          } else{
+            observer.next(false);
+          }
+        });
+      } else{
+        console.log("got into subcategoryName DNE in doesMoveNameAlreadyExistInDb");
+        //TODO subcategoryName DNE
+        ref.orderByKey().equalTo(categoryName).on("child_added", snapshot =>{
+          // console.log("no subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
+          // console.log(snapshot.val().includes(moveName));
+          if(snapshot.val().includes(moveName)){
+            observer.next(true);
+          }else{
+            observer.next(false);
+          }
+        });
+      }
+    });
+    return obsRet;
+  }
+
   removeMoveNameFromCandidateList(moveName: string){
     // console.log("removeMoveNameFromCandidateList called");
     let ref = firebase.database().ref('/candidateMoveNames/');
