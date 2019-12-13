@@ -29,7 +29,7 @@ export class DatabaseService {
   matchDetails: Observable<any>;
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
+  constructor(private route: ActivatedRoute, public db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
     this.matches = db.list<Match>('/matches').valueChanges();
     this.weightClasses = db.list<String>('/weightClasses').valueChanges();
     this.giRanks = db.list<String>('/giRanks').valueChanges();
@@ -142,6 +142,8 @@ export class DatabaseService {
   }
 
   getMovesAsList(){
+    console.log("getMovesAsList called");
+    this.db.list('/bmoves').valueChanges().subscribe(console.log);
     return this.db.list('/moves').valueChanges();
   }
 
