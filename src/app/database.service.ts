@@ -1220,13 +1220,29 @@ export class DatabaseService {
         console.log("got into subcategoryName DNE in doesMoveNameAlreadyExistInDb");
         //TODO subcategoryName DNE
         ref.orderByKey().equalTo(categoryName).on("child_added", snapshot =>{
-          // console.log("no subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
+          console.log("no subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
           // console.log(snapshot.val().includes(moveName));
-          if(snapshot.val().includes(moveName)){
-            observer.next(true);
-          }else{
-            observer.next(false);
+          if(Array.isArray(snapshot.val())){
+            if(snapshot.val().includes(moveName)){
+              observer.next(true);
+            }else{
+              observer.next(false);
+            }
+          } else{ //maybe it's an object instead of array?
+            console.log("is NOT array");
+            if(typeof snapshot.val() === 'object' && snapshot.val() !== null){
+              console.log(Object.values(snapshot.val()).indexOf(moveName)>-1);
+              if(Object.values(snapshot.val()).indexOf(moveName)>-1){
+                observer.next(true);
+              }else{
+                observer.next(false);
+              }
+            } else{
+              //it's not an object, it's not an array. I dunno
+              alert("Congrats you found a bug I never expected. Please report!");
+            }
           }
+
         });
       }
     });

@@ -10,6 +10,7 @@ import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
 import { constants } from '../constants';
+import { TextTransformationService } from '../text-transformation.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   private displaySubcategorySelect: boolean = false;
   private displayCategoryName: boolean = true;
 
-  constructor(public snackBar: MatSnackBar, private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
+  constructor(public snackBar: MatSnackBar, private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService, private textTransformationService: TextTransformationService) {
     super();
   }
 
@@ -52,7 +53,7 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   }
 
   getValues(){
-    let move = this.moveNameFc.value;
+    let move = this.textTransformationService.capitalizeFirstLetterOfEachWord(this.moveNameFc.value);
     let moveCategory = this.moveCategoryFc.value;
     let moveSubcategory = this.moveSubcategoryFc.value;
     if(!moveSubcategory){

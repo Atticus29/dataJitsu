@@ -1,4 +1,6 @@
 # TODO high priority
+- [ ] Move the info. icon next to Annotations because you keep accidentally scrolling over it (or just make it clickable instead)
+- [ ] Track reasons for reputation awards and deductions (date, note/flag, points)
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] See what happens when you try to add new submission name
 - [ ] Add interesting exchange or something like that
@@ -13,14 +15,14 @@
     - [x] Dialogue adds approval display for admin
     - [x] Form validation in dialog
     - [x] Form select is dynamic for subcategory
-    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
-    - [ ] Approval adds to db and removes from candidate list
-    - [ ] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
-    - [ ] Feature to delete move name from move list
-    - [ ] Renames move in the match in which it was originally annotated
-    - [ ] Renames move in the other matches that used it since?
-    - [ ] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+    - [x] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [x] Approval adds to db and removes from candidate list, and awards reputation points
+    - [x] Disapproval removes from candidate list and substitutes, "flag me"
+    - [x] Feature to delete move name from move list
+    - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+    - [x] Put delete feature under control of isAdmin (or isModerator?)
+    - [x] Added moveNames not in alphabetical order
+    - [x] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
     - [ ] Test written to make sure name disapproval displays flagged message

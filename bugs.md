@@ -1,5 +1,8 @@
 # Known issues
+- [ ] cannot read property expandable of undefined when you click guard passes or guard pass attempts
+- [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page
+- [ ] When you approve of a new move name, it messes with the alphabetical order of the root nodes until you refresh the page (e.g., adding a new move to disciplinary action, and disciplinary action moves to the bottom in the annotation tree)
 - [ ] Reputation points are displayed even if logged out
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
