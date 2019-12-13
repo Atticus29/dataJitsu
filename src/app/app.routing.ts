@@ -19,11 +19,12 @@ import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
-import { canActivate } from '@angular/fire/auth-guard';
+import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
 // const adminOnly = hasCustomClaim('admin');
-// const redirectUnauthorizedToLogin = redirectUnauthorizedTo(['login']);
-// const redirectLoggedInToAllMatches = redirectLoggedInTo(['matches']);
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectLoggedInToAllMatches = () => redirectLoggedInTo(['matches']);
+
 const appRoutes: Routes = [
   {
     path: '',
@@ -32,9 +33,11 @@ const appRoutes: Routes = [
     pathMatch: 'full'
   },{
   path: 'login',
+  children: [],
   component: LoginComponent,
-  ...canActivate(redirectLoggedInTo(['matches'])),
-  pathMatch: 'full'
+  canActivate: [AngularFireAuthGuard],
+  data: { authGuardPipe: redirectLoggedInToAllMatches} //,
+  // pathMatch: 'full'
 },{
   path: 'newmatch',
   component: NewMatchComponent,
@@ -53,7 +56,6 @@ const appRoutes: Routes = [
 },{
   path: 'createaccount',
   component: CreateAccountComponent,
-  ...canActivate(redirectLoggedInTo(['landing'])),
   pathMatch: 'full'
 },{
   path: 'populatedb',

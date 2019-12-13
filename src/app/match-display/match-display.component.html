@@ -85,7 +85,7 @@
           <br>
           <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
           <br>
-          <span class="match-label">Date: </span>{{match?.matchDeets?.date}}
+          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.matchDeets?.date)}}
           <br>
           <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
           <br>

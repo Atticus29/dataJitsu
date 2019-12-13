@@ -1,7 +1,6 @@
 # Known issues
-- [ ] Dropdown menu for new-move isn't in front
-- [ ] Alphabetical order not happening for moves that don't score points
-
+- [ ] /matches when you first login doesn't display until you refresh the page
+- [ ] Reputation points are displayed even if logged out
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
@@ -41,6 +40,8 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Alphabetical order not happening for moves that don't score points
+- [x] Dropdown menu for new-move isn't in front
 - [x] Deal with subcategory for submissions in move-name adding
   - [x] Section with move name added now seems expandable in its deepest level, when it should not be
   - [x] Trying to collapse an expand fails

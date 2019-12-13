@@ -21,7 +21,9 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   private moveSubcategoryFc: FormControl = new FormControl('');
   private categories: any = constants.rootNodes;
   private subcategories: any = constants.subCategories;
-  private displaySubcategorySelect: boolean = true;
+  private localRootNodesWithSubcategories: Array<string> = constants.rootNodesWithSubcategories;
+  private displaySubcategorySelect: boolean = false;
+  private displayCategoryName: boolean = true;
 
   constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
     super();
@@ -30,6 +32,16 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       moveNameFc: ['', Validators.required],
+    });
+
+    this.moveCategoryFc.valueChanges.subscribe(moveCategory => {
+      if(this.localRootNodesWithSubcategories.includes(moveCategory)){
+        // console.log("on the list");
+        this.displaySubcategorySelect = true;
+      } else{
+        // console.log("not on the list");
+        this.displaySubcategorySelect = false;
+      }
     });
     //TODO something watching category selected and having that affect displaySubcategorySelect and making it true (default is currently true, and you should change this)
   }
