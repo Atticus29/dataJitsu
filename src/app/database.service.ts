@@ -142,7 +142,7 @@ export class DatabaseService {
   }
 
   getMovesAsList(){
-    console.log("getMovesAsList called");
+    // console.log("getMovesAsList called");
     this.db.list('/bmoves').valueChanges().subscribe(console.log);
     return this.db.list('/moves').valueChanges();
   }
@@ -752,11 +752,11 @@ export class DatabaseService {
   }
 
   getGiRanks(){
-    console.log("got into getGiRanks in database service");
+    // console.log("got into getGiRanks in database service");
     this.giRanks.subscribe(results =>{
-      console.log("got up in here");
-      console.log('results in getGiRanks subscription');
-      console.log(results);
+      // console.log("got up in here");
+      // console.log('results in getGiRanks subscription');
+      // console.log(results);
     })
     // console.log(this.giRanks);
     return this.giRanks;
@@ -1077,8 +1077,8 @@ export class DatabaseService {
   // }
 
   addCandidateNameToDb(name: string, associatedMatchUrl: string){
-    console.log("addCandidateNameToDb called");
-    console.log("name is " + name);
+    // console.log("addCandidateNameToDb called");
+    // console.log("name is " + name);
     let ref = firebase.database().ref('/candidateAthleteNames/');
     let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
@@ -1090,11 +1090,11 @@ export class DatabaseService {
   }
 
   removeAthleteNameFromCandidateList(name: string){
-    console.log("removeAthleteNameFromCandidateList called");
+    // console.log("removeAthleteNameFromCandidateList called");
     let ref = firebase.database().ref('/candidateAthleteNames/');
     ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
-      console.log("found entry in removeAthleteNameFromCandidateList:");
-      console.log(snapshot.val());
+      // console.log("found entry in removeAthleteNameFromCandidateList:");
+      // console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
   }
@@ -1118,7 +1118,7 @@ export class DatabaseService {
   }
 
   getMatchUrlFromCandidateAthleteName(name: string){
-    console.log("getMatchUrlFromCandidateAthleteName called");
+    // console.log("getMatchUrlFromCandidateAthleteName called");
     let ref = firebase.database().ref('/candidateAthleteNames/');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
@@ -1147,25 +1147,25 @@ export class DatabaseService {
   }
 
   updateAthleteNameInMatch(matchId: string, targetName: string, newName: string){
-    console.log("updateAthleteNameInMatch called");
-    console.log("matchId is " + matchId);
-    console.log("target name is " + targetName);
+    // console.log("updateAthleteNameInMatch called");
+    // console.log("matchId is " + matchId);
+    // console.log("target name is " + targetName);
     let ref = firebase.database().ref('/matches/');
     ref.orderByChild('matchDeets/athlete1Name').equalTo(targetName).on('child_added', snapshot =>{
-      console.log("child added athlete1");
-      console.log(snapshot.val());
+      // console.log("child added athlete1");
+      // console.log(snapshot.val());
       if(snapshot.val().id == matchId){
-        console.log("matches athlete1 in known match!");
+        // console.log("matches athlete1 in known match!");
         let updates = {};
         updates['/matches/' + matchId + '/matchDeets/athlete1Name'] = newName;
         firebase.database().ref().update(updates);
       }
     });
     ref.orderByChild('matchDeets/athlete2Name').equalTo(targetName).on('child_added', snapshot =>{
-      console.log("child added athlete2");
-      console.log(snapshot.val());
+      // console.log("child added athlete2");
+      // console.log(snapshot.val());
       if(snapshot.val().id == matchId){
-        console.log("matches athlete2 in known match");
+        // console.log("matches athlete2 in known match");
         let updates = {};
         updates['/matches/' + matchId + '/matchDeets/athlete2Name'] = newName;
         firebase.database().ref().update(updates);
@@ -1174,11 +1174,11 @@ export class DatabaseService {
   }
 
   deleteAthleteName(name: string){
-    console.log("entered deleteAthleteName");
+    // console.log("entered deleteAthleteName");
     let ref = firebase.database().ref('athleteNames/');
     ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
-      console.log("child added in deleteAthleteName: ");
-      console.log(snapshot.val());
+      // console.log("child added in deleteAthleteName: ");
+      // console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
     // ref.remove();
@@ -1192,16 +1192,16 @@ export class DatabaseService {
   }
 
   addMoveNameToDb(moveName: string, categoryName: string, subcategoryName: string){
-    console.log("entered addMoveNameToDb");
-    console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategoryName: " + subcategoryName);
+    // console.log("entered addMoveNameToDb");
+    // console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategoryName: " + subcategoryName);
     //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
     let ref = firebase.database().ref('/moves/' + categoryName + '/' + subcategoryName + '/');
     ref.push(moveName);
   }
 
   doesMoveNameAlreadyExistInDb(moveName: string, categoryName: string, subcategoryName: string): Observable<boolean>{
-    console.log("got into doesMoveNameAlreadyExistInDb");
-    console.log("moveName is " + moveName + ", categoryName is "+ categoryName + ", subcategoryName is " + subcategoryName);
+    // console.log("got into doesMoveNameAlreadyExistInDb");
+    // console.log("moveName is " + moveName + ", categoryName is "+ categoryName + ", subcategoryName is " + subcategoryName);
     let ref = firebase.database().ref('/moves/');
     let obsRet = Observable.create(function(observer){
       // observer.next(false);
@@ -1217,10 +1217,10 @@ export class DatabaseService {
           }
         });
       } else{
-        console.log("got into subcategoryName DNE in doesMoveNameAlreadyExistInDb");
+        // console.log("got into subcategoryName DNE in doesMoveNameAlreadyExistInDb");
         //TODO subcategoryName DNE
         ref.orderByKey().equalTo(categoryName).on("child_added", snapshot =>{
-          console.log("no subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
+          // console.log("no subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
           // console.log(snapshot.val().includes(moveName));
           if(Array.isArray(snapshot.val())){
             if(snapshot.val().includes(moveName)){
@@ -1229,9 +1229,9 @@ export class DatabaseService {
               observer.next(false);
             }
           } else{ //maybe it's an object instead of array?
-            console.log("is NOT array");
+            // console.log("is NOT array");
             if(typeof snapshot.val() === 'object' && snapshot.val() !== null){
-              console.log(Object.values(snapshot.val()).indexOf(moveName)>-1);
+              // console.log(Object.values(snapshot.val()).indexOf(moveName)>-1);
               if(Object.values(snapshot.val()).indexOf(moveName)>-1){
                 observer.next(true);
               }else{
@@ -1239,6 +1239,7 @@ export class DatabaseService {
               }
             } else{
               //it's not an object, it's not an array. I dunno
+              console.log("Congrats you found a bug I never expected. Please report!");
               alert("Congrats you found a bug I never expected. Please report!");
             }
           }
@@ -1340,18 +1341,18 @@ export class DatabaseService {
 
   deleteMoveName(moveName: string, categoryName: string, subcategory: string){ //just put '' if there is no subcategory
     subcategory = subcategory + '/';
-    console.log("entered deleteMoveName");
-    console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategory: " + subcategory);
+    // console.log("entered deleteMoveName");
+    // console.log("moveName: " + moveName + ", categoryName: " + categoryName + ", subcategory: " + subcategory);
     let ref = firebase.database().ref('moves/' + categoryName + '/' + subcategory);
     ref.orderByValue().equalTo(moveName).on("child_added", snapshot =>{
-      console.log("child added in deleteMoveName: ");
-      console.log(snapshot.val());
+      // console.log("child added in deleteMoveName: ");
+      // console.log(snapshot.val());
       ref.child(snapshot.key).remove();
     });
   }
 
   getMoveIdFromMatchId(matchId: string, moveName: string){
-    console.log("getMoveIdFromMatchId entered. Match Id is: " + matchId + " and moveName is: " + moveName);
+    // console.log("getMoveIdFromMatchId entered. Match Id is: " + matchId + " and moveName is: " + moveName);
     let ref = firebase.database().ref('matches/' + matchId + '/moves/');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
@@ -1365,7 +1366,7 @@ export class DatabaseService {
   }
 
   getSubcategoryFromMoveAndCategory(category: string, move: string){
-    console.log("entered getSubcategoryFromMoveAndCategory");
+    // console.log("entered getSubcategoryFromMoveAndCategory");
     let ref = firebase.database().ref('moves/' + category + '/');
     let obsRet = Observable.create(function(observer){
       ref.orderByKey().on("value", snapshot =>{
@@ -1384,7 +1385,7 @@ export class DatabaseService {
             allSubcatMoveNames = allSubcatMoveNames.concat(objectVals);
           }
         });
-        console.log(allSubcatMoveNames);
+        // console.log(allSubcatMoveNames);
         if(allSubcatMoveNames.includes(move)){
           Object.keys(categoryObj).forEach(objKey =>{
             // console.log(objKey);
@@ -1395,7 +1396,7 @@ export class DatabaseService {
               }
             } else{
               let renderedArray = Object.values(categoryObj[objKey]);
-              console.log(renderedArray);
+              // console.log(renderedArray);
               if(renderedArray.includes(move)){
                 observer.next(objKey);
               }

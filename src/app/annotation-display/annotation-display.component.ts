@@ -134,8 +134,9 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   registerCategory(category: string){
+    console.log("registerCategory entered. Category is " + category);
     if(constants.rootNodes.includes(category)){
-      // console.log(category + " from registerCategory function. Adding to moveCategory...");
+      console.log(category + " from registerCategory function. Adding to moveCategory...");
       this.trackerService.moveCategory.next(category);
     }
   }
@@ -199,7 +200,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       // console.log("got dialog data to annotation-display component?:");
       // console.log(val);
-      if(!val){return;}
+      if(!val){
+        console.log("this is part of the problem");
+        return;
+      }
       // TODO check that it already exists add maybe a forEach to take through each rootNode and see if it's in its child
       // this.openSnackBar("Name already exists in dropdown menu!", null);
       val.move = this.textTransformationService.capitalizeFirstLetter(val.move);

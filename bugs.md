@@ -1,5 +1,4 @@
 # Known issues
-- [ ] cannot read property expandable of undefined when you click guard passes or guard pass attempts
 - [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page
 - [ ] When you approve of a new move name, it messes with the alphabetical order of the root nodes until you refresh the page (e.g., adding a new move to disciplinary action, and disciplinary action moves to the bottom in the annotation tree)
@@ -43,6 +42,7 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] cannot read property expandable of undefined when you click guard passes or guard pass attempts
 - [x] Alphabetical order not happening for moves that don't score points
 - [x] Dropdown menu for new-move isn't in front
 - [x] Deal with subcategory for submissions in move-name adding
