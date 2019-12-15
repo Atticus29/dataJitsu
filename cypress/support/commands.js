@@ -106,8 +106,7 @@ Cypress.Commands.add('removeAnnotation', (moveName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
   cy.get('mat-chip').contains(moveName).should('exist');
-  // cy.get('mat-chip').contains(moveName).then()
-  cy.get('span[name=cancel-annotation]').first().click(); //TODO make less brittle
+  cy.get('mat-chip').contains('mat-chip', moveName).children('span[name=cancel-annotation]').click();
   cy.reload();
   cy.get('mat-chip').contains(moveName).should('not.exist');
 });

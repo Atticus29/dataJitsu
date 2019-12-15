@@ -260,7 +260,6 @@ describe ('Match annotation tests', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]').click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    // TODO select new custom submission
     cy.createCustomCervicalChoke();
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
@@ -277,18 +276,19 @@ describe ('Match annotation tests', () =>{
     return false;
     });
     cy.contains("Annotation Recorded").should('exist');
-    // //TODO LEFT OFF HERE
-    //
+
+    //TODO remove these
     cy.logout();
     cy.loginAsAdmin();
     cy.get('a[name=videoClick]').first().click();
     cy.removeAnnotation("Darth Vader Choke");
-    // cy.get('a[name=videoClick]').first().click();
-    // cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
-    // cy.get('.cancel-annotation').first().click();
-    // cy.reload();
-    // cy.wait(2000);
-    // cy.get('mat-chip').contains('TODO custom name').should('not.exist');
+  });
+
+  it('removes the custom annotation', function(){
+    cy.logout();
+    cy.loginAsAdmin();
+    cy.get('a[name=videoClick]').first().click();
+    cy.removeAnnotation("Darth Vader Choke");
   });
 
 });
