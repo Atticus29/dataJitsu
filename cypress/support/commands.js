@@ -77,6 +77,41 @@ Cypress.Commands.add("selectCrossCollarChoke", () => {
   cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
 });
 
+Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
+  cy.get(`mat-select[id="${selectId}"`).click().then(() => {
+    cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', selectOption);
+    cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text:contains("${selectOption}")`).first().click().then(() => {
+      // After click, mat-select should contain the text of the selected option
+      cy.get(`mat-select[id="${selectId}"`).contains(selectOption);
+    });
+  });
+});
+
+Cypress.Commands.add("createCustomCervicalChoke", () => {
+  cy.get('mat-icon').eq(9).click({force:true});
+  cy.get('mat-icon').eq(12).click({force:true});
+  // cy.wait(1000);
+  cy.get('div[id=annotationModal]').contains('Add cervical submission').first().click();
+  cy.get('input[id=moveNameFc]').clear().type("darth vader choke");
+  cy.get('mat-select[id=subcategory-name-dropdown]').should('not.be.visible');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectDropDown('move-category-select', cypressConstants.submissionNodeName);
+    cy.selectDropDown('move-subcategory-select', cypressConstants.moveSubcategoryTitle);
+  });
+  cy.get('button[id=dialog-submit-button]').click();
+
+});
+
+Cypress.Commands.add('removeAnnotation', (moveName) =>{
+  //Assumes you've already logged in as admin
+  cy.contains("Admin").should('exist');
+  cy.get('mat-chip').contains(moveName).should('exist');
+  // cy.get('mat-chip').contains(moveName).then()
+  cy.get('span[name=cancel-annotation]').first().click(); //TODO make less brittle
+  cy.reload();
+  cy.get('mat-chip').contains(moveName).should('not.exist');
+});
+
 Cypress.Commands.add("login", (email, pass) => {
   cy.visit('http://localhost:4200/login');
   cy.get('button[id=email-dialog-open-button]').click();

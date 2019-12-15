@@ -255,6 +255,42 @@ describe ('Match annotation tests', () =>{
     cy.get('mat-chip').contains('Cross Collar Choke').should('not.exist');
   });
 
+  it.only('adds custom name and submits annotation', function(){
+    // TODO HERE
+    cy.get('a[name=videoClick]').first().click();
+    cy.get('button[id=begin-move]').click();
+    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
+    // TODO select new custom submission
+    cy.createCustomCervicalChoke();
+    cy.get('mat-select[id=performer]').click({force:true});
+    cy.get('mat-option').first().click({force:true});
+    cy.get('button[id=done-button-performers]').should('be.disabled');
+    cy.get('input[id=points]').type('2');
+    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('button[id=done-button-performers]').should('not.be.disabled');
+    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('div[id=annotationModal]').should('not.be.visible');
+    cy.get('button[id=end-move]').should('be.enabled');
+    cy.get('button[id=end-move]').click();
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
+    cy.contains("Annotation Recorded").should('exist');
+    // //TODO LEFT OFF HERE
+    //
+    cy.logout();
+    cy.loginAsAdmin();
+    cy.get('a[name=videoClick]').first().click();
+    cy.removeAnnotation("Darth Vader Choke");
+    // cy.get('a[name=videoClick]').first().click();
+    // cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+    // cy.get('.cancel-annotation').first().click();
+    // cy.reload();
+    // cy.wait(2000);
+    // cy.get('mat-chip').contains('TODO custom name').should('not.exist');
+  });
+
 });
 
 
@@ -307,4 +343,5 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.get('button[id=modal-cancel-button]').click();
     cy.logout();
   });
+
 });
