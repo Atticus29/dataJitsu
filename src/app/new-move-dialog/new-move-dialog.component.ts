@@ -69,7 +69,7 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
       console.log("doesMoveNameAlreadyExistInDb?");
       console.log(doesMoveNameAlreadyExistInDb);
       if(doesMoveNameAlreadyExistInDb){
-        this.openSnackBar("Move already exists in the database. Please find it in the dropdown menu");
+        this.openSnackBar(constants.moveNameAlreadyExistsNotification);
       } else{
         console.log("this shouldn't happen if there's a match in the db");
         this.sendDataThroughDialog(vals);

@@ -1210,10 +1210,24 @@ export class DatabaseService {
         ref.orderByKey().equalTo(categoryName).on("child_added", snapshot =>{ //.equalTo(moveName)
           // console.log("subcategory matches move name in doesMoveNameAlreadyExistInDb: ");
           // console.log(snapshot.val()[subcategoryName]);
-          if(snapshot.val()[subcategoryName].includes(moveName)){
-            observer.next(true);
+          if(Array.isArray(snapshot.val()[subcategoryName])){
+            if(snapshot.val()[subcategoryName].includes(moveName)){
+              observer.next(true);
+            } else{
+              observer.next(false);
+            }
           } else{
-            observer.next(false);
+            if(typeof snapshot.val()[subcategoryName] === 'object' && snapshot.val()[subcategoryName] !== null){
+              if(Object.values(snapshot.val()[subcategoryName]).indexOf(moveName)>-1){
+                observer.next(true);
+              }else{
+                observer.next(false);
+              }
+            } else{
+              //it's not an object, it's not an array. I dunno
+              console.log("Congrats you found a bug I never expected. Please report!");
+              alert("Congrats you found a bug I never expected. Please report!");
+            }
           }
         });
       } else{

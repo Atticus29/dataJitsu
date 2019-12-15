@@ -18,5 +18,7 @@
   "athlete1LastName" : "Ralpheo",
   "athlete1FirstName" : "Jean",
   "athlete2LastName" : "Ralpheo",
-  "athlete2FirstName" : "MonaLisa"
+  "athlete2FirstName" : "MonaLisa",
+  "moveNameRemovedMessage": "Move name has been removed; flag me",
+  "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu"
 }

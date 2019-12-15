@@ -4,6 +4,8 @@ export var constants = {
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",
+    moveNameRemovedMessage: "Move name has been removed; flag me",
+    moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,

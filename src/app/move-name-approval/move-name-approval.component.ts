@@ -123,7 +123,7 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
           this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
             this.db.getMoveIdFromMatchId(matchIdResult, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
               // console.log("moveIdResult: " + moveIdResult);
-              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, move, "Move name has been removed; flag me");
+              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, move, constants.moveNameRemovedMessage);
             });
           });
         })

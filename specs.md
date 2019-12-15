@@ -23,9 +23,9 @@
     - [x] Put delete feature under control of isAdmin (or isModerator?)
     - [x] Added moveNames not in alphabetical order
     - [x] Standardize how these things are capitalized
-    - [ ] Test written to make sure name addition is seen in match
-    - [ ] Test written to make sure name addition is seen in admin list; delete name at the end
-    - [ ] Test written to make sure name disapproval displays flagged message
+    - [x] Test written to make sure name addition is seen in match
+    - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
+    - [x] Test written to make sure name disapproval displays flagged message
     - [ ] Test written to make sure you can't add a duplicate name
   - [ ] weight class
   - [ ] tournament

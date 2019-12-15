@@ -87,20 +87,31 @@ Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
   });
 });
 
-Cypress.Commands.add("createCustomCervicalChoke", () => {
-  cy.get('mat-icon').eq(9).click({force:true});
-  cy.get('mat-icon').eq(12).click({force:true});
+Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
+  // cy.get('mat-icon').eq(9).click({force:true});
+  // cy.get('mat-icon').eq(12).click({force:true});
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
+    cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle).children('button').click({force:true});
+    cy.contains('mat-tree-node', "Add cervical submission").click();
+  });
   // cy.wait(1000);
-  cy.get('div[id=annotationModal]').contains('Add cervical submission').first().click();
-  cy.get('input[id=moveNameFc]').clear().type("darth vader choke");
+  // cy.contains('div[id=annotationModal]','Add cervical submission').click();
+  cy.get('input[id=moveNameFc]').clear().type(moveName);
   cy.get('mat-select[id=subcategory-name-dropdown]').should('not.be.visible');
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.selectDropDown('move-category-select', cypressConstants.submissionNodeName);
     cy.selectDropDown('move-subcategory-select', cypressConstants.moveSubcategoryTitle);
   });
   cy.get('button[id=dialog-submit-button]').click();
-
 });
+
+Cypress.Commands.add('deleteMove', (moveName) =>{
+  cy.logout();
+  cy.loginAsAdmin();
+  cy.visit('http://localhost:4200/admin', {timeout: 5000});
+  cy.contains('li', moveName).children('span[name=delete-move-name]').click();
+})
 
 Cypress.Commands.add('removeAnnotation', (moveName) =>{
   //Assumes you've already logged in as admin
@@ -109,6 +120,26 @@ Cypress.Commands.add('removeAnnotation', (moveName) =>{
   cy.get('mat-chip').contains('mat-chip', moveName).children('span[name=cancel-annotation]').click();
   cy.reload();
   cy.get('mat-chip').contains(moveName).should('not.exist');
+});
+
+Cypress.Commands.add('disapproveMove', (moveName) =>{
+  //Assumes you've already logged in as admin
+  cy.contains("Admin").should('exist');
+  cy.contains('li',moveName, {timeout: 5000}).should('exist');
+  //TODO LEFT OFF HERE
+  cy.contains('li',moveName).children('span[name=disapprove-move]').click();
+  cy.reload();
+  cy.get('li').contains(moveName).should('not.exist');
+});
+
+Cypress.Commands.add('approveMove', (moveName) =>{
+  //Assumes you've already logged in as admin
+  cy.contains("Admin").should('exist');
+  cy.contains('li',moveName, {timeout: 5000}).should('exist');
+  //TODO LEFT OFF HERE
+  cy.contains('li',moveName).children('span[name=approve-move]').click();
+  cy.reload();
+  cy.contains('li',moveName, {timeout: 5000}).should('exist');
 });
 
 Cypress.Commands.add("login", (email, pass) => {

@@ -4,10 +4,10 @@
     <ul>
       <li *ngFor="let candidateMove of localCandidateMoves">
         {{candidateMove.moveCategory}} : {{candidateMove.moveName}}
-        <span matTooltip="Approve" (click)="approveMove(candidateMove.moveName, candidateMove.moveCategory, candidateMove.moveSubcategory)">
+        <span matTooltip="Approve" (click)="approveMove(candidateMove.moveName, candidateMove.moveCategory, candidateMove.moveSubcategory)" name="approve-move">
           <i class="material-icons" id="up">thumb_up</i>
         </span>
-        <span matTooltip="Disapprove" (click)="disapproveMove(candidateMove.moveName)">
+        <span matTooltip="Disapprove" (click)="disapproveMove(candidateMove.moveName)" name="disapprove-move">
           <i class="material-icons" id="down">thumb_down</i>
         </span>
       </li>
@@ -25,7 +25,7 @@
             <ul>
               <li *ngFor="let item of existingMovesObj[category][subcategory]" class="little-list">
                 {{item}}
-                <span (click)="deleteMoveName(item, category)" *ngIf="localIsAdmin">
+                <span (click)="deleteMoveName(item, category)" *ngIf="localIsAdmin" name="delete-move-name">
                   <i class="material-icons" id="delete">delete</i>
                 </span>
               </li>
