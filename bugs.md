@@ -1,4 +1,5 @@
 # Known issues
+- [ ] After deleting a submission move in the admin page, TypeError: Cannot read property 'Choke Or Cervical Submissions' of undefined; after adding a move you see it, but this error occurs upon refresh...even if you don't add anything, a page reload produces this error
 - [ ] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page

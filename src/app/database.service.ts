@@ -130,7 +130,7 @@ export class DatabaseService {
   getMoves(){
     let ref = firebase.database().ref('moves/');
     let obsRet = Observable.create(function(observer){
-      ref.orderByKey().on("child_added", snapshot=>{
+      ref.orderByKey().on("value", snapshot=>{
         observer.next(snapshot.val());
       });
     });

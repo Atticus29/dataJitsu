@@ -64,9 +64,10 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email
 
 Cypress.Commands.add("selectAdvantageAnnotation", () => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('.mat-icon-rtl-mirror').first().click();
-    cy.get('div[id=annotationModal]').contains('Advantage Awarded').click();
+    cy.contains('mat-tree-node', 'Advantage').children('button').click({force: true});
+    cy.contains('div[class=mat-ripple]','Advantage Awarded').click({force: true});
   });
+  cy.contains('Annotation Selected: Advantage Awarded').should('exist');
 });
 
 Cypress.Commands.add("selectCrossCollarChoke", () => {

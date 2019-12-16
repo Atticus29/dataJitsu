@@ -51,4 +51,28 @@ export class HelperService {
     });
   }
 
+  renderFlatStringObjectAsArray(obj: Object){
+    let returnArray = Object.values(obj);
+    if(this.isFlatStringObj(obj)){
+      console.log("renderFlatObjectAsArray from renderFlatObjectAsArray is: ");
+      console.log(returnArray);
+    } else{
+      returnArray = null;
+      alert("obj not flat! error!");
+    }
+    return returnArray;
+  }
+
+  isFlatStringObj(obj: Object){
+    const flattenedArray = Object.values(obj);
+    let stringTracker: number = 0;
+    flattenedArray.forEach(elem =>{
+      if(typeof elem !=="string"){
+        stringTracker++;
+      }
+    });
+    let returnVal = stringTracker>0? false: true;
+    return returnVal;
+  }
+
 }

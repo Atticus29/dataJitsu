@@ -25,7 +25,7 @@ export var constants = {
     "Sweeps or Sweep Attempts",
     "Positional Changes That Score Points In Most Rule Sets",
     "Positions With Names That Do Not Score Points In Most Rule Sets",
-    "Discliplinary Action",
+    "Discliplinary Action"
     ],
     rootNodesWithSubcategories: ["Submissions or Submission Attempts"],
     subCategories: ["Choke Or Cervical Submissions", "Elbow", "Shoulder", "Knee Ligaments", "Back", "Ankle Ligaments", "Groin", "Wrist"],

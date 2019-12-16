@@ -14,17 +14,23 @@
     </ul>
   </div>
   <div class="flexbox-item">
-    <h5>Move names already in the database (for reference)</h5>
+    <h5>Move names already in the database (for reference):</h5>
     <hr>
     <ul>
       <li *ngFor="let category of localCategoryNames">
-        {{category}}
+        <span class="bold">
+          {{category}}
+        </span>
         <ul *ngIf="helperService.hasSubcategories(category)">
-          <li *ngFor="let subcategory of localSubcategories" class="medium-list">
-            {{subcategory}}:
+          <li *ngFor="let subcategory of (localSubcategories? localSubcategories: [])" class="medium-list">
+            <span class="indent-me bold">
+              {{subcategory}}:
+            </span>
             <ul>
-              <li *ngFor="let item of existingMovesObj[category][subcategory]" class="little-list">
-                {{item}}
+              <li *ngFor="let subitem of (existingMovesObj[category]? existingMovesObj[category][subcategory]: [])" class="little-list">
+                <span clas="indent-me-double">
+                  {{subitem}}
+                </span>
                 <span (click)="deleteMoveName(item, category)" *ngIf="localIsAdmin" name="delete-move-name">
                   <i class="material-icons" id="delete">delete</i>
                 </span>
@@ -34,7 +40,9 @@
         </ul>
         <ul *ngIf="!helperService.hasSubcategories(category)">
           <li class="little-list" *ngFor="let moveItem of existingMovesObj[category]">
-            {{moveItem}}
+            <span class="indent-me-double">
+              {{moveItem}}
+            </span>
             <span (click)="deleteMoveName(moveItem, category)" *ngIf="localIsAdmin">
               <i class="material-icons" id="delete">delete</i>
             </span>
