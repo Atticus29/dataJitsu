@@ -146,7 +146,7 @@ Cypress.Commands.add('approveMove', (moveName) =>{
 Cypress.Commands.add("login", (email, pass) => {
   cy.visit('http://localhost:4200/login');
   cy.wait(2000);
-  cy.get('button[id=email-dialog-open-button]').click();
+  cy.get('button[id=email-dialog-open-button]').click({force:true});
   cy.get('input[id=dialog-email-input]').type(email);
   cy.get('input[id=dialog-pw-input]').type(pass);
   cy.get('button[id=dialog-submit-button]').click();
@@ -158,7 +158,7 @@ Cypress.Commands.add("login", (email, pass) => {
 Cypress.Commands.add("loginAsAdmin", () => {
   cy.visit('http://localhost:4200/login');
   cy.wait(2000);
-  cy.get('button[id=email-dialog-open-button]').click();
+  cy.get('button[id=email-dialog-open-button]').click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);
     cy.get('input[id=dialog-pw-input]').type(cypressConstants.adminPassword);

@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Add add options to every section; change match outcome to match logistics and add match start
 - [ ] Move the info. icon next to Annotations because you keep accidentally scrolling over it (or just make it clickable instead)
 - [ ] Track reasons for reputation awards and deductions (date, note/flag, points)
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
