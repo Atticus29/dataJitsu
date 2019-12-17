@@ -10,6 +10,7 @@ import { TextTransformationService } from './text-transformation.service';
 import { DateCalculationsService } from './date-calculations.service';
 import { User } from './user.model';
 import { Match } from './match.model';
+import { ReputationLog } from './reputationLog.model';
 import { constants } from './constants';
 
 import { MoveInVideo } from './moveInVideo.model';
@@ -190,14 +191,12 @@ export class DatabaseService {
     });
     updates = {};
     let ref = this.db.list('/users/' + userId + '/reputationLog');
-    let reputationLogEntry = {date: new Date().toJSON(), reason: reason, points: points};
+    let reputationLogEntry = new ReputationLog(new Date().toJSON(), reason, points);
     let logEntryId = ref.push(reputationLogEntry).key;
-    // let updates = {};
-    // updates['/matches/' + matchId + '/id'] = matchId;
-    // updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
-    // firebase.database().ref().update(updates);
-    // updates['/users/' + userId + '/reputationLog'] = reputationLog;
-    // firebase.database().ref().update(updates);
+  }
+
+  getUserReputationLogs(userId: string){
+    return this.db.object('users/' + userId + '/reputationLog').valueChanges();
   }
 
   // addFlagToAnnotationIfUnique(matchId: string, userId: string, timeInitiated: number){
@@ -1380,5 +1379,4 @@ export class DatabaseService {
     });
     return obsRet;
   }
-
 }
