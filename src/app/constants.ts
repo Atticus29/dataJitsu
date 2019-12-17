@@ -4,6 +4,8 @@ export var constants = {
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",
+    moveNameRemovedMessage: "Move name has been removed; flag me",
+    moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,
@@ -21,10 +23,12 @@ export var constants = {
     "Take Downs or Take Down Attempts",
     "Submissions or Submission Attempts",
     "Sweeps or Sweep Attempts",
-    "Positional Changes",
+    "Positional Changes That Score Points In Most Rule Sets",
     "Positions With Names That Do Not Score Points In Most Rule Sets",
-    "Discliplinary Action",
+    "Discliplinary Action"
     ],
+    rootNodesWithSubcategories: ["Submissions or Submission Attempts"],
+    subCategories: ["Choke Or Cervical Submissions", "Elbow", "Shoulder", "Knee Ligaments", "Back", "Ankle Ligaments", "Groin", "Wrist"],
     privilegeLevels: {
       1: 100,
       2: 200,
@@ -42,6 +46,7 @@ export var constants = {
     numberOfPointsToDeductForBadAnnotation: 50,
     numberOfPointsToAwardForAnnotation: 10,
     numberOfPointsToAwardForApprovingCandidateAthleteName: 5,
+    numberOfPointsToAwardForApprovingMoveName: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1
   };

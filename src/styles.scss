@@ -25,9 +25,15 @@
 
 }
 
-.cdk-global-overlay-wrapper, .cdk-overlay-container {
-    z-index: 99999 !important;
- }
+// .cdk-global-overlay-wrapper, .cdk-overlay-container {
+//     z-index: 50000 !important;
+//  }
+
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container,
+.cdk-overlay-connected-position-bounding-box {
+    z-index: 9999!important;
+}
 
 .flexbox-container{
   display: flex;
@@ -100,4 +106,15 @@
 
 .move-left{
   margin-left: 0.2em;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.indent-me{
+  margin-left: 0.5em;
+}
+.indent-me-double{
+  margin-left: 1em;
 }

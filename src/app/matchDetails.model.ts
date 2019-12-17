@@ -9,4 +9,9 @@ export class MatchDetails {
     this.flaggedAsMissing = false;
     this.flaggedAsInappropriate = false;
    }
+
+   static fromJson ({ageClass, annotationRating, athlete1Name, athlete2Name, date, flaggedAsInappropriate, flaggedAsMissing, gender, giStatus, location, matchRating, rank, tournamentName, videoUrl, weightClass}): MatchDetails{
+     console.log("got to mapping attempt")
+     return new MatchDetails(tournamentName, location, date, athlete1Name, athlete2Name, weightClass, rank, videoUrl, gender, giStatus, ageClass);
+   }
 }

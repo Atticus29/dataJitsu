@@ -1,0 +1,37 @@
+{
+  "rules": {
+    ".read": "true",
+    ".write": "true",
+    "users": {
+      ".indexOn": [
+        "uid",
+        "email"
+      ]
+    },
+    "matches": {
+      ".indexOn": [
+        "matchDeets/videoUrl",
+        "matchDeets/athlete1Name",
+        "matchDeets/athlete2Name"
+      ],
+      "$matchId": {
+        ".indexOn": [
+          "/matchCreated",
+          "/matchDeets",
+          "matchDeets/videoUrl",
+          "/matchDeets/annotationRating",
+          "/matchDeets/athlete1Name",
+          "/matchDeets/athlete2Name"
+        ],
+        "matchDeets": {
+          ".indexOn": [
+            "videoUrl",
+            "annotationRating",
+            "athlete1Name",
+            "athlete2Name"
+          ]
+        }
+      }
+    }
+  }
+}

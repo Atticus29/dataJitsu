@@ -6,11 +6,14 @@ import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { Subject, of, BehaviorSubject, Observable, merge } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
+import { NewMoveDialogComponent } from '../new-move-dialog/new-move-dialog.component';
 import { DatabaseService } from '../database.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { TrackerService } from '../tracker.service';
@@ -22,6 +25,7 @@ import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
 import { MoveInVideo } from '../moveInVideo.model';
+import { MatchDetails} from '../matchDetails.model';
 
 declare var $:any;
 
@@ -44,7 +48,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private disabledStatus: boolean = true;
   private performers: any[];
-  private localMatchDeets: any[];
+  private localMatchDeets: MatchDetails;
   private disabledPerformer: boolean = false;
   private moveValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private moveValidStatus: boolean = false;
@@ -53,8 +57,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private submissionStatus: string = "No";
   private attemptStatus: string = "Yes";
   private pointsEntered: number = -1;
+  private localMoveName: string = null;
+  private localUser: any = null;
 
-  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService) {
+  constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, private textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService, private _snackBar: MatSnackBar, public dialog: MatDialog) {
     super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, this.database, this.db);
@@ -62,7 +68,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   ngOnInit() {
-    $('.modal').modal();
+    $('.modal').appendTo('body').modal();
     // let categories = this.db.getMovesKeys().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
     //   this.moveCategories = results;
     // });
@@ -71,6 +77,11 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     //     //TODO ??
     //   }
     // });
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
+      if(currentUser && currentUser.uid){
+        this.localUser = currentUser;
+      }
+    });
     this.trackerService.startTimePoint.next(1);
     this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
           if(moveName !== "No Annotation Currently Selected"){
@@ -80,10 +91,11 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        // console.log(matchDeets);
-        let localMatchDeets: any = matchDeets;
+        // console.log(Array.of(matchDeets));
+        this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
+        // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
-        let thePerformers: string[] = [localMatchDeets.athlete1Name, localMatchDeets.athlete2Name];
+        let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
         this.performers = thePerformers;
       });
     });
@@ -109,18 +121,20 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   selectItem(item: string){
-    // if(constants.rootNodes.includes(item)){
-    //   console.log(item + " is in root nodes. Adding to moveCategory...");
-    //   this.trackerService.moveCategory.next(item);
-    // } else{
-      //TODO check whether works
+    // console.log("selectItem entered");
+    if(item.charAt(0)==="A" && item.charAt(1)==="d" && item.charAt(2)==="d"){
+      // console.log("add a move reached");
+      this.openAddNameDialog();
+      //TODO eventually when you listen for it to come back, send moveName to tracker service
+    }
+    else{
       this.trackerService.moveName.next(item);
-      console.log("item selected: " + item);
-      //TODO get category from item
-    // }
+      // console.log("item selected: " + item);
+    }
   }
 
   registerCategory(category: string){
+    console.log("registerCategory entered. Category is " + category);
     if(constants.rootNodes.includes(category)){
       console.log(category + " from registerCategory function. Adding to moveCategory...");
       this.trackerService.moveCategory.next(category);
@@ -175,5 +189,46 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
 
   respondToAnnotationCancel(){
     // console.log("Cancel was clicked TODO don't swap the buttons in match display");
+  }
+
+  openAddNameDialog(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(NewMoveDialogComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
+      // console.log("got dialog data to annotation-display component?:");
+      // console.log(val);
+      if(!val){
+        console.log("this is part of the problem");
+        return;
+      }
+      // TODO check that it already exists add maybe a forEach to take through each rootNode and see if it's in its child
+      // this.openSnackBar("Name already exists in dropdown menu!", null);
+      val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
+
+      this.trackerService.moveName.next(val.move);
+      this.trackerService.moveCategory.next(val.moveCategory);
+      this.trackerService.moveSubcategory.next(val.moveSubcategory);
+      if(this.localUser.id){
+        // console.log("user db id is: ");
+        // console.log(this.localUser.id);
+        // console.log(this.localMatchDeets);
+        if(this.localMatchDeets){
+          // console.log("YOOOOOO");
+          // console.log(this.localMatchDeets);
+          // console.log(this.localMatchDeets.videoUrl);
+          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
+        }
+      }
+      //TODO add to an admin component
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

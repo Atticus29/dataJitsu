@@ -38,6 +38,7 @@ import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-ti
 import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EmailLoginDialog } from './emailLoginDialog.model';
+import { HelperService } from './helper.service';
 
 import {
   MatAutocompleteModule,
@@ -98,6 +99,8 @@ import { FlaggedAnnotationDirective } from './flagged-annotation.directive';
 import { AdvantageDirective } from './advantage.directive';
 import { AthleteNameApprovalComponent } from './athlete-name-approval/athlete-name-approval.component';
 import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-athlete-name-dialog.component';
+import { NewMoveDialogComponent } from './new-move-dialog/new-move-dialog.component';
+import { MoveNameApprovalComponent } from './move-name-approval/move-name-approval.component';
 
 
 export const firebaseConfig = {
@@ -144,7 +147,9 @@ export const firebaseConfig = {
     FlaggedAnnotationDirective,
     AdvantageDirective,
     AthleteNameApprovalComponent,
-    NewAthleteNameDialogComponent
+    NewAthleteNameDialogComponent,
+    NewMoveDialogComponent,
+    MoveNameApprovalComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -197,8 +202,8 @@ export const firebaseConfig = {
     ReactiveFormsModule,
     routing
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
 })
 export class AppModule { }

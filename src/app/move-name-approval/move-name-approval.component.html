@@ -1,0 +1,60 @@
+<h5>Confirm new move names:</h5>
+<div class="flexbox-container small-black-border">
+  <div class="flexbox-item">
+    <ul>
+      <li *ngFor="let candidateMove of localCandidateMoves">
+        {{candidateMove.moveCategory}} : {{candidateMove.moveName}}
+        <span matTooltip="Approve" (click)="approveMove(candidateMove.moveName, candidateMove.moveCategory, candidateMove.moveSubcategory)" name="approve-move">
+          <i class="material-icons" id="up">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveMove(candidateMove.moveName)" name="disapprove-move">
+          <i class="material-icons" id="down">thumb_down</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="flexbox-item">
+    <h5>Move names already in the database (for reference):</h5>
+    <hr>
+    <ul>
+      <li *ngFor="let category of localCategoryNames">
+        <span class="bold">
+          {{category}}
+        </span>
+        <ul *ngIf="helperService.hasSubcategories(category)">
+          <li *ngFor="let subcategory of (localSubcategories? localSubcategories: [])" class="medium-list">
+            <span class="indent-me bold">
+              {{subcategory}}:
+            </span>
+            <ul>
+              <li *ngFor="let subitem of (existingMovesObj[category]? existingMovesObj[category][subcategory]: [])" class="little-list">
+                <span clas="indent-me-double">
+                  {{subitem}}
+                </span>
+                <span (click)="deleteMoveName(subitem, category)" *ngIf="localIsAdmin" name="delete-move-name">
+                  <i class="material-icons" id="delete">delete</i>
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul *ngIf="!helperService.hasSubcategories(category)">
+          <li class="little-list" *ngFor="let moveItem of existingMovesObj[category]">
+            <span class="indent-me-double">
+              {{moveItem}}
+            </span>
+            <span (click)="deleteMoveName(moveItem, category)" *ngIf="localIsAdmin">
+              <i class="material-icons" id="delete">delete</i>
+            </span>
+          </li>
+        </ul>
+      </li>
+      <!-- <li *ngFor="let moveName of localMoveNames">
+        {{moveName}}
+        <span (click)="deleteMoveName(moveName, moveCategory)" *ngIf="localIsAdmin">
+          <i class="material-icons" id="delete">delete</i>
+        </span>
+      </li> -->
+    </ul>
+  </div>
+</div>

@@ -38,7 +38,7 @@ export class TestDbComponent extends BaseComponent implements OnInit {
  "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
 "Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
 
-    this.db.addAthleteNamesToDb(this.athleteNames);
+    // this.db.addAthleteNamesToDb(this.athleteNames);
     //
     // let matchDeets: MatchDetails = new MatchDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     // let move1: MoveInVideo = new MoveInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);

@@ -1,7 +1,12 @@
 # Known issues
+- [ ] After deleting a submission move in the admin page, TypeError: Cannot read property 'Choke Or Cervical Submissions' of undefined; after adding a move you see it, but this error occurs upon refresh...even if you don't add anything, a page reload produces this error
+- [ ] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
+- [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page
+- [ ] When you approve of a new move name, it messes with the alphabetical order of the root nodes until you refresh the page (e.g., adding a new move to disciplinary action, and disciplinary action moves to the bottom in the annotation tree)
 - [ ] Reputation points are displayed even if logged out
 - [ ] Navigating to another individual match messes with the video's attachment to the dom?
+- [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
 - [ ] Typing in a new athlete name and then changing to one in the dropdown menu will use the typed in one for the match.
 
 - [ ] When another user adds and annotation, it does not appear in chronological order, even though it works fine when you enter them out of order yourself
@@ -39,6 +44,15 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] cannot read property expandable of undefined when you click guard passes or guard pass attempts
+- [x] Alphabetical order not happening for moves that don't score points
+- [x] Dropdown menu for new-move isn't in front
+- [x] Deal with subcategory for submissions in move-name adding
+  - [x] Section with move name added now seems expandable in its deepest level, when it should not be
+  - [x] Trying to collapse an expand fails
+  - [x] When you try to re-expand, it add items to the array (I think this won't be a problem if the above gets resolved)
+  - [x] Deal with the case in which there are submission sub-trees
+- [x] Adding an annotation with a created user doesn't work
 - [x] View All Matches Button Remains upon logout for admin and over-ride ppl. alike (unknown for paid ppl.)
 - [x] Rating a match toggles back and forth between your current vote and your old vote
 - [x] Tests are failing because of unsubscription error

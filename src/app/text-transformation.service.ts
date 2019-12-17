@@ -17,6 +17,12 @@ export class TextTransformationService {
     return wordCapitalized;
   }
 
+  capitalizeFirstLetterOfEachWord(phrase: string){
+    const words = phrase.split(' ');
+    const newWords = words.map(this.capitalizeFirstLetter);
+    return newWords.join(' ');
+  }
+
   simplifyDateString(dateString?: string, date?: Date){
     if(dateString){
       let tmpDate = Date.parse(dateString);

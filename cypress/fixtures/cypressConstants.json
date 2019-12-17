@@ -1,4 +1,8 @@
 {
+  "defaultAnnotationMoveName": "Advantage Awarded",
+  "submissionNodeName": "Submissions or Submission Attempts",
+  "moveCategoryTitle": "Choose Move Category",
+  "moveSubcategoryTitle": "Choke Or Cervical Submissions",
   "title": "Match Annotator",
   "usrnm": "fakeEmail@gmail.com",
   "passw": "ValidPassword23",
@@ -15,5 +19,7 @@
   "athlete1LastName" : "Ralpheo",
   "athlete1FirstName" : "Jean",
   "athlete2LastName" : "Ralpheo",
-  "athlete2FirstName" : "MonaLisa"
+  "athlete2FirstName" : "MonaLisa",
+  "moveNameRemovedMessage": "Move name has been removed; flag me",
+  "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu"
 }
