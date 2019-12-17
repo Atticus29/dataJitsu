@@ -134,7 +134,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
         this.fetchAnnotations(matchId);
         if(numberOfFlags >= constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction){
           console.log("got closest!");
-          this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1));
+          this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1), "Your annotation on match " + matchId + " was flagged too many times.");
         }
       });
     } else{

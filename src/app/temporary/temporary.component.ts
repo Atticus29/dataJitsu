@@ -16,6 +16,7 @@ export class TemporaryComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.dbService.db.database);
     this.dbService.getMovesAsList().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
       // console.log(results);
       this.displayText = results.toString();

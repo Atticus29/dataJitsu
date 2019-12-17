@@ -10,6 +10,9 @@
           <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
             <i class="material-icons">play_arrow</i>
           </a>
+          <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
+            <i class="material-icons">pause</i>
+          </a>
           <button id="rw-three" type="submit" value="rw-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Rewind 3 sec.">
             <span>
               <i class="material-icons">fast_rewind</i>
@@ -32,9 +35,6 @@
               </div>
             </span>
           </button>
-          <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
-            <i class="material-icons">pause</i>
-          </a>
           <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideo()" matTooltip="Flag Video as Removed" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
             <i class="material-icons">videocam_off</i>
           </button>
@@ -85,7 +85,7 @@
           <br>
           <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
           <br>
-          <span class="match-label">Date: </span>{{match?.matchDeets?.date}}
+          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.matchDeets?.date)}}
           <br>
           <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
           <br>

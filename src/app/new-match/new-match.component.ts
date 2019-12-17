@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angu
 import { Router } from '@angular/router';
 import {Location} from "@angular/common";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { Subject ,  Observable } from 'rxjs';
@@ -18,8 +19,10 @@ import { Match } from '../match.model';
 import { MoveInVideo } from '../moveInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
+import { TextTransformationService } from '../text-transformation.service';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
+import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
 
 declare var $:any;
 
@@ -36,6 +39,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
   ranks: any[];
+  athleteNames: any[];
   giRanks: any[];
   nogiRanks: any[];
   rankType: string = "Nogi";
@@ -56,10 +60,22 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
   private localUser: any = null;
 
+  // localMatchUrlBound: string = null;
+  localAthlete1Name: string = null;
+  localAthlete2Name: string = null;
+  // localTournamentNameBound: string = null;
+  // localLocationBound: string = null;
+  // localTournamentDateBound: string = null;
+  // localGiStatusBound: string = null;
+  // localGenderBound: string = null;
+  // localAgeClassBound: string = null;
+  // localRankBound: string = null;
+  // localWeightBound: string = null;
+
   newRankForm: FormGroup; //TODO what is this?
   private matchUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private athlete1NameBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private athlete2NameBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private athlete1NameBoundFc: FormControl = new FormControl('', []);
+  private athlete2NameBoundFc: FormControl = new FormControl('', []);
   private tournamentNameBoundFc: FormControl = new FormControl('', [Validators.required]);
   private locationBoundFc: FormControl = new FormControl('', [Validators.required]);
   private tournamentDateBoundFc: FormControl = new FormControl('', [Validators.required]);
@@ -69,7 +85,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
   private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone) {
+  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog, private textTransformationService: TextTransformationService) {
     super();
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
@@ -96,8 +112,8 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     $('.modal').modal();
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
-      console.log("currentUser in new-match component:");
-      console.log(currentUser);
+      // console.log("currentUser in new-match component:");
+      // console.log(currentUser);
       if(currentUser && currentUser.uid){
         this.localUser = currentUser;
         this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
@@ -112,6 +128,10 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     });
 
     this.genders = constants.genders;
+
+    this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+      this.athleteNames = athleteNames.sort();
+    })
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks;
@@ -164,6 +184,18 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let matchUrlBound = this.matchUrlBoundFc.value;
     let athlete1NameBound = this.athlete1NameBoundFc.value;
     let athlete2NameBound = this.athlete2NameBoundFc.value;
+    if(this.localAthlete1Name){
+      console.log("localAthlete1Name exists");
+      athlete1NameBound = this.localAthlete1Name;
+      this.db.addCandidateNameToDb(athlete1NameBound, matchUrlBound);
+    }
+    if(this.localAthlete2Name){
+      console.log("localAthlete2Name exists");
+      athlete2NameBound = this.localAthlete2Name;
+      this.db.addCandidateNameToDb(athlete2NameBound, matchUrlBound);
+    }
+    console.log(athlete1NameBound);
+    console.log(athlete2NameBound);
     let tournamentNameBound = this.tournamentNameBoundFc.value;
     let locationBound = this.locationBoundFc.value;
     let tournamentDateBound = this.tournamentDateBoundFc.value;
@@ -259,6 +291,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   submitFormAndReturnToMain(){
     console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
+    console.log(values);
     this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       console.log("does match exist result in submitFormAndReturnToMain");
       console.log(result);
@@ -301,6 +334,45 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   onDestroy(){
 
+  }
+
+  openAddNameDialog(athleteNumber: number){
+    // console.log("clicked!");
+    console.log("athlete number is " + athleteNumber);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(NewAthleteNameDialogComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
+      console.log("got dialog data to new-match component?:");
+      console.log(val);
+      this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+        // console.log(athleteNames);
+        val.last = this.textTransformationService.capitalizeFirstLetter(val.last);
+        val.first = this.textTransformationService.capitalizeFirstLetter(val.first);
+
+        let candidateName = val.last + ", " + val.first;
+        // console.log(candidateName);
+        if(athleteNames.includes(candidateName)){
+          // console.log("name already exits");
+          this.openSnackBar("Name already exists in dropdown menu!", null);
+          this.localAthlete1Name = null;
+          this.localAthlete2Name = null;
+
+        }else{
+          if(athleteNumber == 1){
+            this.localAthlete1Name = val.last + ", " + val.first;
+            console.log("localAthlete1Name added; it is " + this.localAthlete1Name);
+          }
+          if(athleteNumber == 2){
+            this.localAthlete2Name = val.last + ", " + val.first;
+            console.log("localAthlete2Name added; it is " + this.localAthlete2Name);
+          }
+        }
+      });
+      // this.authService.emailLogin(val.email, val.passwd);
+    });
   }
 
 }

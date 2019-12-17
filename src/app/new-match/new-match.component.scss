@@ -10,3 +10,8 @@ input:not([read-only]) {
 	border-bottom: none!important;
 	box-shadow: none!important;
 }
+
+.align-middle-things{
+  display: inline-flex;
+  vertical-align: middle;
+}

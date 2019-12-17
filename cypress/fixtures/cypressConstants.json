@@ -1,14 +1,25 @@
 {
+  "defaultAnnotationMoveName": "Advantage Awarded",
+  "submissionNodeName": "Submissions or Submission Attempts",
+  "moveCategoryTitle": "Choose Move Category",
+  "moveSubcategoryTitle": "Choke Or Cervical Submissions",
   "title": "Match Annotator",
   "usrnm": "fakeEmail@gmail.com",
   "passw": "ValidPassword23",
   "tmp": "tmp",
   "testVideoUrl": "https://youtu.be/ytktpNIN3OM",
+  "testVideoUrl2": "https://youtu.be/ytktpNIN3",
   "testAthlete1": "Alfie",
   "testAthlete2": "E.T.",
   "testTournament": "The Quest Deathmatch",
-  "testLocation": "A Pineapple Under the Sea",
+  "testLocation": "APineappleUnderTheSea",
   "testDate": "7/4/1776",
   "adminEmailAddress": "mark.aaron.fisher@gmail.com",
-  "adminPassword": "APython!11"
+  "adminPassword": "APython!11",
+  "athlete1LastName" : "Ralpheo",
+  "athlete1FirstName" : "Jean",
+  "athlete2LastName" : "Ralpheo",
+  "athlete2FirstName" : "MonaLisa",
+  "moveNameRemovedMessage": "Move name has been removed; flag me",
+  "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu"
 }

@@ -1,6 +1,72 @@
 # TODO high priority
+- [ ] Track reasons for reputation awards and deductions (date, note/flag, points)
+- [ ] Add new move options to every section
+- [ ] Make new directive for match start
+- [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
+- [ ] See what happens when you try to add new submission name
+- [ ] Add interesting exchange or something like that
+- [ ] Some annotation manipultations affect video play for another person's instance (test using aws version and localhost version?)
+  - [ ] Characterize the problem better
+- [ ] Enter upon password completion for login should trigger login button
+- [ ] Tournaments from a dropdown
+- [ ] Custom categories
+  - [ ] weight class
+    - [ ] Dropdown
+    - [ ] Dialogue
+    - [ ] Dialogue adds approval display for admin
+    - [ ] Form validation in dialog
+    - [ ] Form select is dynamic for subcategory
+    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [ ] Approval adds to db and removes from candidate list, and awards reputation points
+    - [ ] Disapproval removes from candidate list and substitutes, "flag me"
+    - [ ] Feature to delete move name from move list
+    - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+    - [ ] Put delete feature under control of isAdmin (or isModerator?)
+    - [ ] Added moveNames not in alphabetical order
+    - [ ] Standardize how these things are capitalized
+    - [ ] Test written to make sure name addition is seen in match
+    - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
+    - [ ] Test written to make sure name disapproval displays flagged message
+    - [ ] Test written to make sure you can't add a duplicate name
+  - [ ] tournament
+    - [ ] Dropdown
+    - [ ] Dialogue
+    - [ ] Dialogue adds approval display for admin
+    - [ ] Form validation in dialog
+    - [ ] Form select is dynamic for subcategory
+    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [ ] Approval adds to db and removes from candidate list, and awards reputation points
+    - [ ] Disapproval removes from candidate list and substitutes, "flag me"
+    - [ ] Feature to delete move name from move list
+    - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+    - [ ] Put delete feature under control of isAdmin (or isModerator?)
+    - [ ] Added moveNames not in alphabetical order
+    - [ ] Standardize how these things are capitalized
+    - [ ] Test written to make sure name addition is seen in match
+    - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
+    - [ ] Test written to make sure name disapproval displays flagged message
+    - [ ] Test written to make sure you can't add a duplicate name
+  - [ ] age class
+    - [ ] Dropdown
+    - [ ] Dialogue
+    - [ ] Dialogue adds approval display for admin
+    - [ ] Form validation in dialog
+    - [ ] Form select is dynamic for subcategory
+    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [ ] Approval adds to db and removes from candidate list, and awards reputation points
+    - [ ] Disapproval removes from candidate list and substitutes, "flag me"
+    - [ ] Feature to delete move name from move list
+    - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+    - [ ] Put delete feature under control of isAdmin (or isModerator?)
+    - [ ] Added moveNames not in alphabetical order
+    - [ ] Standardize how these things are capitalized
+    - [ ] Test written to make sure name addition is seen in match
+    - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
+    - [ ] Test written to make sure name disapproval displays flagged message
+    - [ ] Test written to make sure you can't add a duplicate name
 - [ ] If someone removes a flag from an annotation, and that changes the reputation scoring, reward them those points back
 - [ ] Add a minimum number of flags before it modifies the annotation chip to constants.ts and then to the key
+- [ ] Maybe make a go to end icon on the chips for individual annotations?
 - [ ] Once you have internet
   - [ ] Update faq component link to different divs in the FAQ
     - [ ] TODO link to how to lose them
@@ -20,9 +86,11 @@
 - [ ] Troubleshoot/edit the currently existing tests
 - [ ] Snackbars for annotation and for annotation already exists need to come up at the relevant times
 
+
 - [ ] Set up tutorial mode
 - [ ] Make new user-status report behave in the ways it's supposed to since its move to a menu
 
+- [ ] Add component for adding names to matches with people with unknown names
 - [ ] If they are majority annotator, they cannot rate the annotation
   - [x] get everything to work except getMainAnnotatorOfMatch
   - [ ] //TODO flesh out getMainAnnotatorOfMatch
@@ -100,6 +168,41 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Add moves
+  - [x] Dropdown
+  - [x] Dialogue
+  - [x] Dialogue adds approval display for admin
+  - [x] Form validation in dialog
+  - [x] Form select is dynamic for subcategory
+  - [x] Doesn't add it and sends a little snackbar saying move name already exists if so
+  - [x] Approval adds to db and removes from candidate list, and awards reputation points
+  - [x] Disapproval removes from candidate list and substitutes, "flag me"
+  - [x] Feature to delete move name from move list
+  - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+  - [x] Put delete feature under control of isAdmin (or isModerator?)
+  - [x] Added moveNames not in alphabetical order
+  - [x] Standardize how these things are capitalized
+  - [x] Test written to make sure name addition is seen in match
+  - [x] Test written to make sure name approval is seen in admin list; delete name at the end
+  - [x] Test written to make sure name disapproval displays flagged message
+  - [x] Test written to make sure you can't add a duplicate name
+- [x] Change match outcome to match logistics and add match start as well as point mistake
+- [x] Move the info. icon next to Annotations because you keep accidentally scrolling over it (or just make it clickable instead)
+- [x] Alphabetize the moves in annotation lists
+- [x] Change athlete names to dropdown menu with option to add more in a dialogue
+  - [x] Dropdown
+  - [x] Dialogue
+  - [x] Dialogue adds approval display for admin
+  - [x] Form validation in dialog
+  - [x] Doesn't add it and sends a little snackbar saying athlete already exists if so
+  - [x] Approval adds to db and removes from candidate list
+  - [x] Disapproval removes from candidate list and substitutes, "Unnamed Athlete"
+  - [x] Feature to delete athlete name from athlete list (but leaves them as legacy in existing matches [otherwise, have to track?])
+  - [x] Put delete feature under control of isAdmin (or isModerator?)
+  - [x] Added names not in alphabetical order (caps issue? Yes... make it so that Capital letters for first and last name is forced)
+  - [x] Displays the name in the field after it is typed (sort of)
+  - [x] Test written to make sure name addition is seen in table
+  - [x] Test written to make sure name addition is seen in admin list; delete name at the end
 - [x] 3 sec. rewind and ff buttons
 - [x] Get current tests to pass
 - [x] Add non-binary gender options
@@ -154,7 +257,7 @@
 - [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
-- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from)
+- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)
 - [ ] Set up unit testing, especially for database stuff
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:

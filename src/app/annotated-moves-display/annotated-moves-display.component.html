@@ -1,5 +1,5 @@
 <div *ngIf="annotations.length > 0">
-  <h5>Annotations <span (mouseover)="openLegendDialog()"><i class="material-icons">info</i></span></h5>
+  <h5><span (click)="openLegendDialog()"><i class="material-icons">info</i></span>Annotations</h5>
   <hr>
   <mat-chip-list>
     <mat-chip *ngFor="let annotation of annotations" [appWinDraw]="annotation.isWin || annotation.isDraw" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission" [appAdvantage]="annotation.moveName === 'Advantage Awarded'" [appFlaggedAnnotation]="annotation.numFlags >= localFlagMin">
@@ -7,7 +7,18 @@
         <i class="material-icons left">warning</i>
       </span>
       <span (click)="playStartingAt(annotation.timeInitiated)">
-        {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}: {{annotation.moveName}} performed by {{annotation.actor}}
+        <button mat-button class="no-padding" color="primary">
+          {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeInitiated,2))}}
+        </button>
+      </span>
+      <span (click)="playStartingAt(annotation.timeCompleted)">
+        -
+        <button mat-button color="primary" class="no-padding">
+          {{this.dateCalculationsService.convertSecondsToMinutesAndSeconds(this.dateCalculationsService.roundToDecimal(annotation.timeCompleted,2))}}
+        </button>
+      </span>
+      <span (click)="playStartingAt(annotation.timeInitiated)">
+        : {{annotation.moveName}} performed by {{annotation.actor}}
       </span>
       <span (click)="flagAnnotationForImprovement(annotation.associatedMatchId,annotation.timeInitiated, annotation.annotatorUserId)" name="flag-annotation-for-improvement" matTooltip="Flag Annotation for Improvement">
         <i class="material-icons">flag</i>

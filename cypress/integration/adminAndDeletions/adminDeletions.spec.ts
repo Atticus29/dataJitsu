@@ -12,7 +12,7 @@ describe ('Tests involving admin privleges and deletions', () =>{
     cy.wait(1000);
     cy.visit('http://localhost:4200/newmatch');
     cy.fillInMatchCreationDetails();
-    cy.get('button[id=new-match-submit-button]').click();
+    cy.get('button[id=new-match-submit-button]').click({force:true});
     cy.wait(2000);
     cy.get('button[id=add-to-queue-modal-button]').click({force:true});
     cy.wait(2000);
@@ -21,13 +21,14 @@ describe ('Tests involving admin privleges and deletions', () =>{
 
 
   it('sees delete as an option in the table', function(){
+    cy.wait(3000);
     cy.contains("Delete Match").should('exist');
   });
 
-  it('deletes a match containing Alfie as athlete 1', function(){
+  it('deletes a match containing APineappleUnderTheSea as location', function(){
     cy.get('div[class=mat-select-arrow]').click();
     cy.contains('500').click();
     // cy.get('button[class=mat-paginator-navigation-previous]').click();
-    cy.get('mat-cell[id=Alfie]>button').click();
+    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click();
   });
 });
