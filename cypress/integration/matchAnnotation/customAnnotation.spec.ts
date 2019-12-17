@@ -85,6 +85,7 @@ describe ('Match custom annotation tests', () =>{
     cy.loginAsAdmin();
     cy.get('a[name=videoClick]').first().click();
     cy.removeAnnotation('Darth Vader Choke');
+    cy.reload(); //TODO here maybe?
 
     //Then create the annotation and custom move again
     // cy.get('a[name=videoClick]').first().click();
