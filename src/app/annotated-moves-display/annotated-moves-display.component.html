@@ -1,5 +1,5 @@
 <div *ngIf="annotations.length > 0">
-  <h5>Annotations <span (mouseover)="openLegendDialog()"><i class="material-icons">info</i></span></h5>
+  <h5><span (click)="openLegendDialog()"><i class="material-icons">info</i></span>Annotations</h5>
   <hr>
   <mat-chip-list>
     <mat-chip *ngFor="let annotation of annotations" [appWinDraw]="annotation.isWin || annotation.isDraw" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission" [appAdvantage]="annotation.moveName === 'Advantage Awarded'" [appFlaggedAnnotation]="annotation.numFlags >= localFlagMin">

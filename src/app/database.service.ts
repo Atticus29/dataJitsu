@@ -179,7 +179,7 @@ export class DatabaseService {
     return this.db.object('users/' + userId + '/reputationPoints').valueChanges();
   }
 
-  updateUserReputationPoints(userId: string, points: number){
+  updateUserReputationPoints(userId: string, points: number, reason: string){
     let updates = {};
     this.getUserReputationPoints(userId).pipe(take(1)).subscribe(result =>{ //used to be first()
       console.log("reputation points? in updateUserReputationPoints");
@@ -188,6 +188,10 @@ export class DatabaseService {
       updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;
       firebase.database().ref().update(updates);
     });
+    updates = {};
+    let reputationLog = {date: new Date().toJSON(), reason: reason, points: points};
+    updates['/users/' + userId + '/reputationLog'] = reputationLog;
+    firebase.database().ref().update(updates);
   }
 
   // addFlagToAnnotationIfUnique(matchId: string, userId: string, timeInitiated: number){

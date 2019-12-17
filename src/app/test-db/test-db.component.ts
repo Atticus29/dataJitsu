@@ -32,11 +32,11 @@ export class TestDbComponent extends BaseComponent implements OnInit {
     // console.log(allCurrentMoves);
     // this.db.addMovesListToDb(allCurrentMoves); //TODO this is the line to uncomment
 
-    this.athleteNames = ["Tonon, Garry", "Gracie, Kron", "Garcia, Marcelo", "Oliveira, Arnaldo", "Cornelius, Kennan", "Lo, Leandro", "Musumeci, Michael", "Miyao, João", "Mendes, Rafael", "Charles, Rubens Cobrihna", "Santana, Murilo", "Barral, Romulo", "Ribeiro, Vitor 'Shaolin'",
-     "Augusto, Fernando 'Terere'", "Dern, Mackenzie", "Nicolini, Michelle", "Enick, Trayton", "Deodara, Dirt", "Diógenes de Aquino, Thamires", "Alencar, Ana Talita de Oliveira", "Martinez, Richie 'The Boogeyman'",
-   "Jones, Craig", "Meregali, Nicholas de Barcellos", "Rice, Tanner", "Ribeiro, Xande", "Pena, Felipe",
- "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
-"Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
+//     this.athleteNames = ["Tonon, Garry", "Gracie, Kron", "Garcia, Marcelo", "Oliveira, Arnaldo", "Cornelius, Kennan", "Lo, Leandro", "Musumeci, Michael", "Miyao, João", "Mendes, Rafael", "Charles, Rubens Cobrihna", "Santana, Murilo", "Barral, Romulo", "Ribeiro, Vitor 'Shaolin'",
+//      "Augusto, Fernando 'Terere'", "Dern, Mackenzie", "Nicolini, Michelle", "Enick, Trayton", "Deodara, Dirt", "Diógenes de Aquino, Thamires", "Alencar, Ana Talita de Oliveira", "Martinez, Richie 'The Boogeyman'",
+//    "Jones, Craig", "Meregali, Nicholas de Barcellos", "Rice, Tanner", "Ribeiro, Xande", "Pena, Felipe",
+//  "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
+// "Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
 
     // this.db.addAthleteNamesToDb(this.athleteNames);
     //
