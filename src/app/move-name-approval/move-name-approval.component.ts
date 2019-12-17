@@ -69,29 +69,29 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
   }
 
     approveMove(moveName: string, categoryName: string, subcategoryName: string){
-      let confirmation = confirm("Are you sure you want to APPROVE this move?");
+      let confirmation = confirm("Are you sure you want to APPROVE the move " + moveName + "?");
       if(confirmation){
         this.db.addMoveNameToDb(moveName, categoryName, subcategoryName);
         this.db.removeMoveNameFromCandidateList(moveName);
         if(this.localUser){
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You approved move name " + moveName);
         }
       }
     }
 
-    disapproveMove(move: string){
-      let confirmation = confirm("Are you sure you want to DISAPPROVE this move?");
+    disapproveMove(moveName: string){
+      let confirmation = confirm("Are you sure you want to DISAPPROVE the move " + moveName + "?");
       if(confirmation){
-        this.db.getMatchUrlFromCandidateMoveName(move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+        this.db.getMatchUrlFromCandidateMoveName(moveName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
           this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
-            this.db.getMoveIdFromMatchId(matchIdResult, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
-              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, move, constants.moveNameRemovedMessage);
+            this.db.getMoveIdFromMatchId(matchIdResult, moveName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
+              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, moveName, constants.moveNameRemovedMessage);
             });
           });
         })
-        this.db.removeMoveNameFromCandidateList(move);
+        this.db.removeMoveNameFromCandidateList(moveName);
         if(this.localUser){
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You disapproved move name " + moveName);
         }
       }
     }

@@ -48,5 +48,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingCandidateAthleteName: 5,
     numberOfPointsToAwardForApprovingMoveName: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
-    numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1
+    numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
+    numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
+    numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
   };

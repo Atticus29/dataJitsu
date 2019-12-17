@@ -50,19 +50,19 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
 
   approveName(name: string){
     // console.log("approve clicked " + name);
-    let confirmation = confirm("Are you sure you want to APPROVE this name?");
+    let confirmation = confirm("Are you sure you want to APPROVE the name " + name + "?");
     if(confirmation){
       this.db.addAthleteNameToDb(name);
       this.db.removeAthleteNameFromCandidateList(name);
       if(this.localUser){
-        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName);
+        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName, "You approved candidate athlete name " + name);
       }
     }
   }
 
   disapproveName(name: string){
     // console.log("disapprove clicked " + name);
-    let confirmation = confirm("Are you sure you want to DISAPPROVE this name?");
+    let confirmation = confirm("Are you sure you want to DISAPPROVE the name " + name + "?");
     if(confirmation){
       this.db.getMatchUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         console.log(urlResult);
@@ -72,7 +72,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
       })
       this.db.removeAthleteNameFromCandidateList(name);
       if(this.localUser){
-        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName)
+        this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingCandidateAthleteName, "You disapproved candidate athlete name " + name)
       }
     }
   }

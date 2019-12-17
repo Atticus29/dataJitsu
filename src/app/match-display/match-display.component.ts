@@ -413,13 +413,13 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       // console.log("userInDbId already existed");
       this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.matchId, $event.newValue);
       this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.matchId, $event.newValue);
-      if($event.newValue > 4){
+      if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
       	// console.log("rating is greater than 4");
         this.db.getMainAnnotatorOfMatch(this.matchId).pipe(take(1)).subscribe(majorityAnnotator =>{
 	        // console.log("main annotator of match in match-display.ts is ");
           // console.log(majorityAnnotator);
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
-            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 6);
+            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.matchId +".");
           }
           if(majorityAnnotator.annotatorUserId === this.userInDbId){
             console.log("bish just upvoted their own shit");
@@ -433,10 +433,10 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
           let userDbId: string = result.id;
           this.db.addMatchAnnotationRatingToUser(userDbId, this.matchId, $event.newValue);
           this.db.addMatchAnnotationRatingToMatch(userDbId, this.matchId, $event.newValue);
-          if($event.newValue > 4){
+          if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
             this.db.getMainAnnotatorOfMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
               if(majorityAnnotator.annotatorUserId !== userDbId){
-                this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, 5);
+                this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.matchId +".");
               }
               if(majorityAnnotator.annotatorUserId === userDbId){
                 console.log("bish just upvoted their own shit");
