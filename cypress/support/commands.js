@@ -63,9 +63,9 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email
 
 
 Cypress.Commands.add("selectAdvantageAnnotation", () => {
+  cy.contains('mat-tree-node', 'Advantage').children('button').click({force: true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.contains('mat-tree-node', 'Advantage').children('button').click({force: true});
-    cy.contains('div[class=mat-ripple]','Advantage Awarded').click({force: true});
+    cy.contains('div[class=mat-ripple]',cypressConstants.defaultAnnotationMoveName).click({force: true});
   });
   cy.contains('Annotation Selected: Advantage Awarded').should('exist');
 });
@@ -145,6 +145,7 @@ Cypress.Commands.add('approveMove', (moveName) =>{
 
 Cypress.Commands.add("login", (email, pass) => {
   cy.visit('http://localhost:4200/login');
+  cy.wait(2000);
   cy.get('button[id=email-dialog-open-button]').click();
   cy.get('input[id=dialog-email-input]').type(email);
   cy.get('input[id=dialog-pw-input]').type(pass);

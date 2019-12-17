@@ -31,7 +31,7 @@
                 <span clas="indent-me-double">
                   {{subitem}}
                 </span>
-                <span (click)="deleteMoveName(item, category)" *ngIf="localIsAdmin" name="delete-move-name">
+                <span (click)="deleteMoveName(subitem, category)" *ngIf="localIsAdmin" name="delete-move-name">
                   <i class="material-icons" id="delete">delete</i>
                 </span>
               </li>

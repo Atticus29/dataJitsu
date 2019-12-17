@@ -38,8 +38,15 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       for(let i=0; i<categoryNames.length; i++){
         if(this.helperService.hasSubcategories(categoryNames[i])){
           console.log(categoryNames[i]+ " has subcategories");
+          let subcategoryNames = Object.keys(results[categoryNames[i]]);
+          console.log("subcategoryNames " + subcategoryNames);
+          subcategoryNames.forEach(subcategoryName =>{
+            console.log("subcategory moves: ");
+            console.log(results[categoryNames[i]][subcategoryName]);
+            results[categoryNames[i]][subcategoryName] = this.helperService.renderFlatStringObjectAsArray(results[categoryNames[i]][subcategoryName]);
+          })
         }else{
-          console.log(categoryNames[i]+ " does not have subcategories");
+          // console.log(categoryNames[i]+ " does not have subcategories");
           const modifiedResults = this.helperService.renderFlatStringObjectAsArray(results[categoryNames[i]]);
           results[categoryNames[i]] = modifiedResults
         }

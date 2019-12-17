@@ -12,7 +12,7 @@ describe ('Match annotation tests', () =>{
     cy.logout();
   });
 
-  it('annotates a match with a move', ()=>{
+  it.only('annotates a match with a move', ()=>{
     cy.contains('Match Rating');
     cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();
@@ -415,6 +415,9 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.wait(1000);
     cy.get('button[id=end-move]').click(); //{force:true}
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
     // cy.wait(1000);
     cy.visit('http://localhost:4200/login');
 
@@ -434,6 +437,14 @@ describe ('Match annotation tests with no afterEach', () =>{
     // cy.get('mat-icon').first().click({force:true});
     cy.contains('Annotation Selected: Advantage Awarded').should('exist');
     cy.get('button[id=modal-cancel-button]').click();
+
+    //then cleans up after itself by logging in as admin and deleting the annotation and logging out
+    cy.logout();
+    cy.loginAsAdmin();
+    cy.get('a[name=videoClick]').first().click();
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.removeAnnotation(cypressConstants.defaultAnnotationMoveName);
+    });
     cy.logout();
   });
 
