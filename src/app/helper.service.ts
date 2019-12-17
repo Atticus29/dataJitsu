@@ -19,7 +19,6 @@ export class HelperService {
       } else{
         if (typeof opts === 'string'){
           if(constants.rootNodesWithSubcategories.includes(opts)){ //TODO stop this from erroring
-            // console.log("category on list of ones with subcategories");
             return true;
           } else{
             return false;
@@ -31,34 +30,19 @@ export class HelperService {
     }
   }
 
-  // getSubcategory(category: string, move: string): string{
-  //   // let tmpArray: Array<string> = constants.rootNodesWithSubcategories;
-  //   // if(tmpArray.includes(category)){
-  //   //   this.dbService.getSubcategoryFromMoveAndCategory(category, move).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-  //   //     console.log("results in getSubcategory call from helper service: ");
-  //   //     console.log(result);
-  //   //   });
-  //   // }
-  //   return '';
-  //   //TODO
-  //   //if hasSubcategories(category){return subcategory} else{ return ''}
+  // getSubcategories(category: string){
+  //   this.dbService.getMovesSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+  //     console.log("results in getSubcategories call from helper service: ");
+  //     console.log(result);
+  //   });
   // }
-
-  getSubcategories(category: string){
-    this.dbService.getMovesSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      console.log("results in getSubcategories call from helper service: ");
-      console.log(result);
-    });
-  }
 
   renderFlatStringObjectAsArray(obj: Object){
     let returnArray = Object.values(obj);
     if(this.isFlatStringObj(obj)){
-      console.log("renderFlatObjectAsArray from renderFlatObjectAsArray is: ");
-      console.log(returnArray);
     } else{
       returnArray = null;
-      alert("obj not flat! error!");
+      alert("obj not flat! error!"); //TODO this doesn't handle well. Fix
     }
     return returnArray;
   }
@@ -74,5 +58,4 @@ export class HelperService {
     let returnVal = stringTracker>0? false: true;
     return returnVal;
   }
-
 }
