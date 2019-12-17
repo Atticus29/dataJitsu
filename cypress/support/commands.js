@@ -10,7 +10,25 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
+
+Cypress.Commands.add('checkThatCustomMoveHasBeenRenamed', () =>{
+  //assumes logged in as admin
+  cy.visit('http://localhost:4200/matches');
+  cy.get('a[name=videoClick]').first().click();
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.contains('span',cypressConstants.moveNameRemovedMessage).should('exist');
+    cy.contains('span','Darth Vader Choke').should('not.exist');
+  });
+});
+
+Cypress.Commands.add('removeNowRenamedAnnotation', () =>{
+  //assumes logged in as admin
+  cy.get('a[name=videoClick]').first().click();
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.removeAnnotation(cypressConstants.moveNameRemovedMessage);
+  });
+});
+
 Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);

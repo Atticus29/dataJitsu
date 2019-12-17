@@ -207,9 +207,9 @@ describe ('Match annotation tests', () =>{
     return false;
     });
     cy.get('button[id=end-move]').click();
-    // cy.on('uncaught:exception', (err, runnable) => {
-    // return false;
-    // });
+    cy.on('uncaught:exception', (err, runnable) => {
+    return false;
+    });
     cy.contains("Annotation Recorded").should('exist');
 
     cy.log("Second time through");
@@ -259,131 +259,6 @@ describe ('Match annotation tests', () =>{
     cy.wait(2000);
     cy.get('mat-chip').contains('Cross Collar Choke').should('not.exist');
   });
-
-  it('adds custom name and submits annotation', function(){
-    // TODO HERE
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke("darth vader choke");
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
-    cy.on('uncaught:exception', (err, runnable) => {
-    return false;
-    });
-    cy.contains("Annotation Recorded").should('exist');
-    cy.contains('span','Darth Vader Choke').should('exist');
-
-    //TODO remove these
-    // cy.logout();
-    // cy.loginAsAdmin();
-    // cy.get('a[name=videoClick]').first().click();
-    // cy.removeAnnotation("Darth Vader Choke");
-    // cy.visit('http://localhost:4200/admin')
-    // cy.disapproveMove("Darth Vader Choke");
-
-  });
-
-  it('approves name in admin and checks that it is on the dropdown list now', function(){
-    cy.logout();
-    cy.loginAsAdmin();
-    cy.visit('http://localhost:4200/admin');
-    cy.approveMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.get('mat-icon').eq(9).click({force:true});
-    cy.get('mat-icon').eq(12).click({force:true});
-    // cy.wait(1000);
-    cy.get('div[id=annotationModal]').contains('Darth Vader Choke').should('exist');
-  });
-
-  it('cannot create a customMove that has already been created and approved', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke("Darth Vader Choke");
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.moveNameAlreadyExistsNotification).should('exist');
-    });
-  });
-
-  it('deletes the move from admin page and confirms that it is missing from dropdown list', function(){
-    cy.deleteMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches',{timeout: 5000});
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').eq(9).click({force:true});
-    cy.get('mat-icon').eq(12).click({force:true});
-    cy.get('div[id=annotationModal]').contains('Darth Vader Choke').should('not.exist');
-  });
-
-  it('disapproves the custom move from the admin page', function(){
-    //TODO LEFT OFF HERE
-    //First delete the annotation that already exists
-    cy.logout();
-    cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click();
-    cy.removeAnnotation('Darth Vader Choke');
-
-    //Then create the annotation and custom move again
-    // cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
-    cy.wait(1000);
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke('Darth Vader Choke');
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
-    cy.on('uncaught:exception', (err, runnable) => {
-    return false;
-    });
-    cy.contains("Annotation Recorded").should('exist');
-    cy.contains('span','Darth Vader Choke').should('exist');
-
-    //Then do the important test stuff
-    // cy.logout();
-    // cy.loginAsAdmin();
-    cy.visit('http://localhost:4200/admin')
-    cy.disapproveMove("Darth Vader Choke");
-  });
-
-  it('checks that the custom move has been re-named', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains('span',cypressConstants.moveNameRemovedMessage).should('exist');
-      cy.contains('span','Darth Vader Choke').should('not.exist');
-    });
-  });
-
-  it('removes the now-renamed annotation', function(){
-    cy.logout();
-    cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click();
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.removeAnnotation(cypressConstants.moveNameRemovedMessage);
-    });
-  });
-
 });
 
 

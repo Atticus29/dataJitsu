@@ -189,9 +189,15 @@ export class DatabaseService {
       firebase.database().ref().update(updates);
     });
     updates = {};
-    let reputationLog = {date: new Date().toJSON(), reason: reason, points: points};
-    updates['/users/' + userId + '/reputationLog'] = reputationLog;
-    firebase.database().ref().update(updates);
+    let ref = this.db.list('/users/' + userId + '/reputationLog');
+    let reputationLogEntry = {date: new Date().toJSON(), reason: reason, points: points};
+    let logEntryId = ref.push(reputationLogEntry).key;
+    // let updates = {};
+    // updates['/matches/' + matchId + '/id'] = matchId;
+    // updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
+    // firebase.database().ref().update(updates);
+    // updates['/users/' + userId + '/reputationLog'] = reputationLog;
+    // firebase.database().ref().update(updates);
   }
 
   // addFlagToAnnotationIfUnique(matchId: string, userId: string, timeInitiated: number){
