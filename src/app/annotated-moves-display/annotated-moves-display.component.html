@@ -2,7 +2,7 @@
   <h5><span (click)="openLegendDialog()"><i class="material-icons">info</i></span>Annotations</h5>
   <hr>
   <mat-chip-list>
-    <mat-chip *ngFor="let annotation of annotations" [appWinDraw]="annotation.isWin || annotation.isDraw" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission" [appAdvantage]="annotation.moveName === 'Advantage Awarded'" [appFlaggedAnnotation]="annotation.numFlags >= localFlagMin">
+    <mat-chip *ngFor="let annotation of annotations" [appMatchActionDelimiter]="annotation.isMatchActionDelimiter" [appWinDraw]="annotation.isWin || annotation.isDraw" [appAnnotationScoredPoints]="annotation.points > 0" [appUnsuccessfulAnnotation]="!annotation.isSuccessfulAttempt" [appSubmissionAnnotation]="annotation.isASubmission" [appAdvantage]="annotation.moveName === 'Advantage Awarded'" [appFlaggedAnnotation]="annotation.numFlags >= localFlagMin">
       <span  matTooltip="Annotation has been flagged by at least {{localFlagMin}} user(s)" *ngIf="annotation.numFlags >= localFlagMin">
         <i class="material-icons left">warning</i>
       </span>

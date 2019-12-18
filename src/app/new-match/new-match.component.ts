@@ -134,24 +134,24 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     })
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
-      this.giRanks = giRanks;
-      this.ranks = giRanks;
+      this.giRanks = giRanks.sort();
+      this.ranks = giRanks.sort();
       // this.disabledGiRank = true;
     })
 
     this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
-      this.nogiRanks = noGiRanks;
-      this.ranks = noGiRanks;
+      this.nogiRanks = noGiRanks.sort();
+      this.ranks = noGiRanks.sort();
       // this.disabledNoGiRank = true;
     })
 
     this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
-      this.ageClasses = ageClasses;
+      this.ageClasses = ageClasses.sort();
       this.disabledAgeClass = true;
     });
 
     this.db.getWeightClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
-      this.weightClasses = weightClasses;
+      this.weightClasses = weightClasses.sort();
       this.disabledWeightClass = true;
     });
 

@@ -595,6 +595,7 @@ export class DatabaseService {
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentMoveInVideo.setIsWin(snapshotVals.isWin);
               currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
+              currentMoveInVideo.setIsMatchActionDelimiter(snapshotVals.isMatchActionDelimiter);
               currentMoveInVideo.setNumFlag(snapshotVals.numFlags);
               // console.log("move in video being added to annotations array:");
               // console.log(currentMoveInVideo)

@@ -102,6 +102,8 @@ import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-ath
 import { NewMoveDialogComponent } from './new-move-dialog/new-move-dialog.component';
 import { MoveNameApprovalComponent } from './move-name-approval/move-name-approval.component';
 import { StripeComponent } from './stripe/stripe.component';
+import { SelfMatchesUserInfoComponent } from './self-matches-user-info/self-matches-user-info.component';
+import { MatchActionDelimiterDirective } from './match-action-delimiter.directive';
 
 
 export const firebaseConfig = {
@@ -151,7 +153,9 @@ export const firebaseConfig = {
     NewAthleteNameDialogComponent,
     NewMoveDialogComponent,
     MoveNameApprovalComponent,
-    StripeComponent
+    StripeComponent,
+    SelfMatchesUserInfoComponent,
+    MatchActionDelimiterDirective
   ],
   imports: [
     AngularFireDatabaseModule,

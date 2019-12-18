@@ -26,9 +26,10 @@ describe ('Tests involving admin privleges and deletions', () =>{
   });
 
   it('deletes a match containing APineappleUnderTheSea as location', function(){
-    cy.get('div[class=mat-select-arrow]').click();
-    cy.contains('500').click();
-    // cy.get('button[class=mat-paginator-navigation-previous]').click();
-    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click();
+    cy.wait(2000);
+    cy.get('div[class=mat-select-arrow]').click({force:true});
+    cy.contains('span[class=mat-option-text]','500').click({force:true});
+    // cy.get('button[class=mat-paginator-navigation-previous]').click({force:true});
+    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click({force:true});
   });
 });

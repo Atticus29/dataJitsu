@@ -24,15 +24,23 @@ export class TextTransformationService {
   }
 
   simplifyDateString(dateString?: string, date?: Date){
+    console.log("entered simplifyDateString");
     if(dateString){
+      console.log("formatted as dateString");
+      console.log(dateString);
       let tmpDate = Date.parse(dateString);
       let tmpString = moment(tmpDate).format('LL');
+      console.log("return tmpString: " + tmpString);
       return tmpString;
     }
     if(date){
+      console.log("formatted as date");
+      console.log(date);
       let tmpString = moment(date).format('LL');
+      console.log("return tmpString: " + tmpString);
       return tmpString;
     } else{
+      console.log("formatted as neither");
       return null;
     }
 

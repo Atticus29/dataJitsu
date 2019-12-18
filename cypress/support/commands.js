@@ -32,11 +32,8 @@ Cypress.Commands.add('removeNowRenamedAnnotation', () =>{
 Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
-    cy.get('mat-select[id=athlete1-select]').click({force: true});
-    cy.get('mat-option[id=athlete-1-dropdown]').eq(3).click({force: true});
-    // cy.get('mat-option').eq(3).click({force:true})
-    cy.get('mat-select[id=athlete2-select]').click({force:true});
-    cy.get('mat-option[id=athlete-2-dropdown]').eq(10).click({force: true});
+    cy.selectAthlete(1, "Batista de Sousa, Gabriel");
+    cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
     cy.get('input[id=tournamentName]').click({force:true}).clear().type(cypressConstants.testTournament);
     cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
@@ -49,6 +46,10 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.get('mat-select[id=weight]').click();
     cy.get('mat-option').first().next().click({force:true});
   });
+});
+
+Cypress.Commands.add("selectAthlete", (number, athleteName) =>{
+  cy.selectDropDown("athlete" + number + "-select", athleteName);
 });
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email, pass) => {
@@ -110,16 +111,17 @@ Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
   // cy.get('mat-icon').eq(9).click({force:true});
   // cy.get('mat-icon').eq(12).click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
-    cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle).children('button').click({force:true});
+    cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force: true, timeout:5000});
+    cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
     cy.contains('mat-tree-node', "Add cervical submission").click();
   });
   // cy.wait(1000);
   // cy.contains('div[id=annotationModal]','Add cervical submission').click();
   cy.get('input[id=moveNameFc]').clear().type(moveName);
-  cy.get('mat-select[id=subcategory-name-dropdown]').should('not.be.visible');
+  cy.contains('span', 'Choose Move Subcategory').should('not.be.visible');
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.selectDropDown('move-category-select', cypressConstants.submissionNodeName);
+    cy.contains('span', 'Choose Move Subcategory').should('be.visible');
     cy.selectDropDown('move-subcategory-select', cypressConstants.moveSubcategoryTitle);
   });
   cy.get('button[id=dialog-submit-button]').click();
@@ -181,7 +183,7 @@ Cypress.Commands.add("loginAsAdmin", () => {
     cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);
     cy.get('input[id=dialog-pw-input]').type(cypressConstants.adminPassword);
   });
-  cy.get('button[id=dialog-submit-button]').click();
+  cy.get('button[id=dialog-submit-button]', {timeout:5000}).click();
   cy.wait(1000);
 });
 

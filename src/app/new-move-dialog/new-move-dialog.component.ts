@@ -23,9 +23,9 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   private moveNameFc: FormControl = new FormControl('', [Validators.required]);
   private moveCategoryFc: FormControl = new FormControl('', [Validators.required]);
   private moveSubcategoryFc: FormControl = new FormControl('');
-  private categories: any = constants.rootNodes;
-  private subcategories: any = constants.subCategories;
-  private localRootNodesWithSubcategories: Array<string> = constants.rootNodesWithSubcategories;
+  private categories: any = constants.rootNodes.sort();
+  private subcategories: any = constants.subCategories.sort();
+  private localRootNodesWithSubcategories: Array<string> = constants.rootNodesWithSubcategories.sort();
   private displaySubcategorySelect: boolean = false;
   private displayCategoryName: boolean = true;
 

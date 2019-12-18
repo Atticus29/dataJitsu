@@ -1,6 +1,6 @@
 # Known issues
 - [ ] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
-- [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?
+- [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?... didn't happen this time TODO
 - [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page
 - [ ] When you approve of a new move name, it messes with the alphabetical order of the root nodes until you refresh the page (e.g., adding a new move to disciplinary action, and disciplinary action moves to the bottom in the annotation tree)

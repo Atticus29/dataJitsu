@@ -1,12 +1,20 @@
+import { constants } from './constants';
+
 export class MoveInVideo {
   private dateAdded: string;
   public isWin: boolean;
   public isDraw: boolean;
   public numFlags: number;
+  public isMatchActionDelimiter: boolean;
   constructor(public moveName: string, public moveCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedMatchId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
     this.dateAdded = new Date().toJSON();
     this.isWin = false;
     this.numFlags = 0;
+    this.isMatchActionDelimiter = constants.moveNamesThatAreDelimiters.includes(moveName);
+  }
+
+  setIsMatchActionDelimiter(status: boolean){
+    this.isMatchActionDelimiter = status;
   }
 
   setIsWin(status: boolean){

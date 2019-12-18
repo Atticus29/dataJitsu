@@ -1,5 +1,8 @@
 <div class="flexbox-container-vertical-left">
   <p class="flex-item">
+    <span ><i class="material-icons" [appMatchActionDelimiter]="true">label</i></span> = Denotes an annotation that marks the beginning or end of a match
+  </p>
+  <p class="flex-item">
     <span><i class="material-icons" [appUnsuccessfulAnnotation]="true">label</i></span> = Denotes an unsuccessful attempt
   </p>
   <p class="flex-item">
@@ -15,6 +18,6 @@
     <span ><i class="material-icons" [appWinDraw]="true">label</i></span> = Denotes an annotation in which an individual is declared the winner or a draw is indicated
   </p>
   <p class="flex-item">
-    <span ><i class="material-icons" [appFlaggedAnnotation]="true">label</i></span> = Denotes an annotation that has been flagged by at least {{localMinFlagCount}} users
+    <span ><i class="material-icons" [appFlaggedAnnotation]="true">label</i></span> = Denotes an annotation that has been flagged by at least {{localMinFlagCount}} user(s)
   </p>
 </div>

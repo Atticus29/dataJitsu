@@ -1,4 +1,5 @@
 export var constants = {
+    moveNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
     title: "Match Annotator",
     activityName: "Brazilian jiu jitsu",

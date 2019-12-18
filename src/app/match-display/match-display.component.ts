@@ -176,8 +176,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       });
       this.db.getMatchFromNodeKey(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
         if(match){
-          // console.log("getMatchFromNodeKey called and returned: ");
-          // console.log(match);
+          console.log("getMatchFromNodeKey called and returned: ");
+          console.log(match);
           this.match = match;
           // console.log(match.matchDeets.giStatus);
           if(match.matchDeets.giStatus){

@@ -1,7 +1,7 @@
 # TODO high priority
-- [ ] Track reasons for reputation awards and deductions (date, note/flag, points)
+- [ ] Have unknown as a weight class option
+- [ ] Have unknown as a no gi rank option
 - [ ] Add new move options to every section
-- [ ] Make new directive for match start
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] See what happens when you try to add new submission name
 - [ ] Add interesting exchange or something like that
@@ -168,6 +168,10 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Color-code match start and end chips
+- [x] Track reasons for reputation awards and deductions (date, note/flag, points)
+- [x] Sort moves in dialog dropdown menu
+- [x] Sort weight classes other new match categories
 - [x] Add moves
   - [x] Dropdown
   - [x] Dialogue
