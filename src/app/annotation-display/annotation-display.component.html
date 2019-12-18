@@ -35,7 +35,7 @@
     </div>
     <div class="row">
       <mat-form-field class="col m12 s12">
-        <mat-label>How many points was the move worth in this match format, if any?</mat-label>
+        <mat-label>How many points were awarded in this match format, if any?</mat-label>
         <input matInput [formControl]="points" type="number" id="points" placeholder="E.g., 0">
         <mat-error *ngIf="points.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>

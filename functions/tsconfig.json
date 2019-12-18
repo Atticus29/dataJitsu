@@ -5,13 +5,11 @@
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strict": false,
-    "target": "es2017",
-    "types": ["jest"],
-    "lib": ["esnext.asynciterable"]
+    "strict": true,
+    "target": "es2017"
   },
   "compileOnSave": true,
   "include": [
-    "src",
+    "src"
   ]
 }
