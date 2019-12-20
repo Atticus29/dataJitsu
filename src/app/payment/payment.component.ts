@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
+import { AuthorizationService } from '../authorization.service';
 import { BaseComponent } from '../base/base.component';
 
 @Component({
@@ -14,6 +16,6 @@ export class PaymentComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
 
+  }
 }

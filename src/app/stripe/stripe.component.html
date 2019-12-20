@@ -1,8 +1,18 @@
-<h3>Default Stripe Form</h3>
+<form (submit)="handleForm($event)">
 
-<button (click)="openCheckout()" class="btn waves-effect waves-light">Purchase a Monthly Subscription to {{localTitle}}</button>
+  <div #cardElement>
 
-<form action="" method="POST" id="payment-form" (submit)="getToken()">
+  </div>
+  <p>{{ cardErrors }}</p>
+
+  <button id="buy-button">Subscribe for ${{subscriptionCost}}.00</button>
+</form>
+
+<!-- <h3>Default Stripe Form</h3> -->
+
+<!-- <button (click)="openCheckout()" class="btn waves-effect waves-light">Purchase a Monthly Subscription to {{localTitle}}</button> -->
+
+<!-- <form action="" method="POST" id="payment-form" (submit)="getToken()">
   <span class="payment-message">{{message}}</span>
 
   <div class="form-row">
@@ -29,4 +39,4 @@
   </div>
 
   <input type="submit" value="Submit Payment">
-</form>
+</form> -->
