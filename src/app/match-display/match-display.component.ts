@@ -48,33 +48,31 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private attemptStatus: boolean = null;
   private trigger: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private userInDbId: string = null;
-  private originalPosterId: string = null;
-  private displayAnnotationRating: boolean = true;
-  // private defaultUrl: string = "https://www.youtube.com/embed/"+constants.defaultVideoUrlCode +"?enablejsapi=1&html5=1&";
-
-  private annotationFinishButtonDisabled: boolean = true;
-  // player: any;
-  private shouldVideoResume: boolean = false;
-  private selectedAnnotation: string = "No Annotation Currently Selected";
   private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private tempMove: MoveInVideo;
   private dataSource: DynamicDataSource;
   private treeControl: FlatTreeControl<DynamicFlatNode>;
   getLevel = (node: DynamicFlatNode) => node.level;
   isExpandable = (node: DynamicFlatNode) => node.expandable;
-  private matchAverageRating: number = 0;
-  private annotationAverageRating: number = 0;
-  private giStatus: string = "Fetching...";
-  private flaggedRemovedStatus: string = "Fetching...";
-  private flaggedInappropriateStatus: string = "Fetching...";
-  private showFlagChips: boolean = false;
   private showInappropriateFlagChip = false;
   private showRemovedFlagChip = false;
   private isAdmin: boolean = false;
-  // private database: DynamicDatabase;
-
   private player: any;
   private ytId: string = constants.defaultVideoUrlCode;
+  private displayAnnotationRating: boolean = true;
+  private annotationFinishButtonDisabled: boolean = true;
+  private selectedAnnotation: string = "No Annotation Currently Selected";
+  private matchAverageRating: number = 0;
+  private annotationAverageRating: number = 0;
+  private flaggedRemovedStatus: string = "Fetching...";
+  private flaggedInappropriateStatus: string = "Fetching...";
+  private showFlagChips: boolean = false;
+  private giStatus: string = "Fetching...";
+
+  // private originalPosterId: string = null;
+  // private defaultUrl: string = "https://www.youtube.com/embed/"+constants.defaultVideoUrlCode +"?enablejsapi=1&html5=1&";
+  // private shouldVideoResume: boolean = false;
+  // private database: DynamicDatabase;
 
   constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService) {
     super();
@@ -91,11 +89,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(user){
         user.id ? this.userInDbId = user.id: this.userInDbId = null;
         user.privileges.isAdmin ? this.isAdmin = true : this.isAdmin = false;
-        // if(user.privileges.isAdmin){
-        //   this.isAdmin = true;
-        // } else{
-        //   this.isAdmin = false;
-        // }
       }
     });
 
@@ -110,9 +103,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
       if(this.asssembleCheck()){
         self.tempMove = new MoveInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         this.handleSettingMoveNameStatuses(self.tempMove, this.moveName);
-
-        //TODO maybe add is beginning or end here
-
         self.moveAssembledStatus.next(true);
       } else{
         //Do nothing
@@ -159,24 +149,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         if(match){
           this.match = match;
           match.matchDeets.giStatus ? this.giStatus = "Gi" : this.giStatus = "Nogi";
-          // if(match.matchDeets.giStatus){
-          //   this.giStatus = "Gi";
-          // } else{
-          //   this.giStatus = "Nogi";
-          // }
-          // this.matchUrl = "https://www.youtube.com/embed/" + this.parseVideoUrl(match.matchDeets.videoUrl) + "?enablejsapi=1&html5=1&";
           this.ytId = this.parseVideoUrl(match.matchDeets.videoUrl);
-          // console.log("got here");
-          // this.player.loadVideoById(this.ytId, 0);
-          // document.getElementById('youTubeFrame').setAttribute("src", this.matchUrl);
-          // window['onYouTubeIframeAPIReady'] = function() {
-          //   player = new window['YT'].Player('youTubeFrame', {
-          //     events: {
-          //       'onReady': onPlayerReady,
-          //       'onStateChange': onPlayerStateChange
-          //     }
-          //   });
-          // }
 
           this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
             this.selectedAnnotation = moveName;
@@ -187,117 +160,6 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               this.player.playVideo();
             }
           });
-
-          // let onPlayerStateChange = (event) =>{
-          // };
-
-          let onPlayerReady = (event) => {
-            // document.getElementById("rw-three").addEventListener("click", function() {
-            // });
-            // document.getElementById("ff-three").addEventListener("click", function() {
-            // });
-            // document.getElementById("play").addEventListener("click", function() {
-            //   player.playVideo();
-            // });
-            // let pause = document.getElementById("begin-move").addEventListener("click", function() {
-            //   player.pauseVideo();
-            //   let currentTime = player.getCurrentTime();
-            //   self.trackerService.startTimePoint.next(player.getCurrentTime());
-            //   self.trackerService.endTimePoint.next(-1);
-            //   //TODO reset the tree and the submission status (and the annotation move just to be safe?)
-            // });
-            // document.getElementById("rw-three").addEventListener("click", function() {
-            //   let currentTime = player.getCurrentTime();
-            //   player.seekTo(Math.max(0.5,currentTime-3));
-            // });
-            // document.getElementById("ff-three").addEventListener("click", function() {
-            //   let currentTime = player.getCurrentTime();
-            //   player.seekTo(Math.max(0.5,currentTime+3));
-            // });
-            // document.getElementById("end-move").addEventListener("click", function() {
-              // player.pauseVideo();
-              // let endMoveClickCounter: number = 0;
-              // let currentTime: number = player.getCurrentTime();
-              // self.trackerService.endTimePoint.next(currentTime);
-              // self.trackerService.startTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(startTime =>{
-              //   self.startTime = startTime;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.endTimePoint.pipe(takeUntil(self.ngUnsubscribe)).subscribe(endTime =>{
-              //   self.endTime = endTime;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.moveName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveName =>{
-              //   self.moveName = moveName;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.moveCategory.pipe(takeUntil(self.ngUnsubscribe)).subscribe(moveCategory =>{
-              //   self.moveCategory = moveCategory;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.performer.pipe(takeUntil(self.ngUnsubscribe)).subscribe(performer =>{
-              //   self.performer = performer;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.recipient.pipe(takeUntil(self.ngUnsubscribe)).subscribe(recipient =>{
-              //   self.recipient = recipient;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.points.pipe(takeUntil(self.ngUnsubscribe)).subscribe(points =>{
-              //   self.points = points;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.currentMatch.pipe(takeUntil(self.ngUnsubscribe)).subscribe(matchId =>{
-              //   self.matchId = matchId;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.submission.pipe(takeUntil(self.ngUnsubscribe)).subscribe(submission =>{
-              //   submission === "Yes" ? self.submissionStatus = true: self.submissionStatus = false;
-              //   self.trigger.next(true);
-              // });
-              // self.trackerService.attemptStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(attemptSuccessful =>{
-              //   attemptSuccessful === "Yes" ? self.attemptStatus = true: self.attemptStatus = false;
-              //   self.trigger.next(true);
-              // });
-              // if(self.userInDbId){
-              //   //DO nothing? Trigger?
-              // }else{
-              //   self.trackerService.currentUserBehaviorSubject.pipe(takeUntil(self.ngUnsubscribe)).subscribe(user =>{
-              //     self.db.getUserByUid(user.uid).pipe(takeUntil(self.ngUnsubscribe)).subscribe(usr => {
-              //       usr ? self.userInDbId = usr.id : self.userInDbId = null;
-              //       self.trigger.next(true);
-              //     });
-              //   });
-              // }
-              // self.moveAssembledStatus.pipe(takeUntil(self.ngUnsubscribe)).subscribe(status =>{
-              //   if(status && self.moveCompletelyLegit()){
-              //     console.log("should play video now!");
-              //     console.log(Math.max(0.5,currentTime-5));
-              //     console.log(self.tempMove);
-              //     player.seekTo(Math.max(0.5,currentTime-5));
-              //     player.playVideo();
-              //   }
-              // });
-            // });
-
-            // document.getElementById("pause-vid").addEventListener("click", function() {
-            //   player.pauseVideo();
-            // });
-
-            // this.trackerService.desiredJumpStartTime.pipe(takeUntil(this.ngUnsubscribe)).subscribe(localDesiredJumpStartTime =>{
-            //   if(localDesiredJumpStartTime){
-            //     this.player.playVideo();
-            //     this.player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
-            //   }
-            // });
-          }
-          if (!window['YT']){
-            console.log("no you tube window");
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/player_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-          }
         }
       });
     });
@@ -430,7 +292,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
   flagVideoInappropriate(){
     if(this.matchId){
+      console.log("flagVideoInappropriate entered and matchId exists");
       this.db.getInappropriateFlagStatus(this.matchId).pipe(take(1)).subscribe(status =>{
+        console.log("status inside getInappropriateFlagStatus called and is " + status);
         status ? this.db.flagVideoInappropriateInMatch(this.matchId, false): this.db.flagVideoInappropriateInMatch(this.matchId, true);
       });
     } else{
@@ -462,31 +326,9 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
               if(moveUniqueEnoughInUser){
                 this.openSnackBar("Annotation Recorded");
                 annotationMadeCounter ++;
-                this.moveName = null;
-                this.moveCategory = null;
-                this.performer = null;
-                this.recipient = null;
-                this.startTime = null;
-                this.endTime = null;
-                this.points = null;
-                this.submissionStatus = null;
-                this.attemptStatus = null;
-                this.trackerService.resetAllExceptCurrentMatch();
-                this.moveAssembledStatus.next(false);
-                this.triggerNewAnnotationFetch();
+                this.handleNullingAndResettingLocalAndTrackedVariables();
               }else{
-                this.moveName = null;
-                this.moveCategory = null;
-                this.performer = null;
-                this.recipient = null;
-                this.startTime = null;
-                this.endTime = null;
-                this.points = null;
-                this.submissionStatus = null;
-                this.attemptStatus = null;
-                this.trackerService.resetAllExceptCurrentMatch();
-                this.moveAssembledStatus.next(false);
-                this.triggerNewAnnotationFetch();
+                this.handleNullingAndResettingLocalAndTrackedVariables();
               }
             });
           }
@@ -612,5 +454,20 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     } else{
       //Do nothing
     }
+  }
+
+  handleNullingAndResettingLocalAndTrackedVariables(){
+    this.moveName = null;
+    this.moveCategory = null;
+    this.performer = null;
+    this.recipient = null;
+    this.startTime = null;
+    this.endTime = null;
+    this.points = null;
+    this.submissionStatus = null;
+    this.attemptStatus = null;
+    this.trackerService.resetAllExceptCurrentMatch();
+    this.moveAssembledStatus.next(false);
+    this.triggerNewAnnotationFetch();
   }
 }
