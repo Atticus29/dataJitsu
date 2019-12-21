@@ -15,7 +15,7 @@ declare var Stripe; //: stripe.StripeStatic;
 })
 export class StripeComponent extends BaseComponent implements OnInit {
 
-  @ViewChild('cardElement') cardElement: ElementRef;
+  @ViewChild('cardElement', {static: true}) cardElement: ElementRef;
   private localTitle = constants.title;
 
   private stripe;
@@ -42,20 +42,39 @@ export class StripeComponent extends BaseComponent implements OnInit {
   }
 
   async handleForm(e){
+    console.log("handleForm entered");
     e.preventDefault();
     const { source, error } = await this.stripe.createSource(this.card);
-
+    console.log("source retrieved:");
+    console.log(source);
     if(error){
       const cardErrors = error.message;
     } else{
       //Send the token to the server
       this.loading = true;
-      const user = await this.authService.getUser(); //TODO deine this
-      const fun = this.functions.httpsCallable('stripeCreateCharge'); //TODO change?
-      this.confirmation = await fun( { source: source.id, uid: user.uid, amount: this.amount }).toPromise();
+      const user = await this.authService.getUser(); //TODO define this
+      console.log("user retrieved:");
+      console.log(user);
+      const subscriptionFun = this.functions.httpsCallable('stripeCreateSubscription');
+      console.log("subscriptionFun made");
+      const res = await subscriptionFun({ plan: 'plan_GBak65OXFnPtcD', source: source.id });
+      console.log("res is:");
+      console.log(res);
+      // this.confirmation = await subscriptionFun( { source: source.id, uid: user.uid, amount: this.subscriptionCost }).toPromise();
       this.loading = false;
+      // const fun = this.functions.httpsCallable('stripeCreateCharge'); //TODO change?
     }
   }
+
+  // const subscriptionFun = fun.httpsCallable('stripeCreateSubscription');
+  // const subscriptionHandler = async(source) => {
+  //   console.log("subscriptionHandler called");
+  //   console.log(source.id);
+  //   const res = await subscriptionFun({ plan: 'plan_GBak65OXFnPtcD', source: source.id });
+  //   console.log("res is:");
+  //   console.log(res);
+  //   alert('Success, subscribed to plan');
+  // }
 
   // openCheckout() {
   // var handler = (<any>window).StripeCheckout.configure({

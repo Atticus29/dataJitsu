@@ -21,10 +21,13 @@ export const assert = (data: any, key:string) => {
 Validates auth context for callable function
 */
 export const assertUID = (context: any) => {
+    console.log("entered assertUID");
     if (!context.auth) {
-        throw new functions.https.HttpsError('permission-denied', 'function called without context.auth');
+      throw new functions.https.HttpsError('permission-denied', 'function called without context.auth');
     } else {
-        return context.auth.uid;
+      console.log("context.auth exists in assertUID");
+      console.log(context.auth.uid);
+      return context.auth.uid;
     }
 }
 
