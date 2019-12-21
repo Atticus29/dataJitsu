@@ -83,7 +83,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     combineLatest([this.trackerService.youtubePlayerLoadedStatus, this.trackerService.currentUserBehaviorSubject]).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([videoLoadedStatus, user]) =>{
-      if(videoLoadedStatus){
+      if(videoLoadedStatus && this.player){
         this.player.loadVideoById(this.ytId, 0);
       }
       if(user){
@@ -93,7 +93,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.trackerService.desiredJumpStartTime.pipe(takeUntil(this.ngUnsubscribe)).subscribe(localDesiredJumpStartTime =>{
-      if(localDesiredJumpStartTime){
+      console.log("desiredJumpStartTime changed to " + localDesiredJumpStartTime);
+      if(localDesiredJumpStartTime  && this.player){
         this.player.playVideo();
         this.player.seekTo(Math.max(0.5,localDesiredJumpStartTime-0.5));
       }
@@ -119,6 +120,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     });
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       console.log("params changed");
+      this.trackerService.youtubePlayerLoadedStatus.next(false);
       this.matchId = params['matchId'];
       if(this.matchId === "undefined"){
         this.router.navigate(['error']);
