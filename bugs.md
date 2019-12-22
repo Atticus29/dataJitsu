@@ -1,5 +1,4 @@
 # Known issues
-- [ ] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?
 - [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page
@@ -28,8 +27,6 @@
 - [ ] Video Player
     - [ ] Changing the annotation rating resets the video
     - [ ] Sometimes (but not always?), clicking the end move stops the video entirely
-    - [ ] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
-- [ ] Tooltips in match-display are very inconsistent (make sure it's not just when the dev tools are open? Currently seems to be the case)
 - [ ] Handle connection errors (e.g., the spinner just keeps going if there's no internet connection)
 - [ ] Cannot figure out styling for add new athlete dropdown to draw attention (look at attention class in styles.scss and https://github.com/angular/material#building and https://youtu.be/V3WiBs-igaY)
 
@@ -44,6 +41,9 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
+- [x] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
+- [x] Tooltips in match-display are very inconsistent (make sure it's not just when the dev tools are open? Currently seems to be the case)
 - [x] After deleting a submission move in the admin page, TypeError: Cannot read property 'Choke Or Cervical Submissions' of undefined; after adding a move you see it, but this error occurs upon refresh...even if you don't add anything, a page reload produces this error
 - [x] cannot read property expandable of undefined when you click guard passes or guard pass attempts
 - [x] Alphabetical order not happening for moves that don't score points
