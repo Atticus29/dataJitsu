@@ -108,8 +108,8 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
       this.annotations = new Array();
       this.databaseService.getAnnotationsSortedByStartTimeV2(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
         if(annotationResults){
-          console.log("annotationResults in AnnotatedMovesDisplayComponent:");
-          console.log(annotationResults);
+          // console.log("annotationResults in AnnotatedMovesDisplayComponent:");
+          // console.log(annotationResults);
           this.annotations = annotationResults;
         }else{
           // console.log("annotationResults don't exist in getAnnotationsSortedByStartTimeV2 call in AnnotatedMovesDisplayComponent");
@@ -124,7 +124,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     // this.cdr.detectChanges();
     let self = this;
     if(this.localUserId){
-      console.log("got here");
+      // console.log("got here");
       this.databaseService.toggleAnnotationFlag(matchId, timeInitiated, this.localUserId);
       //if this hits the flag threshold, deduct from annotator's reputation
       //numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction
@@ -133,7 +133,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
         // console.log("got close");
         this.fetchAnnotations(matchId);
         if(numberOfFlags >= constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction){
-          console.log("got closest!");
+          // console.log("got closest!");
           this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1), "Your annotation on match " + matchId + " was flagged too many times.");
         }
       });

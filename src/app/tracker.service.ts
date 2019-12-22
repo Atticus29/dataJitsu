@@ -23,6 +23,7 @@ export class TrackerService {
   public currentUserBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public desiredJumpStartTime: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public fetchNewAnnotations: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public youtubePlayerLoadedStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
@@ -41,6 +42,7 @@ export class TrackerService {
     this.submission.next("No");
     this.annotationBegun.next(false);
     this.attemptStatus.next("Yes");
+    this.youtubePlayerLoadedStatus.next(false);
     // console.log("resetAllExceptCurrentMatch has been completed");
   }
 
@@ -59,5 +61,6 @@ export class TrackerService {
     this.submission.next("No");
     this.attemptStatus.next("Yes");
     this.annotationBegun.next(false);
+    this.youtubePlayerLoadedStatus.next(false);
   };
 }

@@ -39,6 +39,7 @@ import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 import {
   MatAutocompleteModule,
@@ -200,7 +201,8 @@ export const firebaseConfig = {
     MaterializeModule,
     RatingModule,
     ReactiveFormsModule,
-    routing
+    routing,
+    NgxYoutubePlayerModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService],
   bootstrap: [AppComponent],
