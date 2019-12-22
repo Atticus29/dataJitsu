@@ -110,6 +110,7 @@ import { MatchActionDelimiterDirective } from './match-action-delimiter.directiv
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
+  projectId: masterFirebaseConfig.projectId,
   authDomain: masterFirebaseConfig.authDomain,
   databaseURL: masterFirebaseConfig.databaseURL,
   storageBucket: masterFirebaseConfig.storageBucket

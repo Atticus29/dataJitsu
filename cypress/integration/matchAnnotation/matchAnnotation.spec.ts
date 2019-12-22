@@ -16,7 +16,7 @@ describe ('Match annotation tests', () =>{
     cy.contains('Match Rating');
     cy.contains('Video');
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.wait(1000);
     // cy.get('#tree-div');
@@ -56,7 +56,7 @@ describe ('Match annotation tests', () =>{
 
   it('cannot annotate a match with a move without the move', ()=>{
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
@@ -66,7 +66,7 @@ describe ('Match annotation tests', () =>{
 
   it('cannot annotate a match with a move without the performer of the move', ()=>{
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
     // cy.contains('Advantage').first().next().click();
@@ -77,7 +77,7 @@ describe ('Match annotation tests', () =>{
 
   it('cannot annotate a match with a move without the points', ()=>{
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
     // cy.contains('Advantage').first().next().click();
@@ -95,7 +95,7 @@ describe ('Match annotation tests', () =>{
 
   it('should still have end move disabled if cancel in the modal is clicked', function(){
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('button[id=modal-cancel-button]').click();
     cy.get('button[id=begin-move]').should('be.enabled');
@@ -109,7 +109,7 @@ describe ('Match annotation tests', () =>{
     cy.wait(2000);
     cy.get('button[id=begin-move]').should('be.enabled');
     cy.get('button[id=end-move]').should('be.disabled');
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
     // cy.contains('Advantage').first().next().click();
@@ -129,7 +129,7 @@ describe ('Match annotation tests', () =>{
 
   it('annotates a move once and when it is done it does it again and finds the previous options unselected', function(){
    cy.get('a[name=videoClick]').first().click();
-   cy.get('button[id=begin-move]').click();
+   cy.get('button[id=begin-move]',{timeout:5000}).click();
    cy.get('div[id=annotationModal]').should('be.visible');
    // cy.get('mat-icon').first().click({force:true});
    // cy.contains('Annotation Selected: Advantage').should('not.exist');
@@ -151,7 +151,7 @@ describe ('Match annotation tests', () =>{
    cy.wait(1000);
    cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
    // //And then again
-   cy.get('button[id=begin-move]').click();
+   cy.get('button[id=begin-move]',{timeout:5000}).click();
    cy.get('div[id=annotationModal]').should('be.visible');
    // cy.get('mat-icon').first().click({force:true});
    cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
@@ -179,7 +179,7 @@ describe ('Match annotation tests', () =>{
 
   it('can click into the deepest part of the tree', function(){
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').eq(9).click({force:true});
     cy.get('mat-icon').eq(10).click({force:true});
@@ -190,7 +190,7 @@ describe ('Match annotation tests', () =>{
 
   it('cannot make the same exact annotation twice', function(){
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.selectCrossCollarChoke();
     cy.get('mat-select[id=performer]').click({force:true});
@@ -221,7 +221,7 @@ describe ('Match annotation tests', () =>{
     // cy.on('uncaught:exception', (err, runnable) => {
     //   return false;
     // });
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     // cy.on('uncaught:exception', (err, runnable) => {
     //   return false;
     // });
@@ -273,7 +273,7 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.wait(3000);
     cy.get('a[id=play]').click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.wait(1000);
     cy.selectAdvantageAnnotation();
@@ -306,7 +306,7 @@ describe ('Match annotation tests with no afterEach', () =>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.selectAdvantageAnnotation();
     // cy.get('mat-icon').first().click({force:true});
