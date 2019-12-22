@@ -27,8 +27,8 @@ export class DynamicDataSource {
       this.dbService.getMovesAsObject().subscribe(results=>{
         let headers: string[] = Object.getOwnPropertyNames(results);
         headers = headers.sort();
-        console.log("headers: ");
-        console.log(headers);
+        // console.log("headers: ");
+        // console.log(headers);
         headers.forEach(item =>{ //headers
           let newDynamicFlatNode = new DynamicFlatNode(item, 0, true, false);
           this.flatNodeArray.push(newDynamicFlatNode);
@@ -57,21 +57,21 @@ export class DynamicDataSource {
 
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
-    console.log("handleTreeControl entered. Change: ");
-    console.log(change);
+    // console.log("handleTreeControl entered. Change: ");
+    // console.log(change);
     if (change.added) {
-      console.log("added reached");
+      // console.log("added reached");
       change.added.forEach(node => {
-        console.log("node!");
-        console.log(node);
+        // console.log("node!");
+        // console.log(node);
         this.toggleNode(node, true)
       });
     }
     if (change.removed) {
-      console.log("removed reached");
+      // console.log("removed reached");
       change.removed.slice().reverse().forEach(node => {
-        console.log("node!");
-        console.log(node);
+        // console.log("node!");
+        // console.log(node);
         this.toggleNode(node, false)
       });
     }
@@ -82,18 +82,18 @@ export class DynamicDataSource {
    */
 
     jsonToStrMap(jsonStr) {
-      console.log("Got into jsonToStrMap");
-      console.log(jsonStr);
-      console.log(Object.entries(jsonStr));
+      // console.log("Got into jsonToStrMap");
+      // console.log(jsonStr);
+      // console.log(Object.entries(jsonStr));
       let map = null;
       try {
         map = new Map(Object.entries(jsonStr));
-        console.log("map ran correctly: ");
-        console.log(map);
+        // console.log("map ran correctly: ");
+        // console.log(map);
       }
       catch(error) {
-        console.log("got into error in jsonToStrMap");
-        console.error(error);
+        // console.log("got into error in jsonToStrMap");
+        // console.error(error);
         return;
       }
       // console.log(map);
@@ -101,30 +101,30 @@ export class DynamicDataSource {
     }
 
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    console.log("toggleNode entered with node")
-    console.log(node);
-    console.log("expand? " + expand);
+    // console.log("toggleNode entered with node")
+    // console.log(node);
+    // console.log("expand? " + expand);
     node.isLoading = true;
     // console.log(node.item);
     this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
-      console.log("results in toggleNode getMovesSubsetAsObject call");
-      console.log(results);
+      // console.log("results in toggleNode getMovesSubsetAsObject call");
+      // console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"
         results = this.removeEmpties(results);
         children = results.sort();
       } else{
         try {
-          console.log("results before conversion:");
-          console.log(results);
+          // console.log("results before conversion:");
+          // console.log(results);
           results = this.jsonToStrMap(results);
           if(Array.isArray(results)){
             results = results.sort();
-            console.log("results after conversion: ");
-            console.log(results);
+            // console.log("results after conversion: ");
+            // console.log(results);
           }
-          console.log("jsonToStrMap successful:");
-          console.log(results);
+          // console.log("jsonToStrMap successful:");
+          // console.log(results);
           children = results; //.sort();
         }
         catch(error) {
@@ -132,22 +132,22 @@ export class DynamicDataSource {
         }
       }
       const index = this.data.indexOf(node);
-      console.log("index is " + index);
+      // console.log("index is " + index);
       if (!children || index < 0) { // If no children, or cannot find the node, no op
         return;
       }
       if (expand) {
-        console.log("expand is true");
+        // console.log("expand is true");
         if(Array.isArray(children)){
-          console.log("children is an array:");
-          console.log(children);
+          // console.log("children is an array:");
+          // console.log(children);
           const nodes = children.sort().map(name =>
             new DynamicFlatNode(name.toString(), node.level + 1, this.database.isExpandable(name.toString()))); //TODO why when you change it does it not have the error?
           this.data.splice(index + 1, 0, ...nodes);
         } else{
-          console.log("expand is true and children is not an array");
-          console.log(children);
-          console.log(children.values());
+          // console.log("expand is true and children is not an array");
+          // console.log(children);
+          // console.log(children.values());
           let flattenedArray = Array.from(children.values()).sort();
           if(Array.isArray(flattenedArray[0])){
             // alert("should only happen with nested things");
@@ -157,12 +157,12 @@ export class DynamicDataSource {
 
             let nodes = [];
             flattenedArray.forEach(name =>{
-              console.log(node.level);
+              // console.log(node.level);
               let tempDynamicFlatNode = new DynamicFlatNode(String(name), node.level + 1, false);
               nodes.push(tempDynamicFlatNode);
             });
-            console.log("node after mapping to dynamicFlatNodes: ");
-            console.log(nodes);
+            // console.log("node after mapping to dynamicFlatNodes: ");
+            // console.log(nodes);
             this.data.splice(index + 1, 0, ...nodes);
           }
         }

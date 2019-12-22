@@ -4,43 +4,49 @@
       <div class="card title-buffer">
         <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
-          <div class="video-container">
-            <iframe id="videoIframe" src=defaultUrl frameborder="0" allowfullscreen="0"></iframe>
+          <div class="flexbox-container-alt" *ngIf="loading">
+            <mat-spinner id="spinner"></mat-spinner>
           </div>
-          <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match">
-            <i class="material-icons">play_arrow</i>
-          </a>
-          <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video">
-            <i class="material-icons">pause</i>
-          </a>
-          <button id="rw-three" type="submit" value="rw-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Rewind 3 sec.">
-            <span>
-              <i class="material-icons">fast_rewind</i>
-              <div class="number-in-video-time-button">
-                3
-              </div>
-            </span>
-          </button>
-          <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled">
-            <i class="material-icons">arrow_drop_up</i>
-          </button>
-          <button id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" [disabled]="annotationFinishButtonDisabled">
-            <i class="material-icons">arrow_drop_down</i>
-          </button>
-          <button id="ff-three" type="submit" value="ff-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Fast Forward 3 sec.">
-            <span>
-              <i class="material-icons">fast_forward</i>
-              <div class="number-in-video-time-button">
-                3
-              </div>
-            </span>
-          </button>
-          <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideo()" matTooltip="Flag Video as Removed" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
-            <i class="material-icons">videocam_off</i>
-          </button>
-          <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideoInappropriate()" matTooltip="Flag Video as Inappropriate" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
-            <i class="material-icons">flag</i>
-          </button>
+          <div class="video-container">
+            <youtube-player [videoId]="ytId" (ready)="savePlayer($event)" (change)="onStateChange($event)" id="youTubeFrame">
+            </youtube-player>
+          </div>
+          <div id="video-buttons-container" *ngIf="!loading">
+            <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match" (click)="playVideo()">
+              <i class="material-icons">play_arrow</i>
+            </a>
+            <a id="pause-vid" type="submit" value="pause-vid" class="btn-floating halfwary-fab waves-effect green waves-light tooltipped"  data-position="bottom" matTooltip="Pause Video" (click)="pauseVideo()">
+              <i class="material-icons">pause</i>
+            </a>
+            <button id="rw-three" type="submit" value="rw-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Rewind 3 sec." (click)="rewindVideo(3)">
+              <span>
+                <i class="material-icons">fast_rewind</i>
+                <div class="number-in-video-time-button">
+                  3
+                </div>
+              </span>
+            </button>
+            <button id="begin-move" type="submit" value="begin-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped modal-trigger" data-target="annotationModal" data-position="bottom" data-delay="10" matTooltip="Mark Beginning of Move" [disabled]="!annotationFinishButtonDisabled" (click)="beginMove()">
+              <i class="material-icons">arrow_drop_up</i>
+            </button>
+            <button id="end-move" type="submit" value="end-move" class="btn-floating halfwary-fab waves-effect waves-light tooltipped"  data-position="bottom" matTooltip="Mark End of Move" [disabled]="annotationFinishButtonDisabled" (click)="endMove()">
+              <i class="material-icons">arrow_drop_down</i>
+            </button>
+            <button id="ff-three" type="submit" value="ff-three" class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Fast Forward 3 sec." (click)="fastForwardVideo(3)">
+              <span>
+                <i class="material-icons">fast_forward</i>
+                <div class="number-in-video-time-button">
+                  3
+                </div>
+              </span>
+            </button>
+            <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideo()" matTooltip="Flag Video as Removed" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
+              <i class="material-icons">videocam_off</i>
+            </button>
+            <button id="flag-missing" type="submit" value="flag-missing" (click)="flagVideoInappropriate()" matTooltip="Flag Video as Inappropriate" data-position="bottom" class="btn-floating halfwary-fab waves-effect waves-light tooltipped red">
+              <i class="material-icons">flag</i>
+            </button>
+          </div>
           <div id="missing-video-section">
             <mat-chip-list *ngIf="showFlagChips">
               <mat-chip *ngIf="showRemovedFlagChip">

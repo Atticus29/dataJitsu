@@ -14,7 +14,7 @@ describe ('Match custom annotation tests', () =>{
 
   it('adds custom name and submits annotation', function(){
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.createCustomCervicalChoke("darth vader choke");
     cy.get('mat-select[id=performer]').click({force:true});
@@ -49,9 +49,9 @@ describe ('Match custom annotation tests', () =>{
     cy.loginAsAdmin();
     cy.visit('http://localhost:4200/admin');
     cy.approveMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches');
+    cy.visit('http://localhost:4200/matches', {timeout:5000});
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
@@ -65,8 +65,9 @@ describe ('Match custom annotation tests', () =>{
   });
 
   it('cannot create a customMove that has already been created and approved, then deletes the move from admin page and confirms that it is missing from dropdown list', function(){
+    cy.log("Clicks on move and asserts that move have been re-named")
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.createCustomCervicalChoke("Darth Vader Choke");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
@@ -74,10 +75,11 @@ describe ('Match custom annotation tests', () =>{
     });
 
     //deletes the move from admin page and confirms that it is missing from dropdown list
+    cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");
     cy.deleteMove("Darth Vader Choke");
     cy.visit('http://localhost:4200/matches',{timeout: 5000});
     cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').eq(9).click({force:true});
     cy.get('mat-icon').eq(12).click({force:true});
@@ -98,7 +100,7 @@ describe ('Match custom annotation tests', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.log("Then create the annotation and custom move again");
     // cy.reload();
-    cy.get('button[id=begin-move]').click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.wait(1000);
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.createCustomCervicalChoke('Darth Vader Choke');

@@ -60,7 +60,7 @@ export class AppComponent extends BaseComponent implements OnInit {
             });
             // console.log("dbUser in getUserByUid of app.component updated:");
             // console.log(dbUser);
-            this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY subscription to currentUserObservable app-wide!
+            this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
             this.userObjFromDb = dbUser;
           });
         } else{

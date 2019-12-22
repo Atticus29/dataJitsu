@@ -131,7 +131,7 @@ Cypress.Commands.add('deleteMove', (moveName) =>{
   cy.logout();
   cy.loginAsAdmin();
   cy.visit('http://localhost:4200/admin', {timeout: 5000});
-  cy.contains('li', moveName).children('span[name=delete-move-name]').click();
+  cy.contains('li', moveName, {timeout: 5000}).children('span[name=delete-move-name]').click();
 })
 
 Cypress.Commands.add('removeAnnotation', (moveName) =>{
