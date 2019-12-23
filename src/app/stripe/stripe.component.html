@@ -5,7 +5,7 @@
   </div>
   <p>{{ cardErrors }}</p>
 
-  <button id="buy-button">Subscribe for ${{subscriptionCost}}.00</button>
+  <button id="buy-button">Subscribe for {{subscriptionCost | currency}}</button>
   <div>
     <p>{{subscriptionStatus}}</p>
   </div>

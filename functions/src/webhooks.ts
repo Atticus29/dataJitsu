@@ -26,7 +26,7 @@ export const webhookHandler = async (data: any) => {
       dbFirebase.ref().update(updates);
       // usr = usr[Object.keys(usr)[0]];
     }
-  })
+  });
 
   const docData = {
     [subscription.plan.id]: isActive,

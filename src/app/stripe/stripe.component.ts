@@ -48,7 +48,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
       this.cardErrors = error && error.message;
     });
 
-    let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(user ? this.dbService.hasUserPaid(user.id): this.handleNoUser())));
+    let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(this.dbService.hasUserPaid(user.id))));
     pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
       console.log("results of hasUserPaid");
       console.log(paymentStatus);
@@ -73,7 +73,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
       // console.log(user);
       const subscriptionFun = this.functions.httpsCallable('stripeCreateSubscription');
       // console.log("subscriptionFun made");
-      const res = await subscriptionFun({ plan: 'plan_GBak65OXFnPtcD', source: source.id }).toPromise();
+      const res = await subscriptionFun({ plan: 'plan_GACY9v91xQlBDf', source: source.id }).toPromise();
       console.log("res is:");
       console.log(res);
       if(res){
@@ -87,9 +87,9 @@ export class StripeComponent extends BaseComponent implements OnInit {
     }
   }
 
-  handleNoUser(){
-    console.log("ack no user!");
-  }
+  // handleNoUser(){
+  //   console.log("ack no user!");
+  // }
 
   // const subscriptionFun = fun.httpsCallable('stripeCreateSubscription');
   // const subscriptionHandler = async(source) => {

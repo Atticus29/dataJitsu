@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { assert, assertUID, catchErrors } from './helpers';
-import { stripe, db } from './config';
+import { stripe, db, dbFirebase } from './config';
 import { getCustomer, getOrCreateCustomer } from './customers';
 import { attachSource } from './sources';
 
@@ -51,6 +51,19 @@ export const createSubscription = async(uid:string, source:string, plan: string,
     console.log(subscription);
 
     // Add the plan to existing subscriptions
+    dbFirebase.ref('/users/').orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot =>{
+      if(snapshot){
+        console.log("dbFirebase call in webhook function yields user:");
+        console.log(snapshot.val());
+        let usr = snapshot.val();
+        let usrId = Object.keys(usr)[0];
+        let updates = {};
+        updates['/users/' + usrId + '/paidStatus'] = true;
+        dbFirebase.ref().update(updates);
+        // usr = usr[Object.keys(usr)[0]];
+      }
+    });
+
     const docData = {
         [plan]: true,
         [subscription.id]: 'active',
