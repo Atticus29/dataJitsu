@@ -1,21 +1,17 @@
-<form (submit)="handleForm($event)">
+<div class="stripe-checkout-form">
+  <form (submit)="handleForm($event)">
 
-  <div #cardElement>
+    <div #cardElement>
 
-  </div>
-  <p>{{ cardErrors }}</p>
+    </div>
+    <p>{{ cardErrors }}</p>
 
-  <button id="buy-button">Subscribe for {{subscriptionCost | currency}}</button>
-  <div>
-    <p>{{subscriptionStatus}}</p>
-  </div>
-  <div>
-    <p>
-      Subscription updated in database?
-    </p>
-    <p>{{localPaymentStatus}}</p>
-  </div>
-</form>
+    <button id="buy-button">Subscribe for {{subscriptionCost | currency}}</button>
+    <div>
+      <p>{{subscriptionStatus}}</p>
+    </div>
+  </form>
+</div>
 
 <!-- <h3>Default Stripe Form</h3> -->
 

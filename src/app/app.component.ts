@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { takeUntil, take } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 
 import { constants } from './constants';
 import { ProtectionGuard } from './protection.guard';
@@ -34,39 +34,27 @@ export class AppComponent extends BaseComponent implements OnInit {
   private localReputation: number = null;
   private localNewReputationCount: number = 0;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone){
+  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone){
     super();
   }
 
   ngOnInit() {
     let self = this;
 
-    this.authService.currentUserObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      // console.log(result);
-      // console.log(result.id);
-      self.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe)).subscribe(authState =>{
-        // console.log("result of currentUserObservable in app.component: ");
-        // console.log(result);
-        // console.log("authState in app.component: ");
-        // console.log(authState);
-        if(result && result.uid && authState){
-          // console.log("result in currentUserObservable in app component happens: ");
-          // console.log(result);
-          this.db.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
-            this.db.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
-              // console.log("rep points: ");
-              // console.log(repPoints);
-              this.localReputation = Number(repPoints);
-            });
-            // console.log("dbUser in getUserByUid of app.component updated:");
-            // console.log(dbUser);
-            this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
-            this.userObjFromDb = dbUser;
+    combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      let result = results[0];
+      let authState = results[1];
+      if(result && result.uid && authState){
+        this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+          this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
+            this.localReputation = Number(repPoints);
           });
-        } else{
-          this.trackerService.currentUserBehaviorSubject.next(null);
-        }
-      });
+          this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
+          this.userObjFromDb = dbUser;
+        });
+      } else{
+        this.trackerService.currentUserBehaviorSubject.next(null);
+      }
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
@@ -78,13 +66,13 @@ export class AppComponent extends BaseComponent implements OnInit {
         if(currentUser.uid){
           // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
           this.authenticationStatus = true;
-          this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+          this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
             this.user = dbUser;
             this.name = dbUser.name;
             // console.log("db user from getUserByUid in app.component is:");
             // console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
-            this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+            this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               // console.log("isAdmin? " + status);
               // console.log(typeof(status));
               if(status === true){
@@ -92,7 +80,7 @@ export class AppComponent extends BaseComponent implements OnInit {
                 this.isAdmin = status;
               }
             });
-            this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+            this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
               // console.log("hasUserPaid? " + paymentStatus);
               // console.log(typeof(paymentStatus));
               if(paymentStatus === true){
@@ -102,8 +90,8 @@ export class AppComponent extends BaseComponent implements OnInit {
                 this.paidStatus = false;
               }
             });
-            this.db.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
-              this.db.updatePrivileges(dbUser, Number(reputation));
+            this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
+              this.dbService.updatePrivileges(dbUser, Number(reputation));
             });
           })
         } else {
@@ -132,7 +120,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   };
 
   navigateToVideoInNeedOfAnnotation(){
-    this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
+    this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
       this.ngZone.run(() =>{
         this.router.navigate(['matches/' + match.id]);
       });

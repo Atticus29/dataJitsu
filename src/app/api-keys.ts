@@ -13,6 +13,6 @@ export var masterFirebaseConfig = {
 export var masterStripeConfig = {
   publicApiTestKey: "pk_test_NKyjLSwnMosdX0mIgQaRRHbS",
   secretApiTestKey: "sk_test_6YWZDNhzfMq3UWZwdvcaOwSa",
-  publicApiKey: "",
+  publicApiKey: "pk_test_NKyjLSwnMosdX0mIgQaRRHbS",
   secretApiKey: ""
 };

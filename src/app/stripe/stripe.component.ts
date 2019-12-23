@@ -23,7 +23,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
 
   @ViewChild('cardElement', {static: true}) cardElement: ElementRef;
   private localTitle = constants.title;
-  private localPaymentStatus: any = false;
+  private localPaymentStatus: any = true;
   private localUserNodId: string = null;
 
   private stripe;
@@ -39,7 +39,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stripe = Stripe('pk_test_NKyjLSwnMosdX0mIgQaRRHbS');
+    this.stripe = Stripe(masterStripeConfig.publicApiKey);
     const elements = this.stripe.elements();
 
     this.card = elements.create('card');
@@ -51,19 +51,17 @@ export class StripeComponent extends BaseComponent implements OnInit {
 
     let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(this.dbService.hasUserPaid(user.id))));
     pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-      console.log("results of hasUserPaid");
-      console.log(paymentStatus);
+      if(paymentStatus && !this.localPaymentStatus){
+        this.openSnackBar("Congratulations! You subscription has been confirmed, and you should now have access to all matches");
+      }
       this.localPaymentStatus = paymentStatus;
     });
   }
 
   async handleForm(e){
     this.subscriptionStatus = "Processing...";
-    console.log("handleForm entered");
     e.preventDefault();
     const { source, error } = await this.stripe.createSource(this.card);
-    console.log("source retrieved:");
-    console.log(source);
     if(error){
       this.cardErrors = error.message;
       this.openSnackBar(error.message);
@@ -73,15 +71,12 @@ export class StripeComponent extends BaseComponent implements OnInit {
       const subscriptionFun = this.functions.httpsCallable('stripeCreateSubscription');
       try{
         const res = await subscriptionFun({ plan: 'plan_GACY9v91xQlBDf', source: source.id }).toPromise();
-        console.log("res is:");
-        console.log(res);
         if(res){
           this.subscriptionStatus = "Subscription is " + this.textTransformationService.capitalizeFirstLetter(res.status);
           this.openSnackBar(this.subscriptionStatus);
           this.loading = false;
         }
       }catch (error){
-        console.log(error.message);
         this.openSnackBar(error.message);
         this.cardErrors = error.message;
       }
