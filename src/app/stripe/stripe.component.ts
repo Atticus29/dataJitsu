@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import {MatSnackBar} from '@angular/material';
 
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { takeUntil, switchMap } from 'rxjs/operators';
@@ -27,13 +28,13 @@ export class StripeComponent extends BaseComponent implements OnInit {
 
   private stripe;
   private card;
-  private cardErrors;
   private loading = false;
   private confirmation;
   private subscriptionCost: number = constants.monthlyCost;
   private subscriptionStatus: string = ''
+  private cardErrors: string = '';
 
-  constructor(private authService: AuthorizationService, private functions:AngularFireFunctions, private textTransformationService: TextTransformationService, private dbService: DatabaseService, private trackerService : TrackerService) {
+  constructor(private authService: AuthorizationService, private functions:AngularFireFunctions, private textTransformationService: TextTransformationService, private dbService: DatabaseService, private trackerService : TrackerService, public snackBar: MatSnackBar) {
     super();
   }
 
@@ -64,27 +65,33 @@ export class StripeComponent extends BaseComponent implements OnInit {
     console.log("source retrieved:");
     console.log(source);
     if(error){
-      const cardErrors = error.message;
+      this.cardErrors = error.message;
+      this.openSnackBar(error.message);
     } else{
-      //Send the token to the server
       this.loading = true;
       const user = await this.authService.getUser(); //TODO define this
-      // console.log("user retrieved:");
-      // console.log(user);
       const subscriptionFun = this.functions.httpsCallable('stripeCreateSubscription');
-      // console.log("subscriptionFun made");
-      const res = await subscriptionFun({ plan: 'plan_GACY9v91xQlBDf', source: source.id }).toPromise();
-      console.log("res is:");
-      console.log(res);
-      if(res){
-        this.subscriptionStatus = "Subscription is " + this.textTransformationService.capitalizeFirstLetter(res.status);
-        // const webhookFun = this.functions.httpsCallable('invoiceWebhookEndpoint');
-        // const webhookRes = await webhookFun({customer: res.customer, subscription: res.id}).toPromise();
-        // console.log("webhookRes");
-        // console.log(webhookRes);
-        this.loading = false;
+      try{
+        const res = await subscriptionFun({ plan: 'plan_GACY9v91xQlBDf', source: source.id }).toPromise();
+        console.log("res is:");
+        console.log(res);
+        if(res){
+          this.subscriptionStatus = "Subscription is " + this.textTransformationService.capitalizeFirstLetter(res.status);
+          this.openSnackBar(this.subscriptionStatus);
+          this.loading = false;
+        }
+      }catch (error){
+        console.log(error.message);
+        this.openSnackBar(error.message);
+        this.cardErrors = error.message;
       }
     }
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 3000,
+    });
   }
 
   // handleNoUser(){
