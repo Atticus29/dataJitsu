@@ -1,4 +1,4 @@
-import { db, stripe } from './config';
+import { db, stripe, dbFirebase } from './config';
 import * as functions from 'firebase-functions';
 
 export const stripeWebhookSignature = functions.config().stripe.webhook_signature;
@@ -12,6 +12,21 @@ export const webhookHandler = async (data: any) => {
   const subscription = await stripe.subscriptions.retrieve(subId);
 
   const isActive = subscription.status === 'active';
+
+
+  //substitute for running dbService.updateUserSubscription(nodeId, paidStatus)
+  dbFirebase.ref('/users/').orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot =>{
+    if(snapshot){
+      console.log("dbFirebase call in webhook function yields user:");
+      console.log(snapshot.val());
+      let usr = snapshot.val();
+      let usrId = Object.keys(usr)[0];
+      let updates = {};
+      updates['/users/' + id + '/paidStatus'] = isActive;
+      dbFirebase.ref().update(updates);
+      // usr = usr[Object.keys(usr)[0]];
+    }
+  })
 
   const docData = {
     [subscription.plan.id]: isActive,

@@ -1,10 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { AuthorizationService } from '../authorization.service';
 import { masterStripeConfig } from '../api-keys';
 import { constants } from '../constants';
+import { TextTransformationService } from '../text-transformation.service';
+import { DatabaseService } from '../database.service';
+import { TrackerService } from '../tracker.service';
 
 declare var Stripe; //: stripe.StripeStatic;
 
@@ -17,6 +22,8 @@ export class StripeComponent extends BaseComponent implements OnInit {
 
   @ViewChild('cardElement', {static: true}) cardElement: ElementRef;
   private localTitle = constants.title;
+  private localPaymentStatus: any = false;
+  private localUserNodId: string = null;
 
   private stripe;
   private card;
@@ -24,8 +31,9 @@ export class StripeComponent extends BaseComponent implements OnInit {
   private loading = false;
   private confirmation;
   private subscriptionCost: number = constants.monthlyCost;
+  private subscriptionStatus: string = ''
 
-  constructor(private authService: AuthorizationService, private functions:AngularFireFunctions) {
+  constructor(private authService: AuthorizationService, private functions:AngularFireFunctions, private textTransformationService: TextTransformationService, private dbService: DatabaseService, private trackerService : TrackerService) {
     super();
   }
 
@@ -39,9 +47,17 @@ export class StripeComponent extends BaseComponent implements OnInit {
     this.card.addEventListener('change', ({ error }) =>{
       this.cardErrors = error && error.message;
     });
+
+    let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(user ? this.dbService.hasUserPaid(user.id): this.handleNoUser())));
+    pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+      console.log("results of hasUserPaid");
+      console.log(paymentStatus);
+      this.localPaymentStatus = paymentStatus;
+    });
   }
 
   async handleForm(e){
+    this.subscriptionStatus = "Processing...";
     console.log("handleForm entered");
     e.preventDefault();
     const { source, error } = await this.stripe.createSource(this.card);
@@ -53,17 +69,26 @@ export class StripeComponent extends BaseComponent implements OnInit {
       //Send the token to the server
       this.loading = true;
       const user = await this.authService.getUser(); //TODO define this
-      console.log("user retrieved:");
-      console.log(user);
+      // console.log("user retrieved:");
+      // console.log(user);
       const subscriptionFun = this.functions.httpsCallable('stripeCreateSubscription');
-      console.log("subscriptionFun made");
-      const res = await subscriptionFun({ plan: 'plan_GBak65OXFnPtcD', source: source.id });
+      // console.log("subscriptionFun made");
+      const res = await subscriptionFun({ plan: 'plan_GBak65OXFnPtcD', source: source.id }).toPromise();
       console.log("res is:");
       console.log(res);
-      // this.confirmation = await subscriptionFun( { source: source.id, uid: user.uid, amount: this.subscriptionCost }).toPromise();
-      this.loading = false;
-      // const fun = this.functions.httpsCallable('stripeCreateCharge'); //TODO change?
+      if(res){
+        this.subscriptionStatus = "Subscription is " + this.textTransformationService.capitalizeFirstLetter(res.status);
+        // const webhookFun = this.functions.httpsCallable('invoiceWebhookEndpoint');
+        // const webhookRes = await webhookFun({customer: res.customer, subscription: res.id}).toPromise();
+        // console.log("webhookRes");
+        // console.log(webhookRes);
+        this.loading = false;
+      }
     }
+  }
+
+  handleNoUser(){
+    console.log("ack no user!");
   }
 
   // const subscriptionFun = fun.httpsCallable('stripeCreateSubscription');

@@ -5,6 +5,7 @@ admin.initializeApp();
 
 // Initialize Cloud Firestore Database
 export const db = admin.firestore();
+export const dbFirebase = admin.database();
 const settings = { timestampsInSnapshots: true };
 db.settings(settings);
 

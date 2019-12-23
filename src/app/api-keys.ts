@@ -5,7 +5,7 @@ export var masterFirebaseConfig = {
   projectId: "datajitsu",
   storageBucket: "datajitsu.appspot.com",
   messagingSenderId: "495992924984",
-  appId: "1:495992924984:web:4332e6af27e8e5b4b92fcd",
+  appId: "1:495992924984:web:9798948cba24c4d3b92fcd",
   adminEmailAddress: "mark.aaron.fisher@gmail.com",
   adminPassword: "APython!11"
 };

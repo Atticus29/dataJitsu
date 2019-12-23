@@ -123,6 +123,11 @@ export class DatabaseService {
     updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
   }
+  // updateUserSubscription(nodeId: string, paidStatus: boolean){
+  //   let updates = {};
+  //   updates['/users/' + nodeId + '/paidStatus'] = paidStatus;
+  //   firebase.database().ref().update(updates);
+  // }
 
   getKeyOfMovesEntry(){
 
@@ -378,8 +383,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-        // console.log("query result in getUserByUid in databaseService: ");
-        // console.log(snapshot.val());
+        console.log("query result in getUserByUid in databaseService: ");
+        console.log(snapshot.val());
         user = snapshot.val();
         user = user[Object.keys(user)[0]];
         observer.next(user);
@@ -1380,4 +1385,5 @@ export class DatabaseService {
     });
     return obsRet;
   }
+
 }
