@@ -52,4 +52,5 @@ export var constants = {
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
     numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
+    stipePlanId: "plan_GQ7IoLADxXFFak",
   };

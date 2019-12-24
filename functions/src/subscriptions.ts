@@ -23,20 +23,20 @@ export const getSubscriptions = async(uid: string) => {
 Creates and charges user for a new subscription
 */
 export const createSubscription = async(uid:string, source:string, plan: string, coupon?: string) => {
-    console.log("got into createSubscription");
-    console.log(uid);
-    console.log(source);
-    console.log(plan);
+    // console.log("got into createSubscription");
+    // console.log(uid);
+    // console.log(source);
+    // console.log(plan);
 
     const customer = await getOrCreateCustomer(uid);
-    console.log("customer in createSubscription")
-    console.log(customer);
+    // console.log("customer in createSubscription")
+    // console.log(customer);
     const customerId = assert (customer, 'id'); //stripeCustomerId
-    console.log("customerId:");
-    console.log(customerId);
+    // console.log("customerId:");
+    // console.log(customerId);
 
     await attachSource(uid, source);
-    console.log("source attached in createSubscription");
+    // console.log("source attached in createSubscription");
 
     const subscription = await stripe.subscriptions.create({
         customer: customerId,
@@ -47,20 +47,23 @@ export const createSubscription = async(uid:string, source:string, plan: string,
             },
         ],
     });
-    console.log("subscription in createSubscription")
-    console.log(subscription);
+    // console.log("subscription in createSubscription")
+    // console.log(subscription);
 
     // Add the plan to existing subscriptions
-    dbFirebase.ref('/users/').orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot =>{
+    dbFirebase.ref('/users/').orderByChild('uid').equalTo(uid).limitToFirst(1).once("value").then(snapshot =>{
       if(snapshot){
-        console.log("dbFirebase call in webhook function yields user:");
+        console.log("dbFirebase call in cloud function yields user:");
         console.log(snapshot.val());
         let usr = snapshot.val();
         let usrId = Object.keys(usr)[0];
         let updates = {};
+        // console.log("paidStatus about to be updated to true from cloud function!!!");
         updates['/users/' + usrId + '/paidStatus'] = true;
         dbFirebase.ref().update(updates);
-        // usr = usr[Object.keys(usr)[0]];
+        updates = {};
+        updates['/users/' + usrId + '/subscriptionInfo'] = {customerId : customerId, subscriptionId : subscription.id};
+        dbFirebase.ref().update(updates);
       }
     });
 
@@ -68,8 +71,8 @@ export const createSubscription = async(uid:string, source:string, plan: string,
         [plan]: true,
         [subscription.id]: 'active',
     }
-    console.log("docData in createSubscription")
-    console.log(docData);
+    // console.log("docData in createSubscription")
+    // console.log(docData);
 
     await db.doc(`users/${uid}`).set(docData, { merge: true });
 
@@ -80,20 +83,39 @@ export const createSubscription = async(uid:string, source:string, plan: string,
 Cancels a subscription and stops all recurring payments
 */
 export async function cancelSubscription(uid: string, subId: string): Promise<any> {
+  // console.log("cancelSubscription helper function entered");
+  const subscription  = await stripe.subscriptions.del(subId);
+  // console.log("subscription in cancelSubscription:");
+  // console.log(subscription);
+  if(!subscription.plan){
+    throw new functions.https.HttpsError('not-found', 'subscription plan not found');
+  }
 
-    const subscription  = await stripe.subscriptions.del(subId);
-    if(!subscription.plan){
-      throw new functions.https.HttpsError('not-found', 'subscription plan not found');
+
+  //DB stuff
+
+  dbFirebase.ref('/users/').orderByChild('uid').equalTo(uid).limitToFirst(1).once("value").then(snapshot =>{
+    if(snapshot){
+      console.log("dbFirebase call in cloud function yields user:");
+      console.log(snapshot.val());
+      let usr = snapshot.val();
+      let usrId = Object.keys(usr)[0];
+      let updates = {};
+      updates['/users/' + usrId + '/paidStatus'] = false;
+      dbFirebase.ref().update(updates);
+      let ref = dbFirebase.ref('/users/' + usrId + '/subscriptionInfo');
+      ref.remove();
     }
+  });
 
-    const docData = {
-        [subscription.plan.id]: false,
-        [subscription.id]: 'cancelled'
-    }
+  const docData = {
+      [subscription.plan.id]: false,
+      [subscription.id]: 'cancelled'
+  }
 
-    await db.doc(`users/${uid}`).set(docData, { merge: true });
+  await db.doc(`users/${uid}`).set(docData, { merge: true });
 
-    return subscription;
+  return subscription;
 }
 
 /////// DEPLOYABLE FUNCTIONS ////////
@@ -114,9 +136,14 @@ export const stripeCreateSubscription = functions.https.onCall( async (data, con
 });
 
 export const stripeCancelSubscription = functions.https.onCall( async (data, context) => {
-    const uid = assertUID(context);
-    const plan = assert(data, 'plan');
-    return catchErrors( cancelSubscription(uid, plan) );
+  console.log("stripeCancelSubscription entered");
+  const uid = assertUID(context);
+  console.log("uid in stripeCancelSubscription:");
+  console.log(uid);
+  const plan = assert(data, 'subId');
+  console.log("plan in stripeCancelSubscription:");
+  console.log(plan);
+  return catchErrors( cancelSubscription(uid, plan) );
 });
 
 export const stripeGetSubscriptions = functions.https.onCall( async (data, context) => {

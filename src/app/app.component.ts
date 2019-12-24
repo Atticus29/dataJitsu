@@ -47,7 +47,7 @@ export class AppComponent extends BaseComponent implements OnInit {
       if(result && result.uid && authState){
         this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
           this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
-            this.localReputation = Number(repPoints);
+            this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
           });
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
           this.userObjFromDb = dbUser;
@@ -80,16 +80,16 @@ export class AppComponent extends BaseComponent implements OnInit {
                 this.isAdmin = status;
               }
             });
-            this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+            // this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
               // console.log("hasUserPaid? " + paymentStatus);
               // console.log(typeof(paymentStatus));
-              if(paymentStatus === true){
-                // console.log("setting paidStatus to true...");
-                this.paidStatus = paymentStatus;
-              }else{
-                this.paidStatus = false;
-              }
-            });
+              // if(paymentStatus === true){
+              //   // console.log("setting paidStatus to true...");
+              //   this.paidStatus = paymentStatus;
+              // }else{
+              //   this.paidStatus = false;
+              // }
+            // });
             this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
               this.dbService.updatePrivileges(dbUser, Number(reputation));
             });
