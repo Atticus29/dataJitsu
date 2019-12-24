@@ -65,6 +65,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
     if(error){
       this.cardErrors = error.message;
       this.openSnackBar(error.message);
+      this.subscriptionStatus = '';
     } else{
       this.loading = true;
       const user = await this.authService.getUser(); //TODO define this
@@ -79,6 +80,7 @@ export class StripeComponent extends BaseComponent implements OnInit {
       }catch (error){
         this.openSnackBar(error.message);
         this.cardErrors = error.message;
+        this.subscriptionStatus = '';
       }
     }
   }

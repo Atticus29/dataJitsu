@@ -1,16 +1,20 @@
-<div class="stripe-checkout-form">
-  <form (submit)="handleForm($event)">
+<div class="stripe-checkout-wrapper">
+  <div class="stripe-checkout-item">
+    <form (submit)="handleForm($event)">
+      <div #cardElement class="stripe-checkout-item">
 
-    <div #cardElement>
-
-    </div>
-    <p>{{ cardErrors }}</p>
-
-    <button id="buy-button">Subscribe for {{subscriptionCost | currency}}</button>
-    <div>
-      <p>{{subscriptionStatus}}</p>
-    </div>
-  </form>
+      </div>
+      <div class="stripe-checkout-item">
+        <p>{{ cardErrors }}</p>
+      </div>
+      <div class="stripe-checkout-item">
+        <button mat-raised-button id="buy-button" color="accent">Subscribe for {{subscriptionCost | currency}}</button>
+      </div>
+      <div>
+        <p>{{subscriptionStatus}}</p>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- <h3>Default Stripe Form</h3> -->
