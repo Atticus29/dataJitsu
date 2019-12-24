@@ -1,0 +1,28 @@
+<h5>Confirm new tournament names:</h5>
+<div class="flexbox-container small-black-border">
+  <div class="flexbox-item">
+    <ul>
+      <li *ngFor="let candidateTournamentName of localCandidateTournamentNames">
+        {{candidateTournamentName}}
+        <span matTooltip="Approve" (click)="approveTournamentName(candidateTournamentName)" name="approve-move">
+          <i class="material-icons" id="up">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveTournamentName(candidateTournamentName)" name="disapprove-move">
+          <i class="material-icons" id="down">thumb_down</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="flexbox-item">
+    <h5>Move names already in the database (for reference):</h5>
+    <hr>
+    <ul>
+      <li *ngFor="let localTournamentName of localTournamentNames">
+        {{localTournamentName}}
+        <span (click)="deleteTournamentName(localTournamentName)" *ngIf="localIsAdmin" name="delete-move-name">
+          <i class="material-icons" id="delete">delete</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

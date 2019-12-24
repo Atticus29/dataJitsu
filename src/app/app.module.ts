@@ -106,6 +106,8 @@ import { MoveNameApprovalComponent } from './move-name-approval/move-name-approv
 import { StripeComponent } from './stripe/stripe.component';
 import { SelfMatchesUserInfoComponent } from './self-matches-user-info/self-matches-user-info.component';
 import { MatchActionDelimiterDirective } from './match-action-delimiter.directive';
+import { NewTournamentNameDialogComponent } from './new-tournament-name-dialog/new-tournament-name-dialog.component';
+import { TournamentNameApprovalComponent } from './tournament-name-approval/tournament-name-approval.component';
 
 
 export const firebaseConfig = {
@@ -158,7 +160,9 @@ export const firebaseConfig = {
     MoveNameApprovalComponent,
     StripeComponent,
     SelfMatchesUserInfoComponent,
-    MatchActionDelimiterDirective
+    MatchActionDelimiterDirective,
+    NewTournamentNameDialogComponent,
+    TournamentNameApprovalComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -214,6 +218,6 @@ export const firebaseConfig = {
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent]
 })
 export class AppModule { }

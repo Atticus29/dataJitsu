@@ -49,9 +49,26 @@
         </mat-form-field>
       </div>
       <div class="row">
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="tournamentNameBoundFc" placeholder="Choose Tournament Name" id="tournament-select">
+            <mat-option value="" [disabled]="disabledTournamentName">Choose tournament name</mat-option>
+            <mat-option [value]="localTournamentName" (click)="openTournamentNameDialog()" color="accent" id="tournament-name-write-in">
+              <button mat-flat-button color="accent">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new tournament name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let tournamentName of tournamentNames" [value]="tournamentName" id="tournament-name-dropdown">{{tournamentName}}</mat-option>
+          </mat-select>
+          <p *ngIf="localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{localTournamentName}}</mat-chip></span></p>
+          <p *ngIf="tournamentNameBoundFc.value && !localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{tournamentNameBoundFc.value}}</mat-chip></span></p>
+
+        </mat-form-field>
         <!-- <mat-form-field class="example-full-width"> -->
-          <label for="tournamentName" class="active" data-error="Not valid" data-success="Valid">Tournament Name</label>
-          <input matInput [formControl]="tournamentNameBoundFc" placeholder="Tournament Name" value="E.g., IBJJF Gi Worlds TODO" id="tournamentName" type="text">
+          <!-- <label for="tournamentName" class="active" data-error="Not valid" data-success="Valid">Tournament Name</label> -->
+          <!-- <input matInput [formControl]="tournamentNameBoundFc" placeholder="Tournament Name" value="E.g., IBJJF Gi Worlds TODO" id="tournamentName" type="text"> -->
           <!-- <mat-error *ngIf="tournamentNameBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
           <br>
         <!-- </mat-form-field> -->

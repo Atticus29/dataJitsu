@@ -79,12 +79,12 @@ describe ('Tests involving match creation', () =>{
     cy.visit('http://localhost:4200/admin');
     cy.wait(2000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.get('li').contains(cypressConstants.athlete1FirstName).find('i[id=down]').click();
-      cy.get('li').contains(cypressConstants.athlete1FirstName).should('not.exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName).find('i[id=up]').click();
-      cy.get('li').contains(cypressConstants.athlete2FirstName).should('exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName).find('i[id=delete]').click();
-      cy.get('li').contains(cypressConstants.athlete2FirstName).should('not.exist');;
+      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click();
+      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).should('not.exist');
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click();
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('exist');
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=delete]').click();
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('not.exist');;
     });
 
     //check that one is now unknown name and the other is still the same name
@@ -95,8 +95,8 @@ describe ('Tests involving match creation', () =>{
     cy.contains('500').click();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.contains('Un-named Athlete');
-      cy.contains(cypressConstants.athlete2FirstName);
-      cy.contains(cypressConstants.athlete2LastName);
+      cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000});
+      cy.contains(cypressConstants.athlete2LastName, {timeout: 5000});
     });
 
     //delete this match

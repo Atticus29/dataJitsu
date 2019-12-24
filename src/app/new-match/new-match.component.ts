@@ -23,6 +23,7 @@ import { TextTransformationService } from '../text-transformation.service';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
 import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
+import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
 
 declare var $:any;
 
@@ -40,6 +41,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   ageClasses: any[];
   ranks: any[];
   athleteNames: any[];
+  tournamentNames: any[];
   giRanks: any[];
   nogiRanks: any[];
   rankType: string = "Nogi";
@@ -63,6 +65,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   // localMatchUrlBound: string = null;
   localAthlete1Name: string = null;
   localAthlete2Name: string = null;
+  localTournamentName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -131,13 +134,17 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
     this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
       this.athleteNames = athleteNames.sort();
-    })
+    });
+
+    this.db.getTournamentNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(tournamentNames =>{
+      this.tournamentNames = tournamentNames.sort();
+    });
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
       this.giRanks = giRanks.sort();
       this.ranks = giRanks.sort();
       // this.disabledGiRank = true;
-    })
+    });
 
     this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
       this.nogiRanks = noGiRanks.sort();
@@ -194,9 +201,15 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       athlete2NameBound = this.localAthlete2Name;
       this.db.addCandidateNameToDb(athlete2NameBound, matchUrlBound);
     }
-    console.log(athlete1NameBound);
-    console.log(athlete2NameBound);
+    // console.log(athlete1NameBound);
+    // console.log(athlete2NameBound);
     let tournamentNameBound = this.tournamentNameBoundFc.value;
+    if(this.localTournamentName){
+      console.log("localTournamentName exists");
+      tournamentNameBound = this.localTournamentName;
+      this.db.addCandidateTournamentNameToDb(tournamentNameBound, matchUrlBound);
+    }
+
     let locationBound = this.locationBoundFc.value;
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
@@ -334,6 +347,30 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   onDestroy(){
 
+  }
+
+  openTournamentNameDialog(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
+      console.log("got dialog data to new-match component?:");
+      console.log(val);
+      this.db.getTournamentNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(tournamentNames =>{
+        console.log("got into getTournamentNames");
+        console.log(tournamentNames);
+        val.tournamentName = this.textTransformationService.capitalizeFirstLetter(val.tournamentName);
+        let tourneyName = val.tournamentName;
+        if(tournamentNames.includes(tourneyName)){
+          this.openSnackBar("Tournament name already exists in dropdown menu!", null);
+          this.localTournamentName = null;
+        }else{
+          this.localTournamentName = val.tournamentName;
+        }
+      });
+    });
   }
 
   openAddNameDialog(athleteNumber: number){
