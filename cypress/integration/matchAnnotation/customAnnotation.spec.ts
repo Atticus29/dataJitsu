@@ -53,8 +53,13 @@ describe ('Match custom annotation tests', () =>{
     cy.get('a[name=videoClick]').first().click();
     cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.get('mat-icon').eq(9).click({force:true});
-    cy.get('mat-icon').eq(12).click({force:true});
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
+      cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle).children('button').click({force:true});
+      cy.contains('mat-tree-node', "Darth Vader Choke").should('exist');
+    });
+    // cy.get('mat-icon').eq(9).click({force:true});
+    // cy.get('mat-icon').eq(12).click({force:true});
     // cy.wait(1000);
     cy.get('div[id=annotationModal]').contains('Darth Vader Choke').should('exist');
   });
@@ -83,6 +88,7 @@ describe ('Match custom annotation tests', () =>{
 
   it('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
     //First delete the annotation that already exists
+    cy.log("First delete the annotation that already exists");
     cy.logout();
     cy.loginAsAdmin();
     cy.get('a[name=videoClick]').first().click();
@@ -90,7 +96,10 @@ describe ('Match custom annotation tests', () =>{
     cy.reload(); //TODO here maybe?
 
     //Then create the annotation and custom move again
-    // cy.get('a[name=videoClick]').first().click();
+    cy.visit("http://localhost:4200/matches");
+    cy.get('a[name=videoClick]').first().click();
+    cy.log("Then create the annotation and custom move again");
+    // cy.reload();
     cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.wait(1000);
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
@@ -115,9 +124,16 @@ describe ('Match custom annotation tests', () =>{
     //Then do the important test stuff
     // cy.logout();
     // cy.loginAsAdmin();
+    cy.log("disapproveMove");
     cy.visit('http://localhost:4200/admin');
     cy.disapproveMove("Darth Vader Choke");
+
+    cy.log("checkThatCustomMoveHasBeenRenamed");
+    cy.reload();
     cy.checkThatCustomMoveHasBeenRenamed();
+
+    cy.visit("http://localhost:4200/matches");
+    cy.removeNowRenamedAnnotation();
   });
 
 });

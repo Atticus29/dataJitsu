@@ -19,6 +19,7 @@
       "esnext",
       "dom"
     ],
-    "types": ["firebase", "node", "cypress"]
+    "types": ["firebase", "node", "cypress"],
+    "skipLibCheck": true
   }
 }

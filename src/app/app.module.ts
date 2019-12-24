@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { masterFirebaseConfig } from './api-keys';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { AppComponent } from './app.component';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { routing } from './app.routing';
@@ -102,10 +103,14 @@ import { AthleteNameApprovalComponent } from './athlete-name-approval/athlete-na
 import { NewAthleteNameDialogComponent } from './new-athlete-name-dialog/new-athlete-name-dialog.component';
 import { NewMoveDialogComponent } from './new-move-dialog/new-move-dialog.component';
 import { MoveNameApprovalComponent } from './move-name-approval/move-name-approval.component';
+import { StripeComponent } from './stripe/stripe.component';
+import { SelfMatchesUserInfoComponent } from './self-matches-user-info/self-matches-user-info.component';
+import { MatchActionDelimiterDirective } from './match-action-delimiter.directive';
 
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
+  projectId: masterFirebaseConfig.projectId,
   authDomain: masterFirebaseConfig.authDomain,
   databaseURL: masterFirebaseConfig.databaseURL,
   storageBucket: masterFirebaseConfig.storageBucket
@@ -150,7 +155,10 @@ export const firebaseConfig = {
     AthleteNameApprovalComponent,
     NewAthleteNameDialogComponent,
     NewMoveDialogComponent,
-    MoveNameApprovalComponent
+    MoveNameApprovalComponent,
+    StripeComponent,
+    SelfMatchesUserInfoComponent,
+    MatchActionDelimiterDirective
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -204,7 +212,7 @@ export const firebaseConfig = {
     routing,
     NgxYoutubePlayerModule
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
   entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
 })

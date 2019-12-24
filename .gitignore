@@ -43,9 +43,9 @@ testem.log
 Thumbs.db
 
 # Firebase credentials
-/src/app/api-keys.ts 
+./src/app/api-keys.ts 
 
 # Functions
-/functions
+/functions/service-account.json
 
 # API Keys

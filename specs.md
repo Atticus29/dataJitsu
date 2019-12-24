@@ -1,12 +1,15 @@
 # TODO high priority
+- [ ] Have unknown as a weight class option
+- [ ] Have unknown as a no gi rank option
 - [ ] Add new move options to every section
-- [ ] Make new directive for match start
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
-- [ ] See what happens when you try to add new submission name
+- [ ] Stripe follow-up
+  - [ ] Zip code validation
+  - [ ] Webhook
+- [ ] //TODO this is the only part that is not in base component...experiment with putting it in there
 - [ ] Add interesting exchange or something like that
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
-- [ ] Enter upon password completion for login should trigger login button
 - [ ] Tournaments from a dropdown
 - [ ] Custom categories
   - [ ] weight class
@@ -167,6 +170,16 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Enter upon password completion for login should trigger login button
+- [x] See what happens when you try to add new submission name
+- [x] Set up stripe
+  - [x] Subscriptions
+  - [x] Cancellation
+  - [x] All of this in user section
+- [x] Color-code match start and end chips
+- [x] Track reasons for reputation awards and deductions (date, note/flag, points)
+- [x] Sort moves in dialog dropdown menu
+- [x] Sort weight classes other new match categories
 - [x] Track reasons for reputation awards and deductions (date, note/flag, points)
 - [x] Add moves
   - [x] Dropdown

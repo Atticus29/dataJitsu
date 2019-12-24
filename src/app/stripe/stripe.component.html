@@ -1,0 +1,22 @@
+<div class="stripe-checkout-wrapper">
+  <div class="stripe-checkout-item" *ngIf="localPaymentStatus">
+    <p class="stripe-checkout-item">You are currently subscribed to {{localTitle}}</p>
+  </div>
+  <form [hidden]="localPaymentStatus">
+    <div #cardElement class="stripe-checkout-item">
+    </div>
+    <div class="stripe-checkout-item">
+      <p class="stripe-checkout-item">{{ cardErrors }}</p>
+    </div>
+    <div class="stripe-checkout-item">
+      <button mat-raised-button id="buy-button" color="accent" (click)="handleForm($event)" *ngIf="!localPaymentStatus">Subscribe for only {{subscriptionCost | currency}} a month!</button>
+
+    </div>
+  </form>
+  <div class="stripe-checkout-item">
+    <button mat-raised-button id="cancel-button" color="accent" (click)="cancelSubscription($event)" *ngIf="localPaymentStatus">Cancel Subscription</button>
+  </div>
+  <div class="stripe-checkout-item">
+    <p>{{subscriptionStatus}}</p>
+  </div>
+</div>

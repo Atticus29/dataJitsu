@@ -7,7 +7,7 @@
     </mat-form-field>
     <br>
     <mat-form-field class="flex-item">
-      <input id="dialog-pw-input" matInput placeholder="Password" formControlName="passwd" type="password">
+      <input id="dialog-pw-input" matInput placeholder="Password" formControlName="passwd" type="password" (keydown)="keyDownFunction($event)">
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions class="flex-item">

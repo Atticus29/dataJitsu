@@ -40,6 +40,7 @@
     "ng-starrating": "^1.0.7",
     "ngx-youtube-player": "7.1.1",
     "rxjs": "^6.0.0",
+    "stripe": "^7.9.1",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 
 import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, switchMap } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
 import { DateCalculationsService } from '../date-calculations.service';
@@ -28,30 +28,35 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   paidStatus: any = false;
   private notificationsSeen: boolean = false;
 
-  constructor(private authService: AuthorizationService, private db: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService, public ngZone: NgZone) {
+  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService, public ngZone: NgZone) {
     super();
   }
 
   ngOnInit() {
+
+    let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(this.dbService.hasUserPaid(user.id))));
+    pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+      this.paidStatus = paymentStatus;
+    });
     // console.log("ngOnInit user-status-report is called");
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User)=>{
       this.user = user;
       if (this.user) {
         this.userLoggedIn = true;
         if(this.user.uid){
-          this.db.getUserByUid(this.user.uid).pipe(take(1)).subscribe(dbUser =>{
+          this.dbService.getUserByUid(this.user.uid).pipe(take(1)).subscribe(dbUser =>{
             this.userObjFromDb = dbUser;
-            this.togglePaymentThings();
-            this.db.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              // console.log(hasUserAnnotatedEnough);
-              if(!hasUserAnnotatedEnough){
-                this.toggleAnnotationPrompt(true);
-                this.togglePayMentPrompt(true);
-              } else{
-                this.toggleAnnotationPrompt(false);
-                this.togglePayMentPrompt(false);
-              }
+            // this.togglePaymentThings();
+            this.dbService.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
+              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              console.log(hasUserAnnotatedEnough);
+              // if(!hasUserAnnotatedEnough){
+              //   this.toggleAnnotationPrompt(true);
+              //   this.togglePayMentPrompt(true);
+              // } else{
+              //   this.toggleAnnotationPrompt(false);
+              //   this.togglePayMentPrompt(false);
+              // }
             });
           });
         }
@@ -75,11 +80,11 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
     }
   }
 
-  togglePaid(userId: string, status: boolean){
-    console.log("paidStatus changed to " + status);
-    this.db.updateUserPaymentStatus(userId, status);
-    //TODO other stuff?
-  }
+  // togglePaid(userId: string, status: boolean){
+  //   console.log("paidStatus changed to " + status);
+  //   this.dbService.updateUserPaymentStatus(userId, status);
+  //   //TODO other stuff?
+  // }
 
   togglePayMentPrompt(status: boolean){
     if(status){
@@ -91,31 +96,33 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   sendToMatchToAnnotate(){
-    this.db.getLowRatedMatch().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      this.router.navigate(['matches/'+result.id]);
+    this.dbService.getLowRatedMatch().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+      this.ngZone.run(() =>{
+        this.router.navigate(['matches/'+result.id]);
+      });
     });
   }
 
-  sendToMatchToPaymentSubscription(){
+  // sendToMatchToPaymentSubscription(){
+  //
+  //   this.router.navigate(['payment']);
+  // }
 
-    this.router.navigate(['payment']);
-  }
-
-  togglePaymentThings(){
-    this.db.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-      if(status == true){
-        // console.log("user has paid");
-        // this.togglePaid(this.userObjFromDb.id, true);
-        this.togglePayMentPrompt(false);
-        this.paidStatus = status;
-      } else{
-        // console.log("user has not paid");
-        // this.togglePaid(this.userObjFromDb.id, false);
-        this.togglePayMentPrompt(true);
-        this.paidStatus = false;
-      }
-    });
-  }
+  // togglePaymentThings(){
+  //   this.dbService.hasUserPaid(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+  //     if(status == true){
+  //       // console.log("user has paid");
+  //       // this.togglePaid(this.userObjFromDb.id, true);
+  //       this.togglePayMentPrompt(false);
+  //       this.paidStatus = status;
+  //     } else{
+  //       // console.log("user has not paid");
+  //       // this.togglePaid(this.userObjFromDb.id, false);
+  //       this.togglePayMentPrompt(true);
+  //       this.paidStatus = false;
+  //     }
+  //   });
+  // }
 
   toggleNotificationsSeenToTrue(){
     this.notificationsSeen = true;
@@ -128,7 +135,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
 navigateToVideoInNeedOfAnnotation(){
-  this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
+  this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
     this.ngZone.run(() =>{
       this.router.navigate(['matches/' + match.id]);
     });

@@ -43,6 +43,13 @@ export class EmailLoginDialogComponent extends BaseComponent implements OnInit {
     }
   }
 
+  keyDownFunction(event) {
+  if(event.keyCode == 13 && this.allValid()) {
+    console.log('you just clicked enter');
+    this.dialogRef.close(this.form.value);
+  }
+}
+
 
 
 }

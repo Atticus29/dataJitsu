@@ -1,7 +1,7 @@
 <button *ngIf="userObjFromDb" mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="toggleNotificationsSeenToTrue()"><mat-icon *ngIf="notificationsSeen">notifications</mat-icon><mat-icon *ngIf="!notificationsSeen">notifications_important</mat-icon></button>
 <mat-menu #notificationMenu>
-  <button mat-menu-item *ngIf="userObjFromDb" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> It's Time to Annotate a Video</button>
-  <button mat-menu-item *ngIf="userObjFromDb" (click)="sendToPaymentSubscription()"><mat-icon>attach_money</mat-icon> Purchase a Subscription</button>
+  <button mat-menu-item *ngIf="!paidStatus" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> It's Time to Annotate a Video</button>
+  <button mat-menu-item *ngIf="!paidStatus" (click)="sendToPaymentSubscription()"><mat-icon>attach_money</mat-icon> Purchase a Subscription</button>
 </mat-menu>
 
 <!-- <div class="col s12 m2" *ngIf="user">

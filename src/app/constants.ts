@@ -1,4 +1,5 @@
 export var constants = {
+    moveNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
     title: "Match Annotator",
     activityName: "Brazilian jiu jitsu",
@@ -11,8 +12,8 @@ export var constants = {
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,
     defaultVideoUrlCode: "OXcM9hE5wUk",
     temp: "hi, Mark",
-    monthlyCost: 2,
-    monthlyCostString: "$2",
+    monthlyCost: 1.50,
+    monthlyCostString: "$1.50",
     halfYearCost: 6,
     yearlyCost: 10,
     requiredAnnotationsPerMonth: 1,
@@ -51,4 +52,5 @@ export var constants = {
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
     numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
+    stipePlanId: "plan_GQ7IoLADxXFFak",
   };

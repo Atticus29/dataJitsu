@@ -119,10 +119,16 @@ export class DatabaseService {
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
+    console.log("updateUserPaymentStatus entered");
     let updates = {};
     updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
   }
+  // updateUserSubscription(nodeId: string, paidStatus: boolean){
+  //   let updates = {};
+  //   updates['/users/' + nodeId + '/paidStatus'] = paidStatus;
+  //   firebase.database().ref().update(updates);
+  // }
 
   getKeyOfMovesEntry(){
 
@@ -353,6 +359,7 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string): Observable<boolean>{
+    console.log("hasUserPaid entered");
     let ref = firebase.database().ref('users/' + userId + '/paidStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => { //TODO ???
@@ -595,6 +602,7 @@ export class DatabaseService {
               currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentMoveInVideo.setIsWin(snapshotVals.isWin);
               currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
+              currentMoveInVideo.setIsMatchActionDelimiter(snapshotVals.isMatchActionDelimiter);
               currentMoveInVideo.setNumFlag(snapshotVals.numFlags);
               // console.log("move in video being added to annotations array:");
               // console.log(currentMoveInVideo)
@@ -1379,4 +1387,18 @@ export class DatabaseService {
     });
     return obsRet;
   }
+
+  getSubscriptionIdFromUser(userNodeId: string){
+    let ref = firebase.database().ref('/users/' + userNodeId + '/subscriptionInfo/subscriptionId');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByValue().on("value", snapshot =>{
+        if(snapshot){
+            // console.log(snapshot.val());
+            observer.next(snapshot.val());
+        }
+      });
+    });
+    return obsRet;
+  }
+
 }

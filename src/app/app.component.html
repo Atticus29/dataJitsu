@@ -15,7 +15,7 @@
             {{name}}
         </span>
         <span matBadge="{{localNewReputationCount}}" matBadgeOverlap="false">{{localReputation}}</span>
-        <app-user-status-report *ngIf="authenticationStatus" class="move-left"></app-user-status-report>
+        <app-user-status-report *ngIf="authenticationStatus && !paidStatus" class="move-left"></app-user-status-report>
         <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu" id="settings-button"><mat-icon>settings_applications</mat-icon></button>
         <mat-menu #userMenu>
           <button mat-menu-item *ngIf="authenticationStatus" routerLink="user/{{userObjFromDb.id}}"><mat-icon>info</mat-icon> User Info.</button>
@@ -43,14 +43,14 @@
     </ul>
   </div> -->
 </nav>
-<div class="flexbox-container-alt">
+<!-- <div class="flexbox-container-alt"> -->
   <!-- <div class="small-flexbox-item">
     <app-user-status-report *ngIf="user"></app-user-status-report>
   </div> -->
-  <div class="flexbox-item">
+  <!-- <div class="flexbox-item"> -->
     <router-outlet></router-outlet>
-  </div>
-</div>
+  <!-- </div> -->
+<!-- </div> -->
 <div *ngIf="!authenticationStatus" class="flexbox-item">
   <!-- empty -->
 </div>

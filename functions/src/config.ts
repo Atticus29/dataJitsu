@@ -1,0 +1,18 @@
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+import * as firebase from 'firebase/app';
+
+admin.initializeApp();
+
+// Initialize Cloud Firestore Database
+export const db = admin.firestore();
+export const dbFirebase = admin.database();
+const settings = { timestampsInSnapshots: true };
+db.settings(settings);
+
+// ENV Variables
+export const stripeSecret = functions.config().stripe.secret;
+
+// Export Stripe
+import * as Stripe from 'stripe';
+export const stripe = new Stripe(stripeSecret);

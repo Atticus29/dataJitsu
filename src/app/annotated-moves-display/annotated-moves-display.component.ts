@@ -37,7 +37,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     let self = this;
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{ //takeUntil(this.ngUnsubscribe)
       this.matchId = matchId;
-      // console.log("got into currentMatch: " + this.matchId);
+      console.log("got into currentMatch: " + this.matchId);
       this.fetchAnnotations(this.matchId);
     });
 
@@ -108,11 +108,11 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
       this.annotations = new Array();
       this.databaseService.getAnnotationsSortedByStartTimeV2(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
         if(annotationResults){
-          // console.log("annotationResults in AnnotatedMovesDisplayComponent:");
-          // console.log(annotationResults);
+          console.log("annotationResults in fetchAnnotations call of AnnotatedMovesDisplayComponent:");
+          console.log(annotationResults);
           this.annotations = annotationResults;
         }else{
-          // console.log("annotationResults don't exist in getAnnotationsSortedByStartTimeV2 call in AnnotatedMovesDisplayComponent");
+          console.log("no matchId in fetchAnnotations call");
         }
       });
     }

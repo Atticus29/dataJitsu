@@ -5,7 +5,7 @@ import { auth } from 'firebase/app';
 import { Router } from "@angular/router";
 // import * as firebase from 'firebase';
 
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, first } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 import { DatabaseService } from './database.service';
@@ -36,6 +36,10 @@ export class AuthorizationService {
       // console.log("errorResults");
       // console.log(errorResults);
     });
+  }
+
+  getUser(): Promise<any> {
+    return this.afAuth.authState.pipe(first()).toPromise();
   }
 
   // Returns true if user is logged in

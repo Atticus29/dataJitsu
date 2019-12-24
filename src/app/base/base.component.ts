@@ -1,6 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { takeUntil, take, last } from 'rxjs/operators';
+
+import { Subject } from 'rxjs'; //combineLatest
+// import { takeUntil, take, last } from 'rxjs/operators';
+// import { AngularFireAuth } from 'angularfire2/auth';
+//
+// import { User } from './user.model';
+// import { AuthorizationService } from '../authorization.service';
+// import { DatabaseService } from '../database.service';
+// import { TrackerService } from '../tracker.service';
 
 @Component({
   selector: 'app-base',
@@ -9,10 +16,25 @@ import { takeUntil, take, last } from 'rxjs/operators';
 })
 export class BaseComponent implements OnDestroy {
   ngUnsubscribe = new Subject<void>();
+  userObjFromDb: any = null;
 
-  constructor() { }
+  constructor() { } //private authService: AuthorizationService, private dbService: DatabaseService, private trackerService: TrackerService, public afAuth: AngularFireAuth
 
-  ngOnInit() {
+  ngOnInit() { //TODO implement this
+    // combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+    //   let result = results[0];
+    //   let authState = results[1];
+    //   if(result && result.uid && authState){
+    //     this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+    //       console.log("dbUser from base component subscription:");
+    //       console.log(dbUser);
+    //       this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
+    //       this.userObjFromDb = dbUser;
+    //     });
+    //   } else{
+    //     this.trackerService.currentUserBehaviorSubject.next(null);
+    //   }
+    // });
   }
 
   ngOnDestroy(){

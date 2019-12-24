@@ -89,9 +89,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           }
     });
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
+      console.log("matchId in current match tracker " + matchId);
       this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
-        // console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        // console.log(Array.of(matchDeets));
+        console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
+        console.log(Array.of(matchDeets));
         this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
         // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
