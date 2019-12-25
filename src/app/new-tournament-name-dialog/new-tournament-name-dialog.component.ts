@@ -7,13 +7,14 @@ import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
 
+import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 
 @Component({
   selector: 'app-new-tournament-name-dialog',
   templateUrl: './new-tournament-name-dialog.component.html',
   styleUrls: ['./new-tournament-name-dialog.component.scss']
 })
-export class NewTournamentNameDialogComponent extends BaseComponent  implements OnInit {
+export class NewTournamentNameDialogComponent extends BaseDialogComponent implements OnInit {
   form: FormGroup;
   private tournamentNameFc: FormControl = new FormControl('', [Validators.required]);
 
@@ -31,19 +32,6 @@ export class NewTournamentNameDialogComponent extends BaseComponent  implements 
     let tournamentName = this.tournamentNameFc.value;
     console.log(tournamentName);
     return {tournamentName};
-  }
-
-  processDialogData(){
-    let vals = this.getValues();
-    this.sendDataThroughDialog(vals);
-  }
-
-  sendDataThroughDialog(data: any){
-    this.dialogRef.close(data);
-  }
-
-  close(){
-    this.dialogRef.close();
   }
 
   allValid(){
