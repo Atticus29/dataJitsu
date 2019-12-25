@@ -108,6 +108,7 @@ import { SelfMatchesUserInfoComponent } from './self-matches-user-info/self-matc
 import { MatchActionDelimiterDirective } from './match-action-delimiter.directive';
 import { NewTournamentNameDialogComponent } from './new-tournament-name-dialog/new-tournament-name-dialog.component';
 import { TournamentNameApprovalComponent } from './tournament-name-approval/tournament-name-approval.component';
+import { BaseDialogComponent } from './base-dialog/base-dialog.component';
 
 
 export const firebaseConfig = {
@@ -162,7 +163,8 @@ export const firebaseConfig = {
     SelfMatchesUserInfoComponent,
     MatchActionDelimiterDirective,
     NewTournamentNameDialogComponent,
-    TournamentNameApprovalComponent
+    TournamentNameApprovalComponent,
+    BaseDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,

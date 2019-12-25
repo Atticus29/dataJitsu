@@ -1,6 +1,6 @@
 # TODO high priority
-- [ ] Have unknown as a weight class option
-- [ ] Have unknown as a no gi rank option
+- [ ] Have custom weight class options, and add unknown to it
+- [ ] Have custom no gi rank option, and add unknown to it
 - [ ] Add new move options to every section
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] Stripe follow-up
