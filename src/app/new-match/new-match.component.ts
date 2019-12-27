@@ -22,8 +22,10 @@ import { ValidationService } from '../validation.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
+
 import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
 import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
+import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
 
 declare var $:any;
 
@@ -355,17 +357,9 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   }
 
-  getGenericDialogConfig(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {};
-    return dialogConfig;
-  }
-
   async openWeightClassNameDialog(){
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(NewWeightClassDialogComponent, dialogConfig);
     this.localWeightClassName = await this.processGenericDialog(dialogRef, 'weightClasses', 'weightClassName');
 
   }
@@ -373,32 +367,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   async openTournamentNameDialog(){
     let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
-    // console.log("before processGenericDialog");
     this.localTournamentName = await this.processGenericDialog(dialogRef, 'tournamentNames', 'tournamentName');
-    // console.log("after processGenericDialog");
-    // console.log("this.localTournamentName is " + this.localTournamentName);
-  }
-
-  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string){ //TODO Promise<any>
-    console.log("entered processGenericDialog")
-    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
-      if(val){
-        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
-        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
-        if(genericStringNames.includes(candidateNameCapitalized)){
-          this.openSnackBar("Your entry already exists in dropdown menu!", null);
-          return null;
-        }else{
-          console.log("got here");
-          return candidateNameCapitalized;
-        }
-      }else{
-        return null;
-      }
-    // });
-    // return returnVal;
-      // });
-    // });
   }
 
   openAddNameDialog(athleteNumber: number){
@@ -435,6 +404,34 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       });
       // this.authService.emailLogin(val.email, val.passwd);
     });
+  }
+
+  getGenericDialogConfig(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    return dialogConfig;
+  }
+
+  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string){ //TODO Promise<any>
+    console.log("entered processGenericDialog")
+    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
+      if(val){
+        console.log("val");
+        console.log(val);
+        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
+        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+        if(genericStringNames.includes(candidateNameCapitalized)){
+          this.openSnackBar("Your entry already exists in dropdown menu!", null);
+          return null;
+        }else{
+          console.log("got here");
+          return candidateNameCapitalized;
+        }
+      }else{
+        return null;
+      }
   }
 
 }

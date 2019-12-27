@@ -14,7 +14,7 @@
     <button class="btn waves-effect waves-light button-space" (click)="close()">
       Close
     </button>
-    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData()" [disabled]="!allValid()">
+    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData(getValues(), dialogRef)" [disabled]="!allValid()">
       Submit
     </button>
   </mat-dialog-actions>

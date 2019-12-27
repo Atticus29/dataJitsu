@@ -123,11 +123,27 @@
               <mat-option  value="addNew" >Add new {{rankType}} rank</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <!-- <mat-form-field>
           <mat-select [formControl]="weightBoundFc" id="weight" placeholder="Weight Class">
             <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
             <mat-option *ngFor="let weight of weightClasses" [value]="weight">{{weight}}</mat-option>
           </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="weightBoundFc" placeholder="Choose Weight Class" id="weight-class-select">
+            <mat-option value="" [disabled]="disabledWeigthClassName">Choose Weight Class</mat-option>
+            <mat-option [value]="localWeightClassName" (click)="openWeightClassNameDialog()" color="accent" id="weight-class-name-write-in">
+              <button mat-flat-button color="accent">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new weight class name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let weight of weightClasses" [value]="weight" id="weight-class-name-dropdown">{{weight}}</mat-option>
+          </mat-select>
+          <p *ngIf="localWeightClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{localWeightClassName}}</mat-chip></span></p>
+          <p *ngIf="weightBoundFc.value && !localWeightClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{weightBoundFc.value}}</mat-chip></span></p>
         </mat-form-field>
       </div>
       <button id="new-match-submit-button" [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newMatchForm.valid" -->
