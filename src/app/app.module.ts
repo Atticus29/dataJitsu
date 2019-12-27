@@ -111,6 +111,7 @@ import { TournamentNameApprovalComponent } from './tournament-name-approval/tour
 import { BaseDialogComponent } from './base-dialog/base-dialog.component';
 import { NewWeightClassDialogComponent } from './new-weight-class-dialog/new-weight-class-dialog.component';
 import { WeightClassNameApprovalComponent } from './weight-class-name-approval/weight-class-name-approval.component';
+import { BaseApprovalComponent } from './base-approval/base-approval.component';
 
 
 export const firebaseConfig = {
@@ -168,7 +169,8 @@ export const firebaseConfig = {
     TournamentNameApprovalComponent,
     BaseDialogComponent,
     NewWeightClassDialogComponent,
-    WeightClassNameApprovalComponent
+    WeightClassNameApprovalComponent,
+    BaseApprovalComponent
   ],
   imports: [
     AngularFireDatabaseModule,

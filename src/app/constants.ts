@@ -7,6 +7,7 @@ export var constants = {
     lightBlueHex: "#ADD8E6",
     moveNameRemovedMessage: "Move name has been removed; flag me",
     tournamentNameRemovedMessage: "Tournament name has been removed",
+    weightClassRemovedMessage: "Weight class name has been removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,

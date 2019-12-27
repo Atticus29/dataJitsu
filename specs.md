@@ -1,11 +1,11 @@
 # TODO high priority
-- [ ] Have custom weight class options, and add unknown to it
 - [ ] Have custom no gi rank option, and add unknown to it
 - [ ] Add new move options to every section
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] Stripe follow-up
   - [ ] Zip code validation
   - [ ] Webhook
+  - [ ] Let user know that bill will appear as Fisher Dynamic
 - [ ] //TODO this is the only part that is not in base component...experiment with putting it in there
 - [ ] Add interesting exchange or something like that
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
@@ -170,6 +170,8 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Have custom weight class options, and add unknown to it
+- [x] ADDING FEATURE WHERE DISAPPROVED NAME GETS SUBSTITUTED and check whether the same exists for tournament name cross listed in spec file
 - [x] Enter upon password completion for login should trigger login button
 - [x] See what happens when you try to add new submission name
 - [x] Set up stripe

@@ -95,9 +95,26 @@ export class DatabaseService {
   }
 
   getCandidateWeightClassNames(): any{
-    let ref = firebase.database().ref('/candidateWeightClasses/');
+    this.getGenericCandidateNames('/candidateWeightClasses/', 'name');
+    // let ref = firebase.database().ref('/candidateWeightClasses/');
+    // let obsRet = Observable.create(function(observer){
+    //   ref.orderByChild('name').on("value", snapshot =>{
+    //     let resultObj = snapshot.val();
+    //     if(resultObj){
+    //       let names = Object.keys(resultObj).map(index => resultObj[index].name);
+    //       observer.next(names);
+    //     } else{
+    //       observer.next([]);
+    //     }
+    //   });
+    // });
+    // return obsRet;
+  }
+
+  getGenericCandidateNames(path: string, orderByParameter: string): any{
+    let ref = firebase.database().ref(path);
     let obsRet = Observable.create(function(observer){
-      ref.orderByChild('name').on("value", snapshot =>{
+      ref.orderByChild(orderByParameter).on("value", snapshot =>{
         let resultObj = snapshot.val();
         if(resultObj){
           let names = Object.keys(resultObj).map(index => resultObj[index].name);
@@ -796,7 +813,11 @@ export class DatabaseService {
   }
 
   getWeightClasses(){
-    return this.weightClasses;
+    return this.getGenericApprovedList('/weightClasses');
+  }
+
+  getGenericApprovedList(path: string){
+    return this.db.list<String>(path).valueChanges();
   }
 
   getAgeClasses(){
@@ -1414,9 +1435,20 @@ export class DatabaseService {
   }
 
   getMatchUrlFromCandidateTournamentName(tournamentName: string){
-    let ref = firebase.database().ref('/candidateTournamentNames/');
+    // let ref = firebase.database().ref('/candidateTournamentNames/');
+    // let obsRet = Observable.create(function(observer){
+    //   ref.orderByChild('name').equalTo(tournamentName).on("child_added", snapshot =>{
+    //     observer.next(snapshot.val().associatedMatchUrl);
+    //   });
+    // });
+    // return obsRet;
+    return this.getMatchUrlFromGenericCandidateName('/candidateTournamentNames/', 'name', tournamentName);
+  }
+
+  getMatchUrlFromGenericCandidateName(candidatePath: string, orderByParameter:string, name: string){
+    let ref = firebase.database().ref(candidatePath);
     let obsRet = Observable.create(function(observer){
-      ref.orderByChild('name').equalTo(tournamentName).on("child_added", snapshot =>{
+      ref.orderByChild(orderByParameter).equalTo(name).on("child_added", snapshot =>{
         observer.next(snapshot.val().associatedMatchUrl);
       });
     });
@@ -1424,14 +1456,26 @@ export class DatabaseService {
   }
 
   updateMoveNameInMatch(matchId: string, moveId: string, targetName: string, newName: string){
-    let updates = {};
-    updates['/matches/' + matchId + '/moves/' + moveId + '/moveName/'] = newName;
-    firebase.database().ref().update(updates);
+    // let updates = {};
+    // updates['/matches/' + matchId + '/moves/' + moveId + '/moveName/'] = newName;
+    // firebase.database().ref().update(updates);
+    this.updateGenericNameInMatch('/moves/' + moveId + '/moveName/', matchId, newName);
   }
 
   updateTournamentNameInMatch(matchId: string, newName: string){
+    this.updateGenericNameInMatch('/matchDeets/tournamentName', matchId, newName);
+    // let updates = {};
+    // updates['/matches/' + matchId + '/matchDeets/tournamentName'] = newName;
+    // firebase.database().ref().update(updates);
+  }
+
+  updateGenericNameInMatch(subPath: string, matchId: string, newName: string){
+    console.log("entered updateGenericNameInMatch");
+    console.log("subPath is " + subPath);
+    console.log("matchId is " + matchId);
+    console.log("newName is " + newName);
     let updates = {};
-    updates['/matches/' + matchId + '/matchDeets/tournamentName'] = newName;
+    updates['/matches/' + matchId + '/' + subPath] = newName;
     firebase.database().ref().update(updates);
   }
 
