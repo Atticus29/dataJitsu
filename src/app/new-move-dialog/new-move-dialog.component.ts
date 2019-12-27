@@ -28,8 +28,8 @@ export class NewMoveDialogComponent extends BaseDialogComponent implements OnIni
   private displaySubcategorySelect: boolean = false;
   private displayCategoryName: boolean = true;
 
-  constructor(public snackBar: MatSnackBar, private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService, private textTransformationService: TextTransformationService) {
-    super();
+  constructor(public snackBar: MatSnackBar, public fb: FormBuilder, public dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+    super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {
@@ -71,7 +71,7 @@ export class NewMoveDialogComponent extends BaseDialogComponent implements OnIni
         this.openSnackBar(constants.moveNameAlreadyExistsNotification);
       } else{
         console.log("this shouldn't happen if there's a match in the db");
-        this.sendDataThroughDialog(vals);
+        this.sendDataThroughDialog(vals, this.dialogRef);
       }
     })
   }

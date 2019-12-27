@@ -109,6 +109,7 @@ import { MatchActionDelimiterDirective } from './match-action-delimiter.directiv
 import { NewTournamentNameDialogComponent } from './new-tournament-name-dialog/new-tournament-name-dialog.component';
 import { TournamentNameApprovalComponent } from './tournament-name-approval/tournament-name-approval.component';
 import { BaseDialogComponent } from './base-dialog/base-dialog.component';
+import { NewWeightClassDialogComponent } from './new-weight-class-dialog/new-weight-class-dialog.component';
 
 
 export const firebaseConfig = {
@@ -164,7 +165,8 @@ export const firebaseConfig = {
     MatchActionDelimiterDirective,
     NewTournamentNameDialogComponent,
     TournamentNameApprovalComponent,
-    BaseDialogComponent
+    BaseDialogComponent,
+    NewWeightClassDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,

@@ -8,7 +8,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { Subject ,  Observable } from 'rxjs';
-import { takeUntil, take, switchMap } from 'rxjs/operators';
+import { takeUntil, take, switchMap, first } from 'rxjs/operators';
 
 import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
@@ -66,6 +66,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   localAthlete1Name: string = null;
   localAthlete2Name: string = null;
   localTournamentName: string = null;
+  localWeightClassName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -210,13 +211,18 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       this.db.addCandidateTournamentNameToDb(tournamentNameBound, matchUrlBound);
     }
 
+    let weightBound = this.weightBoundFc.value;
+    if(this.localWeightClassName){
+      console.log("localWeightClassName exists");
+      weightBound = this.localWeightClassName;
+      this.db.addGenericCandidateNameToDb('candidateWeightClass', weightBound, matchUrlBound);
+    }
     let locationBound = this.locationBoundFc.value;
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
     let genderBound = this.genderBoundFc.value;
     let ageClassBound = this.ageClassBoundFc.value;
     let rankBound = this.rankBoundFc.value;
-    let weightBound = this.weightBoundFc.value;
 
     // let otherResults = this.newMatchForm.value;
     return {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
@@ -349,37 +355,56 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   }
 
-  openTournamentNameDialog(){
+  getGenericDialogConfig(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {};
+    return dialogConfig;
+  }
+
+  async openWeightClassNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
-    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
-      console.log("got dialog data to new-match component?:");
-      console.log(val);
-      this.db.getTournamentNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(tournamentNames =>{
-        console.log("got into getTournamentNames");
-        console.log(tournamentNames);
-        val.tournamentName = this.textTransformationService.capitalizeFirstLetter(val.tournamentName);
-        let tourneyName = val.tournamentName;
-        if(tournamentNames.includes(tourneyName)){
-          this.openSnackBar("Tournament name already exists in dropdown menu!", null);
-          this.localTournamentName = null;
+    this.localWeightClassName = await this.processGenericDialog(dialogRef, 'weightClasses', 'weightClassName');
+
+  }
+
+  async openTournamentNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
+    // console.log("before processGenericDialog");
+    this.localTournamentName = await this.processGenericDialog(dialogRef, 'tournamentNames', 'tournamentName');
+    // console.log("after processGenericDialog");
+    // console.log("this.localTournamentName is " + this.localTournamentName);
+  }
+
+  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string){ //TODO Promise<any>
+    console.log("entered processGenericDialog")
+    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
+      if(val){
+        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
+        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+        if(genericStringNames.includes(candidateNameCapitalized)){
+          this.openSnackBar("Your entry already exists in dropdown menu!", null);
+          return null;
         }else{
-          this.localTournamentName = val.tournamentName;
+          console.log("got here");
+          return candidateNameCapitalized;
         }
-      });
-    });
+      }else{
+        return null;
+      }
+    // });
+    // return returnVal;
+      // });
+    // });
   }
 
   openAddNameDialog(athleteNumber: number){
     // console.log("clicked!");
     console.log("athlete number is " + athleteNumber);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {};
+    let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewAthleteNameDialogComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to new-match component?:");

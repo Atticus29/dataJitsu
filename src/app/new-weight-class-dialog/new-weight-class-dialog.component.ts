@@ -6,6 +6,7 @@ import {MatSnackBar} from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
 import { ValidationService } from '../validation.service';
+import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
 import { constants } from '../constants';
@@ -14,33 +15,32 @@ import { TextTransformationService } from '../text-transformation.service';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 
 @Component({
-  selector: 'app-new-tournament-name-dialog',
-  templateUrl: './new-tournament-name-dialog.component.html',
-  styleUrls: ['./new-tournament-name-dialog.component.scss']
+  selector: 'app-new-weight-class-dialog',
+  templateUrl: './new-weight-class-dialog.component.html',
+  styleUrls: ['./new-weight-class-dialog.component.scss']
 })
-export class NewTournamentNameDialogComponent extends BaseDialogComponent implements OnInit {
+export class NewWeightClassDialogComponent extends BaseDialogComponent implements OnInit {
   form: FormGroup;
-  private tournamentNameFc: FormControl = new FormControl('', [Validators.required]);
+  private weightClassNameFc: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(public dialogRef: MatDialogRef<NewTournamentNameDialogComponent>, @Inject(MAT_DIALOG_DATA) {tournamentNameFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+  constructor(public dialogRef: MatDialogRef<NewWeightClassDialogComponent>, @Inject(MAT_DIALOG_DATA) {weightClassNameFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
     super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      tournamentNameFc: ['', Validators.required],
+      weightClassNameFc: ['', Validators.required],
     });
   }
-
   getValues(){
-    let tournamentName = this.tournamentNameFc.value;
-    console.log(tournamentName);
-    return {tournamentName};
+    let weightClassName = this.weightClassNameFc.value;
+    console.log(weightClassName);
+    return {weightClassName};
   }
 
   allValid(){
     let values = this.getValues();
-    if(this.vs.validateString(values.tournamentName)){
+    if(this.vs.validateString(values.weightClassName)){
       return true;
     } else{
       return false;
@@ -50,7 +50,7 @@ export class NewTournamentNameDialogComponent extends BaseDialogComponent implem
   getErrorMessage() {
     console.log("getErrorMessage entered");
     let errorMessage: string = "";
-    if(this.tournamentNameFc.hasError('required')){
+    if(this.weightClassNameFc.hasError('required')){
       errorMessage = 'Last name is required';
       return  errorMessage;
     }

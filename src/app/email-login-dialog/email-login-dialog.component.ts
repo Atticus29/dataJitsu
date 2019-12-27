@@ -1,9 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 
-import { EmailLoginDialog } from '../emailLoginDialog.model';
+import { takeUntil } from 'rxjs/operators';
+
 import { ValidationService } from '../validation.service';
+import { BaseComponent } from '../base/base.component';
+import { TrackerService } from '../tracker.service';
+import { DatabaseService } from '../database.service';
+import { constants } from '../constants';
+import { TextTransformationService } from '../text-transformation.service';
 
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 
@@ -16,9 +23,9 @@ import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 export class EmailLoginDialogComponent extends BaseDialogComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<EmailLoginDialogComponent>, @Inject(MAT_DIALOG_DATA) {email, passwd}, private vs: ValidationService) {
-    super();
-    this.form = fb.group({
+  constructor(public dialogRef: MatDialogRef<EmailLoginDialogComponent>, @Inject(MAT_DIALOG_DATA) {email, passwd}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+    super (snackBar, fb, vs, trackerService, db, textTransformationService);
+    this.form = this.fb.group({
       email: [email, Validators.required],
       passwd: [passwd, Validators.required],
     });

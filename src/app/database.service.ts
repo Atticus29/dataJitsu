@@ -1120,9 +1120,17 @@ export class DatabaseService {
   }
 
   addCandidateTournamentNameToDb(name: string, associatedMatchUrl: string){
-    console.log("addCandidateTournamentNameToDb called");
+    // console.log("addCandidateTournamentNameToDb called");
+    // console.log("name is " + name);
+    // let ref = firebase.database().ref('/candidateTournamentNames/');
+    // let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    this.addGenericCandidateNameToDb('/candidateTournamentNames/', name, associatedMatchUrl);
+  }
+
+  addGenericCandidateNameToDb(path: string, name: string, associatedMatchUrl: string){
+    console.log("addGenericCandidateNameToDb called");
     console.log("name is " + name);
-    let ref = firebase.database().ref('/candidateTournamentNames/');
+    let ref = firebase.database().ref(path);
     let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
 
@@ -1130,6 +1138,12 @@ export class DatabaseService {
     //TODO check whether name already exists!
     let ref = firebase.database().ref('/athleteNames/');
     ref.push(name);
+  }
+
+  getGenericStringNames(path: string){
+    console.log("getGenericStringNames entered");
+    console.log(this.db.list(path).valueChanges());
+    return this.db.list(path).valueChanges();
   }
 
   removeAthleteNameFromCandidateList(name: string){
@@ -1228,7 +1242,7 @@ export class DatabaseService {
   }
 
   addCandidateMoveInVideoToDb(moveName: string, moveCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
-    this.addGenericStringToDb('/candidateMoveNames/', {'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl});
+    this.addGenericItemToDb('/candidateMoveNames/', {'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl});
     // let ref = firebase.database().ref('/candidateMoveNames/');
     // let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
@@ -1237,16 +1251,16 @@ export class DatabaseService {
     //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
     // let ref = firebase.database().ref();
     // ref.push(moveName);
-    this.addGenericStringToDb('/moves/' + categoryName + '/' + subcategoryName + '/', moveName);
+    this.addGenericItemToDb('/moves/' + categoryName + '/' + subcategoryName + '/', moveName);
   }
 
   addTournamentNameToDb(tournamentName: string){
     // let ref = firebase.database().ref();
     // ref.push(tournamentName);
-    this.addGenericStringToDb('/tournamentNames/', tournamentName);
+    this.addGenericItemToDb('/tournamentNames/', tournamentName);
   }
 
-  addGenericStringToDb(path: string, genericString: string){
+  addGenericItemToDb(path: string, genericString: any){
     let ref = firebase.database().ref(path);
     ref.push(genericString);
   }

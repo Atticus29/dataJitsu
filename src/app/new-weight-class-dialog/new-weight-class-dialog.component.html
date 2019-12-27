@@ -1,12 +1,11 @@
-
 <div class="flexbox-vertical">
-  <h2 mat-dialog-title class="flex-item">Enter new tournament name</h2>
+  <h2 mat-dialog-title class="flex-item">Enter new weight class name</h2>
   <mat-dialog-content>
     <form materialize [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
-        <input matInput [formControl]="tournamentNameFc" placeholder="Tournament Name" id="tournamentNameFc" value="E.g., IBJJF World Jiu-Jitsu Championship" required>
-        <mat-error *ngIf="tournamentNameFc.value? !vs.validateString(tournamentNameFc.value): false">{{getErrorMessage()}}</mat-error>
+        <input matInput [formControl]="weightClassNameFc" placeholder="Weight Class Name" id="weightClassNameFc" value="E.g., IBJJF World Jiu-Jitsu Championship" required>
+        <mat-error *ngIf="!vs.validateString(weightClassNameFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <br>
     </form>
@@ -15,7 +14,7 @@
     <button class="btn waves-effect waves-light button-space" (click)="close()">
       Close
     </button>
-    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData(getValues(), dialogRef)" [disabled]="!allValid()">
+    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData()" [disabled]="!allValid()">
       Submit
     </button>
   </mat-dialog-actions>
