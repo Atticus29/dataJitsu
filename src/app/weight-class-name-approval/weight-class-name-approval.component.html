@@ -1,0 +1,28 @@
+<h5>Confirm new weight class names:</h5>
+<div class="flexbox-container small-black-border">
+  <div class="flexbox-item">
+    <ul>
+      <li *ngFor="let candidateWeightClassName of localCandidateWeightClassNames">
+        {{candidateWeightClassName}}
+        <span matTooltip="Approve" (click)="approveName(candidateWeightClassName, 'weight class')" name="approve-move">
+          <i class="material-icons" id="up">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveName(candidateWeightClassName, 'weight class')" name="disapprove-move">
+          <i class="material-icons" id="down">thumb_down</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="flexbox-item">
+    <h5>{{localParameterPhrase}} names already in the database (for reference):</h5>
+    <hr>
+    <ul>
+      <li *ngFor="let localWeightClassName of localWeightClassNames">
+        {{localWeightClassName}}
+        <span (click)="deleteName(localWeightClassName, 'weight class')" *ngIf="localIsAdmin" name="delete-move-name">
+          <i class="material-icons" id="delete">delete</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

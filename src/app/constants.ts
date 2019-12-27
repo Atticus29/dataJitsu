@@ -50,6 +50,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingCandidateAthleteName: 5,
     numberOfPointsToAwardForApprovingMoveName: 5,
     numberOfPointsToAwardForApprovingTournamentName: 5,
+    numberOfPointsToAwardForApprovingWeigthClassName: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,

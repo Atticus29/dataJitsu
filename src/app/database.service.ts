@@ -94,6 +94,22 @@ export class DatabaseService {
     return obsRet;
   }
 
+  getCandidateWeightClassNames(): any{
+    let ref = firebase.database().ref('/candidateWeightClasses/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('name').on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index].name);
+          observer.next(names);
+        } else{
+          observer.next([]);
+        }
+      });
+    });
+    return obsRet;
+  }
+
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
     // console.log("childNodeName in getMovesSubsetAsObject database service");
@@ -1430,6 +1446,13 @@ export class DatabaseService {
   deleteTournamentName(tournamentName: string){
     let ref = firebase.database().ref('tournamentNames/');
     ref.orderByValue().equalTo(tournamentName).on("child_added", snapshot =>{
+      ref.child(snapshot.key).remove();
+    });
+  }
+
+  deleteGenericString(path: string, name: string){
+    let ref = firebase.database().ref(path);
+    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
       ref.child(snapshot.key).remove();
     });
   }

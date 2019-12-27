@@ -217,7 +217,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     if(this.localWeightClassName){
       console.log("localWeightClassName exists");
       weightBound = this.localWeightClassName;
-      this.db.addGenericCandidateNameToDb('candidateWeightClass', weightBound, matchUrlBound);
+      this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, matchUrlBound);
     }
     let locationBound = this.locationBoundFc.value;
     let tournamentDateBound = this.tournamentDateBoundFc.value;
