@@ -124,9 +124,9 @@
             </mat-select>
         </mat-form-field> -->
         <mat-form-field class="col m6 s12">
-          <mat-select [formControl]="rankBoundFc" placeholder="Choose No Gi Rank" id="no-gi-rank-select">
-            <mat-option value="" [disabled]="disabledNoGiRankName">Choose No Gi Rank</mat-option>
-            <mat-option [value]="localNoGiRankName" (click)="openNoGiRankDialog()" color="accent" id="no-gi-rank-name-write-in">
+          <mat-select [formControl]="rankBoundFc" placeholder="Choose Rank" id="rank-select">
+            <mat-option value="" [disabled]="disabledNoGiRankName">Choose {{rankType}} Rank</mat-option>
+            <mat-option *ngIf="rankType === 'Nogi'" [value]="localNoGiRankName" (click)="openNoGiRankDialog()" color="accent" id="no-gi-rank-name-write-in">
               <button mat-flat-button color="accent">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
@@ -134,10 +134,10 @@
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let rank of nogiRanks" [value]="rank" id="no-gi-rank-name-dropdown">{{rank}}</mat-option>
+            <mat-option *ngFor="let rank of ranks" [value]="rank" id="no-gi-rank-name-dropdown">{{rank}}</mat-option>
           </mat-select>
-          <p *ngIf="localNoGiRankName">No Gi Rank Selected: <span><mat-chip color="primary" selected>{{localNoGiRankName}}</mat-chip></span></p>
-          <p *ngIf="noGiRankBoundFc.value && !localNoGiRankName">No Gi Rank Selected: <span><mat-chip color="primary" selected>{{noGiRankBoundFc.value}}</mat-chip></span></p>
+          <p *ngIf="localNoGiRankName">{{rankType}} Rank Selected: <span><mat-chip color="primary" selected>{{localNoGiRankName}}</mat-chip></span></p>
+          <p *ngIf="rankBoundFc.value && !localNoGiRankName">{{rankType}} Rank Selected: <span><mat-chip color="primary" selected>{{rankBoundFc.value}}</mat-chip></span></p>
         </mat-form-field>
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="weightBoundFc" placeholder="Choose Weight Class" id="weight-class-select">

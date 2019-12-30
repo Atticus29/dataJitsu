@@ -279,6 +279,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       this.rankType = "Gi";
       this.ranks = this.giRanks;
       this.giStatus = true;
+      // this.localNoGiRankName = "";
     } else{
       console.log("nogi selected");
       this.rankType = "Nogi";
