@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../base/base.component';
+import { ApprovalConfig } from '../approvalConfig.model';
+import { constants } from '../constants';
 
 @Component({
   selector: 'app-admin',
@@ -7,6 +9,8 @@ import { BaseComponent } from '../base/base.component';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent extends BaseComponent implements OnInit {
+  private localWeightClassApprovalConfig: ApprovalConfig = constants.weightClassApprovalConfig;
+  private localTournamentNameApprovalConfig: ApprovalConfig = constants.tournamentNameApprovalConfig;
 
   constructor() {
     super();

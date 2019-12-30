@@ -6,10 +6,16 @@
   <div class="flexbox-item">
     <app-move-name-approval></app-move-name-approval>
   </div>
-  <div class="flexbox-item">
+  <!-- <div class="flexbox-item">
     <app-tournament-name-approval></app-tournament-name-approval>
+  </div> -->
+  <!-- <div class="flexbox-item">
+    <app-weight-class-name-approval></app-weight-class-name-approval>
+  </div> -->
+  <div class="flexbox-item">
+    <app-base-approval [approvalConfig]="localTournamentNameApprovalConfig"></app-base-approval>
   </div>
   <div class="flexbox-item">
-    <app-weight-class-name-approval></app-weight-class-name-approval>
+    <app-base-approval [approvalConfig]="localWeightClassApprovalConfig"></app-base-approval>
   </div>
 </div>

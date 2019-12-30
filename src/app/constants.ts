@@ -1,3 +1,5 @@
+import { ApprovalConfig } from './approvalConfig.model';
+
 export var constants = {
     moveNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
@@ -57,4 +59,10 @@ export var constants = {
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
     numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
     stipePlanId: "plan_GQ7IoLADxXFFak",
+    get weightClassApprovalConfig() {
+      return new ApprovalConfig(null, null, 'Weight class', 'weight class', this.weightClassRemovedMessage, this.numberOfPointsToAwardForApprovingWeigthClassName, 'matchDeets/weightClass', '/weightClasses', '/candidateWeightClasses')
+    },
+    get tournamentNameApprovalConfig() {
+      return new ApprovalConfig(null, null, 'Tournament name', 'tournament name', this.tournamentNameRemovedMessage, this.numberOfPointsToAwardForApprovingTournamentName, 'matchDeets/tournamentName', '/tournamentNames', '/candidateTournamentNames')
+    },
   };

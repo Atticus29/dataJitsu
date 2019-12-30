@@ -222,7 +222,7 @@ export const firebaseConfig = {
     RatingModule,
     ReactiveFormsModule,
     routing,
-    NgxYoutubePlayerModule
+    NgxYoutubePlayerModule,
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
