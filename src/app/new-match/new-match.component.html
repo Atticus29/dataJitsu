@@ -116,19 +116,29 @@
             <mat-option *ngFor="let age of ageClasses" [value]="age">{{age}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <!-- <mat-form-field>
             <mat-select [formControl]="rankBoundFc" id="rank" placeholder="{{rankType}} Rank" [ngModel]="rankSelection" (ngModelChange)="onChange($event)">
               <mat-option value="(choose)" disabled="true">Choose {{rankType}} rank</mat-option>
               <mat-option  *ngFor="let rank of ranks" [value]="rank">{{rank}}</mat-option>
               <mat-option  value="addNew" >Add new {{rankType}} rank</mat-option>
             </mat-select>
-        </mat-form-field>
-        <!-- <mat-form-field>
-          <mat-select [formControl]="weightBoundFc" id="weight" placeholder="Weight Class">
-            <mat-option value="(choose)" [disabled]="disabledWeightClass" >Choose weight class</mat-option>
-            <mat-option *ngFor="let weight of weightClasses" [value]="weight">{{weight}}</mat-option>
-          </mat-select>
         </mat-form-field> -->
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="rankBoundFc" placeholder="Choose No Gi Rank" id="no-gi-rank-select">
+            <mat-option value="" [disabled]="disabledNoGiRankName">Choose No Gi Rank</mat-option>
+            <mat-option [value]="localNoGiRankName" (click)="openNoGiRankDialog()" color="accent" id="no-gi-rank-name-write-in">
+              <button mat-flat-button color="accent">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new no gi rank name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let rank of nogiRanks" [value]="rank" id="no-gi-rank-name-dropdown">{{rank}}</mat-option>
+          </mat-select>
+          <p *ngIf="localNoGiRankName">No Gi Rank Selected: <span><mat-chip color="primary" selected>{{localNoGiRankName}}</mat-chip></span></p>
+          <p *ngIf="noGiRankBoundFc.value && !localNoGiRankName">No Gi Rank Selected: <span><mat-chip color="primary" selected>{{noGiRankBoundFc.value}}</mat-chip></span></p>
+        </mat-form-field>
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="weightBoundFc" placeholder="Choose Weight Class" id="weight-class-select">
             <mat-option value="" [disabled]="disabledWeigthClassName">Choose Weight Class</mat-option>
@@ -162,7 +172,7 @@
       </div>
     </div>
 
-    <div id="modal2" class="modal">
+    <!-- <div id="modal2" class="modal">
       <div class="modal-content">
         <h4>Create new rank</h4>
         <form [formGroup]="newRankForm">
@@ -176,7 +186,7 @@
       <div class="modal-footer">
         <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch()">Add</button>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

@@ -26,6 +26,7 @@ import { constants } from '../constants';
 import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
 import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
 import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
+import { NewNoGiRankDialogComponent } from '../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
 
 declare var $:any;
 
@@ -69,6 +70,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   localAthlete2Name: string = null;
   localTournamentName: string = null;
   localWeightClassName: string = null;
+  localNoGiRankName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -90,6 +92,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private ageClassBoundFc: FormControl = new FormControl('', [Validators.required]);
   private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
   private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private noGiRankBoundFc: FormControl = new FormControl('', [Validators.required]);
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog, private textTransformationService: TextTransformationService) {
     super();
@@ -225,6 +228,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let genderBound = this.genderBoundFc.value;
     let ageClassBound = this.ageClassBoundFc.value;
     let rankBound = this.rankBoundFc.value;
+    if(this.localNoGiRankName){
+      console.log("localNoGiRankName exists");
+      rankBound = this.localNoGiRankName;
+      this.db.addGenericCandidateNameToDb('candidateNoGiRanks', rankBound, matchUrlBound);
+    }
 
     // let otherResults = this.newMatchForm.value;
     return {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
@@ -364,6 +372,13 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   }
 
+  async openNoGiRankDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewNoGiRankDialogComponent, dialogConfig);
+    this.localNoGiRankName = await this.processGenericDialog(dialogRef, 'noGiRanks', 'noGiRankName');
+
+  }
+
   async openTournamentNameDialog(){
     let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
@@ -414,7 +429,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     return dialogConfig;
   }
 
-  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string){ //TODO Promise<any>
+  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any>
     console.log("entered processGenericDialog")
     let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
       if(val){

@@ -15,32 +15,33 @@ import { TextTransformationService } from '../text-transformation.service';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 
 @Component({
-  selector: 'app-new-weight-class-dialog',
-  templateUrl: './new-weight-class-dialog.component.html',
-  styleUrls: ['./new-weight-class-dialog.component.scss']
+  selector: 'app-new-no-gi-rank-dialog',
+  templateUrl: './new-no-gi-rank-dialog.component.html',
+  styleUrls: ['./new-no-gi-rank-dialog.component.scss']
 })
-export class NewWeightClassDialogComponent extends BaseDialogComponent implements OnInit {
-  form: FormGroup;
-  private weightClassNameFc: FormControl = new FormControl('', [Validators.required]);
+export class NewNoGiRankDialogComponent extends BaseDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<NewWeightClassDialogComponent>, @Inject(MAT_DIALOG_DATA) {weightClassNameFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+  form: FormGroup;
+  private noGiRankNameFc: FormControl = new FormControl('', [Validators.required]);
+
+  constructor(public dialogRef: MatDialogRef<NewNoGiRankDialogComponent>, @Inject(MAT_DIALOG_DATA) {noGiRankNameFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
     super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      weightClassNameFc: ['', Validators.required],
+      noGiRankNameFc: ['', Validators.required],
     });
   }
   getValues(){
-    let weightClassName = this.weightClassNameFc.value;
-    console.log(weightClassName);
-    return {weightClassName};
+    let noGiRankName = this.noGiRankNameFc.value;
+    console.log(noGiRankName);
+    return {noGiRankName};
   }
 
   allValid(){
     let values = this.getValues();
-    if(this.vs.validateString(values.weightClassName)){
+    if(this.vs.validateString(values.noGiRankName)){
       return true;
     } else{
       return false;
@@ -50,8 +51,8 @@ export class NewWeightClassDialogComponent extends BaseDialogComponent implement
   getErrorMessage() {
     console.log("getErrorMessage entered");
     let errorMessage: string = "";
-    if(this.weightClassNameFc.hasError('required')){
-      errorMessage = 'Weight class name is required';
+    if(this.noGiRankNameFc.hasError('required')){
+      errorMessage = 'No gi rank name is required';
       return  errorMessage;
     }
     return  errorMessage;

@@ -7,8 +7,10 @@ export var constants = {
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",
+    athleteNameRemovedMessage: "Athlete name has been removed; flag me",
     moveNameRemovedMessage: "Move name has been removed; flag me",
     tournamentNameRemovedMessage: "Tournament name has been removed",
+    noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
     weightClassRemovedMessage: "Weight class name has been removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
@@ -54,6 +56,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingMoveName: 5,
     numberOfPointsToAwardForApprovingTournamentName: 5,
     numberOfPointsToAwardForApprovingWeigthClassName: 5,
+    numberOfPointsToAwardForApprovingNoGiRankName: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
@@ -65,4 +68,7 @@ export var constants = {
     get tournamentNameApprovalConfig() {
       return new ApprovalConfig(null, null, 'Tournament name', 'tournament name', this.tournamentNameRemovedMessage, this.numberOfPointsToAwardForApprovingTournamentName, 'matchDeets/tournamentName', '/tournamentNames', '/candidateTournamentNames')
     },
+    get noGiRankApprovalConfig(){
+      return new ApprovalConfig(null, null, "No gi rank name", "no gi rank name", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
+    }
   };
