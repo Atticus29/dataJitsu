@@ -53,7 +53,7 @@
           <mat-select [formControl]="tournamentNameBoundFc" placeholder="Choose Tournament Name" id="tournament-select">
             <mat-option value="" [disabled]="disabledTournamentName">Choose tournament name</mat-option>
             <mat-option [value]="localTournamentName" (click)="openTournamentNameDialog()" color="accent" id="tournament-name-write-in">
-              <button mat-flat-button color="accent">
+              <button mat-flat-button color="accent" id="custom-tournament-button">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new tournament name

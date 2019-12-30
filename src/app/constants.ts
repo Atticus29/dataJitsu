@@ -70,5 +70,6 @@ export var constants = {
     },
     get noGiRankApprovalConfig(){
       return new ApprovalConfig(null, null, "No gi rank name", "no gi rank name", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
-    }
+    },
+    alreadyExistsNotification: "Your entry already exists in dropdown menu!"
   };

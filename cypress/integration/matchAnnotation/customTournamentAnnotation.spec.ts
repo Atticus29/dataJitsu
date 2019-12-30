@@ -12,128 +12,103 @@ describe ('Match custom annotation tests', () =>{
     cy.logout();
   });
 
-  it('adds custom name and submits annotation', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke("darth vader choke");
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
-    cy.on('uncaught:exception', (err, runnable) => {
-    return false;
+  it('adds custom thing and submits new match', function(){
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit('http://localhost:4200/newmatch');
+      cy.fillInMatchCreationDetailsWithCustomTournamentName(cypressConstants.customTournamentName);
+      cy.get('button[id=new-match-submit-button]').click({force:true});
+      cy.wait(2000);
+      cy.get('h4').contains('Annotate your submission?').click({force:true});
+      cy.get('button[id=add-to-queue-modal-button]').click({force:true});
+      cy.url().should('not.match',/newmatch/);
+      cy.url().should('match',/matches/);
+      cy.get('div[class=mat-select-arrow]').click();
+      cy.contains('500').click();
+      cy.contains(cypressConstants.customTournamentName).should('exist');
     });
-    cy.contains("Annotation Recorded").should('exist');
-    cy.contains('span','Darth Vader Choke').should('exist');
-
-    //TODO remove these
-    // cy.logout();
-    // cy.loginAsAdmin();
-    // cy.get('a[name=videoClick]').first().click();
-    // cy.removeAnnotation("Darth Vader Choke");
-    // cy.visit('http://localhost:4200/admin')
-    // cy.disapproveMove("Darth Vader Choke");
-
   });
 
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
     cy.visit('http://localhost:4200/admin');
-    cy.approveMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches', {timeout:5000});
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
-      cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle).children('button').click({force:true});
-      cy.contains('mat-tree-node', "Darth Vader Choke").should('exist');
-    });
-    // cy.get('mat-icon').eq(9).click({force:true});
-    // cy.get('mat-icon').eq(12).click({force:true});
-    // cy.wait(1000);
-    cy.get('div[id=annotationModal]').contains('Darth Vader Choke').should('exist');
+      cy.approveGeneric(cypressConstants.customTournamentName);
+      cy.visit('http://localhost:4200/newmatch', {timeout:5000});
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+        cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', cypressConstants.customTournamentName);
+      });
+      // cy.selectTournament(cypressConstants.customTournamentName);
+      // cy.contains(cypressConstants.customTournamentName).should('exist');
+  });
   });
 
-  it('cannot create a customMove that has already been created and approved, then deletes the move from admin page and confirms that it is missing from dropdown list', function(){
-    cy.log("Clicks on move and asserts that move have been re-named")
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke("Darth Vader Choke");
+  it('cannot create a custom thing that has already been created and approved, then deletes the thing from admin page and confirms that it is missing from dropdown list', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.moveNameAlreadyExistsNotification).should('exist');
+      cy.visit('http://localhost:4200/newmatch');
+      cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+      cy.selectCustomTournament(cypressConstants.customTournamentName);
+      cy.contains(cypressConstants.alreadyExistsNotification).should('exist');
     });
-
-    //deletes the move from admin page and confirms that it is missing from dropdown list
-    cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");
-    cy.deleteMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches',{timeout: 5000});
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
-    cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('mat-icon').eq(9).click({force:true});
-    cy.get('mat-icon').eq(12).click({force:true});
-    cy.get('div[id=annotationModal]').contains('Darth Vader Choke').should('not.exist');
   });
 
-  it('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
-    //First delete the annotation that already exists
-    cy.log("First delete the annotation that already exists");
+  it('then deletes the thing from admin page and confirms that it is missing from dropdown list', function(){
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.log("deletes the thing from admin page and confirms that it is missing from dropdown list");
+      cy.deleteGeneric(cypressConstants.customTournamentName);
+      cy.visit('http://localhost:4200/newmatch');
+      cy.get('input[id=matchURL]', {timeout:5000}).clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+        cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);
+      });
+    });
+  });
+
+  it('deletes match, creates new match with custom thing', function(){
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      //First delete the match that already exists
+      cy.log("First delete the match that already exists");
+      cy.deleteMatch('APineappleUnderTheSea');
+
+      //Now creates a new match with custom thing
+      cy.log("Now creates a new match with custom thing");
+      cy.visit('http://localhost:4200/newmatch');
+      cy.fillInMatchCreationDetailsWithCustomTournamentName(cypressConstants.customTournamentName);
+      cy.get('button[id=new-match-submit-button]').click({force:true});
+      cy.wait(2000);
+      cy.get('h4').contains('Annotate your submission?').click({force:true});
+      cy.get('button[id=add-to-queue-modal-button]').click({force:true});
+      cy.url().should('not.match',/newmatch/);
+      cy.url().should('match',/matches/);
+      cy.get('div[class=mat-select-arrow]').click();
+      cy.contains('500').click();
+      cy.contains(cypressConstants.customTournamentName).should('exist');
+    });
+  });
+
+  it('disapproves the custom thing from the admin page, checks that the custom thing has been re-named, and removes the now-renamed match', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click();
-    cy.removeAnnotation('Darth Vader Choke');
-    cy.reload(); //TODO here maybe?
-
-    //Then create the annotation and custom move again
-    cy.visit("http://localhost:4200/matches");
-    cy.get('a[name=videoClick]').first().click();
-    cy.log("Then create the annotation and custom move again");
-    // cy.reload();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
-    cy.wait(1000);
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
-    cy.createCustomCervicalChoke('Darth Vader Choke');
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
-    cy.get('button[id=done-button-performers]').should('be.disabled');
-    cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
-    cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
-    cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
-    cy.on('uncaught:exception', (err, runnable) => {
-    return false;
-    });
-    cy.contains("Annotation Recorded").should('exist');
-    cy.contains('span','Darth Vader Choke').should('exist');
-
-    //Then do the important test stuff
-    // cy.logout();
-    // cy.loginAsAdmin();
-    cy.log("disapproveMove");
+    cy.log("disapprove custom thing");
     cy.visit('http://localhost:4200/admin');
-    cy.disapproveMove("Darth Vader Choke");
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.disapproveGeneric(cypressConstants.customTournamentName);
+      cy.visit('http://localhost:4200/newmatch', {timeout:5000});
 
-    cy.log("checkThatCustomMoveHasBeenRenamed");
-    cy.reload();
-    cy.checkThatCustomMoveHasBeenRenamed();
+      cy.log("check custom thing has been renamed");
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+        cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);
+      });
+      cy.visit('http://localhost:4200/matches', {timeout:5000});
+      cy.wait(2000);
+      cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
+      cy.contains('span[class=mat-option-text]','500').click({force:true});
+      cy.wait(2000);
+      cy.contains(cypressConstants.tournamentNameRemovedMessage).should('exist');
+    });
 
-    cy.visit("http://localhost:4200/matches");
-    cy.removeNowRenamedAnnotation();
+    cy.log("delete match")
+    cy.deleteMatch('APineappleUnderTheSea');
   });
 
 });

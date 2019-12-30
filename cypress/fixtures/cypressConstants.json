@@ -21,5 +21,9 @@
   "athlete2LastName" : "Ralpheo",
   "athlete2FirstName" : "MonaLisa",
   "moveNameRemovedMessage": "Move name has been removed; flag me",
-  "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu"
+  "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu",
+  "customTournamentName": "The Final Tournament",
+  "alreadyExistsNotification": "Your entry already exists in dropdown menu!",
+  "tournamentSelectName": "tournament-select",
+  "tournamentNameRemovedMessage": "Tournament name has been removed"
 }

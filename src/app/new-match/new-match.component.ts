@@ -439,7 +439,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
         let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
         console.log("candidateNameCapitalized is " + candidateNameCapitalized);
         if(genericStringNames.includes(candidateNameCapitalized)){
-          this.openSnackBar("Your entry already exists in dropdown menu!", null);
+          this.openSnackBar(constants.alreadyExistsNotification, null);
           return null;
         }else{
           console.log("got here");

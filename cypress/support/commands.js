@@ -11,6 +11,15 @@
 //
 // -- This is a parent command --
 
+Cypress.Commands.add('deleteMatch', (identifyingId) =>{
+  cy.logout();
+  cy.loginAsAdmin();
+  cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
+  cy.contains('span[class=mat-option-text]','500').click({force:true});
+  cy.wait(2000);
+  cy.get(`mat-cell[id="${identifyingId}"]>button`, {timeout:5000}).click({force:true});
+});
+
 Cypress.Commands.add('checkThatCustomMoveHasBeenRenamed', () =>{
   //assumes logged in as admin
   cy.visit('http://localhost:4200/matches');
@@ -34,23 +43,68 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
     cy.selectAthlete(1, "Batista de Sousa, Gabriel");
     cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
-    cy.get('input[id=tournamentName]').click({force:true}).clear().type(cypressConstants.testTournament);
+    cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
     cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.get('mat-select[id=gender-select]').click();
     cy.get('mat-option').first().next().click({force:true});
     cy.get('mat-select[id=ageClass]').click();
     cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=rank]').click();
-    cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=weight]').click();
-    cy.get('mat-option').first().next().click({force:true});
+    cy.selectAgeClass('Master 1');
+    cy.selectRank("Elite");
+    cy.selectWeight("-66kg");
   });
+});
+
+Cypress.Commands.add("selectRank", (rankName) =>{
+  cy.selectDropDown("rank-select", rankName);
+});
+
+Cypress.Commands.add("selectAgeClass", (ageClassName) =>{
+  cy.selectDropDown("ageClass", ageClassName);
+});
+
+Cypress.Commands.add("selectWeight", (weightClassName) =>{
+  cy.selectDropDown("weight-class-select", weightClassName);
+});
+
+Cypress.Commands.add("selectTournament", (tournamentName) =>{
+  cy.selectDropDown("tournament-select", tournamentName);
 });
 
 Cypress.Commands.add("selectAthlete", (number, athleteName) =>{
   cy.selectDropDown("athlete" + number + "-select", athleteName);
 });
+
+Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (customTournamentName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.selectAthlete(1, "Batista de Sousa, Gabriel");
+    cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
+    cy.selectCustomTournament(customTournamentName);
+    cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
+    cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
+    cy.get('mat-select[id=gender-select]').click();
+    cy.get('mat-option').first().next().click({force:true});
+    cy.selectAgeClass('Master 1');
+    cy.selectRank("Elite");
+    cy.selectWeight("-66kg");
+  });
+});
+
+Cypress.Commands.add("selectCustomTournament", (tournamentName) => {
+  cy.selectCustomGenericParameter("tournament-select", "custom-tournament-button", 'tournamentNameFc', tournamentName, 'dialog-submit-button');
+});
+
+Cypress.Commands.add("selectCustomGenericParameter", (matSelectName, addNewButtonId, inputId, writeInName, submitButtonId) => {
+  // cy.selectDropDown(matSelectName, addNewButtonName);
+  cy.get(`mat-select[id="${matSelectName}"`).click().then(() => {
+    cy.get(`button[id=${addNewButtonId}]`).click({timeout:5000});
+    cy.get(`input[id="${inputId}"]`).clear().type(writeInName);
+    cy.get(`button[id="${submitButtonId}"]`).click({timeout:5000});
+  });
+});
+
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
@@ -65,17 +119,14 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email
     cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete2LastName);
     cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete2FirstName);
     cy.get('button[id=dialog-submit-button]').click();
-    cy.get('input[id=tournamentName]').click({force:true}).clear().type(cypressConstants.testTournament);
+    cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
     cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.get('mat-select[id=gender-select]').click();
     cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=ageClass]').click();
-    cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=rank]').click();
-    cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=weight]').click();
-    cy.get('mat-option').first().next().click({force:true});
+    cy.selectAgeClass('Master 1');
+    cy.selectRank("Elite");
+    cy.selectWeight("-66kg");
   });
 });
 
@@ -132,7 +183,14 @@ Cypress.Commands.add('deleteMove', (moveName) =>{
   cy.loginAsAdmin();
   cy.visit('http://localhost:4200/admin', {timeout: 5000});
   cy.contains('li', moveName, {timeout: 5000}).children('span[name=delete-move-name]').click();
-})
+});
+
+Cypress.Commands.add('deleteGeneric', (genericName) =>{
+  cy.logout();
+  cy.loginAsAdmin();
+  cy.visit('http://localhost:4200/admin', {timeout: 5000});
+  cy.contains('li', genericName, {timeout: 5000}).children('span[name=delete-move-name]').click();
+});
 
 Cypress.Commands.add('removeAnnotation', (moveName) =>{
   //Assumes you've already logged in as admin
@@ -147,10 +205,18 @@ Cypress.Commands.add('disapproveMove', (moveName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
   cy.contains('li',moveName, {timeout: 5000}).should('exist');
-  //TODO LEFT OFF HERE
   cy.contains('li',moveName).children('span[name=disapprove-move]').click();
   cy.reload();
   cy.get('li').contains(moveName).should('not.exist');
+});
+
+Cypress.Commands.add('disapproveGeneric', (genericName) =>{
+  //Assumes you've already logged in as admin
+  cy.contains("Admin").should('exist');
+  cy.contains('li',genericName, {timeout: 5000}).should('exist');
+  cy.contains('li',genericName).children('span[name=disapprove-move]').click();
+  cy.reload();
+  cy.get('li').contains(genericName).should('not.exist');
 });
 
 Cypress.Commands.add('approveMove', (moveName) =>{
@@ -161,6 +227,16 @@ Cypress.Commands.add('approveMove', (moveName) =>{
   cy.contains('li',moveName).children('span[name=approve-move]').click();
   cy.reload();
   cy.contains('li',moveName, {timeout: 5000}).should('exist');
+});
+
+Cypress.Commands.add('approveGeneric', (genericName) =>{
+  //Assumes you've already logged in as admin
+  cy.contains("Admin", {timeout:5000}).should('exist');
+  cy.contains('li',genericName, {timeout: 5000}).should('exist');
+  //TODO LEFT OFF HERE
+  cy.contains('li',genericName).children('span[name=approve-move]').click();
+  cy.reload();
+  cy.contains('li',genericName, {timeout: 5000}).should('exist');
 });
 
 Cypress.Commands.add("login", (email, pass) => {

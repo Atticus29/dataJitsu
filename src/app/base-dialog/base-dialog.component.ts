@@ -34,7 +34,7 @@ export class BaseDialogComponent extends BaseComponent implements OnInit {
   openSnackBar(message: string) {
     // console.log("openSnackBar called");
     this.snackBar.open(message, '', {
-      duration: 3000,
+      duration: 5000,
     });
   }
 

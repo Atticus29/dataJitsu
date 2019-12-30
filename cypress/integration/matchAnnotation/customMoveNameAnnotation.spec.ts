@@ -93,14 +93,14 @@ describe ('Match custom annotation tests', () =>{
     cy.loginAsAdmin();
     cy.get('a[name=videoClick]').first().click();
     cy.removeAnnotation('Darth Vader Choke');
-    cy.reload(); //TODO here maybe?
+    cy.reload();
 
     //Then create the annotation and custom move again
     cy.visit("http://localhost:4200/matches");
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({timeout:5000});
     cy.log("Then create the annotation and custom move again");
     // cy.reload();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click();
+    cy.get('button[id=begin-move]', {timeout: 5000}).click({timeout:5000});
     cy.wait(1000);
     cy.get('div[id=annotationModal]').should('be.visible'); //.click()
     cy.createCustomCervicalChoke('Darth Vader Choke');
