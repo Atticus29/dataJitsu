@@ -28,6 +28,7 @@ import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/
 import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
 import { NewNoGiRankDialogComponent } from '../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
 import { NewAgeClassDialogComponent } from '../new-age-class-dialog/new-age-class-dialog.component';
+import { NewLocationNameDialogComponent } from '../new-location-name-dialog/new-location-name-dialog.component';
 
 declare var $:any;
 
@@ -51,6 +52,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   rankType: string = "Nogi";
   genders: any[];
   weightClasses: any[];
+  locationNames: any[];
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: any = null;
@@ -59,6 +61,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
   disabledWeightClass: boolean = false;
+  disabledLocationName: boolean = false;
   giStatus: boolean = false;
   checked: boolean = false;
   rankSelection: string;
@@ -73,6 +76,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   localWeightClassName: string = null;
   localNoGiRankName: string = null;
   localAgeClassName: string = null;
+  localLocationName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -170,6 +174,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       this.disabledWeightClass = true;
     });
 
+    this.db.getLocations().pipe(takeUntil(this.ngUnsubscribe)).subscribe(locationNames=>{
+      this.locationNames = locationNames.sort();
+      this.disabledLocationName = true;
+    });
+
     this.newMatchForm = this.fb.group({
       matchUrlBound: ['', Validators.required],
       athlete1NameBound: [''],
@@ -225,6 +234,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, matchUrlBound);
     }
     let locationBound = this.locationBoundFc.value;
+    if(this.localLocationName){
+      console.log("localLocationName exists");
+      locationBound = this.localLocationName;
+      this.db.addGenericCandidateNameToDb('candidateLocationNames', locationBound, matchUrlBound);
+    }
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
     let genderBound = this.genderBoundFc.value;
@@ -396,6 +410,12 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
     this.localTournamentName = await this.processGenericDialog(dialogRef, 'tournamentNames', 'tournamentName');
+  }
+
+  async openLocationNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewLocationNameDialogComponent, dialogConfig);
+    this.localLocationName = await this.processGenericDialog(dialogRef, 'locationNames', 'locationName');
   }
 
   openAddNameDialog(athleteNumber: number){

@@ -7,12 +7,10 @@
   <div class="row">
     <form class="col s12" materialize [formGroup]="newMatchForm">
       <div class="row">
-        <!-- <mat-form-field class="example-full-width col s12"> -->
           <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
           <input matInput [formControl]="matchUrlBoundFc" type="url" placeholder="Match URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL" required>
           <mat-error *ngIf="!vs.validateUrl(matchUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
           <mat-error *ngIf="matchUrlBoundFc.invalid && vs.validateUrl(matchUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
-
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>
@@ -28,9 +26,7 @@
           </mat-select>
           <p *ngIf="localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete1Name}}</mat-chip></span></p>
           <p *ngIf="athlete1NameBoundFc.value && !localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete1NameBoundFc.value}}</mat-chip></span></p>
-
         </mat-form-field>
-
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
@@ -64,30 +60,27 @@
           </mat-select>
           <p *ngIf="localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{localTournamentName}}</mat-chip></span></p>
           <p *ngIf="tournamentNameBoundFc.value && !localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{tournamentNameBoundFc.value}}</mat-chip></span></p>
-
         </mat-form-field>
-        <!-- <mat-form-field class="example-full-width"> -->
-          <!-- <label for="tournamentName" class="active" data-error="Not valid" data-success="Valid">Tournament Name</label> -->
-          <!-- <input matInput [formControl]="tournamentNameBoundFc" placeholder="Tournament Name" value="E.g., IBJJF Gi Worlds TODO" id="tournamentName" type="text"> -->
-          <!-- <mat-error *ngIf="tournamentNameBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="locationBoundFc" placeholder="Choose Location Name" id="location-select">
+            <mat-option value="" [disabled]="disabledLocationName">Choose location name</mat-option>
+            <mat-option [value]="localLocationName" (click)="openLocationNameDialog()" color="accent" id="location-name-write-in">
+              <button mat-flat-button color="accent" id="custom-location-button">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new location
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let locationName of locationNames" [value]="locationName" id="location-name-dropdown">{{locationName}}</mat-option>
+          </mat-select>
+          <p *ngIf="localLocationName">Location Selected: <span><mat-chip color="primary" selected>{{localLocationName}}</mat-chip></span></p>
+          <p *ngIf="locationBoundFc.value && !localLocationName">Location Selected: <span><mat-chip color="primary" selected>{{locationBoundFc.value}}</mat-chip></span></p>
+        </mat-form-field>
           <br>
-        <!-- </mat-form-field> -->
-        <!-- <mat-form-field class="example-full-width"> -->
-          <label for="location" class="active" data-error="Not valid" data-success="Valid">Location (City, (State), Country)</label>
-          <input matInput [formControl]="locationBoundFc" placeholder="Location" value="E.g., Anaheim, CA, USA" id="location" type="text">
-          <!-- <mat-error *ngIf="locationBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
-          <br>
-        <!-- </mat-form-field> -->
-        <!-- <mat-form-field> -->
           <input matInput [formControl]="tournamentDateBoundFc" [matDatepicker]="picker" placeholder="Match Date (m/d/yyyy)" id="date-input">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker required="" id="test"></mat-datepicker>
-          <!-- <mat-error *ngIf="tournamentDateBoundFc.invalid">{{getErrorMessage()}}</mat-error> -->
-          <!-- <div class="validation-messages" ng-messages="newMatchForm.test.$error">
-            <div ng-message="valid">The entered value is not a date!</div>
-            <div ng-message="required">This date is required!</div>
-          </div> -->
-        <!-- </mat-form-field> -->
       </div>
       <div class="row">
         <div id="TODO">
@@ -126,19 +119,6 @@
           <p *ngIf="localAgeClassName">Age Class Selected: <span><mat-chip color="primary" selected>{{localAgeClassName}}</mat-chip></span></p>
           <p *ngIf="ageClassBoundFc.value && !localAgeClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{ageClassBoundFc.value}}</mat-chip></span></p>
         </mat-form-field>
-        <!-- <mat-form-field>
-          <mat-select [formControl]="ageClassBoundFc" id="ageClass" placeholder="Age Class">
-            <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
-            <mat-option *ngFor="let age of ageClasses" [value]="age">{{age}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
-        <!-- <mat-form-field>
-            <mat-select [formControl]="rankBoundFc" id="rank" placeholder="{{rankType}} Rank" [ngModel]="rankSelection" (ngModelChange)="onChange($event)">
-              <mat-option value="(choose)" disabled="true">Choose {{rankType}} rank</mat-option>
-              <mat-option  *ngFor="let rank of ranks" [value]="rank">{{rank}}</mat-option>
-              <mat-option  value="addNew" >Add new {{rankType}} rank</mat-option>
-            </mat-select>
-        </mat-form-field> -->
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="rankBoundFc" placeholder="Choose Rank" id="rank-select">
             <mat-option value="" [disabled]="disabledNoGiRankName">Choose {{rankType}} Rank</mat-option>
@@ -176,7 +156,6 @@
         <i class="material-icons right">send</i>
       </button>
     </form>
-
     <div id="modal1" class="modal">
       <div class="modal-content">
         <h4>Annotate your submission?</h4>
@@ -187,22 +166,5 @@
         <button id="add-to-queue-modal-button" (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
       </div>
     </div>
-
-    <!-- <div id="modal2" class="modal">
-      <div class="modal-content">
-        <h4>Create new rank</h4>
-        <form [formGroup]="newRankForm">
-          <div class="row">
-            <mat-form-field class="example-full-width col s12">
-              <input matInput formControlName="newRankBound" placeholder="Rank name" value="E.g., pink belt" id="newRank">
-            </mat-form-field>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-action modal-close waves-effect waves-green btn" (click)="submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch()">Add</button>
-      </div>
-    </div> -->
-
   </div>
 </div>

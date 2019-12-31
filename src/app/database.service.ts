@@ -816,6 +816,10 @@ export class DatabaseService {
     return this.getGenericApprovedList('/weightClasses');
   }
 
+  getLocations(){
+    return this.getGenericApprovedList('/locations');
+  }
+
   getGenericApprovedList(path: string){
     return this.db.list<String>(path).valueChanges();
   }

@@ -14,25 +14,28 @@ describe ('Match custom tests: move name', () =>{
 
   it.only('adds custom name and submits annotation', function(){
     cy.get('a[name=videoClick]').first().click({force:true});
-    cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
+    cy.get('button[id=end-move]').should('not.be.enabled');
+    cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.createCustomCervicalChoke("darth vader choke");
-    cy.get('mat-select[id=performer]').click({force:true});
-    cy.get('mat-option').first().click({force:true});
+    cy.get('mat-select[id=performer]').click();
+    cy.get('mat-option').first().click();
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
-    cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
+    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=successful-radio-button]').click();
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('button[id=done-button-performers]').click();
+    cy.wait(2000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click({timeout:5000, force:true});
+    cy.get('button[id=end-move]').click();
+    // cy.get('button[id=end-move]').click({force:true});
     // cy.on('uncaught:exception', (err, runnable) => {
     // return false;
     // });
     // cy.wait(2000);
-    cy.contains("Annotation Recorded", {timeout:5000}).should('exist');
+    cy.contains("Annotation Recorded").should('exist');
     // cy.contains('span','Darth Vader Choke', {timeout:5000}).should('exist');
 
     //TODO remove these

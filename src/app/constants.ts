@@ -13,6 +13,7 @@ export var constants = {
     noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
     ageClassRemovedMessage: "Age class has been removed",
     weightClassRemovedMessage: "Weight class name has been removed",
+    locationRemovedMessage: "Location name has been removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
@@ -59,6 +60,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingWeigthClassName: 5,
     numberOfPointsToAwardForApprovingNoGiRankName: 5,
     numberOfPointsToAwardForApprovingAgeClass: 5,
+    numberOfPointsToAwardForApprovingLocation: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
@@ -74,7 +76,10 @@ export var constants = {
       return new ApprovalConfig(null, null, "No gi rank name", "no gi rank", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
     },
     get ageClassApprovalConfig(){
-      return new ApprovalConfig(null, null, "Age class name", "age class", this.noGageClassRemovedMessage, this.numberOfPointsToAwardForApprovingAgeClass, 'matchDeets/ageClass', '/ageClasses', '/candidateAgeClasses')
+      return new ApprovalConfig(null, null, "Age class name", "age class", this.ageClassRemovedMessage, this.numberOfPointsToAwardForApprovingAgeClass, 'matchDeets/ageClass', '/ageClasses', '/candidateAgeClasses')
+    },
+    get locationNameApprovalConfig(){
+      return new ApprovalConfig(null, null, "Location name", "location", this.locationRemovedMessage, this.numberOfPointsToAwardForApprovingLocation, 'matchDeets/location', '/locations', '/candidateLocationNames')
     },
     alreadyExistsNotification: "Your entry already exists in dropdown menu!"
   };

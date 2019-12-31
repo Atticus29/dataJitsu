@@ -62,7 +62,7 @@ Cypress.Commands.add("selectRank", (rankName) =>{
 });
 
 Cypress.Commands.add("selectAgeClass", (ageClassName) =>{
-  cy.selectDropDown("ageClass", ageClassName);
+  cy.selectDropDown("age-class-select", ageClassName);
 });
 
 Cypress.Commands.add("selectWeight", (weightClassName) =>{
@@ -165,7 +165,7 @@ Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force: true, timeout:5000});
     cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
-    cy.contains('mat-tree-node', "Add cervical submission").click({force:true});
+    cy.contains('mat-tree-node', "Add cervical submission").click();
   });
   // cy.wait(1000);
   // cy.contains('div[id=annotationModal]','Add cervical submission').click({force:true});
@@ -176,7 +176,7 @@ Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
     cy.contains('span', 'Choose Move Subcategory').should('be.visible');
     cy.selectDropDown('move-subcategory-select', cypressConstants.moveSubcategoryTitle);
   });
-  cy.get('button[id=dialog-submit-button]').click({force:true});
+  cy.get('button[id=dialog-submit-button]').click();
 });
 
 Cypress.Commands.add('deleteMove', (moveName) =>{

@@ -305,36 +305,38 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   processMatchEntryInDatabase(){
+    console.log("processMatchEntryInDatabase entered");
     let annotationMadeCounter: number = 0;
     this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-          if(!moveUniqueEnough){
-            if(annotationMadeCounter < 1){
-              this.openSnackBar("Annotation has already been made by another user");
-              annotationMadeCounter ++ ;
-            }
-            this.moveName = null;
-            this.moveCategory = null;
-            this.performer = null;
-            this.recipient = null;
-            this.startTime = null;
-            this.endTime = null;
-            this.points = null;
-            this.submissionStatus = null;
-            this.attemptStatus = null;
-            this.trackerService.resetAllExceptCurrentMatch();
-            this.moveAssembledStatus.next(false);
-          } else{
-            this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
-              if(moveUniqueEnoughInUser){
-                this.openSnackBar("Annotation Recorded");
-                annotationMadeCounter ++;
-                this.handleNullingAndResettingLocalAndTrackedVariables();
-              }else{
-                this.handleNullingAndResettingLocalAndTrackedVariables();
-              }
-            });
+      console.log("addMoveInVideoToMatchIfUniqueEnough entered");
+      if(!moveUniqueEnough){
+        if(annotationMadeCounter < 1){
+          this.openSnackBar("Annotation has already been made by another user");
+          annotationMadeCounter ++ ;
+        }
+        this.moveName = null;
+        this.moveCategory = null;
+        this.performer = null;
+        this.recipient = null;
+        this.startTime = null;
+        this.endTime = null;
+        this.points = null;
+        this.submissionStatus = null;
+        this.attemptStatus = null;
+        this.trackerService.resetAllExceptCurrentMatch();
+        this.moveAssembledStatus.next(false);
+      } else{
+        this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+          if(moveUniqueEnoughInUser){
+            this.openSnackBar("Annotation Recorded");
+            annotationMadeCounter ++;
+            this.handleNullingAndResettingLocalAndTrackedVariables();
+          }else{
+            this.handleNullingAndResettingLocalAndTrackedVariables();
           }
         });
+      }
+    });
   }
 
   savePlayer(player) {
@@ -417,6 +419,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   endMove(){
+    console.log("end move clicked");
     this.player.pauseVideo();
     let endMoveClickCounter: number = 0;
     let currentTime: number = this.player.getCurrentTime();
