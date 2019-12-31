@@ -23,8 +23,8 @@ describe ('Match custom athlete name annotation tests', () =>{
     //check it Exists
     cy.visit('http://localhost:4200/matches');
     cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click();
-    cy.contains('500').click();
+    cy.get('div[class=mat-select-arrow]').click({force:true});
+    cy.contains('500').click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.contains(cypressConstants.athlete1FirstName);
       cy.contains(cypressConstants.athlete1LastName);
@@ -43,11 +43,11 @@ describe ('Match custom athlete name annotation tests', () =>{
     cy.visit('http://localhost:4200/admin');
     cy.wait(2000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click();
+      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click({force:true});
       cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).should('not.exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click();
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click({force:true});
       cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=delete]').click();
+      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=delete]').click({force:true});
       cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('not.exist');;
     });
 
@@ -55,8 +55,8 @@ describe ('Match custom athlete name annotation tests', () =>{
     cy.log("check that one is now unknown name and the other is still the same name");
     cy.visit('http://localhost:4200/matches');
     cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click();
-    cy.contains('500').click();
+    cy.get('div[class=mat-select-arrow]').click({force:true});
+    cy.contains('500').click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.contains('Un-named Athlete');
       cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000});
@@ -67,17 +67,18 @@ describe ('Match custom athlete name annotation tests', () =>{
   it('deletes match', function(){
     //delete this match
     cy.log("delete this match");
-    cy.logout();
-    cy.loginAsAdmin();
-    cy.visit('http://localhost:4200/matches');
-    // cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click({timeout:5000});
-    cy.contains('500').click();
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.get('mat-cell[id=APineappleUnderTheSea]>button').last().click({timeout:5000});
-      // cy.contains(cypressConstants.athlete2FirstName).find('button').click();
-      // cy.get('mat-cell>button').contains(cypressConstants.athlete2FirstName).click();
-    });
+    cy.deleteMatch('APineappleUnderTheSea');
+    // cy.logout();
+    // cy.loginAsAdmin();
+    // cy.visit('http://localhost:4200/matches');
+    // // cy.wait(2000);
+    // cy.get('div[class=mat-select-arrow]').click({timeout:5000});
+    // cy.contains('500').click({force:true});
+    // cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    //   cy.get('mat-cell[id=APineappleUnderTheSea]>button').last().click({timeout:5000});
+    //   // cy.contains(cypressConstants.athlete2FirstName).find('button').click({force:true});
+    //   // cy.get('mat-cell>button').contains(cypressConstants.athlete2FirstName).click({force:true});
+    // });
   })
 
 });

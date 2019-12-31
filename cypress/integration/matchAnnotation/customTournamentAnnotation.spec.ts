@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-describe ('Match custom annotation tests', () =>{
+describe ('Match custom match tests: tournament name', () =>{
 
   beforeEach(()=>{
     // cy.visit('http://localhost:4200/');
@@ -20,10 +20,11 @@ describe ('Match custom annotation tests', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.url().should('not.match',/newmatch/);
-      cy.url().should('match',/matches/);
-      cy.get('div[class=mat-select-arrow]').click();
-      cy.contains('500').click();
+      // cy.url().should('not.match',/newmatch/);
+      // cy.url().should('match',/matches/);
+      cy.visit('http://localhost:4200/matches');
+      cy.get('div[class=mat-select-arrow]').click({force:true});
+      cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customTournamentName).should('exist');
     });
   });
@@ -35,7 +36,7 @@ describe ('Match custom annotation tests', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.approveGeneric(cypressConstants.customTournamentName);
       cy.visit('http://localhost:4200/newmatch', {timeout:5000});
-      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', cypressConstants.customTournamentName);
       });
       // cy.selectTournament(cypressConstants.customTournamentName);
@@ -58,7 +59,7 @@ describe ('Match custom annotation tests', () =>{
       cy.deleteGeneric(cypressConstants.customTournamentName);
       cy.visit('http://localhost:4200/newmatch');
       cy.get('input[id=matchURL]', {timeout:5000}).clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
-      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);
       });
     });
@@ -80,8 +81,8 @@ describe ('Match custom annotation tests', () =>{
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
       cy.url().should('not.match',/newmatch/);
       cy.url().should('match',/matches/);
-      cy.get('div[class=mat-select-arrow]').click();
-      cy.contains('500').click();
+      cy.get('div[class=mat-select-arrow]').click({force:true});
+      cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customTournamentName).should('exist');
     });
   });
@@ -96,7 +97,7 @@ describe ('Match custom annotation tests', () =>{
       cy.visit('http://localhost:4200/newmatch', {timeout:5000});
 
       cy.log("check custom thing has been renamed");
-      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click().then(() => {
+      cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);
       });
       cy.visit('http://localhost:4200/matches', {timeout:5000});

@@ -61,7 +61,7 @@ describe ('Login tests', () =>{
     cy.get('#age').select('27',{force: true});
     cy.get('#age').contains('27');
 
-    cy.get('button[id=create-button]').click();
+    cy.get('button[id=create-button]').click({force:true});
     cy.wait(5000); //this wait seems essential to give the uid async call time to finish up. Don't know how to make less brittle
   });
 
@@ -90,7 +90,7 @@ describe ('Login tests', () =>{
     });
     cy.contains('Match Rating');
     cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.contains('vs.');
     cy.contains('Age Class');
     cy.contains('Location');
@@ -102,7 +102,7 @@ describe ('Login tests', () =>{
     });;
     cy.contains('Match Rating');
     cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.contains('vs.');
     cy.wait(2000);
     cy.get('a[id=play]').click({force:true});

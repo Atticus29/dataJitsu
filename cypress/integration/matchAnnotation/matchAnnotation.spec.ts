@@ -15,27 +15,27 @@ describe ('Match annotation tests', () =>{
   it('annotates a match with a move', ()=>{
     cy.contains('Match Rating');
     cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.wait(1000);
     // cy.get('#tree-div');
     // cy.get('mat-tree-node > mat-icon').first().click({force:true});
-    // cy.get('.mat-icon-rtl-mirror').first().click();
-    // cy.get('div[id=annotationModal]').contains('Advantage Awarded').click();
+    // cy.get('.mat-icon-rtl-mirror').first().click({force:true});
+    // cy.get('div[id=annotationModal]').contains('Advantage Awarded').click({force:true});
     cy.selectAdvantageAnnotation();
-    // cy.contains('Advantage').next().click(); //.first()
+    // cy.contains('Advantage').next().click({force:true}); //.first()
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
+    cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
+    cy.get('button[id=end-move]').click({force:true});
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
@@ -47,7 +47,7 @@ describe ('Match annotation tests', () =>{
     cy.loginAsAdmin();
     cy.get('a[name=videoClick]').first().click({force: true});
     cy.get('mat-chip').contains('Advantage Awarded').should('exist');
-    cy.get('.cancel-annotation').first().click();
+    cy.get('.cancel-annotation').first().click({force:true});
     cy.reload();
     cy.wait(2000);
     cy.get('mat-chip').contains('Advantage Awarded').should('not.exist');
@@ -55,8 +55,8 @@ describe ('Match annotation tests', () =>{
 
 
   it('cannot annotate a match with a move without the move', ()=>{
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
@@ -65,22 +65,22 @@ describe ('Match annotation tests', () =>{
   });
 
   it('cannot annotate a match with a move without the performer of the move', ()=>{
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
-    // cy.contains('Advantage').first().next().click();
+    // cy.contains('Advantage').first().next().click({force:true});
     cy.selectAdvantageAnnotation();
     cy.get('input[id=points]').type('2{enter}');
     cy.get('button[id=done-button-performers]').should('be.disabled');
   });
 
   it('cannot annotate a match with a move without the points', ()=>{
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
-    // cy.contains('Advantage').first().next().click();
+    // cy.contains('Advantage').first().next().click({force:true});
     cy.selectAdvantageAnnotation();
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
@@ -88,37 +88,37 @@ describe ('Match annotation tests', () =>{
   });
 
   it('should have the end move disabled before done button has been clicked', function(){
-    cy.get('a[name=videoClick]', {timeout: 5000}).first().click();
+    cy.get('a[name=videoClick]', {timeout: 5000}).first().click({force:true});
     cy.get('button[id=begin-move]').should('be.enabled');
     cy.get('button[id=end-move]').should('be.disabled');
   });
 
   it('should still have end move disabled if cancel in the modal is clicked', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
-    cy.get('button[id=modal-cancel-button]').click();
+    cy.get('button[id=modal-cancel-button]').click({force:true});
     cy.get('button[id=begin-move]').should('be.enabled');
     cy.get('button[id=end-move]').should('be.disabled');
     cy.wait(2000);
   });
 
   it('should have begin move disabled and end move enabled after done have been clicked', function(){
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('a[id=play]').click({force:true});
     cy.wait(2000);
     cy.get('button[id=begin-move]').should('be.enabled');
     cy.get('button[id=end-move]').should('be.disabled');
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     // cy.get('mat-icon').first().click({force:true});
-    // cy.contains('Advantage').first().next().click();
+    // cy.contains('Advantage').first().next().click({force:true});
     cy.selectAdvantageAnnotation();
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2'); //.click({force:true})
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
@@ -128,40 +128,40 @@ describe ('Match annotation tests', () =>{
   });
 
   it('annotates a move once and when it is done it does it again and finds the previous options unselected', function(){
-   cy.get('a[name=videoClick]').first().click();
-   cy.get('button[id=begin-move]',{timeout:5000}).click();
+   cy.get('a[name=videoClick]').first().click({force:true});
+   cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
    cy.get('div[id=annotationModal]').should('be.visible');
    // cy.get('mat-icon').first().click({force:true});
    // cy.contains('Annotation Selected: Advantage').should('not.exist');
-   // cy.contains('Advantage').first().next().click();
+   // cy.contains('Advantage').first().next().click({force:true});
    cy.selectAdvantageAnnotation();
    cy.get('mat-select[id=performer]').click({force:true});
    cy.get('mat-option').first().click({force:true});
    cy.get('button[id=done-button-performers]').should('be.disabled');
    cy.get('input[id=points]').type('2'); //.click({force:true})
-   cy.get('mat-radio-button[id=yes-radio-button]').click();
+   cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
    cy.contains('Annotation Selected: Advantage').should('exist');
    cy.get('button[id=done-button-performers]').should('not.be.disabled');
    cy.get('button[id=done-button-performers]').click({force: true});
    cy.get('div[id=annotationModal]').should('not.be.visible');
-   cy.get('button[id=end-move]').click();
+   cy.get('button[id=end-move]').click({force:true});
    cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
    cy.wait(1000);
    cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
    // //And then again
-   cy.get('button[id=begin-move]',{timeout:5000}).click();
+   cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
    cy.get('div[id=annotationModal]').should('be.visible');
    // cy.get('mat-icon').first().click({force:true});
    cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
    cy.selectAdvantageAnnotation();
-   // cy.contains('Advantage').first().next().click();
+   // cy.contains('Advantage').first().next().click({force:true});
    cy.get('mat-select[id=performer]').click({force:true});
    cy.get('mat-option').first().click({force:true});
    cy.get('button[id=done-button-performers]').should('be.disabled');
    cy.get('input[id=points]').type('2'); //.click({force:true})
-   cy.get('mat-radio-button[id=yes-radio-button]').click();
+   cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
    cy.get('button[id=done-button-performers]').should('not.be.disabled');
    cy.get('button[id=done-button-performers]').click({force:true});
    cy.get('div[id=annotationModal]').should('not.be.visible');
@@ -171,34 +171,34 @@ describe ('Match annotation tests', () =>{
    cy.loginAsAdmin();
    cy.get('a[name=videoClick]').first().click({force: true});
    cy.get('mat-chip').contains('Advantage Awarded').should('exist');
-   cy.get('.cancel-annotation').first().click();
+   cy.get('.cancel-annotation').first().click({force:true});
    cy.reload();
    cy.wait(2000);
    cy.get('mat-chip').contains('Advantage Awarded').should('not.exist');
   });
 
   it('can click into the deepest part of the tree', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.get('mat-icon').eq(9).click({force:true});
     cy.get('mat-icon').eq(10).click({force:true});
     cy.contains('Annotation Selected: Ankle Lock').should('not.exist');
-    cy.contains('Ankle Lock').first().click();
+    cy.contains('Ankle Lock').first().click({force:true});
     cy.contains('Annotation Selected: Ankle Lock').should('exist');
   });
 
   it('cannot make the same exact annotation twice', function(){
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click()
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
+    cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.selectCrossCollarChoke();
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
+    cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
@@ -206,7 +206,7 @@ describe ('Match annotation tests', () =>{
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
-    cy.get('button[id=end-move]').click();
+    cy.get('button[id=end-move]').click({force:true});
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
@@ -221,7 +221,7 @@ describe ('Match annotation tests', () =>{
     // cy.on('uncaught:exception', (err, runnable) => {
     //   return false;
     // });
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     // cy.on('uncaught:exception', (err, runnable) => {
     //   return false;
     // });
@@ -231,19 +231,19 @@ describe ('Match annotation tests', () =>{
     cy.get('mat-icon').eq(7).click({force:true});
     cy.get('mat-icon').eq(10).click({force:true});
     cy.wait(1000);
-    cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click();
+    cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click({force:true});
     cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2');
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
-    cy.get('mat-radio-button[id=successful-radio-button]').click();
+    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
+    cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
+    cy.get('button[id=end-move]').click({force:true});
     // cy.on('uncaught:exception', (err, runnable) => {
     // return false;
     // });
@@ -252,9 +252,9 @@ describe ('Match annotation tests', () =>{
     //TODO now login as admin and remove the annotation entirely
     cy.logout();
     cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
-    cy.get('.cancel-annotation').first().click();
+    cy.get('.cancel-annotation').first().click({force:true});
     cy.reload();
     cy.wait(2000);
     cy.get('mat-chip').contains('Cross Collar Choke').should('not.exist');
@@ -270,26 +270,26 @@ describe ('Match annotation tests with no afterEach', () =>{
   });
 
   it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.wait(3000);
-    cy.get('a[id=play]').click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[id=play]').click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.wait(1000);
     cy.selectAdvantageAnnotation();
     // cy.get('mat-icon').first().click({force:true});
-    // cy.contains('Advantage').first().next().click();
+    // cy.contains('Advantage').first().next().click({force:true});
     cy.get('mat-select[id=performer]').click({force:true});
     cy.get('mat-option').first().click({force:true});
     cy.get('button[id=done-button-performers]').should('be.disabled');
     cy.get('input[id=points]').type('2'); //.click({force:true})
-    cy.get('mat-radio-button[id=yes-radio-button]').click();
+    cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
     cy.contains('Annotation Selected: Advantage').should('exist');
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click();
+    cy.get('button[id=done-button-performers]').click({force:true});
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.wait(1000);
-    cy.get('button[id=end-move]').click(); //{force:true}
+    cy.get('button[id=end-move]').click({force:true}); //{force:true}
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
@@ -305,18 +305,18 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
-    cy.get('a[name=videoClick]').first().click();
-    cy.get('button[id=begin-move]',{timeout:5000}).click();
+    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
     cy.selectAdvantageAnnotation();
     // cy.get('mat-icon').first().click({force:true});
     cy.contains('Annotation Selected: Advantage Awarded').should('exist');
-    cy.get('button[id=modal-cancel-button]').click();
+    cy.get('button[id=modal-cancel-button]').click({force:true});
 
     //then cleans up after itself by logging in as admin and deleting the annotation and logging out
     cy.logout();
     cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click();
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.removeAnnotation(cypressConstants.defaultAnnotationMoveName);
     });

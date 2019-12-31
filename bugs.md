@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
 - [ ] In mobile, clicking on video doesn't let it stay embedded.
 - [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?... didn't happen this time TODO
