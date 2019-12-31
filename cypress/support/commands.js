@@ -17,7 +17,7 @@ Cypress.Commands.add('deleteMatch', (identifyingId) =>{
   cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
   cy.contains('span[class=mat-option-text]','500').click({force:true});
   cy.wait(2000);
-  cy.get(`mat-cell[id="${identifyingId}"]>button`, {timeout:5000}).click({force:true});
+  cy.get(`mat-cell[id="${identifyingId}"]>button`, {timeout:5000}).first().click({force:true});
 });
 
 Cypress.Commands.add('checkThatCustomMoveHasBeenRenamed', () =>{
@@ -46,14 +46,15 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
     cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
-    cy.get('mat-select[id=gender-select]').click({force:true});
-    cy.get('mat-option').first().next().click({force:true});
-    cy.get('mat-select[id=ageClass]').click({force:true});
-    cy.get('mat-option').first().next().click({force:true});
+    cy.selectGender("Female");
     cy.selectAgeClass('Master 1');
     cy.selectRank("Elite");
     cy.selectWeight("-66kg");
   });
+});
+
+Cypress.Commands.add("selectGender", (genderName) =>{
+  cy.selectDropDown("gender-select", genderName);
 });
 
 Cypress.Commands.add("selectRank", (rankName) =>{
