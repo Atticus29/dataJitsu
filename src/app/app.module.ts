@@ -113,6 +113,7 @@ import { NewWeightClassDialogComponent } from './new-weight-class-dialog/new-wei
 import { WeightClassNameApprovalComponent } from './weight-class-name-approval/weight-class-name-approval.component';
 import { BaseApprovalComponent } from './base-approval/base-approval.component';
 import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
+import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
 
 
 export const firebaseConfig = {
@@ -172,7 +173,8 @@ export const firebaseConfig = {
     NewWeightClassDialogComponent,
     WeightClassNameApprovalComponent,
     BaseApprovalComponent,
-    NewNoGiRankDialogComponent
+    NewNoGiRankDialogComponent,
+    NewAgeClassDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -228,6 +230,6 @@ export const firebaseConfig = {
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent]
 })
 export class AppModule { }

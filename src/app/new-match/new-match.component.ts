@@ -27,6 +27,7 @@ import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-at
 import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
 import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
 import { NewNoGiRankDialogComponent } from '../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
+import { NewAgeClassDialogComponent } from '../new-age-class-dialog/new-age-class-dialog.component';
 
 declare var $:any;
 
@@ -71,6 +72,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   localTournamentName: string = null;
   localWeightClassName: string = null;
   localNoGiRankName: string = null;
+  localAgeClassName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -227,6 +229,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let giStatusBound = this.giStatusBoundFc.value;
     let genderBound = this.genderBoundFc.value;
     let ageClassBound = this.ageClassBoundFc.value;
+    if(this.localAgeClassName){
+      console.log("localAgeClassName exists");
+      ageClassBound = this.localAgeClassName;
+      this.db.addGenericCandidateNameToDb('candidateAgeClasses', ageClassBound, matchUrlBound);
+    }
     let rankBound = this.rankBoundFc.value;
     if(this.localNoGiRankName){
       console.log("localNoGiRankName exists");
@@ -366,11 +373,16 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   }
 
+  async openAgeClassNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewAgeClassDialogComponent, dialogConfig);
+    this.localAgeClassName = await this.processGenericDialog(dialogRef, 'ageClasses', 'ageClassName');
+  }
+
   async openWeightClassNameDialog(){
     let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewWeightClassDialogComponent, dialogConfig);
     this.localWeightClassName = await this.processGenericDialog(dialogRef, 'weightClasses', 'weightClassName');
-
   }
 
   async openNoGiRankDialog(){

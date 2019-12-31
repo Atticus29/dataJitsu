@@ -12,6 +12,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
   private localWeightClassApprovalConfig: ApprovalConfig = constants.weightClassApprovalConfig;
   private localTournamentNameApprovalConfig: ApprovalConfig = constants.tournamentNameApprovalConfig;
   private localNoGiApprovalConfig: ApprovalConfig = constants.noGiRankApprovalConfig;
+  private localAgeClassApprovalConfig: ApprovalConfig = constants.ageClassApprovalConfig;
 
   constructor() {
     super();

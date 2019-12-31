@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
 - [ ] In mobile, clicking on video doesn't let it stay embedded.

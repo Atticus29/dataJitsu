@@ -11,6 +11,7 @@ export var constants = {
     moveNameRemovedMessage: "Move name has been removed; flag me",
     tournamentNameRemovedMessage: "Tournament name has been removed",
     noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
+    ageClassRemovedMessage: "Age class has been removed",
     weightClassRemovedMessage: "Weight class name has been removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
@@ -57,6 +58,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingTournamentName: 5,
     numberOfPointsToAwardForApprovingWeigthClassName: 5,
     numberOfPointsToAwardForApprovingNoGiRankName: 5,
+    numberOfPointsToAwardForApprovingAgeClass: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
@@ -66,10 +68,13 @@ export var constants = {
       return new ApprovalConfig(null, null, 'Weight class', 'weight class', this.weightClassRemovedMessage, this.numberOfPointsToAwardForApprovingWeigthClassName, 'matchDeets/weightClass', '/weightClasses', '/candidateWeightClasses')
     },
     get tournamentNameApprovalConfig() {
-      return new ApprovalConfig(null, null, 'Tournament name', 'tournament name', this.tournamentNameRemovedMessage, this.numberOfPointsToAwardForApprovingTournamentName, 'matchDeets/tournamentName', '/tournamentNames', '/candidateTournamentNames')
+      return new ApprovalConfig(null, null, 'Tournament name', 'tournament', this.tournamentNameRemovedMessage, this.numberOfPointsToAwardForApprovingTournamentName, 'matchDeets/tournamentName', '/tournamentNames', '/candidateTournamentNames')
     },
     get noGiRankApprovalConfig(){
-      return new ApprovalConfig(null, null, "No gi rank name", "no gi rank name", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
+      return new ApprovalConfig(null, null, "No gi rank name", "no gi rank", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
+    },
+    get ageClassApprovalConfig(){
+      return new ApprovalConfig(null, null, "Age class name", "age class", this.noGageClassRemovedMessage, this.numberOfPointsToAwardForApprovingAgeClass, 'matchDeets/ageClass', '/ageClasses', '/candidateAgeClasses')
     },
     alreadyExistsNotification: "Your entry already exists in dropdown menu!"
   };

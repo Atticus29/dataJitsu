@@ -110,12 +110,28 @@
             <mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="ageClassBoundFc" placeholder="Choose Age Class" id="age-class-select">
+            <mat-option value="" [disabled]="disabledAgeClassName">Choose Age Class</mat-option>
+            <mat-option [value]="localAgeClassName" (click)="openAgeClassNameDialog()" color="accent" id="age-class-name-write-in">
+              <button mat-flat-button color="accent">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new age class name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let ageClass of ageClasses" [value]="ageClass" id="age-class-name-dropdown">{{ageClass}}</mat-option>
+          </mat-select>
+          <p *ngIf="localAgeClassName">Age Class Selected: <span><mat-chip color="primary" selected>{{localAgeClassName}}</mat-chip></span></p>
+          <p *ngIf="ageClassBoundFc.value && !localAgeClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{ageClassBoundFc.value}}</mat-chip></span></p>
+        </mat-form-field>
+        <!-- <mat-form-field>
           <mat-select [formControl]="ageClassBoundFc" id="ageClass" placeholder="Age Class">
             <mat-option value="(choose)" [disabled]="disabledAgeClass" >Choose age class</mat-option>
             <mat-option *ngFor="let age of ageClasses" [value]="age">{{age}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
         <!-- <mat-form-field>
             <mat-select [formControl]="rankBoundFc" id="rank" placeholder="{{rankType}} Rank" [ngModel]="rankSelection" (ngModelChange)="onChange($event)">
               <mat-option value="(choose)" disabled="true">Choose {{rankType}} rank</mat-option>
