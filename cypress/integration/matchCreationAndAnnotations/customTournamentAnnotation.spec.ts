@@ -69,7 +69,7 @@ describe ('Match custom match tests: tournament name', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       //First delete the match that already exists
       cy.log("First delete the match that already exists");
-      cy.deleteMatch('APineappleUnderTheSea');
+      cy.deleteMatch(cypressConstants.testLocation);
 
       //Now creates a new match with custom thing
       cy.log("Now creates a new match with custom thing");
@@ -106,10 +106,10 @@ describe ('Match custom match tests: tournament name', () =>{
       cy.contains('span[class=mat-option-text]','500').click({force:true});
       cy.wait(2000);
       cy.contains(cypressConstants.tournamentNameRemovedMessage).should('exist');
+      cy.log("delete match")
+      cy.deleteMatch(cypressConstants.testLocation);
     });
 
-    cy.log("delete match")
-    cy.deleteMatch('APineappleUnderTheSea');
   });
 
 });

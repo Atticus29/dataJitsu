@@ -13,6 +13,13 @@
   "testAthlete2": "E.T.",
   "testTournament": "The Quest Deathmatch",
   "testLocation": "APineappleUnderTheSea",
+  "defaultTournamentName": "IBJJF Gi World Jiu-Jitsu Championship",
+  "defaultAthlete1Name": "Batista de Sousa, Gabriel",
+  "defaultAthlete2Name": "Diógenes de Aquino, Thamires",
+  "defaultLocationName": "Las Vegas, NV, USA",
+  "defaultGenderName": "Female",
+  "defaultAgeClass": "Master 1",
+  "defaultNoGiRank": "Elite",
   "testDate": "7/4/1776",
   "adminEmailAddress": "mark.aaron.fisher@gmail.com",
   "adminPassword": "APython!11",
@@ -23,7 +30,11 @@
   "moveNameRemovedMessage": "Move name has been removed; flag me",
   "moveNameAlreadyExistsNotification": "Move already exists in the database. Please find it in the dropdown menu",
   "customTournamentName": "The Final Tournament",
+  "customWeightClassName": "Super skinny",
   "alreadyExistsNotification": "Your entry already exists in dropdown menu!",
   "tournamentSelectName": "tournament-select",
-  "tournamentNameRemovedMessage": "Tournament name has been removed"
+  "weightClassSelectName": "weight-class-select",
+  "tournamentNameRemovedMessage": "Tournament name has been removed",
+  "weightClassNameRemovedMessage": "Weight class name has been removed",
+  "locationNameSelect": "location-select"
 }

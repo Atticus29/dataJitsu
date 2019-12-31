@@ -66,8 +66,10 @@ describe ('Match custom athlete name annotation tests', () =>{
 
   it('deletes match', function(){
     //delete this match
-    cy.log("delete this match");
-    cy.deleteMatch('APineappleUnderTheSea');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.log("delete this match");
+      cy.deleteMatch(cypressConstants.testLocation);
+    });
     // cy.logout();
     // cy.loginAsAdmin();
     // cy.visit('http://localhost:4200/matches');

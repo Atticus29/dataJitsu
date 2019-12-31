@@ -14,6 +14,7 @@
 Cypress.Commands.add('deleteMatch', (identifyingId) =>{
   cy.logout();
   cy.loginAsAdmin();
+  cy.wait(2000);
   cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
   cy.contains('span[class=mat-option-text]','500').click({force:true});
   cy.wait(2000);
@@ -44,7 +45,7 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.selectAthlete(1, "Batista de Sousa, Gabriel");
     cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
     cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
-    cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender("Female");
     cy.selectAgeClass('Master 1');
@@ -73,6 +74,10 @@ Cypress.Commands.add("selectTournament", (tournamentName) =>{
   cy.selectDropDown("tournament-select", tournamentName);
 });
 
+Cypress.Commands.add("selectLocation", (locationName) =>{
+  cy.selectDropDown("location-select", locationName);
+});
+
 Cypress.Commands.add("selectAthlete", (number, athleteName) =>{
   cy.selectDropDown("athlete" + number + "-select", athleteName);
 });
@@ -83,7 +88,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (cust
     cy.selectAthlete(1, "Batista de Sousa, Gabriel");
     cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
     cy.selectCustomTournament(customTournamentName);
-    cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.get('mat-select[id=gender-select]').click({force:true});
     cy.get('mat-option').first().next().click({force:true});
@@ -93,8 +98,37 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (cust
   });
 });
 
+Cypress.Commands.add("fillInMatchCreationDetailsWithCustomWeightClass", (customWeightClassName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
+    cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
+    cy.selectTournament(cypressConstants.defaultTournamentName);
+    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectRank(cypressConstants.defaultNoGiRank);
+    cy.selectCustomWeightClass(customWeightClassName);
+  });
+});
+
 Cypress.Commands.add("selectCustomTournament", (tournamentName) => {
-  cy.selectCustomGenericParameter("tournament-select", "custom-tournament-button", 'tournamentNameFc', tournamentName, 'dialog-submit-button');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectCustomGenericParameter(cypressConstants.tournamentSelectName, "custom-tournament-button", 'tournamentNameFc', tournamentName, 'dialog-submit-button');
+  });
+});
+
+Cypress.Commands.add("selectCustomLocation", (locationName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectCustomGenericParameter(cypressConstants.locationNameSelect, "custom-location-button", 'locationNameFc', locationName, 'dialog-submit-button');
+  });
+});
+
+Cypress.Commands.add("selectCustomWeightClass", (weightClassName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectCustomGenericParameter(cypressConstants.weightClassSelectName, "custom-weight-class-button", 'weightClassNameFc', weightClassName, 'dialog-submit-button');
+  });
 });
 
 Cypress.Commands.add("selectCustomGenericParameter", (matSelectName, addNewButtonId, inputId, writeInName, submitButtonId) => {
@@ -237,6 +271,7 @@ Cypress.Commands.add('approveGeneric', (genericName) =>{
   //TODO LEFT OFF HERE
   cy.contains('li',genericName).children('span[name=approve-move]').click({force:true});
   cy.reload();
+  cy.wait(3000);
   cy.contains('li',genericName, {timeout: 5000}).should('exist');
 });
 
