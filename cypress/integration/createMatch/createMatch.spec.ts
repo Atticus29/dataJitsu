@@ -11,6 +11,7 @@ describe ('Tests involving match creation', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
       cy.deleteMatch(cypressConstants.testLocation);
+      cy.logout();
     });
   });
 
