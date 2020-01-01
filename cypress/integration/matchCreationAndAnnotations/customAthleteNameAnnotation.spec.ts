@@ -12,20 +12,20 @@ describe ('Match custom athlete name annotation tests', () =>{
     cy.logout();
   });
 
-  it('creates match with two write-in names', function(){
+  it.only('creates match with two write-in names', function(){
     cy.visit('http://localhost:4200/newmatch');
-    cy.fillInMatchCreationDetailsWithWriteInAthleteNames();
-    cy.get('button[id=new-match-submit-button]').click({force:true});
-    cy.wait(2000);
-    cy.get('h4').contains('Annotate your submission?').click({force:true});
-    cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-
-    //check it Exists
-    cy.visit('http://localhost:4200/matches');
-    cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click({force:true});
-    cy.contains('500').click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.fillInMatchCreationDetailsWithWriteInAthleteNames(cypressConstants.athlete1FirstName, cypressConstants.athlete1LastName, cypressConstants.athlete2FirstName, cypressConstants.athlete2LastName);
+      cy.get('button[id=new-match-submit-button]').click({force:true});
+      cy.wait(2000);
+      cy.get('h4').contains('Annotate your submission?').click({force:true});
+      cy.get('button[id=add-to-queue-modal-button]').click({force:true});
+
+      //check it Exists
+      cy.visit('http://localhost:4200/matches');
+      cy.wait(2000);
+      cy.get('div[class=mat-select-arrow]').click({force:true});
+      cy.contains('500').click({force:true});
       cy.contains(cypressConstants.athlete1FirstName);
       cy.contains(cypressConstants.athlete1LastName);
       cy.contains(cypressConstants.athlete2FirstName);

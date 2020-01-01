@@ -15,7 +15,7 @@
           <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>
             <mat-option [value]="localAthlete1Name" (click)="openAddNameDialog(1)" color="accent" id="athlete-1-write-in">
-              <button mat-flat-button color="accent">
+              <button mat-flat-button color="accent" id="custom-athlete1-button">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new name
@@ -31,7 +31,7 @@
           <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
             <mat-option [value]="localAthlete2Name" (click)="openAddNameDialog(2)" color="accent" id="athlete-2-write-in">
-              <button mat-flat-button color="accent">
+              <button mat-flat-button color="accent" id="custom-athlete2-button">
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new name

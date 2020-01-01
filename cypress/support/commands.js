@@ -173,8 +173,14 @@ Cypress.Commands.add("selectCustomAgeClass", (ageClassName) => {
   });
 });
 
+Cypress.Commands.add("selectCustomAthleteNames", (athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectCustomAthleteNamesHelper('athlete1-select', 'custom-athlete1-button', 'lastFc', 'firstFc', athlete1NameLast, athlete1NameFirst, 'dialog-submit-button');
+    cy.selectCustomAthleteNamesHelper('athlete2-select', 'custom-athlete2-button', 'lastFc', 'firstFc', athlete2NameLast, athlete2NameFirst, 'dialog-submit-button');
+  });
+});
+
 Cypress.Commands.add("selectCustomGenericParameter", (matSelectName, addNewButtonId, inputId, writeInName, submitButtonId) => {
-  // cy.selectDropDown(matSelectName, addNewButtonName);
   cy.get(`mat-select[id="${matSelectName}"`).click({force:true}).then(() => {
     cy.get(`button[id=${addNewButtonId}]`).click({force:true, timeout:5000});
     cy.get(`input[id="${inputId}"]`).clear().type(writeInName);
@@ -182,28 +188,27 @@ Cypress.Commands.add("selectCustomGenericParameter", (matSelectName, addNewButto
   });
 });
 
+Cypress.Commands.add("selectCustomAthleteNamesHelper", (matSelectName, addNewButtonId, inputId1, inputId2, writeInName1, writeInName2, submitButtonId) => {
+  cy.get(`mat-select[id="${matSelectName}"`).click({force:true}).then(() => {
+    cy.get(`button[id=${addNewButtonId}]`).click({force:true, timeout:5000});
+    cy.get(`input[id="${inputId1}"]`).clear().type(writeInName1);
+    cy.get(`input[id="${inputId2}"]`).clear().type(writeInName2);
+    cy.get(`button[id="${submitButtonId}"]`).click({force:true, timeout:5000});
+  });
+});
 
-Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (email, pass) => {
+
+Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast) => { //cypressConstants.athlete1LastName , cypressConstants.athlete1FirstName
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2);
-    cy.get('mat-select[id=athlete1-select]').click({force:true});
-    cy.get('mat-option').eq(1).click({force:true});
-    cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete1LastName);
-    cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete1FirstName);
-    cy.get('button[id=dialog-submit-button]').click({force:true});
-    cy.get('mat-select[id=athlete2-select]').click({force:true});
-    cy.get('mat-option').eq(1).click({force: true});
-    cy.get('input[id=lastFc]').clear().type(cypressConstants.athlete2LastName);
-    cy.get('input[id=firstFc]').clear().type(cypressConstants.athlete2FirstName);
-    cy.get('button[id=dialog-submit-button]').click({force:true});
+    cy.selectCustomAthleteNames(athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast);
     cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
-    cy.get('input[id=location]').click({force:true}).clear().type(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
-    cy.get('mat-select[id=gender-select]').click({force:true});
-    cy.get('mat-option').first().next().click({force:true});
-    cy.selectAgeClass('Master 1');
-    cy.selectRank("Elite");
-    cy.selectWeight("-66kg");
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectRank(cypressConstants.defaultNoGiRank);
+    cy.selectWeight(cypressConstants.defaultWeightClass);
   });
 });
 
@@ -236,15 +241,11 @@ Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
 });
 
 Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
-  // cy.get('mat-icon').eq(9).click({force:true});
-  // cy.get('mat-icon').eq(12).click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force: true, timeout:5000});
     cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
     cy.contains('mat-tree-node', "Add cervical submission").click();
   });
-  // cy.wait(1000);
-  // cy.contains('div[id=annotationModal]','Add cervical submission').click({force:true});
   cy.get('input[id=moveNameFc]').clear().type(moveName);
   cy.contains('span', 'Choose Move Subcategory').should('not.be.visible');
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
