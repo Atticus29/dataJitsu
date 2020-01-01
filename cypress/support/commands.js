@@ -90,11 +90,10 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (cust
     cy.selectCustomTournament(customTournamentName);
     cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
-    cy.get('mat-select[id=gender-select]').click({force:true});
-    cy.get('mat-option').first().next().click({force:true});
-    cy.selectAgeClass('Master 1');
-    cy.selectRank("Elite");
-    cy.selectWeight("-66kg");
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectRank(cypressConstants.defaultNoGiRank);
+    cy.selectWeight(cypressConstants.defaultWeightClass);
   });
 });
 
@@ -113,6 +112,22 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomWeightClass", (customW
   });
 });
 
+Cypress.Commands.add("fillInMatchCreationDetailsWithCustomNoGiRank", (customNoGiRankName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
+    cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
+    cy.selectTournament(cypressConstants.defaultTournamentName);
+    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectCustomNoGiRank(cypressConstants.customNoGiRankName);
+    cy.selectWeight(cypressConstants.defaultWeightClass);
+  });
+});
+
+
 Cypress.Commands.add("selectCustomTournament", (tournamentName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.selectCustomGenericParameter(cypressConstants.tournamentSelectName, "custom-tournament-button", 'tournamentNameFc', tournamentName, 'dialog-submit-button');
@@ -128,6 +143,12 @@ Cypress.Commands.add("selectCustomLocation", (locationName) => {
 Cypress.Commands.add("selectCustomWeightClass", (weightClassName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.selectCustomGenericParameter(cypressConstants.weightClassSelectName, "custom-weight-class-button", 'weightClassNameFc', weightClassName, 'dialog-submit-button');
+  });
+});
+
+Cypress.Commands.add("selectCustomNoGiRank", (noGiRankName) => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.selectCustomGenericParameter(cypressConstants.noGiRankSelectName, "custom-no-gi-rank-button", 'noGiRankNameFc', noGiRankName, 'dialog-submit-button');
   });
 });
 

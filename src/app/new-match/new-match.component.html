@@ -123,7 +123,7 @@
         <mat-select [formControl]="rankBoundFc" placeholder="Choose Rank" id="rank-select">
           <mat-option value="" [disabled]="disabledNoGiRankName">Choose {{rankType}} Rank</mat-option>
           <mat-option *ngIf="rankType === 'Nogi'" [value]="localNoGiRankName" (click)="openNoGiRankDialog()" color="accent" id="no-gi-rank-name-write-in">
-            <button mat-flat-button color="accent">
+            <button mat-flat-button color="accent" id="custom-no-gi-rank-button">
               <span>
                 <i class="material-icons align-middle-things">add_circle</i>
                 Add a new no gi rank name

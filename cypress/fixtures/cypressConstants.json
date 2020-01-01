@@ -20,6 +20,7 @@
   "defaultGenderName": "Female",
   "defaultAgeClass": "Master 1",
   "defaultNoGiRank": "Elite",
+  "defaultWeightClass": "-66kg",
   "testDate": "7/4/1776",
   "adminEmailAddress": "mark.aaron.fisher@gmail.com",
   "adminPassword": "APython!11",
@@ -36,5 +37,8 @@
   "weightClassSelectName": "weight-class-select",
   "tournamentNameRemovedMessage": "Tournament name has been removed",
   "weightClassNameRemovedMessage": "Weight class name has been removed",
-  "locationNameSelect": "location-select"
+  "locationNameSelect": "location-select",
+  "customNoGiRankName": "Pink",
+  "noGiRankSelectName": "rank-select",
+  "noGiRankNameRemovedMessage": "No gi rank name has been removed; flag me"
 }

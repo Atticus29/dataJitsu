@@ -3,7 +3,7 @@
     - [ ] Passing tests
 - [x] Have custom age class, and add unknown to it
     - [ ] Passing tests
-- [ ] Have custom location option, and add unknown to it
+- [x] Have custom location option, and add unknown to it
     - [ ] Passing tests
 - [ ] Add new move options to every section
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
