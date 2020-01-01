@@ -1,6 +1,6 @@
 # TODO high priority
 - [x] Have custom no gi rank option, and add unknown to it
-    - [ ] Passing tests
+    - [x] Passing tests
 - [x] Have custom age class, and add unknown to it
     - [ ] Passing tests
 - [x] Have custom location option, and add unknown to it

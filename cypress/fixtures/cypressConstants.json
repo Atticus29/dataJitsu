@@ -40,5 +40,9 @@
   "locationNameSelect": "location-select",
   "customNoGiRankName": "Pink",
   "noGiRankSelectName": "rank-select",
-  "noGiRankNameRemovedMessage": "No gi rank name has been removed; flag me"
+  "noGiRankNameRemovedMessage": "No gi rank name has been removed; flag me",
+  "ageClassRemovedMessage": "Age class has been removed",
+  "customAgeClassName": "Quite Aged",
+  "ageClassSelectName": "age-class-select",
+  "ageClassNameRemovedMessage": "Age class has been removed"
 }

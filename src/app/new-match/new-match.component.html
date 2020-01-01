@@ -107,7 +107,7 @@
         <mat-select [formControl]="ageClassBoundFc" placeholder="Choose Age Class" id="age-class-select">
           <mat-option value="" [disabled]="disabledAgeClassName">Choose Age Class</mat-option>
           <mat-option [value]="localAgeClassName" (click)="openAgeClassNameDialog()" color="accent" id="age-class-name-write-in">
-            <button mat-flat-button color="accent">
+            <button mat-flat-button color="accent" id="custom-age-class-button">
               <span>
                 <i class="material-icons align-middle-things">add_circle</i>
                 Add a new age class name
