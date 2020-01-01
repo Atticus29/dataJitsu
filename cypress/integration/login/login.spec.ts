@@ -17,7 +17,7 @@ describe ('Login tests', () =>{
   })
 
   it('loads', () =>{
-    cy.contains("Login with Email");
+    cy.contains("Login");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       // cy.contains(cypressConstants.title).should('exist');
       cy.login(cypressConstants.usrnm,cypressConstants.passw);

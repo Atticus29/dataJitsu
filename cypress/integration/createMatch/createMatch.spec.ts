@@ -9,14 +9,9 @@ describe ('Tests involving match creation', () =>{
   after(() =>{
     //And delete the match just for cleanup
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.adminEmailAddress,cypressConstants.adminPassword);
+      cy.login(cypressConstants.usrnm,cypressConstants.passw);
+      cy.deleteMatch(cypressConstants.testLocation);
     });
-    cy.visit('http://localhost:4200/matches');
-    cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click({force:true});
-    cy.contains('500').click({force:true});
-    cy.get('mat-cell[id=APineappleUnderTheSea]>button').click({force:true});
-    cy.logout();
   });
 
   afterEach(() =>{
@@ -35,9 +30,11 @@ describe ('Tests involving match creation', () =>{
   });
 
   it('created match appears on table', function(){
-    cy.get('div[class=mat-select-arrow]').click({force:true});
-    cy.contains('500').click({force:true});
-    cy.contains('APineappleUnderTheSea').should('exist');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.get('div[class=mat-select-arrow]').click({force:true});
+      cy.contains('500').click({force:true});
+      cy.contains(cypressConstants.testLocation).should('exist');
+    });
   });
 
   it('cannot create duplicate match', function(){
