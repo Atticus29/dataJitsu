@@ -32,14 +32,15 @@ describe ('Match annotation tests', () =>{
     cy.get('mat-radio-button[id=yes-radio-button]').click({force:true});
     cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
-    cy.get('button[id=done-button-performers]').click({force:true});
+    cy.get('button[id=done-button-performers]').click();
+    cy.wait(3000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click({force:true});
+    cy.get('button[id=end-move]').click();
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
-    cy.wait(500);
+    cy.wait(5000);
     // cy.contains("Annotation Recorded").should('exist');
 
     //Delete annotation

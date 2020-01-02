@@ -215,9 +215,10 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (athle
 
 
 Cypress.Commands.add("selectAdvantageAnnotation", () => {
-  cy.contains('mat-tree-node', 'Advantage').children('button').click({force: true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.contains('div[class=mat-ripple]',cypressConstants.defaultAnnotationMoveName).click({force: true});
+    cy.contains('mat-tree-node', 'Advantage').children('button').click({force: true});
+    cy.wait(2000);
+    cy.contains('div[class=mat-ripple]',cypressConstants.defaultAnnotationMoveName, {timeout:5000}).click({force: true});
   });
   cy.contains('Annotation Selected: Advantage Awarded').should('exist');
 });
