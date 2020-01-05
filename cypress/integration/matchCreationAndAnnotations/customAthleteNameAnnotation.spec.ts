@@ -12,7 +12,7 @@ describe ('Match custom athlete name annotation tests', () =>{
     cy.logout();
   });
 
-  it.only('creates match with two write-in names', function(){
+  it('creates match with two write-in names', function(){
     cy.visit('http://localhost:4200/newmatch');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.fillInMatchCreationDetailsWithWriteInAthleteNames(cypressConstants.athlete1FirstName, cypressConstants.athlete1LastName, cypressConstants.athlete2FirstName, cypressConstants.athlete2LastName);
