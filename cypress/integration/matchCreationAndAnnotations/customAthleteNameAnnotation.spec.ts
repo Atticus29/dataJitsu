@@ -68,9 +68,9 @@ describe ('Match custom athlete name annotation tests', () =>{
     //delete this match
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.log("delete this match");
-      cy.deleteMatch(cypressConstants.testLocation);
+      cy.deleteMatch(cypressConstants.testLocation3);
       //And maybe again because it looks like there's 2?
-      cy.deleteMatch(cypressConstants.testLocation);
+      cy.deleteMatch(cypressConstants.testLocation3);
     });
     // cy.logout();
     // cy.loginAsAdmin();

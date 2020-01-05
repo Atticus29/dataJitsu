@@ -88,7 +88,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (cust
     cy.selectAthlete(1, "Batista de Sousa, Gabriel");
     cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
     cy.selectCustomTournament(customTournamentName);
-    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation5);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender(cypressConstants.defaultGenderName);
     cy.selectAgeClass(cypressConstants.defaultAgeClass);
@@ -103,7 +103,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomWeightClass", (customW
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
-    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation6);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender(cypressConstants.defaultGenderName);
     cy.selectAgeClass(cypressConstants.defaultAgeClass);
@@ -118,7 +118,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomNoGiRank", (customNoGi
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
-    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation4);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender(cypressConstants.defaultGenderName);
     cy.selectAgeClass(cypressConstants.defaultAgeClass);
@@ -133,7 +133,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomAgeClass", (customAgeC
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
-    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation2);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender(cypressConstants.defaultGenderName);
     cy.selectCustomAgeClass(customAgeClass);
@@ -203,7 +203,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (athle
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2);
     cy.selectCustomAthleteNames(athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast);
     cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
-    cy.selectCustomLocation(cypressConstants.testLocation);
+    cy.selectCustomLocation(cypressConstants.testLocation3);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender(cypressConstants.defaultGenderName);
     cy.selectAgeClass(cypressConstants.defaultAgeClass);

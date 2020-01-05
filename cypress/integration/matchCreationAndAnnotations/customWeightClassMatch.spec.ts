@@ -66,7 +66,7 @@ describe ('Match custom match tests: weight', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       //First delete the match that already exists
       cy.log("First delete the match that already exists");
-      cy.deleteMatch(cypressConstants.testLocation);
+      cy.deleteMatch(cypressConstants.testLocation6);
 
       //Now creates a new match with custom thing
       cy.log("Now creates a new match with custom thing");
@@ -104,7 +104,7 @@ describe ('Match custom match tests: weight', () =>{
       cy.wait(2000);
       cy.contains(cypressConstants.weightClassNameRemovedMessage).should('exist');
       cy.log("delete match")
-      cy.deleteMatch(cypressConstants.testLocation);
+      cy.deleteMatch(cypressConstants.testLocation6);
     });
 
   });
