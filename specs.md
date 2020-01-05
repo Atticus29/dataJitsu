@@ -1,4 +1,6 @@
 # TODO high priority
+- [ ] Set up a dev project in firebase and hook up there instead
+- [ ] Write tests for stripe subscription and cancellation
 - [x] Have custom no gi rank option, and add unknown to it
     - [x] Passing tests
 - [x] Have custom age class, and add unknown to it

@@ -42,9 +42,9 @@ Cypress.Commands.add('removeNowRenamedAnnotation', () =>{
 Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
-    cy.selectAthlete(1, "Batista de Sousa, Gabriel");
-    cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
-    cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
+    cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
+    cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
+    cy.selectTournament(cypressConstants.defaultTournamentName);
     cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
     cy.selectGender("Female");
