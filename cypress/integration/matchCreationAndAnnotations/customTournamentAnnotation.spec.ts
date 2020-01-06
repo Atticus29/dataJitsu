@@ -23,6 +23,7 @@ describe ('Match custom match tests: tournament name', () =>{
       // cy.url().should('not.match',/newmatch/);
       // cy.url().should('match',/matches/);
       cy.visit('http://localhost:4200/matches');
+      cy.wait(3000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customTournamentName).should('exist');
@@ -81,6 +82,7 @@ describe ('Match custom match tests: tournament name', () =>{
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
       cy.url().should('not.match',/newmatch/);
       cy.url().should('match',/matches/);
+      cy.wait(3000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customTournamentName).should('exist');
@@ -92,6 +94,7 @@ describe ('Match custom match tests: tournament name', () =>{
     cy.loginAsAdmin();
     cy.log("disapprove custom thing");
     cy.visit('http://localhost:4200/admin');
+    cy.wait(3000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.disapproveGeneric(cypressConstants.customTournamentName);
       cy.visit('http://localhost:4200/newmatch', {timeout:5000});
