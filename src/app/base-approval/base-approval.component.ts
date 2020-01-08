@@ -55,6 +55,10 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
   }
 
   approveName(name: string, metaDataName: string){
+    console.log("approveName entered");
+    console.log(name);
+    console.log(metaDataName);
+    console.log(this.approvalConfig);
     let confirmation = confirm("Are you sure you want to APPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
       this.db.addGenericItemToDb(this.approvalConfig.localApprovedListPath, name);

@@ -150,7 +150,7 @@ describe ('Match annotation tests', () =>{
     return false;
     });
    cy.wait(1000);
-   cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
+   cy.contains('Current Move Being Annotated: Advantage Awarded').should('not.exist');
    // //And then again
    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
    cy.get('div[id=annotationModal]').should('be.visible');

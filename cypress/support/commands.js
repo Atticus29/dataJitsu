@@ -142,6 +142,21 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomAgeClass", (customAgeC
   });
 });
 
+Cypress.Commands.add("fillInMatchCreationDetailsWithCustomLocation", () => {
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
+    cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
+    cy.selectTournament(cypressConstants.defaultTournamentName);
+    cy.selectCustomLocation(cypressConstants.customLocation);
+    cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectRank(cypressConstants.defaultNoGiRank);
+    cy.selectWeight(cypressConstants.defaultWeightClass);
+  });
+});
+
 
 Cypress.Commands.add("selectCustomTournament", (tournamentName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{

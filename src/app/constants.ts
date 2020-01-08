@@ -13,7 +13,7 @@ export var constants = {
     noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
     ageClassRemovedMessage: "Age class has been removed",
     weightClassRemovedMessage: "Weight class name has been removed",
-    locationRemovedMessage: "Location name has been removed",
+    locationRemovedMessage: "Location_name_has_been_removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,

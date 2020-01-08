@@ -18,6 +18,7 @@
   "testLocation4": "InteriorIllusionsLounge",
   "testLocation5": "OnThePlayGround",
   "testLocation6": "UnderTheBoardWalk",
+  "customLocation": "NinthCircle",
   "customMoveName": "Darth Vader Choke",
   "defaultTournamentName": "IBJJF Gi World Jiu-Jitsu Championship",
   "defaultAthlete1Name": "Batista de Sousa, Gabriel",
@@ -50,5 +51,7 @@
   "ageClassRemovedMessage": "Age class has been removed",
   "customAgeClassName": "Quite Aged",
   "ageClassSelectName": "age-class-select",
-  "ageClassNameRemovedMessage": "Age class has been removed"
+  "ageClassNameRemovedMessage": "Age class has been removed",
+  "locationSelectName": "location-select",
+  "locationNameRemovedMessage": "Location name has been removed"
 }

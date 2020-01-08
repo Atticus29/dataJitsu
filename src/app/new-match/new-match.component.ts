@@ -415,7 +415,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   async openLocationNameDialog(){
     let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewLocationNameDialogComponent, dialogConfig);
-    this.localLocationName = await this.processGenericDialog(dialogRef, 'locationNames', 'locationName');
+    this.localLocationName = await this.processGenericDialog(dialogRef, 'locations', 'locationName');
   }
 
   openAddNameDialog(athleteNumber: number){
