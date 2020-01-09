@@ -1,5 +1,7 @@
 # Known issues
-- [ ] Stripe is broken; also, write a test for this?
+- [ ] Stripe is broken; also, write a test for this? Related:
+   - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
+- [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
 - [ ] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)

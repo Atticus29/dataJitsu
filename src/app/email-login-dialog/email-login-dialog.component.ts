@@ -38,6 +38,10 @@ export class EmailLoginDialogComponent extends BaseDialogComponent implements On
     this.dialogRef.close(this.form.value);
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   allValid(){
     let values = this.form.value;
     if(this.vs.validateEmail(values.email) && this.vs.validatePassword(values.passwd)){

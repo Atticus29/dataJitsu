@@ -57,7 +57,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
-      this.authService.emailLogin(val.email, val.passwd);
+      if(val){
+        this.authService.emailLogin(val.email, val.passwd);
+      }
     });
   }
 
