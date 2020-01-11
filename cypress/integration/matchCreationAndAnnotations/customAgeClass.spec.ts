@@ -9,16 +9,17 @@ describe ('Match custom match tests: age class', () =>{
   afterEach(() =>{
     cy.logout();
   });
-  it('adds custom thing and submits new match', function(){
+  it.only('adds custom thing and submits new match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/newmatch');
       cy.fillInMatchCreationDetailsWithCustomAgeClass(cypressConstants.customAgeClassName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
-      cy.wait(2000);
+      cy.wait(4000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.visit('http://localhost:4200/matches');
       cy.wait(3000);
+      cy.visit('http://localhost:4200/matches');
+      cy.wait(4000);
       cy.get('div[class=mat-select-arrow]').click();
       cy.contains('500').click({timeout:5000});
       cy.wait(3000);
