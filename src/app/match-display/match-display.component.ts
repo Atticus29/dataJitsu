@@ -132,6 +132,12 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.db.getInappropriateFlagStatus(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleInappropriateFlagged(true) : this.handleInappropriateFlagged(false);
         });
+        this.db.getMatchUrlFromMatchId(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUrl =>{
+          this.ytId = this.parseVideoUrl(matchUrl);
+          if(this.player){
+            this.player.loadVideoById(this.ytId, 0);
+          }
+        });
       }
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
         this.matchAverageRating = average;
@@ -256,6 +262,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   parseVideoUrl(url: string){ //@TODO seems hacky
     var re = /.*youtu.+?be\/(.+)/ig;
     var result = re.exec(url);
+    console.log("results from parseVideoUrl:");
+    console.log(result);
     return result[1];
   }
 

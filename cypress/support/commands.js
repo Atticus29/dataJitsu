@@ -47,10 +47,10 @@ Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
     cy.selectTournament(cypressConstants.defaultTournamentName);
     cy.selectCustomLocation(cypressConstants.testLocation);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
-    cy.selectGender("Female");
-    cy.selectAgeClass('Master 1');
-    cy.selectRank("Elite");
-    cy.selectWeight("-66kg");
+    cy.selectGender(cypressConstants.defaultGenderName);
+    cy.selectAgeClass(cypressConstants.defaultAgeClass);
+    cy.selectRank(cypressConstants.defaultNoGiRank);
+    cy.selectWeight(cypressConstants.defaultWeightClass);
   });
 });
 
@@ -85,8 +85,8 @@ Cypress.Commands.add("selectAthlete", (number, athleteName) =>{
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (customTournamentName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
-    cy.selectAthlete(1, "Batista de Sousa, Gabriel");
-    cy.selectAthlete(2, "Diógenes de Aquino, Thamires");
+    cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
+    cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectCustomTournament(customTournamentName);
     cy.selectCustomLocation(cypressConstants.testLocation5);
     cy.get('input[id=date-input]').click({force: true}).clear().type(cypressConstants.testDate);
@@ -239,8 +239,10 @@ Cypress.Commands.add("selectAdvantageAnnotation", () => {
 });
 
 Cypress.Commands.add("selectCrossCollarChoke", () => {
-  cy.get('mat-icon').eq(9).click({force:true});
-  cy.get('mat-icon').eq(12).click({force:true});
+  // cy.get('mat-icon').eq(9).click({force:true});
+  // cy.get('mat-icon').eq(12).click({force:true});
+  cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force:true, timeout:5000});
+  cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
   cy.wait(1000);
   cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click({force:true});
   cy.get('mat-chip').contains('Cross Collar Choke').should('exist');

@@ -1438,6 +1438,18 @@ export class DatabaseService {
     return obsRet;
   }
 
+  getMatchUrlFromMatchId(matchId: string){
+    let ref = firebase.database().ref('/matches/' + matchId + '/matchDeets/videoUrl');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByKey().on("value", snapshot =>{
+        console.log("snapshot.val() from getMatchUrlFromMatchId is:");
+        console.log(snapshot.val());
+        observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
+  }
+
   getMatchUrlFromCandidateTournamentName(tournamentName: string){
     // let ref = firebase.database().ref('/candidateTournamentNames/');
     // let obsRet = Observable.create(function(observer){

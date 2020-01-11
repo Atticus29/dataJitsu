@@ -36,7 +36,7 @@ describe ('Match annotation tests', () =>{
     cy.wait(3000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
+    cy.get('button[id=end-move]').click({force:true});
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });

@@ -83,14 +83,16 @@ describe ('Match custom tests: move name', () =>{
       cy.get('a[name=videoClick]').first().click({force:true});
       cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
       cy.get('div[id=annotationModal]').should('be.visible');
-      cy.get('mat-icon').eq(9).click({force:true});
-      cy.get('mat-icon').eq(12).click({force:true});
+      cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force:true, timeout:5000});
+      cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
+      // cy.get('mat-icon').eq(9).click({force:true});
+      // cy.get('mat-icon').eq(12).click({force:true});
       cy.get('div[id=annotationModal]').contains(cypressConstants.customMoveName).should('not.exist');
     });
 
   });
 
-  it('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
+  it.only('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
     //First delete the annotation that already exists
     cy.log("First delete the annotation that already exists");
     cy.logout();
@@ -122,6 +124,7 @@ describe ('Match custom tests: move name', () =>{
       cy.get('div[id=annotationModal]').should('not.be.visible');
       cy.get('button[id=end-move]').should('be.enabled');
       cy.get('button[id=end-move]').click({force:true});
+      cy.wait(5000);
       cy.on('uncaught:exception', (err, runnable) => {
         return false;
       });
