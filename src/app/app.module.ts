@@ -106,6 +106,15 @@ import { MoveNameApprovalComponent } from './move-name-approval/move-name-approv
 import { StripeComponent } from './stripe/stripe.component';
 import { SelfMatchesUserInfoComponent } from './self-matches-user-info/self-matches-user-info.component';
 import { MatchActionDelimiterDirective } from './match-action-delimiter.directive';
+import { NewTournamentNameDialogComponent } from './new-tournament-name-dialog/new-tournament-name-dialog.component';
+import { TournamentNameApprovalComponent } from './tournament-name-approval/tournament-name-approval.component';
+import { BaseDialogComponent } from './base-dialog/base-dialog.component';
+import { NewWeightClassDialogComponent } from './new-weight-class-dialog/new-weight-class-dialog.component';
+import { WeightClassNameApprovalComponent } from './weight-class-name-approval/weight-class-name-approval.component';
+import { BaseApprovalComponent } from './base-approval/base-approval.component';
+import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
+import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
+import { NewLocationNameDialogComponent } from './new-location-name-dialog/new-location-name-dialog.component';
 
 
 export const firebaseConfig = {
@@ -158,7 +167,16 @@ export const firebaseConfig = {
     MoveNameApprovalComponent,
     StripeComponent,
     SelfMatchesUserInfoComponent,
-    MatchActionDelimiterDirective
+    MatchActionDelimiterDirective,
+    NewTournamentNameDialogComponent,
+    TournamentNameApprovalComponent,
+    BaseDialogComponent,
+    NewWeightClassDialogComponent,
+    WeightClassNameApprovalComponent,
+    BaseApprovalComponent,
+    NewNoGiRankDialogComponent,
+    NewAgeClassDialogComponent,
+    NewLocationNameDialogComponent
   ],
   imports: [
     AngularFireDatabaseModule,
@@ -210,10 +228,10 @@ export const firebaseConfig = {
     RatingModule,
     ReactiveFormsModule,
     routing,
-    NgxYoutubePlayerModule
+    NgxYoutubePlayerModule,
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent]
+  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
 })
 export class AppModule { }

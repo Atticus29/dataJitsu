@@ -1,11 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
+
+import { takeUntil } from 'rxjs/operators';
 
 import { ValidationService } from '../validation.service';
-import { BaseComponent } from '../base/base.component';
+import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
+import { constants } from '../constants';
+import { TextTransformationService } from '../text-transformation.service';
 
 
 @Component({
@@ -13,13 +18,13 @@ import { DatabaseService } from '../database.service';
   templateUrl: './new-athlete-name-dialog.component.html',
   styleUrls: ['./new-athlete-name-dialog.component.scss']
 })
-export class NewAthleteNameDialogComponent extends BaseComponent implements OnInit {
+export class NewAthleteNameDialogComponent extends BaseDialogComponent implements OnInit {
   form: FormGroup;
   private lastFc: FormControl = new FormControl('', [Validators.required]);
   private firstFc: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<NewAthleteNameDialogComponent>, @Inject(MAT_DIALOG_DATA) {lastFc, firstFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService) {
-    super();
+  constructor(private dialogRef: MatDialogRef<NewAthleteNameDialogComponent>, @Inject(MAT_DIALOG_DATA) {lastFc, firstFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+    super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {

@@ -75,6 +75,58 @@ export class DatabaseService {
     return this.db.list('/athleteNames/').valueChanges();
   }
 
+  getTournamentNames(): any{
+    return this.db.list('/tournamentNames/').valueChanges();
+  }
+  getCandidateTournamentNames(): any{
+    let ref = firebase.database().ref('/candidateTournamentNames/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('name').on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index].name);
+          observer.next(names);
+        } else{
+          observer.next([]);
+        }
+      });
+    });
+    return obsRet;
+  }
+
+  getCandidateWeightClassNames(): any{
+    this.getGenericCandidateNames('/candidateWeightClasses/', 'name');
+    // let ref = firebase.database().ref('/candidateWeightClasses/');
+    // let obsRet = Observable.create(function(observer){
+    //   ref.orderByChild('name').on("value", snapshot =>{
+    //     let resultObj = snapshot.val();
+    //     if(resultObj){
+    //       let names = Object.keys(resultObj).map(index => resultObj[index].name);
+    //       observer.next(names);
+    //     } else{
+    //       observer.next([]);
+    //     }
+    //   });
+    // });
+    // return obsRet;
+  }
+
+  getGenericCandidateNames(path: string, orderByParameter: string): any{
+    let ref = firebase.database().ref(path);
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild(orderByParameter).on("value", snapshot =>{
+        let resultObj = snapshot.val();
+        if(resultObj){
+          let names = Object.keys(resultObj).map(index => resultObj[index].name);
+          observer.next(names);
+        } else{
+          observer.next([]);
+        }
+      });
+    });
+    return obsRet;
+  }
+
   getMovesSubsetAsObject(childNodeName: string){
     //TODO SUUUPER HACKY fix this
     // console.log("childNodeName in getMovesSubsetAsObject database service");
@@ -385,8 +437,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-        // console.log("query result in getUserByUid in databaseService: ");
-        // console.log(snapshot.val());
+        console.log("query result in getUserByUid in databaseService: ");
+        console.log(snapshot.val());
         user = snapshot.val();
         user = user[Object.keys(user)[0]];
         observer.next(user);
@@ -761,7 +813,15 @@ export class DatabaseService {
   }
 
   getWeightClasses(){
-    return this.weightClasses;
+    return this.getGenericApprovedList('/weightClasses');
+  }
+
+  getLocations(){
+    return this.getGenericApprovedList('/locations');
+  }
+
+  getGenericApprovedList(path: string){
+    return this.db.list<String>(path).valueChanges();
   }
 
   getAgeClasses(){
@@ -1100,10 +1160,31 @@ export class DatabaseService {
     let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
 
+  addCandidateTournamentNameToDb(name: string, associatedMatchUrl: string){
+    // console.log("addCandidateTournamentNameToDb called");
+    // console.log("name is " + name);
+    // let ref = firebase.database().ref('/candidateTournamentNames/');
+    // let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    this.addGenericCandidateNameToDb('/candidateTournamentNames/', name, associatedMatchUrl);
+  }
+
+  addGenericCandidateNameToDb(path: string, name: string, associatedMatchUrl: string){
+    console.log("addGenericCandidateNameToDb called");
+    console.log("name is " + name);
+    let ref = firebase.database().ref(path);
+    let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+  }
+
   addAthleteNameToDb(name: string){
     //TODO check whether name already exists!
     let ref = firebase.database().ref('/athleteNames/');
     ref.push(name);
+  }
+
+  getGenericStringNames(path: string){
+    console.log("getGenericStringNames entered");
+    console.log(this.db.list(path).valueChanges());
+    return this.db.list(path).valueChanges();
   }
 
   removeAthleteNameFromCandidateList(name: string){
@@ -1202,14 +1283,27 @@ export class DatabaseService {
   }
 
   addCandidateMoveInVideoToDb(moveName: string, moveCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
-    let ref = firebase.database().ref('/candidateMoveNames/');
-    let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    this.addGenericItemToDb('/candidateMoveNames/', {'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl});
+    // let ref = firebase.database().ref('/candidateMoveNames/');
+    // let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
 
   addMoveNameToDb(moveName: string, categoryName: string, subcategoryName: string){
     //TODO check whether name already exists! (should be done elsehwere, but wouldn't hurt to check here)
-    let ref = firebase.database().ref('/moves/' + categoryName + '/' + subcategoryName + '/');
-    ref.push(moveName);
+    // let ref = firebase.database().ref();
+    // ref.push(moveName);
+    this.addGenericItemToDb('/moves/' + categoryName + '/' + subcategoryName + '/', moveName);
+  }
+
+  addTournamentNameToDb(tournamentName: string){
+    // let ref = firebase.database().ref();
+    // ref.push(tournamentName);
+    this.addGenericItemToDb('/tournamentNames/', tournamentName);
+  }
+
+  addGenericItemToDb(path: string, genericString: any){
+    let ref = firebase.database().ref(path);
+    ref.push(genericString);
   }
 
   doesMoveNameAlreadyExistInDb(moveName: string, categoryName: string, subcategoryName: string): Observable<boolean>{
@@ -1265,8 +1359,24 @@ export class DatabaseService {
   }
 
   removeMoveNameFromCandidateList(moveName: string){
-    let ref = firebase.database().ref('/candidateMoveNames/');
-    ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
+    this.removeGenericStringWithOrderByFromDb('/candidateMoveNames/', 'moveName', moveName);
+    // let ref = firebase.database().ref('/candidateMoveNames/');
+    // ref.orderByChild('moveName').equalTo(moveName).on("child_added", snapshot =>{
+    //   ref.child(snapshot.key).remove();
+    // });
+  }
+
+  removeTournamentNameFromCandidateList(tournamentName: string){
+    this.removeGenericStringWithOrderByFromDb('/candidateTournamentNames/', 'name', tournamentName);
+    // let ref = firebase.database().ref('/candidateTournamentNames/');
+    // ref.orderByChild('name').equalTo(tournamentName).on("child_added", snapshot =>{
+    //   ref.child(snapshot.key).remove();
+    // });
+  }
+
+  removeGenericStringWithOrderByFromDb(path: string, orderIndex: string, genericString: string){
+    let ref = firebase.database().ref(path);
+    ref.orderByChild(orderIndex).equalTo(genericString).on("child_added", snapshot =>{
       ref.child(snapshot.key).remove();
     });
   }
@@ -1328,9 +1438,60 @@ export class DatabaseService {
     return obsRet;
   }
 
+  getMatchUrlFromMatchId(matchId: string){
+    let ref = firebase.database().ref('/matches/' + matchId + '/matchDeets/videoUrl');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByKey().on("value", snapshot =>{
+        console.log("snapshot.val() from getMatchUrlFromMatchId is:");
+        console.log(snapshot.val());
+        observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
+  }
+
+  getMatchUrlFromCandidateTournamentName(tournamentName: string){
+    // let ref = firebase.database().ref('/candidateTournamentNames/');
+    // let obsRet = Observable.create(function(observer){
+    //   ref.orderByChild('name').equalTo(tournamentName).on("child_added", snapshot =>{
+    //     observer.next(snapshot.val().associatedMatchUrl);
+    //   });
+    // });
+    // return obsRet;
+    return this.getMatchUrlFromGenericCandidateName('/candidateTournamentNames/', 'name', tournamentName);
+  }
+
+  getMatchUrlFromGenericCandidateName(candidatePath: string, orderByParameter:string, name: string){
+    let ref = firebase.database().ref(candidatePath);
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild(orderByParameter).equalTo(name).on("child_added", snapshot =>{
+        observer.next(snapshot.val().associatedMatchUrl);
+      });
+    });
+    return obsRet;
+  }
+
   updateMoveNameInMatch(matchId: string, moveId: string, targetName: string, newName: string){
+    // let updates = {};
+    // updates['/matches/' + matchId + '/moves/' + moveId + '/moveName/'] = newName;
+    // firebase.database().ref().update(updates);
+    this.updateGenericNameInMatch('/moves/' + moveId + '/moveName/', matchId, newName);
+  }
+
+  updateTournamentNameInMatch(matchId: string, newName: string){
+    this.updateGenericNameInMatch('/matchDeets/tournamentName', matchId, newName);
+    // let updates = {};
+    // updates['/matches/' + matchId + '/matchDeets/tournamentName'] = newName;
+    // firebase.database().ref().update(updates);
+  }
+
+  updateGenericNameInMatch(subPath: string, matchId: string, newName: string){
+    console.log("entered updateGenericNameInMatch");
+    console.log("subPath is " + subPath);
+    console.log("matchId is " + matchId);
+    console.log("newName is " + newName);
     let updates = {};
-    updates['/matches/' + matchId + '/moves/' + moveId + '/moveName/'] = newName;
+    updates['/matches/' + matchId + '/' + subPath] = newName;
     firebase.database().ref().update(updates);
   }
 
@@ -1338,6 +1499,20 @@ export class DatabaseService {
     subcategory = subcategory + '/';
     let ref = firebase.database().ref('moves/' + categoryName + '/' + subcategory);
     ref.orderByValue().equalTo(moveName).on("child_added", snapshot =>{
+      ref.child(snapshot.key).remove();
+    });
+  }
+
+  deleteTournamentName(tournamentName: string){
+    let ref = firebase.database().ref('tournamentNames/');
+    ref.orderByValue().equalTo(tournamentName).on("child_added", snapshot =>{
+      ref.child(snapshot.key).remove();
+    });
+  }
+
+  deleteGenericString(path: string, name: string){
+    let ref = firebase.database().ref(path);
+    ref.orderByValue().equalTo(name).on("child_added", snapshot =>{
       ref.child(snapshot.key).remove();
     });
   }

@@ -11,10 +11,12 @@
         <button mat-menu-item *ngIf="authenticationStatus" routerLink="faq"><mat-icon>help</mat-icon> Help/F.A.Q.</button>
       </mat-menu>
       <div class="align-right" id="user-items">
-        <span *ngIf="authenticationStatus">
+          <span *ngIf="authenticationStatus">
             {{name}}
-        </span>
-        <span matBadge="{{localNewReputationCount}}" matBadgeOverlap="false">{{localReputation}}</span>
+          </span>
+          <span *ngIf="authenticationStatus" matBadge="{{localNewReputationCount}}" matBadgeOverlap="false">
+            {{localReputation}}
+          </span>
         <app-user-status-report *ngIf="authenticationStatus && !paidStatus" class="move-left"></app-user-status-report>
         <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu" id="settings-button"><mat-icon>settings_applications</mat-icon></button>
         <mat-menu #userMenu>

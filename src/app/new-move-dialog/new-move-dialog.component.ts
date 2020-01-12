@@ -6,19 +6,18 @@ import {MatSnackBar} from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
 import { ValidationService } from '../validation.service';
-import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
 import { constants } from '../constants';
 import { TextTransformationService } from '../text-transformation.service';
-
+import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 
 @Component({
   selector: 'app-new-move-dialog',
   templateUrl: './new-move-dialog.component.html',
   styleUrls: ['./new-move-dialog.component.scss']
 })
-export class NewMoveDialogComponent extends BaseComponent implements OnInit {
+export class NewMoveDialogComponent extends BaseDialogComponent implements OnInit {
   form: FormGroup;
   private moveNameFc: FormControl = new FormControl('', [Validators.required]);
   private moveCategoryFc: FormControl = new FormControl('', [Validators.required]);
@@ -29,8 +28,8 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
   private displaySubcategorySelect: boolean = false;
   private displayCategoryName: boolean = true;
 
-  constructor(public snackBar: MatSnackBar, private fb: FormBuilder, private dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, private vs: ValidationService, private trackerService: TrackerService, private db: DatabaseService, private textTransformationService: TextTransformationService) {
-    super();
+  constructor(public snackBar: MatSnackBar, public fb: FormBuilder, public dialogRef: MatDialogRef<NewMoveDialogComponent>, @Inject(MAT_DIALOG_DATA) {moveNameFc}, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+    super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {
@@ -72,18 +71,18 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
         this.openSnackBar(constants.moveNameAlreadyExistsNotification);
       } else{
         console.log("this shouldn't happen if there's a match in the db");
-        this.sendDataThroughDialog(vals);
+        this.sendDataThroughDialog(vals, this.dialogRef);
       }
     })
   }
 
-  sendDataThroughDialog(data: any){
-    this.dialogRef.close(data);
-  }
+  // sendDataThroughDialog(data: any){
+  //   this.dialogRef.close(data);
+  // }
 
-  close(){
-    this.dialogRef.close();
-  }
+  // close(){
+  //   this.dialogRef.close();
+  // }
 
   allValid(){
     let values = this.getValues();
@@ -120,12 +119,12 @@ export class NewMoveDialogComponent extends BaseComponent implements OnInit {
     return  errorMessage;
   }
 
-  openSnackBar(message: string) {
-    // console.log("openSnackBar called");
-    this.snackBar.open(message, '', {
-      duration: 3000,
-    });
-  }
+  // openSnackBar(message: string) {
+  //   // console.log("openSnackBar called");
+  //   this.snackBar.open(message, '', {
+  //     duration: 3000,
+  //   });
+  // }
 
 
 }

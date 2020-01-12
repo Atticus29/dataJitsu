@@ -19,8 +19,8 @@ export class HelperService {
         return Array.isArray(opts[0]);
       } else{
         if (typeof opts === 'string'){
-          console.log(opts);
-          console.log(constants.rootNodesWithSubcategories);
+          // console.log(opts);
+          // console.log(constants.rootNodesWithSubcategories);
           if(constants.rootNodesWithSubcategories.includes(opts)){ //TODO stop this from erroring
             return true;
           } else{

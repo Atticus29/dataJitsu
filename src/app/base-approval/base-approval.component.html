@@ -1,0 +1,28 @@
+<h5>Confirm new {{approvalConfig.localApprovalAndDisapprovalPhrase}} names:</h5>
+<div class="flexbox-container small-black-border">
+  <div class="flexbox-item">
+    <ul>
+      <li *ngFor="let candidateName of approvalConfig.localCandidateNames">
+        {{candidateName}}
+        <span matTooltip="Approve" (click)="approveName(candidateName, approvalConfig.localApprovalAndDisapprovalPhrase)" name="approve-move">
+          <i class="material-icons" id="up">thumb_up</i>
+        </span>
+        <span matTooltip="Disapprove" (click)="disapproveName(candidateName, approvalConfig.localApprovalAndDisapprovalPhrase)" name="disapprove-move">
+          <i class="material-icons" id="down">thumb_down</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="flexbox-item">
+    <h5>{{approvalConfig.localParameterPhrase}} names already in the database (for reference):</h5>
+    <hr>
+    <ul>
+      <li *ngFor="let localApprovedName of approvalConfig.localApprovedNames">
+        {{localApprovedName}}
+        <span (click)="deleteName(localApprovedName, approvalConfig.localApprovalAndDisapprovalPhrase)" *ngIf="localIsAdmin" name="delete-move-name">
+          <i class="material-icons" id="delete">delete</i>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

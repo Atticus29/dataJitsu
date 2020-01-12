@@ -1,3 +1,5 @@
+import { ApprovalConfig } from './approvalConfig.model';
+
 export var constants = {
     moveNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
@@ -5,7 +7,13 @@ export var constants = {
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",
+    athleteNameRemovedMessage: "Athlete name has been removed; flag me",
     moveNameRemovedMessage: "Move name has been removed; flag me",
+    tournamentNameRemovedMessage: "Tournament name has been removed",
+    noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
+    ageClassRemovedMessage: "Age class has been removed",
+    weightClassRemovedMessage: "Weight class name has been removed",
+    locationRemovedMessage: "Location_name_has_been_removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
@@ -48,9 +56,30 @@ export var constants = {
     numberOfPointsToAwardForAnnotation: 10,
     numberOfPointsToAwardForApprovingCandidateAthleteName: 5,
     numberOfPointsToAwardForApprovingMoveName: 5,
+    numberOfPointsToAwardForApprovingTournamentName: 5,
+    numberOfPointsToAwardForApprovingWeigthClassName: 5,
+    numberOfPointsToAwardForApprovingNoGiRankName: 5,
+    numberOfPointsToAwardForApprovingAgeClass: 5,
+    numberOfPointsToAwardForApprovingLocation: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
     numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
     stipePlanId: "plan_GQ7IoLADxXFFak",
+    get weightClassApprovalConfig() {
+      return new ApprovalConfig(null, null, 'Weight class', 'weight class', this.weightClassRemovedMessage, this.numberOfPointsToAwardForApprovingWeigthClassName, 'matchDeets/weightClass', '/weightClasses', '/candidateWeightClasses')
+    },
+    get tournamentNameApprovalConfig() {
+      return new ApprovalConfig(null, null, 'Tournament name', 'tournament', this.tournamentNameRemovedMessage, this.numberOfPointsToAwardForApprovingTournamentName, 'matchDeets/tournamentName', '/tournamentNames', '/candidateTournamentNames')
+    },
+    get noGiRankApprovalConfig(){
+      return new ApprovalConfig(null, null, "No gi rank name", "no gi rank", this.noGiRankNameRemovedMessage, this.numberOfPointsToAwardForApprovingNoGiRankName, 'matchDeets/rank', '/noGiRanks', '/candidateNoGiRanks')
+    },
+    get ageClassApprovalConfig(){
+      return new ApprovalConfig(null, null, "Age class name", "age class", this.ageClassRemovedMessage, this.numberOfPointsToAwardForApprovingAgeClass, 'matchDeets/ageClass', '/ageClasses', '/candidateAgeClasses')
+    },
+    get locationNameApprovalConfig(){
+      return new ApprovalConfig(null, null, "Location name", "location", this.locationRemovedMessage, this.numberOfPointsToAwardForApprovingLocation, 'matchDeets/location', '/locations', '/candidateLocationNames')
+    },
+    alreadyExistsNotification: "Your entry already exists in dropdown menu!"
   };

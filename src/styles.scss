@@ -103,6 +103,15 @@
   width: 50em;
 }
 
+.login-button-item{
+  display: block;
+  align-items: center;
+  margin: auto;
+  text-align: center;
+  flex: initial;
+  width: 50em;
+}
+
 .button-space{
   margin: 1.2em;
 }
@@ -145,4 +154,8 @@
 
 .spinner-container{
   align-items: center;
+}
+
+.black-border{
+  border: 0.2em solid black;
 }

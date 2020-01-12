@@ -10,7 +10,7 @@ export class EmailLoginDialog {
     public dialogRef: MatDialogRef<EmailLoginDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
-  onNoClick(): void {
+  onNoclick(): void {
     this.dialogRef.close();
   }
 

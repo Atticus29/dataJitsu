@@ -132,6 +132,12 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.db.getInappropriateFlagStatus(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleInappropriateFlagged(true) : this.handleInappropriateFlagged(false);
         });
+        this.db.getMatchUrlFromMatchId(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUrl =>{
+          this.ytId = this.parseVideoUrl(matchUrl);
+          if(this.player){
+            this.player.loadVideoById(this.ytId, 0);
+          }
+        });
       }
       this.db.getAverageMatchRating(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside matchId params LEFT OFF HERE
         this.matchAverageRating = average;
@@ -256,6 +262,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   parseVideoUrl(url: string){ //@TODO seems hacky
     var re = /.*youtu.+?be\/(.+)/ig;
     var result = re.exec(url);
+    console.log("results from parseVideoUrl:");
+    console.log(result);
     return result[1];
   }
 
@@ -305,36 +313,38 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   processMatchEntryInDatabase(){
+    console.log("processMatchEntryInDatabase entered");
     let annotationMadeCounter: number = 0;
     this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-          if(!moveUniqueEnough){
-            if(annotationMadeCounter < 1){
-              this.openSnackBar("Annotation has already been made by another user");
-              annotationMadeCounter ++ ;
-            }
-            this.moveName = null;
-            this.moveCategory = null;
-            this.performer = null;
-            this.recipient = null;
-            this.startTime = null;
-            this.endTime = null;
-            this.points = null;
-            this.submissionStatus = null;
-            this.attemptStatus = null;
-            this.trackerService.resetAllExceptCurrentMatch();
-            this.moveAssembledStatus.next(false);
-          } else{
-            this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
-              if(moveUniqueEnoughInUser){
-                this.openSnackBar("Annotation Recorded");
-                annotationMadeCounter ++;
-                this.handleNullingAndResettingLocalAndTrackedVariables();
-              }else{
-                this.handleNullingAndResettingLocalAndTrackedVariables();
-              }
-            });
+      console.log("addMoveInVideoToMatchIfUniqueEnough entered");
+      if(!moveUniqueEnough){
+        if(annotationMadeCounter < 1){
+          this.openSnackBar("Annotation has already been made by another user");
+          annotationMadeCounter ++ ;
+        }
+        this.moveName = null;
+        this.moveCategory = null;
+        this.performer = null;
+        this.recipient = null;
+        this.startTime = null;
+        this.endTime = null;
+        this.points = null;
+        this.submissionStatus = null;
+        this.attemptStatus = null;
+        this.trackerService.resetAllExceptCurrentMatch();
+        this.moveAssembledStatus.next(false);
+      } else{
+        this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+          if(moveUniqueEnoughInUser){
+            this.openSnackBar("Annotation Recorded");
+            annotationMadeCounter ++;
+            this.handleNullingAndResettingLocalAndTrackedVariables();
+          }else{
+            this.handleNullingAndResettingLocalAndTrackedVariables();
           }
         });
+      }
+    });
   }
 
   savePlayer(player) {
@@ -417,6 +427,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   }
 
   endMove(){
+    console.log("end move clicked");
     this.player.pauseVideo();
     let endMoveClickCounter: number = 0;
     let currentTime: number = this.player.getCurrentTime();

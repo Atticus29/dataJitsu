@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { takeUntil, take, switchMap } from 'rxjs/operators';
 
 import { AuthorizationService } from '../authorization.service';
@@ -33,11 +33,17 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    try{
+      let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(user? this.dbService.hasUserPaid(user.id): of(false))));
+      pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+        this.paidStatus = paymentStatus;
+      });
+    }catch(err){
+      console.log("fetching payment status failed. Error caught");
+      console.log(err);
+    }
 
-    let pymnStats = this.trackerService.currentUserBehaviorSubject.pipe(switchMap((user)=>(this.dbService.hasUserPaid(user.id))));
-    pymnStats.pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-      this.paidStatus = paymentStatus;
-    });
+
     // console.log("ngOnInit user-status-report is called");
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: User)=>{
       this.user = user;

@@ -1,4 +1,8 @@
 # Known issues
+- [ ] Stripe is broken; also, write a test for this? Related:
+   - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
+- [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
+- [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
 - [ ] In mobile, clicking on video doesn't let it stay embedded.
 - [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?... didn't happen this time TODO
@@ -43,6 +47,7 @@
 - [x] //TODO createMoveInVideo from form submission
 
 # Resolved issues
+- [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - [x] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
 - [x] Tooltips in match-display are very inconsistent (make sure it's not just when the dev tools are open? Currently seems to be the case)

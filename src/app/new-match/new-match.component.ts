@@ -8,7 +8,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { Subject ,  Observable } from 'rxjs';
-import { takeUntil, take, switchMap } from 'rxjs/operators';
+import { takeUntil, take, switchMap, first } from 'rxjs/operators';
 
 import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
@@ -22,7 +22,13 @@ import { ValidationService } from '../validation.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
+
 import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
+import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
+import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
+import { NewNoGiRankDialogComponent } from '../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
+import { NewAgeClassDialogComponent } from '../new-age-class-dialog/new-age-class-dialog.component';
+import { NewLocationNameDialogComponent } from '../new-location-name-dialog/new-location-name-dialog.component';
 
 declare var $:any;
 
@@ -40,11 +46,13 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   ageClasses: any[];
   ranks: any[];
   athleteNames: any[];
+  tournamentNames: any[];
   giRanks: any[];
   nogiRanks: any[];
   rankType: string = "Nogi";
   genders: any[];
   weightClasses: any[];
+  locationNames: any[];
   newMatchForm: FormGroup;
   currentUserId: any;
   currentUser: any = null;
@@ -53,6 +61,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
   disabledWeightClass: boolean = false;
+  disabledLocationName: boolean = false;
   giStatus: boolean = false;
   checked: boolean = false;
   rankSelection: string;
@@ -63,6 +72,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   // localMatchUrlBound: string = null;
   localAthlete1Name: string = null;
   localAthlete2Name: string = null;
+  localTournamentName: string = null;
+  localWeightClassName: string = null;
+  localNoGiRankName: string = null;
+  localAgeClassName: string = null;
+  localLocationName: string = null;
   // localTournamentNameBound: string = null;
   // localLocationBound: string = null;
   // localTournamentDateBound: string = null;
@@ -84,6 +98,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
   private ageClassBoundFc: FormControl = new FormControl('', [Validators.required]);
   private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
   private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private noGiRankBoundFc: FormControl = new FormControl('', [Validators.required]);
 
   constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog, private textTransformationService: TextTransformationService) {
     super();
@@ -131,17 +146,21 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
     this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
       this.athleteNames = athleteNames.sort();
-    })
+    });
+
+    this.db.getTournamentNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(tournamentNames =>{
+      this.tournamentNames = tournamentNames.sort();
+    });
 
     this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
-      this.giRanks = giRanks.sort();
-      this.ranks = giRanks.sort();
+      this.giRanks = giRanks; //.sort();
+      this.ranks = giRanks; //.sort();
       // this.disabledGiRank = true;
-    })
+    });
 
     this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
-      this.nogiRanks = noGiRanks.sort();
-      this.ranks = noGiRanks.sort();
+      this.nogiRanks = noGiRanks; //.sort();
+      this.ranks = noGiRanks; //.sort();
       // this.disabledNoGiRank = true;
     })
 
@@ -153,6 +172,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     this.db.getWeightClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
       this.weightClasses = weightClasses.sort();
       this.disabledWeightClass = true;
+    });
+
+    this.db.getLocations().pipe(takeUntil(this.ngUnsubscribe)).subscribe(locationNames=>{
+      this.locationNames = locationNames.sort();
+      this.disabledLocationName = true;
     });
 
     this.newMatchForm = this.fb.group({
@@ -194,16 +218,42 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       athlete2NameBound = this.localAthlete2Name;
       this.db.addCandidateNameToDb(athlete2NameBound, matchUrlBound);
     }
-    console.log(athlete1NameBound);
-    console.log(athlete2NameBound);
+    // console.log(athlete1NameBound);
+    // console.log(athlete2NameBound);
     let tournamentNameBound = this.tournamentNameBoundFc.value;
+    if(this.localTournamentName){
+      console.log("localTournamentName exists");
+      tournamentNameBound = this.localTournamentName;
+      this.db.addCandidateTournamentNameToDb(tournamentNameBound, matchUrlBound);
+    }
+
+    let weightBound = this.weightBoundFc.value;
+    if(this.localWeightClassName){
+      console.log("localWeightClassName exists");
+      weightBound = this.localWeightClassName;
+      this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, matchUrlBound);
+    }
     let locationBound = this.locationBoundFc.value;
+    if(this.localLocationName){
+      console.log("localLocationName exists");
+      locationBound = this.localLocationName;
+      this.db.addGenericCandidateNameToDb('candidateLocationNames', locationBound, matchUrlBound);
+    }
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
     let genderBound = this.genderBoundFc.value;
     let ageClassBound = this.ageClassBoundFc.value;
+    if(this.localAgeClassName){
+      console.log("localAgeClassName exists");
+      ageClassBound = this.localAgeClassName;
+      this.db.addGenericCandidateNameToDb('candidateAgeClasses', ageClassBound, matchUrlBound);
+    }
     let rankBound = this.rankBoundFc.value;
-    let weightBound = this.weightBoundFc.value;
+    if(this.localNoGiRankName){
+      console.log("localNoGiRankName exists");
+      rankBound = this.localNoGiRankName;
+      this.db.addGenericCandidateNameToDb('candidateNoGiRanks', rankBound, matchUrlBound);
+    }
 
     // let otherResults = this.newMatchForm.value;
     return {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
@@ -250,6 +300,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       this.rankType = "Gi";
       this.ranks = this.giRanks;
       this.giStatus = true;
+      // this.localNoGiRankName = "";
     } else{
       console.log("nogi selected");
       this.rankType = "Nogi";
@@ -336,13 +387,41 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
   }
 
+  async openAgeClassNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewAgeClassDialogComponent, dialogConfig);
+    this.localAgeClassName = await this.processGenericDialog(dialogRef, 'ageClasses', 'ageClassName');
+  }
+
+  async openWeightClassNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewWeightClassDialogComponent, dialogConfig);
+    this.localWeightClassName = await this.processGenericDialog(dialogRef, 'weightClasses', 'weightClassName');
+  }
+
+  async openNoGiRankDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewNoGiRankDialogComponent, dialogConfig);
+    this.localNoGiRankName = await this.processGenericDialog(dialogRef, 'noGiRanks', 'noGiRankName');
+
+  }
+
+  async openTournamentNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
+    this.localTournamentName = await this.processGenericDialog(dialogRef, 'tournamentNames', 'tournamentName');
+  }
+
+  async openLocationNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewLocationNameDialogComponent, dialogConfig);
+    this.localLocationName = await this.processGenericDialog(dialogRef, 'locations', 'locationName');
+  }
+
   openAddNameDialog(athleteNumber: number){
     // console.log("clicked!");
     console.log("athlete number is " + athleteNumber);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {};
+    let dialogConfig = this.getGenericDialogConfig();
     const dialogRef = this.dialog.open(NewAthleteNameDialogComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to new-match component?:");
@@ -373,6 +452,34 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       });
       // this.authService.emailLogin(val.email, val.passwd);
     });
+  }
+
+  getGenericDialogConfig(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    return dialogConfig;
+  }
+
+  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any>
+    console.log("entered processGenericDialog")
+    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
+      if(val){
+        console.log("val");
+        console.log(val);
+        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
+        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+        if(genericStringNames.includes(candidateNameCapitalized)){
+          this.openSnackBar(constants.alreadyExistsNotification, null);
+          return null;
+        }else{
+          console.log("got here");
+          return candidateNameCapitalized;
+        }
+      }else{
+        return null;
+      }
   }
 
 }

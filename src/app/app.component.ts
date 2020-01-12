@@ -58,13 +58,12 @@ export class AppComponent extends BaseComponent implements OnInit {
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
-      // console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
-      // console.log(currentUser);
-      // console.log(currentUser.uid);
-      if(currentUser){ // && currentUser.uid
-        // console.log(currentUser.uid);
+      console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
+      if(currentUser){
+        console.log(currentUser);
         if(currentUser.uid){
-          // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
+          console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
+          console.log("changing authenticationStatus to true...");
           this.authenticationStatus = true;
           this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
             this.user = dbUser;
@@ -95,10 +94,12 @@ export class AppComponent extends BaseComponent implements OnInit {
             });
           })
         } else {
+          console.log("currentUser id DNE; changing authenticationStatus to false ....")
           this.authenticationStatus = false;
           this.user = null; //shouldn't be necessary becuase authenticationStatus is doing this job right now, but here ya go anyway
         }
       } else{
+        console.log("currentUser DNE; changing authenticationStatus to false ....")
         this.authenticationStatus = false;
         this.name = "Anonymous User";
       }
