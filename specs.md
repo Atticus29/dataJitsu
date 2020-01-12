@@ -1,4 +1,6 @@
 # TODO high priority
+- [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
+  - [ ] Characterize the problem better
 - [ ] Set up a dev project in firebase and hook up there instead
 - [ ] Write tests for stripe subscription and cancellation
 - [x] Have custom no gi rank option, and add unknown to it
@@ -7,7 +9,9 @@
     - [x] Passing tests
 - [x] Have custom location option, and add unknown to it
     - [ ] Passing tests
-- [ ] Add new move options to every section
+- [x] Have custom tournament option, and add unknown to it
+    - [x] Passing tests
+- [x] Add new move options to every section
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
 - [ ] Stripe follow-up
   - [ ] Zip code validation
@@ -15,22 +19,18 @@
   - [ ] Let user know that bill will appear as Fisher Dynamic
 - [ ] //TODO this is the only part that is not in base component...experiment with putting it in there
 - [ ] Add interesting exchange or something like that
-- [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
-  - [ ] Characterize the problem better
-- [ ] Tournaments from a dropdown
 - [ ] Custom categories
-  - [ ] weight class
-    - [ ] Dropdown
-    - [ ] Dialogue
-    - [ ] Dialogue adds approval display for admin
-    - [ ] Form validation in dialog
-    - [ ] Form select is dynamic for subcategory
-    - [ ] Doesn't add it and sends a little snackbar saying move name already exists if so
-    - [ ] Approval adds to db and removes from candidate list, and awards reputation points
-    - [ ] Disapproval removes from candidate list and substitutes, "flag me"
-    - [ ] Feature to delete move name from move list
-    - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
-    - [ ] Put delete feature under control of isAdmin (or isModerator?)
+  - [x] weight class
+    - [x] Dropdown
+    - [x] Dialogue
+    - [x] Dialogue adds approval display for admin
+    - [x] Form validation in dialog
+    - [x] Doesn't add it and sends a little snackbar saying move name already exists if so
+    - [x] Approval adds to db and removes from candidate list, and awards reputation points
+    - [x] Disapproval removes from candidate list and substitutes, "flag me"
+    - [x] Feature to delete move name from move list
+    - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
+    - [x] Put delete feature under control of isAdmin (or isModerator?)
     - [ ] Added moveNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match

@@ -79,6 +79,7 @@ describe ('Match custom match tests: age class', () =>{
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
       cy.url().should('not.match',/newmatch/);
       cy.url().should('match',/matches/);
+      cy.wait(4000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customAgeClassName).should('exist');

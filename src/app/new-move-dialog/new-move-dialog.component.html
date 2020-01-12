@@ -22,7 +22,7 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="flex-item">
-    <button class="btn waves-effect waves-light button-space" (click)="close()">
+    <button class="btn waves-effect waves-light button-space" (click)="close(dialogRef)">
       Close
     </button>
     <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData()" [disabled]="!allValid()">
