@@ -149,13 +149,16 @@ describe ('Match annotation tests', () =>{
    cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
-   cy.wait(1000);
-   cy.contains('Current Move Being Annotated: Advantage Awarded').should('not.exist');
+   cy.wait(3000);
+   cy.contains('No Annotation Currently Selected').should('exist');
+   // cy.contains('Current Move Being Annotated: Advantage Awarded').should('not.exist');
    // //And then again
    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
    cy.get('div[id=annotationModal]').should('be.visible');
    // cy.get('mat-icon').first().click({force:true});
-   cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
+   // cy.contains('Annotation Selected: Advantage Awarded').should('not.exist');
+   cy.contains('No Annotation Currently Selected').should('exist');
+
    cy.selectAdvantageAnnotation();
    // cy.contains('Advantage').first().next().click({force:true});
    cy.get('mat-select[id=performer]').click({force:true});

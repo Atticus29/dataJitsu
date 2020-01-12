@@ -52,7 +52,9 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
             this.router.navigate(['landing']);
             });
           }
-          if(dbUser.privileges.isAdmin){
+          if(dbUser.privileges.isAdmin && !this.columnsToDisplay.includes('deleteMatch')){
+            // console.log("this.columnsToDisplay before pushing deleteMatch:");
+            // console.log(this.columnsToDisplay);
             this.columnsToDisplay.push('deleteMatch');
           }
         });

@@ -92,7 +92,7 @@ describe ('Match custom tests: move name', () =>{
 
   });
 
-  it.only('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
+  it('disapproves the custom move from the admin page, checks that the custom move has been re-named, and removes the now-renamed annotation', function(){
     //First delete the annotation that already exists
     cy.log("First delete the annotation that already exists");
     cy.logout();
