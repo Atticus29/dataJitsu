@@ -9,7 +9,7 @@ describe ('Match custom match tests: age class', () =>{
   afterEach(() =>{
     cy.logout();
   });
-  it.only('adds custom thing and submits new match', function(){
+  it('adds custom thing and submits new match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/newmatch');
       cy.fillInMatchCreationDetailsWithCustomAgeClass(cypressConstants.customAgeClassName);
