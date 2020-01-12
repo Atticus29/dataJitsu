@@ -12,6 +12,7 @@ describe ('Match custom match tests: no gi rank', () =>{
   it('adds custom thing and submits new match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/newmatch');
+      cy.wait(3000);
       cy.fillInMatchCreationDetailsWithCustomLocation(cypressConstants.customLocation);
       cy.get('button[id=new-match-submit-button]').click();
       cy.wait(2000);

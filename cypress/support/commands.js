@@ -250,9 +250,12 @@ Cypress.Commands.add("selectCrossCollarChoke", () => {
 
 Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
   cy.get(`mat-select[id="${selectId}"`).click({timeout:5000}).then(() => {
+    cy.wait(1000);
     cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', selectOption);
+    cy.wait(1000);
     cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text:contains("${selectOption}")`).first().click({timeout:5000}).then(() => {
       // After click, mat-select should contain the text of the selected option
+      cy.wait(1000);
       cy.get(`mat-select[id="${selectId}"`).contains(selectOption);
     });
   });
