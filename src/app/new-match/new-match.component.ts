@@ -14,9 +14,9 @@ import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
 import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
-import { MatchDetails } from '../matchDetails.model';
+import { VideoDetails } from '../VideoDetails.model';
 import { Match } from '../match.model';
-import { MoveInVideo } from '../moveInVideo.model';
+import { EventInVideo } from '../EventInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
 import { TextTransformationService } from '../text-transformation.service';
@@ -272,8 +272,8 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let self = this;
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
-    let moves: Array<MoveInVideo> = new Array<MoveInVideo>();
+    let matchDeets = new VideoDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
+    let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){
         let match = new Match(matchDeets, self.localUser.id, moves);

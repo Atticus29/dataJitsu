@@ -14,10 +14,10 @@ import { TextTransformationService } from '../text-transformation.service';
 
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
-import { MatchDetails } from '../matchDetails.model';
+import { VideoDetails } from '../VideoDetails.model';
 import { Match } from '../match.model';
 import { User } from '../user.model';
-import { MoveInVideo } from '../moveInVideo.model';
+import { EventInVideo } from '../EventInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { constants } from '../constants';
 
@@ -31,7 +31,7 @@ var player;
 
 export class MatchDisplayComponent extends BaseComponent implements OnInit {
   matchId : string;
-  matchDetails: MatchDetails;
+  VideoDetails: VideoDetails;
   match: Observable<Match>;
   matchUrl: string;
   currentTime: string;
@@ -49,7 +49,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   private trigger: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private userInDbId: string = null;
   private moveAssembledStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private tempMove: MoveInVideo;
+  private tempMove: EventInVideo;
   private dataSource: DynamicDataSource;
   private treeControl: FlatTreeControl<DynamicFlatNode>;
   getLevel = (node: DynamicFlatNode) => node.level;
@@ -102,7 +102,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
 
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
       if(this.asssembleCheck()){
-        self.tempMove = new MoveInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
+        self.tempMove = new EventInVideo(this.moveName, this.moveCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.matchId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         this.handleSettingMoveNameStatuses(self.tempMove, this.moveName);
         self.moveAssembledStatus.next(true);
       } else{
@@ -267,7 +267,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     return result[1];
   }
 
-  onMoveSelected(moveSelected: MoveInVideo){
+  onMoveSelected(moveSelected: EventInVideo){
     player.playVideo();
   }
   openSnackBar(message: string) {
@@ -315,8 +315,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   processMatchEntryInDatabase(){
     console.log("processMatchEntryInDatabase entered");
     let annotationMadeCounter: number = 0;
-    this.db.addMoveInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-      console.log("addMoveInVideoToMatchIfUniqueEnough entered");
+    this.db.addEventInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+      console.log("addEventInVideoToMatchIfUniqueEnough entered");
       if(!moveUniqueEnough){
         if(annotationMadeCounter < 1){
           this.openSnackBar("Annotation has already been made by another user");
@@ -334,7 +334,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.trackerService.resetAllExceptCurrentMatch();
         this.moveAssembledStatus.next(false);
       } else{
-        this.db.addMoveInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+        this.db.addEventInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
           if(moveUniqueEnoughInUser){
             this.openSnackBar("Annotation Recorded");
             annotationMadeCounter ++;
@@ -364,7 +364,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     this.player.loadVideoById(newId, 0);
   }
 
-  handleSettingMoveNameStatuses(move: MoveInVideo, moveName: string){
+  handleSettingMoveNameStatuses(move: EventInVideo, moveName: string){
     if(moveName === "Win"){
       move.setIsWin(true);
     }

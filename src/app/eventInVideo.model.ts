@@ -1,6 +1,6 @@
 import { constants } from './constants';
 
-export class MoveInVideo {
+export class EventInVideo {
   private dateAdded: string;
   public isWin: boolean;
   public isDraw: boolean;

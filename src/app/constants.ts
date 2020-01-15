@@ -3,7 +3,7 @@ import { ApprovalConfig } from './approvalConfig.model';
 export var constants = {
     moveNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
-    title: "Match Annotator",
+    title: "Video Annotator",
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
     lightBlueHex: "#ADD8E6",

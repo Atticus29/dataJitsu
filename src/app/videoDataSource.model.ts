@@ -6,7 +6,7 @@ import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class MatchDataSource implements DataSource<Match> {
+export class VideoDataSource implements DataSource<Match> {
 
   private matchesSubject = new BehaviorSubject<Match[]>([]);
   private loadingMatches = new BehaviorSubject<boolean>(false);

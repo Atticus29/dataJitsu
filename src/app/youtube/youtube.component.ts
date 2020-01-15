@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Match } from '../match.model';
-import { MatchDetails } from '../matchDetails.model';
-import { MoveInVideo } from '../moveInVideo.model';
+import { VideoDetails } from '../VideoDetails.model';
+import { EventInVideo } from '../EventInVideo.model';
 import { User } from '../user.model';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';

@@ -15,7 +15,7 @@ import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { D3Service } from '../d3.service';
 import { TextTransformationService } from '../text-transformation.service';
-import { MatchDataSource } from '../matchDataSource.model';
+import { VideoDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { User } from '../user.model';
 
@@ -34,7 +34,7 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: MatchDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
+  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: VideoDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
     super();
   }
 
@@ -63,7 +63,7 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
       }
     });
     this.pageSize = 10;
-    this.dataSource = new MatchDataSource(this.dbService);
+    this.dataSource = new VideoDataSource(this.dbService);
     this.dataSource.loadMatches('test', '', '', 0, this.pageSize);
     this.dbService.getMatchCount().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results=>{
       this.matchCount = results;

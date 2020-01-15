@@ -24,8 +24,8 @@ import { DynamicDataSource } from '../dynamicDataSource.model';
 import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
-import { MoveInVideo } from '../moveInVideo.model';
-import { MatchDetails} from '../matchDetails.model';
+import { EventInVideo } from '../EventInVideo.model';
+import { VideoDetails} from '../VideoDetails.model';
 
 declare var $:any;
 
@@ -36,7 +36,7 @@ declare var $:any;
   // providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent extends BaseComponent implements OnInit {
-  @Output() moveSelected = new EventEmitter<MoveInVideo>();
+  @Output() moveSelected = new EventEmitter<EventInVideo>();
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
@@ -48,7 +48,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private disabledStatus: boolean = true;
   private performers: any[];
-  private localMatchDeets: MatchDetails;
+  private localMatchDeets: VideoDetails;
   private disabledPerformer: boolean = false;
   private moveValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private moveValidStatus: boolean = false;
@@ -90,10 +90,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     });
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
       console.log("matchId in current match tracker " + matchId);
-      this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
+      this.db.getVideoDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
         console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
         console.log(Array.of(matchDeets));
-        this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
+        this.localMatchDeets =  Array.of(matchDeets).map(VideoDetails.fromJson)[0];
         // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
@@ -220,7 +220,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
-          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
+          this.db.addCandidateEventInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }
       //TODO add to an admin component

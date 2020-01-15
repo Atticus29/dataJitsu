@@ -34,7 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { MatchDataSource } from './matchDataSource.model';
+import { VideoDataSource } from './matchDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -230,7 +230,7 @@ export const firebaseConfig = {
     routing,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
   bootstrap: [AppComponent],
   entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
 })
