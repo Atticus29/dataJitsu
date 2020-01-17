@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues.
 - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
 - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)

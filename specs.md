@@ -1,4 +1,9 @@
 # TODO high priority
+- [ ] Write tests for isAnnotated status changing if so many users vote high enough
+  - [ ] Too few votes and not isAnnotated
+  - [ ] Enough and isAnnotated is true
+  - [ ] Once isAnnotated is true, reputation awarded to majority annotator
+  - [ ] Doesn't continue to award if there are more upvotes (i.e., if isAnnotated has already been marked true)
 - [ ] Set up a dev project in firebase and hook up there instead
 - [ ] Write tests for stripe subscription and cancellation
 

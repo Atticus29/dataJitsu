@@ -18,6 +18,7 @@ import { TextTransformationService } from '../text-transformation.service';
 import { VideoDataSource } from '../videoDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { User } from '../user.model';
+import { Match } from '../match.model';
 
 @Component({
   selector: 'app-all-matches',
@@ -74,6 +75,13 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
     });
 
     this.dbService.getMatches().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      let firstResult = results[Object.keys(results)[0]];
+      // console.log(firstResult);
+      let resultArray = new Array<any>();
+      resultArray.push(firstResult);
+      let tmpMatch1 =  resultArray.map(Match.fromJson);
+      console.log("Mark! Result:");
+      console.log(tmpMatch1);
       this.loadMatchesPage();
     });
   };
