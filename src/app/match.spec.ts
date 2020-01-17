@@ -1,6 +1,6 @@
 import { Match } from './match.model';
-import { VideoDetails } from './VideoDetails.model';
-import { EventInVideo } from './EventInVideo.model';
+import { VideoDetails } from './videoDetails.model';
+import { EventInVideo } from './eventInVideo.model';
 import { User } from './user.model';
 
 describe ('tests for the match class', ()=>{

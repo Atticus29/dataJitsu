@@ -13,7 +13,7 @@ import { Match } from './match.model';
 import { ReputationLog } from './reputationLog.model';
 import { constants } from './constants';
 
-import { EventInVideo } from './EventInVideo.model';
+import { EventInVideo } from './eventInVideo.model';
 
 @Injectable()
 export class DatabaseService {

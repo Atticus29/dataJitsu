@@ -8,7 +8,7 @@ import { TrackerService } from '../tracker.service';
 import { AnnotationLegendDialogComponent } from '../annotation-legend-dialog/annotation-legend-dialog.component';
 import { DatabaseService } from '../database.service';
 import { DateCalculationsService } from '../date-calculations.service';
-import { EventInVideo } from '../EventInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 import { BaseComponent } from '../base/base.component';
 import { constants } from '../constants';
 

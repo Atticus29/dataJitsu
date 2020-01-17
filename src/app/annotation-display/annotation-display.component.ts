@@ -24,8 +24,8 @@ import { DynamicDataSource } from '../dynamicDataSource.model';
 import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
-import { EventInVideo } from '../EventInVideo.model';
-import { VideoDetails} from '../VideoDetails.model';
+import { EventInVideo } from '../eventInVideo.model';
+import { VideoDetails} from '../videoDetails.model';
 
 declare var $:any;
 

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 
-import { VideoDetails } from '../VideoDetails.model';
+import { VideoDetails } from '../videoDetails.model';
 import { Match } from '../match.model';
-import { EventInVideo } from '../EventInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { allCurrentMoves } from '../moves';

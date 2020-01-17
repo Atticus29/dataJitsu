@@ -14,10 +14,10 @@ import { TextTransformationService } from '../text-transformation.service';
 
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
-import { VideoDetails } from '../VideoDetails.model';
+import { VideoDetails } from '../videoDetails.model';
 import { Match } from '../match.model';
 import { User } from '../user.model';
-import { EventInVideo } from '../EventInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
 import { constants } from '../constants';
 

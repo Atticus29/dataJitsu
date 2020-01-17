@@ -8,7 +8,7 @@ import { DatabaseService } from '../database.service';
 import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { TimelineElement } from '../horizontal-timeline/timeline-element';
-import { EventInVideo } from '../EventInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 
 @Component({
   selector: 'app-annotation-data-display',

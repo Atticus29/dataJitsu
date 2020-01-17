@@ -1,5 +1,5 @@
-import { VideoDetails } from './VideoDetails.model';
-import { EventInVideo } from './EventInVideo.model';
+import { VideoDetails } from './videoDetails.model';
+import { EventInVideo } from './eventInVideo.model';
 // import { User } from './user.model';
 
 export class Match {
