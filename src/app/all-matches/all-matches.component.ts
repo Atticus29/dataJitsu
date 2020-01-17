@@ -15,7 +15,7 @@ import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { D3Service } from '../d3.service';
 import { TextTransformationService } from '../text-transformation.service';
-import { VideoDataSource } from '../matchDataSource.model';
+import { VideoDataSource } from '../videoDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { User } from '../user.model';
 

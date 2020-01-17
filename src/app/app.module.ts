@@ -34,7 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { VideoDataSource } from './matchDataSource.model';
+import { VideoDataSource } from './videoDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
