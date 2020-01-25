@@ -23,6 +23,71 @@ export class VideoDataSource implements DataSource<Match> {
     this.loadingMatches.complete();
   }
 
+  filterPredicate(data: any, filter: string){
+      const accumulator = (currentTerm, key) => {
+        return this.accumulateNestedObjectContentsInSearch(currentTerm, data, key);
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      // Transform the filter by converting it to lowercase and removing whitespace.
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+  }
+
+  sortingDataAccessor(item: any, property: string){
+      // console.log("sortingDataAccestor entered");
+      // console.log(item);
+      // console.log(property);
+      if(item[property]){
+        console.log("item at the base level. Bam. should be done");
+        return item[property];
+      } else{
+        console.log("no item at the base level.");
+        //look through all of the objects that are elements of this object, and return any items that are properties of them
+        const sortResult = this.lookDeepIntoObjForItem(item, property);
+        console.log(sortResult);
+        return sortResult;
+      }
+  }
+
+  accumulateNestedObjectContentsInSearch(search, data, key) {
+    console.log("search is: " + search);
+    console.log("data is:");
+    console.log(data);
+    console.log("key is " + key);
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.accumulateNestedObjectContentsInSearch(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
+  }
+
+  lookDeepIntoObjForItem(item: any, property:string){
+    let result = null;
+    const objKeys = Object.keys(item);
+    const objVals = Object.keys(item).map(key => item[key]);
+    for(let i=0; i<objVals.length; i++){
+      if(typeof objVals[i]=== 'object'){
+        console.log("object hit");
+        console.log(objVals[i]);
+        result = this.lookDeepIntoObjForItem(objVals[i], property);
+        return result;
+      } else{
+        if(objKeys.includes(property)){
+          console.log("oo property is included in our array! Result is:");
+          console.log(item[property]);
+          result = item[property];
+          return result;
+        }else{
+        }
+      }
+    }
+  }
+
   loadMatches(matchId: string, filter = '',
   sortDirection='asc', pageIndex: number, pageSize: number) {
     this.loadingMatches.next(true);
@@ -39,7 +104,6 @@ export class VideoDataSource implements DataSource<Match> {
         let localSuccessfulAnnotationsArray = new Array<string>();
         matchObjKeys.forEach(keyId =>{
           this.dbService.getSuccessfulAnnotationNamesSortedByStartTime(keyId, 'matches/' + keyId + '/moves/').pipe(take(1)).subscribe(individualMatchSuccessfulAnnotationsArray =>{
-          // let localSuccessfulAnnotations =  individualMatchSuccessfulAnnotationsArray;
           localSuccessfulAnnotationsArray.push(individualMatchSuccessfulAnnotationsArray);
           // console.log(localSuccessfulAnnotations);
           });
@@ -50,19 +114,10 @@ export class VideoDataSource implements DataSource<Match> {
           let movesObj = {moves: localSuccessfulAnnotationsArray[i]};
           // console.log(movesObj);
           results[i] = Object.assign(movesObj, results[i]);
-          // results[i].push(localSuccessfulAnnotationsArray[i]);
         }
         // console.log(results);
-        // results.push(localSuccessfulAnnotations);
         this.matchesSubject.next(results);
-        // console.log("loading done");
         this.loadingMatches.next(false);
-        // matches.forEach(match =>{
-        //   this.dbService.getSuccessfulAnnotationNamesSortedByStartTime(match.id, 'matches/' + match.id + '/moves/').pipe(take(1)).subscribe(successfulAnnotationsArray =>{
-        //     let localSuccessfulAnnotations =  successfulAnnotationsArray;
-        //     console.log(localSuccessfulAnnotations);
-        //   });
-        // });
 
       });
     });

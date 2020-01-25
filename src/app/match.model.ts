@@ -13,7 +13,12 @@ export class Match {
    static fromJson (jsonObj: any): Match{
      console.log("got into fromJson");
      let originalPosterId = jsonObj.originalPosterId;
-     let moves = Object.values(jsonObj.moves);
+     let moves = null;
+     if(jsonObj.moves){
+      moves = Object.values(jsonObj.moves);
+     }else{
+      moves = new Array<EventInVideo>();
+     }
      let isAnnotated = jsonObj.isAnnotated;
      let matchRatings = jsonObj.matchRatings;
      let matchCreated = jsonObj.matchCreated;
@@ -23,26 +28,28 @@ export class Match {
      matchDeets =  matchDeetArray.map(VideoDetails.fromJson);
      console.log('matchDeets form fromJson:');
      console.log(matchDeets);
-     let tmpMatch = new Match(matchDeets, originalPosterId, moves);
-     if(isAnnotated){
-       tmpMatch.updateAnnotationStatus(isAnnotated)
-     };
-     if(matchRatings){
-       tmpMatch.updateMatchRatings(matchRatings)
-     };
      if(moves){
-       tmpMatch.updateMoves(moves)
-     };
-     if(matchCreated){
-       tmpMatch.updateMatchCreated(matchCreated)
-     };
-     return tmpMatch;
+       let tmpMatch = new Match(matchDeets, originalPosterId, moves);
+       if(isAnnotated){
+         tmpMatch.updateAnnotationStatus(isAnnotated)
+       };
+       if(matchRatings){
+         tmpMatch.updateMatchRatings(matchRatings)
+       };
+       if(moves){
+         tmpMatch.updateMoves(moves)
+       };
+       if(matchCreated){
+         tmpMatch.updateMatchCreated(matchCreated)
+       };
+       return tmpMatch;
+     }
    }
 
    updateMatchCreated(matchCreated: string){
      if(typeof matchCreated === 'object'){
-       let matchCreatedVals = Object.values(matchCreated);
-       this.matchCreated = matchCreatedVals;
+       let matchCreatedVals: string[] = Object.values(matchCreated);
+       this.matchCreated = matchCreatedVals[0]; //TODO check whether this is working
      }else{
        console.log("assuming this is a string?");
        console.log(matchCreated);
@@ -66,7 +73,7 @@ export class Match {
 
    updateMatchRatings(matchRatingsObj: any){
      if(typeof matchRatingsObj === 'object'){
-       let ratings = Object.values(matchRatingsObj);
+       let ratings: number[] = Object.values(matchRatingsObj);
        this.matchRatings = ratings;
      }else{
        console.log("assuming this is an array?");
@@ -77,7 +84,7 @@ export class Match {
    }
 
   addMoveToMatch(move: EventInVideo){
-    this.movesInTheVideo.push(move);
+    this.moves.push(move);
   }
 
   updateAnnotationStatus(status: boolean){
@@ -100,16 +107,16 @@ export class Match {
   }
 
   getMovesInTheVideo(){
-    return this.movesInTheVideo;
+    return this.moves;
   }
 
-  addMovesToAnnotation(movesInTheVideo: Array<EventInVideo>){
-    //TODO flesh out
-    this.updateAnnotationStatus();
-  }
-
-  removeMoveFromAnnotation(timeInitiated: number, timeCompleted: number){
-    //TODO flesh out
-    this.updateAnnotationStatus();
-  }
+  // addMovesToAnnotation(movesInTheVideo: Array<EventInVideo>){
+  //   //TODO flesh out
+  //   this.updateAnnotationStatus();
+  // }
+  //
+  // removeMoveFromAnnotation(timeInitiated: number, timeCompleted: number){
+  //   //TODO flesh out
+  //   this.updateAnnotationStatus();
+  // }
 }
