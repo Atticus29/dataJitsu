@@ -75,6 +75,7 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
     });
 
     this.dbService.getMatches().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      console.log(results);
       let firstResult = results[Object.keys(results)[0]];
       // console.log(firstResult);
       let resultArray = new Array<any>();

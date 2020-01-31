@@ -15,6 +15,7 @@
 - [ ] They can share and collaborate on collections if they pay subscription
    - [ ] Admin can bypass subscription share for particular collections
 
+- [ ] Store local preferences for items per page in all-matches
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Display flagged moves in admin after they have been flagged X times (define in constants.ts)
