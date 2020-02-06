@@ -124,11 +124,11 @@ describe ('Match custom tests: move name', () =>{
       cy.get('div[id=annotationModal]').should('not.be.visible');
       cy.get('button[id=end-move]').should('be.enabled');
       cy.get('button[id=end-move]').click({force:true});
-      cy.wait(5000);
+      // cy.contains("Annotation Recorded", {timeout:5000}).should('exist'); //TODO do I need this?? if I'm checking that moveName exists below?
       cy.on('uncaught:exception', (err, runnable) => {
         return false;
       });
-      cy.contains("Annotation Recorded").should('exist');
+
       cy.contains('span',cypressConstants.customMoveName).should('exist');
       //Then do the important test stuff
       // cy.logout();

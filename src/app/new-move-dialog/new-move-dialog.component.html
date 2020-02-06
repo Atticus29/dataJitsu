@@ -9,14 +9,21 @@
         <mat-error *ngIf="!vs.validateString(moveNameFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <div class="select-menu-wrapper">
-        <mat-select [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
-          <mat-option value="" [disabled]="displayCategoryName">Choose Move Category</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
-        </mat-select>
-        <mat-select class="select-menu-wrapper" *ngIf="displaySubcategorySelect" appendTo="body" [formControl]="moveSubcategoryFc" placeholder="Choose Move Subcategory" id="move-subcategory-select">
-          <mat-option value="" [disabled]="displaySubcategorySelect">Choose Move Subcategory</mat-option>
-          <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory" id="subcategory-name-dropdown">{{subcategory}}</mat-option>
-        </mat-select>
+        <mat-form-field class="flex-item">
+          <mat-select [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
+            <mat-option value="" [disabled]="displayCategoryName">Choose Move Category</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="subcategory-field" *ngIf="displaySubcategorySelect">
+          <br>
+          <mat-form-field class="flex-item">
+            <mat-select class="select-menu-wrapper" appendTo="body" [formControl]="moveSubcategoryFc" placeholder="Choose Move Subcategory" id="move-subcategory-select">
+              <mat-option value="" [disabled]="displaySubcategorySelect">Choose Move Subcategory</mat-option>
+              <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory" id="subcategory-name-dropdown">{{subcategory}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
       <br>
     </form>
