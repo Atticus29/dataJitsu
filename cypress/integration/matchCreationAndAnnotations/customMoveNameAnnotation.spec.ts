@@ -15,6 +15,7 @@ describe ('Match custom tests: move name', () =>{
   it('adds custom name and submits annotation', function(){
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=end-move]').should('not.be.enabled');
+    cy.wait(3000);
     cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.createCustomCervicalChoke("darth vader choke");

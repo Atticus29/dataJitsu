@@ -1,5 +1,6 @@
 # Known issues
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
+  - [ ] Reproducible in cypress test; can't reproduce the effect manually
 - [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues.
   - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things)
 - [ ] Stripe is broken; also, write a test for this? Related:
