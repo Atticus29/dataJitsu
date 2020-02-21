@@ -116,8 +116,10 @@ import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-ra
 import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
 import { NewLocationNameDialogComponent } from './new-location-name-dialog/new-location-name-dialog.component';
 import { CollectionCreationFormComponent } from './collection-creation-form/collection-creation-form.component';
-import { DynamicFormQuestionComponent } from './dynamic-form/dynamic-form.component';
-
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { DynamicFormQuestionComponent } from './dynamic-form-question/dynamic-form-question.component';
+import { QuestionControlService } from './question-control.service';
+import { QuestionService } from './question.service';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -180,6 +182,7 @@ export const firebaseConfig = {
     NewAgeClassDialogComponent,
     NewLocationNameDialogComponent,
     CollectionCreationFormComponent,
+    DynamicFormQuestionComponent,
     DynamicFormComponent
   ],
   imports: [
@@ -234,7 +237,7 @@ export const firebaseConfig = {
     routing,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions, QuestionControlService, QuestionService],
   bootstrap: [AppComponent],
   entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
 })
