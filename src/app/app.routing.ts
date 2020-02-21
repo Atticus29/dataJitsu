@@ -18,6 +18,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { CollectionCreationFormComponent } from './collection-creation-form/collection-creation-form.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
@@ -120,6 +121,10 @@ const appRoutes: Routes = [
 },{
   path: 'error',
   component: NotfoundComponent,
+  pathMatch: 'full'
+},{
+  path: 'create-collection',
+  component: CollectionCreationFormComponent,
   pathMatch: 'full'
 },{
   path: '**',

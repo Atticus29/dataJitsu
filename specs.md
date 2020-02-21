@@ -1,4 +1,9 @@
 # TODO high priority
+- [ ] People can earn the privilege to comment on moves or matches
+- [ ] Users can create collections
+  - [ ] They can name their collection
+  - [ ] They can designate any number of collection-details that they want their videos to have
+  - [ ] Their videos are displayed in a table
 - [ ] Write tests for isAnnotated status changing if so many users vote high enough
   - [ ] Too few votes and not isAnnotated
   - [ ] Enough and isAnnotated is true

@@ -1,1 +1,50 @@
-<p>collection-creation-form works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <h3 class="subtitle">{{title}}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <form class="col s12" materialize [formGroup]="newCollectionForm">
+      <div class="row">
+        <label for="collectionName" class="active" data-error="Not valid" data-success="Valid">Name Your New Collection</label>
+        <input matInput [formControl]="collectionNameBoundFc" type="url" placeholder="Collection name" value="E.g., Red imported fire ants" id="collectionName" required>
+        <mat-error *ngIf="!vs.validateUrl(collectionNameBoundFc.value)">{{getErrorMessage()}}</mat-error>
+        <mat-error *ngIf="collectionNameBoundFc.invalid && vs.validateUrl(collectionNameBoundFc.value)">{{getErrorMessage()}}</mat-error>
+      </div>
+      <div class="row">
+        <mat-form-field class="col m6 s12">
+          <mat-select [formControl]="addCollectionDetailBoundFc" placeholder="Add a detail about your video collection that you'd want users to enter information about" id="add-collection-detail">
+            <mat-option value="" [disabled]="disabledaddCollectionDetail">Choose tournament name</mat-option>
+            <mat-option [value]="localaddCollectionDetail" (click)="openaddCollectionDetailDialog()" color="accent" id="tournament-name-write-in">
+              <button mat-flat-button color="accent" id="custom-tournament-button">
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new tournament name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option *ngFor="let addCollectionDetail of addCollectionDetails" [value]="addCollectionDetail" id="tournament-name-dropdown">{{addCollectionDetail}}</mat-option>
+          </mat-select>
+          <p *ngIf="localaddCollectionDetail">Tournament Selected: <span><mat-chip color="primary" selected>{{localaddCollectionDetail}}</mat-chip></span></p>
+          <p *ngIf="addCollectionDetailBoundFc.value && !localaddCollectionDetail">Tournament Selected: <span><mat-chip color="primary" selected>{{addCollectionDetailBoundFc.value}}</mat-chip></span></p>
+        </mat-form-field>
+      </div>
+      <div class="row">
+    </div>
+    <button id="new-collection-submit-button" [disabled]="!allValid(newCollectionForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newCollectionForm.valid" -->
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Create another collection?</h4>
+      <p>You can either create another collection or go check out the collection that you just created.</p>
+    </div>
+    <div class="modal-footer">
+      <button id="annotate-modal-button" class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndAnnotate()">Annotate</button>
+      <button id="add-to-queue-modal-button" (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
+    </div>
+  </div>
+</div>
+</div>
