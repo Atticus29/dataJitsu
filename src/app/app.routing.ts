@@ -125,6 +125,7 @@ const appRoutes: Routes = [
 },{
   path: 'create-collection',
   component: CollectionCreationFormComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
   path: '**',

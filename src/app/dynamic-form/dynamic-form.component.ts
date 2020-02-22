@@ -20,7 +20,17 @@ export class DynamicFormComponent implements OnInit{
       this.form = this.qcs.toFormGroup(this.questions);
     }
 
-    onSubmit(){
+    processForm(){
       this.payLoad = JSON.stringify(this.form.getRawValue());
+    }
+    addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
+      // this.questions.push(question); //Can I do this?
+      let modifiedQuestion = question.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false);
+      console.log(this.form);
+      questionArray.splice(index, 0, modifiedQuestion);
+      // console.log("changed question array. Now it is:");
+      // console.log(questionArray);
+      this.form = this.qcs.toFormGroup(questionArray);
+      console.log(this.form);
     }
 }

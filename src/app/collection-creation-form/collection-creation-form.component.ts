@@ -12,7 +12,7 @@ export class CollectionCreationFormComponent implements OnInit {
   private localQuestions: Observable<FormQuestionBase<any>[]>;
 
   constructor(service: QuestionService) {
-    this.localQuestions = service.getQuestions();
+    this.localQuestions = service.getNewCollectionQuestions();
   }
 
   ngOnInit() {

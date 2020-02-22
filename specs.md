@@ -1,9 +1,12 @@
 # TODO high priority
 - [ ] The new match and create account forms are refactored to use dynamic forms
-- [ ] People can earn the privilege to comment on moves or matches
+- [ ] People can earn the privilege to be able to comment on moves or matches
 - [ ] Users can create collections
-  - [ ] They can name their collection
-  - [ ] They can designate any number of collection-details that they want their videos to have
+  - [ ] Form
+    - [ ] They can name their collection
+    - [ ] They can designate any number of collection-details that they want their videos to have
+    - [ ] Tests written to ensure you have to be logged in to see collection form
+    - [ ] Tests written to make sure form cannot be submitted without collection name and at least one category
   - [ ] Their videos are displayed in a table
 - [ ] Write tests for isAnnotated status changing if so many users vote high enough
   - [ ] Too few votes and not isAnnotated

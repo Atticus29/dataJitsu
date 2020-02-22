@@ -1,10 +1,16 @@
 <div>
-  <form (ngSubmit) = "onSubmit()" [formGroup]="form">
-    <div *ngFor="let question of questions" class="form-row">
+  <form [formGroup]="form">
+    <div *ngFor="let question of questions; let i = index" class="form-row">
       <app-question [question]="question" [form]="form"></app-question>
+      <button (click)="addAnotherQuestion(question, questions, i)" *ngIf="question.giveOptionToAnswerThisQuestionMultipleTimes" id="add-new-item-button"  class="btn waves-effect waves-light" >Add another {{question.label}}
+        <i class="material-icons right">add</i>
+      </button>
     </div>
     <div class="form-row">
-      <button type="submit" [disabled]="!form.valid">Submit</button>
+      <!-- <button type="submit" [disabled]="!form.valid">Submit</button> -->
+      <button (click)="processForm()" id="new-collection-submit" [disabled]="!form.valid"  class="btn waves-effect waves-light" >Submit
+        <i class="material-icons right">send</i>
+      </button>
     </div>
   </form>
 </div>

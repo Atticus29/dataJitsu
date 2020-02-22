@@ -7,28 +7,73 @@ import { of } from 'rxjs';
 
 @Injectable()
 export class QuestionService{
+  // addQuestionAtIndex(question: FormQuestionBase<string>,questionArray: FormQuestionBase<string>[], index: number){
+  //   return questionArray.splice(index, 0, question);
+  // }
+
   //TODO get from a remote source of question metadata
-  getQuestions(){
-    let questions: FormQuestionBase<string>[] = [];
+  // getNewCategoryItemQuestion(){
+  //   let newCollectionItemQuestions: FormQuestionBase<string>[] = [];
+  //   let collectionItemQuestion: TextQuestion = new TextQuestion({
+  //     key: 'itemName',
+  //     label: 'Item Name',
+  //     value: '',
+  //     required: true,
+  //     giveOptionToAnswerThisQuestionMultipleTimes: true,
+  //     placeHolder: 'E.g., Mating display or Emergent Properties of Water',
+  //     type: 'text',
+  //     order: 1
+  //   });
+  //   newCollectionItemQuestions.push(collectionItemQuestion);
+  //   return of(newCollectionItemQuestions.sort((a, b) => a.order - b.order));
+  // }
+
+  getNewCollectionQuestions(){
+    let newCollectionQuestions: FormQuestionBase<string>[] = [];
+    let collectionNameQuestion: TextQuestion = new TextQuestion({
+      key: 'collectionName',
+      label: 'Collection Name',
+      value: '',
+      required: true,
+      giveOptionToAnswerThisQuestionMultipleTimes: false,
+      placeHolder: 'E.g., Pyrenean Ibex Behavior Videos or Biology 101 Course Videos',
+      type: 'text',
+      order: 1
+    });
+
     let categoryNameQuestion: TextQuestion = new TextQuestion({
       key: 'categoryName',
       label: 'Category Name',
       value: '',
       required: true,
-      placeHolder: 'E.g., Behavior or Chapter Section',
+      giveOptionToAnswerThisQuestionMultipleTimes: true,
+      placeHolder: 'E.g., Mating Behavior or Chapter Section',
       type: 'text',
-      order: 1
+      order: 2
     });
-    let optionQuestion: TextQuestion = new TextQuestion({
-      key: 'categoryName',
-      label: 'Category Name',
-      value: 'E.g., Chapter Section',
+    let collectionItemQuestion: TextQuestion = new TextQuestion({
+      key: 'itemName',
+      label: 'Item Name',
+      value: '',
       required: true,
+      giveOptionToAnswerThisQuestionMultipleTimes: true,
+      placeHolder: 'E.g., Mating display or Emergent Properties of Water',
       type: 'text',
-      order: 1
+      order: 3
     });
-    questions.push(categoryNameQuestion);
+    // let optionQuestion: TextQuestion = new TextQuestion({
+    //   key: 'Name',
+    //   label: 'Category Name',
+    //   value: 'E.g., Chapter Section',
+    //   required: true,
+    //   giveOptionToAnswerThisQuestionMultipleTimes: true,
+    //   type: 'text',
+    //   order: 1
+    // });
+    newCollectionQuestions.push(collectionNameQuestion);
+    newCollectionQuestions.push(categoryNameQuestion);
+    newCollectionQuestions.push(collectionItemQuestion);
 
-    return of(questions.sort((a, b) => a.order - b.order));
+    return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
   }
 }
