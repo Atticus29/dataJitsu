@@ -32,11 +32,11 @@ export class FormQuestionBase<T> {
     this.type = options.type || '';
   }
 
-  makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<T>, newStatus:boolean){
+  makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: number){
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
       value: oldQuestion.value,
-      key: oldQuestion.key,
+      key: oldQuestion.key + index,
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
