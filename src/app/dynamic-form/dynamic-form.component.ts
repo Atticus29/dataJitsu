@@ -24,9 +24,24 @@ export class DynamicFormComponent implements OnInit{
       this.payLoad = JSON.stringify(this.form.getRawValue());
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
+      console.log("index entering addAnotherQuestion is: " + index);
+      // console.log("question in question is");
+      // console.log(question.key);
       // this.questions.push(question); //Can I do this?
-      let modifiedQuestion = question.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false, index);
-      console.log(this.form);
+      // console.log("new index is " + newIndex);
+      let previousQuestionKeyLength = questionArray[index].key.length;
+      // console.log("previousQuestionKeyLength is " + previousQuestionKeyLength);
+      // let tmpSplitArray = questionArray[index].key.split(/\D/);
+      // console.log("tmpSplitArray is: ");
+      // console.log(tmpSplitArray);
+      // let lastNum = questionArray[index].key.split(/\D/)[previousQuestionKeyLength-1];
+      // console.log("lastNum is " + lastNum);
+      let modifiedQuestion = question.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true, index);
+      let previousQuestionReplacement = question.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false, questionArray[index].key.split(/\D/)[previousQuestionKeyLength-1]);
+      questionArray[index] = previousQuestionReplacement;
+      // console.log(this.form);
+      // console.log("questionArray before splice:");
+      // console.log(questionArray[index]);
       questionArray.splice(index+1, 0, modifiedQuestion);
       // console.log("changed question array. Now it is:");
       // console.log(questionArray);
@@ -36,7 +51,7 @@ export class DynamicFormComponent implements OnInit{
       // console.log(this.payLoad);
       this.form = this.qcs.toFormGroup(questionArray);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArray);
-      console.log(this.form);
+      // console.log(this.form);
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
@@ -44,8 +59,8 @@ export class DynamicFormComponent implements OnInit{
       console.log(payLoad);
       let payLoadKeys: string[] = Object.keys(payLoad);
       let payLoadValues: string[] = Object.values(payLoad);
-      console.log(payLoadKeys);
-      console.log(payLoadValues);
+      // console.log(payLoadKeys);
+      // console.log(payLoadValues);
       for(let i=0; i<payLoadKeys.length; i++){
         // console.log(questionArray[i]);
         if(questionArray[i]){
@@ -53,8 +68,8 @@ export class DynamicFormComponent implements OnInit{
           new FormControl(payLoadKeys[i] || '');
           form.setControl(payLoadKeys[i], new FormControl(payLoadValues[i]|| '', Validators.required));
         }else{
-          console.log(payLoadKeys[i]);
-          console.log(payLoadValues[i]);
+          // console.log(payLoadKeys[i]);
+          // console.log(payLoadValues[i]);
         }
       }
 

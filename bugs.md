@@ -1,4 +1,6 @@
 # Known issues
+- [ ] Pressing enter in any textfield in collection creation form adds another field to category name
+- [ ] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value
 - [ ] With collection form, when you submit, it only takes the most recent of each category (collection name, category name, item name)
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
   - [ ] Reproducible in cypress test; can't reproduce the effect manually
