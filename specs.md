@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] write tests for collection form
 - [ ] The new match and create account forms are refactored to use dynamic forms
 - [ ] People can earn the privilege to be able to comment on moves or matches
 - [ ] Users can create collections

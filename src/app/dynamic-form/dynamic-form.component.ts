@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { QuestionControlService } from '../question-control.service';
+import { Collection } from '../collection.model';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -21,10 +22,13 @@ export class DynamicFormComponent implements OnInit{
     }
 
     processForm(){
+      console.log(this.form.getRawValue());
       this.payLoad = JSON.stringify(this.form.getRawValue());
+      let newCollection = Collection.fromJson(this.form.getRawValue());
+
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
-      console.log("index entering addAnotherQuestion is: " + index);
+      // console.log("index entering addAnotherQuestion is: " + index);
       // console.log("question in question is");
       // console.log(question.key);
       // this.questions.push(question); //Can I do this?
@@ -55,8 +59,8 @@ export class DynamicFormComponent implements OnInit{
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
-      console.log("payLoad upon entry into repopulateFormWithPreviousPayload");
-      console.log(payLoad);
+      // console.log("payLoad upon entry into repopulateFormWithPreviousPayload");
+      // console.log(payLoad);
       let payLoadKeys: string[] = Object.keys(payLoad);
       let payLoadValues: string[] = Object.values(payLoad);
       // console.log(payLoadKeys);
@@ -72,7 +76,11 @@ export class DynamicFormComponent implements OnInit{
           // console.log(payLoadValues[i]);
         }
       }
-
-
     }
+
+    // keyPress(event: any){
+    //   console.log("entered keyPress");
+    //   console.log(event);
+    //   return !(window.event && window.event.keyCode == 13);
+    // }
 }

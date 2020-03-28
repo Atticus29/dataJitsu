@@ -1,6 +1,4 @@
 # Known issues
-- [ ] Pressing enter in any textfield in collection creation form adds another field to category name
-- [ ] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value
 - [ ] With collection form, when you submit, it only takes the most recent of each category (collection name, category name, item name)
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
   - [ ] Reproducible in cypress test; can't reproduce the effect manually
@@ -54,6 +52,8 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Pressing enter in any textfield in collection creation form adds another field to category name
+- [x] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value
 - [x] With collection form, if you click add another foo, it clears the whole form
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
