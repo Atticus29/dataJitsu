@@ -19,13 +19,10 @@ export class Collection {
      let name = jsonObj.collectionName;
      let newCollection = new Collection(name);
      newCollection.addDetails(detailObj);
-     // console.log(newCollection);
      return newCollection;
-     // return new Collection(name); //TODO
    }
 
    addDetails(detailsObj: Object){
      this.details= detailsObj;
-     // console.log(this.details);
    }
 }

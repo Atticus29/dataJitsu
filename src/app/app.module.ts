@@ -41,6 +41,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
+import { FormProcessingService } from './form-processing.service';
 
 import {
   MatAutocompleteModule,
@@ -237,7 +238,7 @@ export const firebaseConfig = {
     routing,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions, QuestionControlService, QuestionService],
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions, QuestionControlService, QuestionService, FormProcessingService],
   bootstrap: [AppComponent],
   entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
 })

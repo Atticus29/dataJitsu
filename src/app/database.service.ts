@@ -8,11 +8,12 @@ import { Subject } from 'rxjs';
 
 import { TextTransformationService } from './text-transformation.service';
 import { DateCalculationsService } from './date-calculations.service';
+
 import { User } from './user.model';
 import { Match } from './match.model';
 import { ReputationLog } from './reputationLog.model';
 import { constants } from './constants';
-
+import { Collection } from './collection.model';
 import { EventInVideo } from './eventInVideo.model';
 
 @Injectable()
@@ -1574,6 +1575,11 @@ export class DatabaseService {
       });
     });
     return obsRet;
+  }
+
+  addCollectionToDatabase(collection: Collection){
+    console.log("got into addCollectionToDatabase");
+    console.log(collection);
   }
 
 }
