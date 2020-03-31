@@ -15,7 +15,7 @@ export class Collection {
           detailObj[parentString] = detailObj[parentString].sort();
        }
      }
-     console.log(detailObj);
+     // console.log(detailObj);
      let name = jsonObj.collectionName;
      let newCollection = new Collection(name);
      newCollection.addDetails(detailObj);

@@ -24,7 +24,7 @@ export class DynamicFormComponent implements OnInit{
     }
 
     processForm(){
-      console.log(this.form.getRawValue());
+      // console.log(this.form.getRawValue());
       this.payLoad = JSON.stringify(this.form.getRawValue());
       this.formProcessingService.captureFormResults(this.form.getRawValue());
     }

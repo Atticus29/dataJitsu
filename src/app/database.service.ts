@@ -172,7 +172,7 @@ export class DatabaseService {
   }
 
   updateUserPaymentStatus(userId: string, newStatus: boolean){
-    console.log("updateUserPaymentStatus entered");
+    // console.log("updateUserPaymentStatus entered");
     let updates = {};
     updates['/users/' + userId + '/paidStatus'] = newStatus;
     firebase.database().ref().update(updates);
@@ -242,9 +242,9 @@ export class DatabaseService {
   updateUserReputationPoints(userId: string, points: number, reason: string){
     let updates = {};
     this.getUserReputationPoints(userId).pipe(take(1)).subscribe(result =>{ //used to be first()
-      console.log("reputation points? in updateUserReputationPoints");
-      console.log(result);
-      console.log(points);
+      // console.log("reputation points? in updateUserReputationPoints");
+      // console.log(result);
+      // console.log(points);
       updates['/users/' + userId + '/reputationPoints'] = Number(result) + points;
       firebase.database().ref().update(updates);
     });
@@ -412,7 +412,7 @@ export class DatabaseService {
   // }
 
   hasUserPaid(userId: string): Observable<boolean>{
-    console.log("hasUserPaid entered");
+    // console.log("hasUserPaid entered");
     let ref = firebase.database().ref('users/' + userId + '/paidStatus');
     let resultObservable = Observable.create(observer =>{
       ref.on("value", snapshot => { //TODO ???
@@ -438,8 +438,8 @@ export class DatabaseService {
     let user: User;
     let resultObservable = Observable.create(observer =>{
       ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-        console.log("query result in getUserByUid in databaseService: ");
-        console.log(snapshot.val());
+        // console.log("query result in getUserByUid in databaseService: ");
+        // console.log(snapshot.val());
         user = snapshot.val();
         user = user[Object.keys(user)[0]];
         observer.next(user);
@@ -1170,8 +1170,8 @@ export class DatabaseService {
   }
 
   addGenericCandidateNameToDb(path: string, name: string, associatedMatchUrl: string){
-    console.log("addGenericCandidateNameToDb called");
-    console.log("name is " + name);
+    // console.log("addGenericCandidateNameToDb called");
+    // console.log("name is " + name);
     let ref = firebase.database().ref(path);
     let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
   }
@@ -1183,8 +1183,8 @@ export class DatabaseService {
   }
 
   getGenericStringNames(path: string){
-    console.log("getGenericStringNames entered");
-    console.log(this.db.list(path).valueChanges());
+    // console.log("getGenericStringNames entered");
+    // console.log(this.db.list(path).valueChanges());
     return this.db.list(path).valueChanges();
   }
 
@@ -1443,8 +1443,8 @@ export class DatabaseService {
     let ref = firebase.database().ref('/matches/' + matchId + '/matchDeets/videoUrl');
     let obsRet = Observable.create(function(observer){
       ref.orderByKey().on("value", snapshot =>{
-        console.log("snapshot.val() from getMatchUrlFromMatchId is:");
-        console.log(snapshot.val());
+        // console.log("snapshot.val() from getMatchUrlFromMatchId is:");
+        // console.log(snapshot.val());
         observer.next(snapshot.val());
       });
     });
@@ -1487,10 +1487,10 @@ export class DatabaseService {
   }
 
   updateGenericNameInMatch(subPath: string, matchId: string, newName: string){
-    console.log("entered updateGenericNameInMatch");
-    console.log("subPath is " + subPath);
-    console.log("matchId is " + matchId);
-    console.log("newName is " + newName);
+    // console.log("entered updateGenericNameInMatch");
+    // console.log("subPath is " + subPath);
+    // console.log("matchId is " + matchId);
+    // console.log("newName is " + newName);
     let updates = {};
     updates['/matches/' + matchId + '/' + subPath] = newName;
     firebase.database().ref().update(updates);
@@ -1577,9 +1577,13 @@ export class DatabaseService {
     return obsRet;
   }
 
-  addCollectionToDatabase(collection: Collection){
-    console.log("got into addCollectionToDatabase");
-    console.log(collection);
+  addCollectionToDatabase(collection: Collection, userId: string){
+    console.log("addCollectionToDatabase called");
+    let ref = this.db.list('/collections');
+    let collectionId = ref.push(collection).key;
+    let updates = {};
+    updates['/users/' + userId + '/collections/' + collectionId] = collection;
+    firebase.database().ref().update(updates);
   }
 
 }

@@ -39,8 +39,8 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
         this.paidStatus = paymentStatus;
       });
     }catch(err){
-      console.log("fetching payment status failed. Error caught");
-      console.log(err);
+      // console.log("fetching payment status failed. Error caught");
+      // console.log(err);
     }
 
 
@@ -54,8 +54,9 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
             this.userObjFromDb = dbUser;
             // this.togglePaymentThings();
             this.dbService.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              console.log(hasUserAnnotatedEnough);
+              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              // console.log(hasUserAnnotatedEnough);
+              
               // if(!hasUserAnnotatedEnough){
               //   this.toggleAnnotationPrompt(true);
               //   this.togglePayMentPrompt(true);

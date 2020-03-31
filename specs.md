@@ -128,6 +128,7 @@
 - [ ] Add date annotated to move in match
 - [ ] Make the match card display more info. (including date)
 - [ ] //@TODO test whether trying to create a second account under the same email messes up
+- [ ] //TODO I couldn't get the takeWhile to work, so hacked with a counter
 
 # TODO low priority
 - [ ] Add spinner while annotation deletion occurs (nvm it's for admins and therefore low priority)

@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { takeUntil, takeLast, takeWhile, take } from 'rxjs/operators';
 
 import { QuestionService } from '../question.service';
+import { TrackerService } from '../tracker.service';
 import { FormProcessingService } from '../form-processing.service';
 import { BaseComponent } from '../base/base.component';
 import { Collection } from '../collection.model';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { DatabaseService } from '../database.service';
+import { AuthorizationService } from '../authorization.service';
 
 
 @Component({
@@ -20,22 +22,27 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private localQuestions: Observable<FormQuestionBase<any>[]>;
 
 
-  constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService) {
+  constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
     super();
-    this.localQuestions = questionService.getNewCollectionQuestions();
-    this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
-      if(formResults){
-        console.log(formResults);
-        if(formResults.collectionName){
-          let newCollection = Collection.fromJson(formResults);
-          //TODO get user
-          this.databaseService.addCollectionToDatabase(newCollection);
+  }
+
+  ngOnInit() {
+    this.localQuestions = this.questionService.getNewCollectionQuestions();
+    this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
+      console.log("user is:");
+      console.log(user);
+      if(user){
+        if(user.id){
+          this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
+            if(formResults){
+              if(formResults.collectionName){
+                let newCollection = Collection.fromJson(formResults);
+                this.databaseService.addCollectionToDatabase(newCollection, user.id);
+              }
+            }
+          });
         }
       }
     });
   }
-
-  ngOnInit() {
-  }
-
 }

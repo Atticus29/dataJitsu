@@ -38,7 +38,7 @@ export class AuthorizationService {
     });
   }
 
-  getUser(): Promise<any> {
+  async getUser(){
     return this.afAuth.authState.pipe(first()).toPromise();
   }
 
