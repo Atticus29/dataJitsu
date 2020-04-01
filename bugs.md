@@ -1,11 +1,11 @@
 # Known issues
-- [ ] Collection creation still seems to be creating two objects
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
   - [ ] Reproducible in cypress test; can't reproduce the effect manually
 - [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues.
   - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things)
 - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
+- [ ] Stripe webhooks don't work correctly?
 - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
 - [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
@@ -52,6 +52,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Collection creation still seems to be creating two objects; problem occurs when I enter the URL (at least) from all-matches
 - [x] With collection form, when you submit, it only takes the most recent of each category (collection name, category name, item name)
 - [x] Pressing enter in any textfield in collection creation form adds another field to category name
 - [x] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value

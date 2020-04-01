@@ -27,6 +27,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnInit() {
+    console.log("ngOnInit in CollectionCreationFormComponent called");
     this.localQuestions = this.questionService.getNewCollectionQuestions();
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       console.log("user is:");
@@ -34,11 +35,16 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       if(user){
         if(user.id){
           this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
+            console.log("formResults is:");
+            console.log(formResults);
             if(formResults){
-              if(formResults.collectionName){
-                let newCollection = Collection.fromForm(formResults);
-                console.log(newCollection);
-                this.databaseService.addCollectionToDatabase(newCollection, user.id);
+              if(formResults !== "Stop"){
+                if(formResults.collectionName){
+                  let newCollection = Collection.fromForm(formResults);
+                  console.log(newCollection);
+                  this.databaseService.addCollectionToDatabase(newCollection, user.id);
+                  this.formProcessingService.formResults.next("Stop");
+                }
               }
             }
           });

@@ -1579,18 +1579,17 @@ export class DatabaseService {
 
   addCollectionToDatabase(collection: Collection, userId: string){
     console.log("addCollectionToDatabase called");
-    console.log(collection);
+    // console.log(collection);
     let ref = this.db.list('/collections');
     let collectionId = ref.push(collection).key;
     collection.setId(collectionId);
-    console.log("got here 1");
+    // console.log("got here 1");
     let updates = {};
     updates['/users/' + userId + '/collections/' + collectionId] = collection;
-    console.log("got here 2");
+    // console.log("got here 2");
     updates['/collections/' + collectionId + '/id/'] = collectionId;
-    console.log("got here 3");
+    // console.log("got here 3");
     firebase.database().ref().update(updates);
-
     // updates['/matches/' + matchId + '/id'] = matchId;
     // updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
     // firebase.database().ref().update(updates);
