@@ -36,7 +36,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
           this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
             if(formResults){
               if(formResults.collectionName){
-                let newCollection = Collection.fromJson(formResults);
+                let newCollection = Collection.fromForm(formResults);
+                console.log(newCollection);
                 this.databaseService.addCollectionToDatabase(newCollection, user.id);
               }
             }

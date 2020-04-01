@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { AllMatchesComponent } from './all-matches/all-matches.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
+import { CollectionDisplayComponent } from './collection-display/collection-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
 import { VerifyEmailAddressComponent } from './verify-email-address/verify-email-address.component';
 import { PaymentComponent } from './payment/payment.component';
@@ -85,6 +86,11 @@ const appRoutes: Routes = [
 },{
   path: 'matches/:matchId',
   component: MatchDisplayComponent,
+  ...canActivate(redirectUnauthorizedTo(['login'])),
+  pathMatch: 'full'
+},{
+  path: 'collections/:collectionId',
+  component: CollectionDisplayComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{

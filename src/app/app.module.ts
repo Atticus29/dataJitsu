@@ -121,6 +121,8 @@ import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './dynamic-form-question/dynamic-form-question.component';
 import { QuestionControlService } from './question-control.service';
 import { QuestionService } from './question.service';
+import { CollectionDisplayComponent } from './collection-display/collection-display.component';
+import { UserCollectionsDisplayComponent } from './user-collections-display/user-collections-display.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -184,7 +186,9 @@ export const firebaseConfig = {
     NewLocationNameDialogComponent,
     CollectionCreationFormComponent,
     DynamicFormQuestionComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
+    CollectionDisplayComponent,
+    UserCollectionsDisplayComponent
   ],
   imports: [
     AngularFireDatabaseModule,

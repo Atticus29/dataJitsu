@@ -1579,11 +1579,33 @@ export class DatabaseService {
 
   addCollectionToDatabase(collection: Collection, userId: string){
     console.log("addCollectionToDatabase called");
+    console.log(collection);
     let ref = this.db.list('/collections');
     let collectionId = ref.push(collection).key;
+    collection.setId(collectionId);
+    console.log("got here 1");
     let updates = {};
     updates['/users/' + userId + '/collections/' + collectionId] = collection;
+    console.log("got here 2");
+    updates['/collections/' + collectionId + '/id/'] = collectionId;
+    console.log("got here 3");
     firebase.database().ref().update(updates);
+
+    // updates['/matches/' + matchId + '/id'] = matchId;
+    // updates['/matches/' + matchId + '/matchCreated'] = firebase.database.ServerValue.TIMESTAMP;
+    // firebase.database().ref().update(updates);
+  }
+
+  getCollection(collectionId: string){
+    let ref = firebase.database().ref('collections/' + collectionId);
+    let obsRet = Observable.create(function(observer){
+      ref.once("value").then(snapshot =>{
+        console.log("snapshot in getCollection:");
+        console.log(snapshot);
+        observer.next(snapshot.val());
+      });
+    });
+    return obsRet;
   }
 
 }
