@@ -12,6 +12,7 @@ export class QuestionControlService {
   constructor() { }
 
   toFormGroup (questions: FormQuestionBase<string>[], conFigDetails:DynamicFormConfiguration){
+    console.log(conFigDetails);
     //TODO update with conFigDetails
     let group: any = {};
     questions.forEach(question =>{

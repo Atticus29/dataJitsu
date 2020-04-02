@@ -123,6 +123,7 @@ import { QuestionControlService } from './question-control.service';
 import { QuestionService } from './question.service';
 import { CollectionDisplayComponent } from './collection-display/collection-display.component';
 import { UserCollectionsDisplayComponent } from './user-collections-display/user-collections-display.component';
+import { IndentDirective } from './indent.directive';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -188,7 +189,8 @@ export const firebaseConfig = {
     DynamicFormQuestionComponent,
     DynamicFormComponent,
     CollectionDisplayComponent,
-    UserCollectionsDisplayComponent
+    UserCollectionsDisplayComponent,
+    IndentDirective
   ],
   imports: [
     AngularFireDatabaseModule,

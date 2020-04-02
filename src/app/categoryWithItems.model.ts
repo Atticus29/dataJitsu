@@ -5,7 +5,7 @@ export class CategoryWithItems {
   constructor(private categoryName: string, private items: string[]) {
    }
 
-   static fromForm (jsonObj: any): CategoryWithItems{
+   // static fromForm (jsonObj: any): CategoryWithItems{
      //TODO
      // let detailObj = {};
      // let jsonObjKeys = Object.keys(jsonObj);
@@ -22,7 +22,7 @@ export class CategoryWithItems {
      // let newCollection = new CategoryWithItems(name);
      // newCollection.addDetails(detailObj);
      // return newCollection;
-   }
+   // }
 
    static fromDataBase (jsonObj: any): CategoryWithItems{
      let name = jsonObj.name;

@@ -38,8 +38,17 @@ export class DynamicFormComponent implements OnInit{
       questionArray.splice(index+1, 0, modifiedQuestion);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
-      this.form = this.qcs.toFormGroup(questionArray);
+      this.form = this.qcs.toFormGroup(questionArray, new DynamicFormConfiguration(false,false));
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArray);
+    }
+    addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
+      console.log("addAnotherQuestionGroup called");
+      let parentQuestion = question.findParentQuestion(question, questionArray, index);
+      //TODO make a new question set spanning questions from parentQuestion all the way until current index question, inclusive
+      //TODO insert the new question set into questionArray
+      //TODO remove isThisQuestionTheLastOfAQuestionGroup status from previous lastQuestion and call makeNewQuestionAsTheLastOfAQuestionGroup on new question
+      console.log("parent question is: ");
+      console.log(parentQuestion);
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
