@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { QuestionControlService } from '../question-control.service';
+import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { DatabaseService } from '../database.service';
 import { FormProcessingService } from '../form-processing.service';
 import { FormQuestionBase } from '../formQuestionBase.model';
@@ -14,13 +15,14 @@ import { Collection } from '../collection.model';
 
 export class DynamicFormComponent implements OnInit{
   @Input() questions: FormQuestionBase<string>[] = [];
+  @Input() configOptions: DynamicFormConfiguration = null;
     form: FormGroup;
     payLoad: string = '';
 
     constructor(private qcs: QuestionControlService, private formProcessingService: FormProcessingService) { }
 
     ngOnInit() {
-      this.form = this.qcs.toFormGroup(this.questions);
+      this.form = this.qcs.toFormGroup(this.questions, this.configOptions);
     }
 
     processForm(){

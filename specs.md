@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Re-activate addCollectionToDatabase after you're done messing around with it
 - [ ] collection form allows you to add categories with items attached to each category
 - [ ] write tests for collection form
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form

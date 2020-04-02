@@ -19,7 +19,8 @@ import { AuthorizationService } from '../authorization.service';
   styleUrls: ['./collection-creation-form.component.scss']
 })
 export class CollectionCreationFormComponent extends BaseComponent implements OnInit {
-  private localQuestions: Observable<FormQuestionBase<any>[]>;
+  private localCollectionQuestion: Observable<FormQuestionBase<any>[]>;
+  private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
 
 
   constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
@@ -28,7 +29,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
 
   ngOnInit() {
     console.log("ngOnInit in CollectionCreationFormComponent called");
-    this.localQuestions = this.questionService.getNewCollectionQuestions();
+    this.localCollectionQuestion = this.questionService.getNewCollectionQuestions();
+    this.localCategoryWithItemsQuestions = this.questionService.getNewCategoryWithItemsQuestions();
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       console.log("user is:");
       console.log(user);

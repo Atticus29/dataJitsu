@@ -40,13 +40,18 @@ export class QuestionService{
       type: 'text',
       order: 1
     });
+    newCollectionQuestions.push(collectionNameQuestion);
+    return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
+  }
 
+  getNewCategoryWithItemsQuestions(){
+    let newNewCategoryWithItemsQuestions: FormQuestionBase<string>[] = [];
     let categoryNameQuestion: TextQuestion = new TextQuestion({
       key: 'categoryName',
       label: 'Category Name',
       value: '',
       required: true,
-      giveOptionToAnswerThisQuestionMultipleTimes: true,
+      giveOptionToAnswerThisQuestionMultipleTimes: false,
       placeHolder: 'E.g., Mating Behavior or Chapter Section',
       type: 'text',
       order: 2
@@ -61,19 +66,10 @@ export class QuestionService{
       type: 'text',
       order: 3
     });
-    // let optionQuestion: TextQuestion = new TextQuestion({
-    //   key: 'Name',
-    //   label: 'Category Name',
-    //   value: 'E.g., Chapter Section',
-    //   required: true,
-    //   giveOptionToAnswerThisQuestionMultipleTimes: true,
-    //   type: 'text',
-    //   order: 1
-    // });
-    newCollectionQuestions.push(collectionNameQuestion);
-    newCollectionQuestions.push(categoryNameQuestion);
-    newCollectionQuestions.push(collectionItemQuestion);
+    newNewCategoryWithItemsQuestions.push(categoryNameQuestion);
+    newNewCategoryWithItemsQuestions.push(collectionItemQuestion);
 
-    return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
+    return of(newNewCategoryWithItemsQuestions.sort((a, b) => a.order - b.order));
   }
+
 }
