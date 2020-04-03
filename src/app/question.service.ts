@@ -7,6 +7,45 @@ import { of } from 'rxjs';
 
 @Injectable()
 export class QuestionService{
+  private collectionNameQuestion: TextQuestion = new TextQuestion({
+    key: 'collectionName',
+    label: 'Collection Name',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'E.g., Pyrenean Ibex Behavior Videos or Biology 101 Course Videos',
+    type: 'text',
+    order: 1
+  });
+  private categoryNameQuestion: TextQuestion = new TextQuestion({
+    key: 'categoryName',
+    label: 'Category Name',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'E.g., Mating Behavior or Chapter Section',
+    type: 'text',
+    order: 2
+  });
+  private collectionItemQuestion: TextQuestion = new TextQuestion({
+    key: 'itemName',
+    label: 'Item Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: true,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: true,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Mating display or Emergent Properties of Water',
+    type: 'text',
+    order: 3
+  });
   // addQuestionAtIndex(question: FormQuestionBase<string>,questionArray: FormQuestionBase<string>[], index: number){
   //   return questionArray.splice(index, 0, question);
   // }
@@ -30,79 +69,18 @@ export class QuestionService{
 
   getNewCollectionQuestions(){
     let newCollectionQuestions: FormQuestionBase<string>[] = [];
-    let collectionNameQuestion: TextQuestion = new TextQuestion({
-      key: 'collectionName',
-      label: 'Collection Name',
-      value: '',
-      required: true,
-      giveOptionToAnswerThisQuestionMultipleTimes: false,
-      pairThisQuestionWithPreviousQuestion: false,
-      isThisQuestionTheLastOfAQuestionGroup: false,
-      indentThisQuestion: false,
-      placeHolder: 'E.g., Pyrenean Ibex Behavior Videos or Biology 101 Course Videos',
-      type: 'text',
-      order: 1
-    });
-    let categoryNameQuestion: TextQuestion = new TextQuestion({
-      key: 'categoryName',
-      label: 'Category Name',
-      value: '',
-      required: true,
-      giveOptionToAnswerThisQuestionMultipleTimes: false,
-      pairThisQuestionWithPreviousQuestion: false,
-      isThisQuestionTheLastOfAQuestionGroup: false,
-      indentThisQuestion: false,
-      placeHolder: 'E.g., Mating Behavior or Chapter Section',
-      type: 'text',
-      order: 2
-    });
-    let collectionItemQuestion: TextQuestion = new TextQuestion({
-      key: 'itemName',
-      label: 'Item Name',
-      value: '',
-      required: true,
-      giveOptionToAnswerThisQuestionMultipleTimes: true,
-      pairThisQuestionWithPreviousQuestion: true,
-      isThisQuestionTheLastOfAQuestionGroup: true,
-      indentThisQuestion: true,
-      placeHolder: 'E.g., Mating display or Emergent Properties of Water',
-      type: 'text',
-      order: 3
-    });
-    newCollectionQuestions.push(collectionNameQuestion);
-    newCollectionQuestions.push(categoryNameQuestion);
-    newCollectionQuestions.push(collectionItemQuestion);
+    newCollectionQuestions.push(this.collectionNameQuestion);
+    newCollectionQuestions.push(this.categoryNameQuestion);
+    newCollectionQuestions.push(this.collectionItemQuestion);
     return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
   }
 
-  // getNewCategoryWithItemsQuestions(){
-  //   let newNewCategoryWithItemsQuestions: FormQuestionBase<string>[] = [];
-  //   let categoryNameQuestion: TextQuestion = new TextQuestion({
-  //     key: 'categoryName',
-  //     label: 'Category Name',
-  //     value: '',
-  //     required: true,
-  //     giveOptionToAnswerThisQuestionMultipleTimes: false,
-  //     pairThisQuestionWithPreviousQuestion: false,
-  //     placeHolder: 'E.g., Mating Behavior or Chapter Section',
-  //     type: 'text',
-  //     order: 2
-  //   });
-  //   let collectionItemQuestion: TextQuestion = new TextQuestion({
-  //     key: 'itemName',
-  //     label: 'Item Name',
-  //     value: '',
-  //     required: true,
-  //     giveOptionToAnswerThisQuestionMultipleTimes: true,
-  //     pairThisQuestionWithPreviousQuestion: true,
-  //     placeHolder: 'E.g., Mating display or Emergent Properties of Water',
-  //     type: 'text',
-  //     order: 3
-  //   });
-  //   newNewCategoryWithItemsQuestions.push(categoryNameQuestion);
-  //   newNewCategoryWithItemsQuestions.push(collectionItemQuestion);
-  //
-  //   return of(newNewCategoryWithItemsQuestions.sort((a, b) => a.order - b.order));
-  // }
+  getCollectionQuestionGroupQuestions(){
+    let collectionQuestionGroupQuestions: FormQuestionBase<string>[] = [];
+    collectionQuestionGroupQuestions.push(this.categoryNameQuestion);
+    collectionQuestionGroupQuestions.push(this.collectionItemQuestion);
+
+    return of(collectionQuestionGroupQuestions.sort((a, b) => a.order - b.order));
+  }
 
 }

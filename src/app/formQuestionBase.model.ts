@@ -59,6 +59,42 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
     });
   }
+  modifyQuestionIsThisQuestionTheLastOfAQuestionGroupStatus(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: any){
+    // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
+    // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
+    return new FormQuestionBase({
+      value: oldQuestion.value,
+      key: oldQuestion.key.split(/\d+/)[0] + index,
+      label: oldQuestion.label,
+      required: oldQuestion.required,
+      giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
+      pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
+      isThisQuestionTheLastOfAQuestionGroup: newStatus,
+      indentThisQuestion: oldQuestion.indentThisQuestion,
+      placeHolder: oldQuestion.placeHolder,
+      order: oldQuestion.order,
+      controlType: oldQuestion.controlType,
+      type: oldQuestion.type,
+    });
+  }
+  modifyQuestionGiveOptionToAnswerThisQuestionMultipleTimesStatus(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: any){
+    // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
+    // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
+    return new FormQuestionBase({
+      value: oldQuestion.value,
+      key: oldQuestion.key.split(/\d+/)[0] + index,
+      label: oldQuestion.label,
+      required: oldQuestion.required,
+      giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
+      pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
+      isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
+      indentThisQuestion: oldQuestion.indentThisQuestion,
+      placeHolder: oldQuestion.placeHolder,
+      order: oldQuestion.order,
+      controlType: oldQuestion.controlType,
+      type: oldQuestion.type,
+    });
+  }
 
   makeNewQuestionAsTheLastOfAQuestionGroup(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: any){
     // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
@@ -89,5 +125,30 @@ export class FormQuestionBase<T> {
       }
     }
     return parentQuestion;
+  }
+
+  findParentQuestionIndex(question: FormQuestionBase<T>, questionArray: FormQuestionBase<T>[], index: number){
+    let returnVal = null;
+    for(let i=index; i>=0; i--){
+      let currentQuestion = questionArray[i];
+      if(currentQuestion.pairThisQuestionWithPreviousQuestion == false){
+        returnVal = i;
+        return returnVal;
+      }
+    }
+    return returnVal;
+  }
+
+  findLastSiblingQuestionIndex(question: FormQuestionBase<T>, questionArray: FormQuestionBase<T>[], index: number){
+    let returnVal = index;
+    for(let i=index; i<questionArray.length; i++){
+      let currentQuestion = questionArray[i];
+      returnVal = i;
+      if(currentQuestion.pairThisQuestionWithPreviousQuestion == false){
+        returnVal = i-1;
+        return returnVal;
+      }
+    }
+    return returnVal;
   }
 }

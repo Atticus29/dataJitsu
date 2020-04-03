@@ -11,9 +11,8 @@ export class QuestionControlService {
 
   constructor() { }
 
-  toFormGroup (questions: FormQuestionBase<string>[], conFigDetails:DynamicFormConfiguration){
-    console.log(conFigDetails);
-    //TODO update with conFigDetails
+  toFormGroup (questions: FormQuestionBase<string>[]){
+    //TODO add configurationDetails here? Eventually?
     let group: any = {};
     questions.forEach(question =>{
       group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) :

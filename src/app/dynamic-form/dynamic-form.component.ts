@@ -15,14 +15,16 @@ import { Collection } from '../collection.model';
 
 export class DynamicFormComponent implements OnInit{
   @Input() questions: FormQuestionBase<string>[] = [];
-  @Input() configOptions: DynamicFormConfiguration = null;
+  @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';
 
     constructor(private qcs: QuestionControlService, private formProcessingService: FormProcessingService) { }
 
     ngOnInit() {
-      this.form = this.qcs.toFormGroup(this.questions, this.configOptions);
+      this.form = this.qcs.toFormGroup(this.questions);
+      console.log("got into ngOnInit for DynamicFormComponent");
+      console.log(this.configOptions);
     }
 
     processForm(){
@@ -38,17 +40,30 @@ export class DynamicFormComponent implements OnInit{
       questionArray.splice(index+1, 0, modifiedQuestion);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
-      this.form = this.qcs.toFormGroup(questionArray, new DynamicFormConfiguration(false,false));
+      this.form = this.qcs.toFormGroup(questionArray);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArray);
     }
     addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       console.log("addAnotherQuestionGroup called");
-      let parentQuestion = question.findParentQuestion(question, questionArray, index);
-      //TODO make a new question set spanning questions from parentQuestion all the way until current index question, inclusive
+      let parentQuestionIndex = question.findParentQuestionIndex(question, questionArray, index);
+      let lastSiblingIndex = question.findLastSiblingQuestionIndex(question, questionArray, index);
+      console.log("lastSiblingIndex is: " + lastSiblingIndex);
+      let updatedQuestion = question.modifyQuestionIsThisQuestionTheLastOfAQuestionGroupStatus(question, false, index);
+      questionArray[index] = updatedQuestion;
+      let newQuestionGroup = this.configOptions.getOriginalQuestionGroup();
+      console.log(newQuestionGroup);
+      questionArray.splice(lastSiblingIndex+1, 0, ...newQuestionGroup); //TODO update this to insert newQuestionGroup using lastSiblingIndex
+      console.log("new array");
+      this.payLoad = JSON.stringify(this.form.getRawValue());
+      let objectPayLoad = this.form.getRawValue();
+      this.form = this.qcs.toFormGroup(questionArray);
+      this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArray);
+      // updateQuestion = updatedQuestion.modifyQuestionIsThisQuestionTheLastOfAQuestionGroupStatus
+      // let newQuestionGroup = questionArray.slice(parentQuestionIndex, index+1);
+      // console.log("newQuestionGroup is:");
+      // console.log(newQuestionGroup);
       //TODO insert the new question set into questionArray
       //TODO remove isThisQuestionTheLastOfAQuestionGroup status from previous lastQuestion and call makeNewQuestionAsTheLastOfAQuestionGroup on new question
-      console.log("parent question is: ");
-      console.log(parentQuestion);
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
