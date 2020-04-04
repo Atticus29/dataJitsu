@@ -173,7 +173,7 @@ export class FormQuestionBase<T> {
   }
 
   static renameNewQuestionGroup(oldQuestionArray: FormQuestionBase<string>[], newQuestionArray: FormQuestionBase<string>[]): FormQuestionBase<string>[]{
-    console.log("renameNewQuestionGroup entered");
+    // console.log("renameNewQuestionGroup entered");
     // console.log(oldQuestionArray);
     // console.log(newQuestionArray);
     let returnQuestionArray = new Array<FormQuestionBase<string>>(); //TODO if the copy method ends up not being the problem
@@ -208,27 +208,27 @@ export class FormQuestionBase<T> {
   }
 
   static calculateCurrentHighestIndexWithThisBaseKey(baseKey: string, questionArray: FormQuestionBase<string>[]):number{
-    console.log("calculateCurrentHighestIndexWithThisBaseKey entered");
+    // console.log("calculateCurrentHighestIndexWithThisBaseKey entered");
     let returnVal = 0;
     let keys = questionArray.map(question => question.key);
     for(let i=0; i<keys.length; i++){
       if(keys[i].split(/\d+/)[0] === baseKey){
-        console.log(keys[i]);
-        console.log("match with " + baseKey + " found");
-        console.log(keys[i].split(/\D/));
+        // console.log(keys[i]);
+        // console.log("match with " + baseKey + " found");
+        // console.log(keys[i].split(/\D/));
         let currentNum = +keys[i].split(/\D/).slice(1).join('');
-        console.log(currentNum);
+        // console.log(currentNum);
         returnVal = Math.max(returnVal, currentNum);
       }
     }
-    console.log("returning: " + returnVal);
+    // console.log("returning: " + returnVal);
     return returnVal;
   }
 
 
 
   static spliceWithoutManipulatingOriginal(oldQuestionArray: FormQuestionBase<string>[], newAdditionalQuestionArray: FormQuestionBase<string>[], indexAfterWhichToInsert: number){
-    console.log("spliceWithoutManipulatingOriginal entered");
+    // console.log("spliceWithoutManipulatingOriginal entered");
     let returnQuestionArray = new Array<FormQuestionBase<string>>();
     for(let i=0; i<oldQuestionArray.length; i++){
       returnQuestionArray.push(oldQuestionArray[i]);

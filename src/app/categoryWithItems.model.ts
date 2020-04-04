@@ -1,5 +1,5 @@
 export class CategoryWithItems {
-  private id: string = "temp";
+  // private id: string = "temp";
   // private categoryName: string;
   // constructor(public tournamentName: string, public location: string, public date: string, public athlete1Name: string, public athlete2Name: string, public weightClass: string, public rank: string, public videoUrl: string, public gender: string, public giStatus: boolean, public ageClass: string) {
   constructor(private categoryName: string, private items: string[]) {
@@ -25,17 +25,23 @@ export class CategoryWithItems {
    // }
 
    static fromDataBase (jsonObj: any): CategoryWithItems{
-     let name = jsonObj.name;
-     let newCategoryWithItems = new CategoryWithItems(name, jsonObj.items);
-     newCategoryWithItems.setId(jsonObj.id);
-     return newCategoryWithItems;
+     // let categoryName = jsonObj.categoryName;
+     // let newCategoryWithItems = new CategoryWithItems(categoryName, jsonObj.items);
+     // // newCategoryWithItems.setId(jsonObj.id);
+     // return newCategoryWithItems;
+     
+     return new CategoryWithItems(jsonObj.categoryName, jsonObj.items);
    }
 
    addItems(newItems: string[]){
      this.items = this.items.concat(newItems);
    }
 
-   setId(id: string){
-     this.id = id;
+   // setId(id: string){
+   //   this.id = id;
+   // }
+
+   updateCategoryName(newName: string){
+     this.categoryName = newName;
    }
 }

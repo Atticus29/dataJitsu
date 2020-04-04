@@ -32,8 +32,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   ngOnInit() {
     // console.log("ngOnInit in CollectionCreationFormComponent called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionQuestions =>{
-      console.log("collectionQuestions from questionService in ngOnInit of CollectionCreationFormComponent is:");
-      console.log(collectionQuestions);
+      // console.log("collectionQuestions from questionService in ngOnInit of CollectionCreationFormComponent is:");
+      // console.log(collectionQuestions);
       this.localCollectionQuestions = collectionQuestions;
     });
     // this.localConfigOptions = this.questionService.getCollectionQuestionGroupQuestions();
@@ -55,8 +55,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                   this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
                     if(currentFormQuestions){
                       if(currentFormQuestions !== "Stop"){
-                        console.log("currentFormQuestions reached in collection-creation form");
-                        console.log(currentFormQuestions);
+                        // console.log("currentFormQuestions reached in collection-creation form");
+                        // console.log(currentFormQuestions);
                         let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                         // console.log(newCollection);
                         this.databaseService.addCollectionToDatabase(newCollection, user.id);

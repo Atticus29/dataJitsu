@@ -1586,7 +1586,7 @@ export class DatabaseService {
     let updates = {};
     updates['/users/' + userId + '/collections/' + collectionId] = collection;
     updates['/collections/' + collectionId + '/id/'] = collectionId;
-    // firebase.database().ref().update(updates);
+    firebase.database().ref().update(updates);
   }
 
   getCollection(collectionId: string){

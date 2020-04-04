@@ -28,13 +28,15 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
-      console.log("questions upon entry into ngOnInit of DynamicFormComponent are");
-      console.log(this.questions);
+      // console.log("questions upon entry into ngOnInit of DynamicFormComponent are");
+      // console.log(this.questions);
       this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-        console.log("questionArrayOfForm emitted in formProcessingService. questionArrayOfForm is: ");
-        console.log(questionArrayOfForm);
+        // console.log("questionArrayOfForm emitted in formProcessingService. questionArrayOfForm is: ");
+        // console.log(questionArrayOfForm);
         if(questionArrayOfForm){
-          this.questions = questionArrayOfForm;
+          if(questionArrayOfForm!== "Stop"){
+            this.questions = questionArrayOfForm;
+          }
         }
       });
       // console.log("got into ngOnInit for DynamicFormComponent");
@@ -42,14 +44,14 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      console.log("processForm called");
+      // console.log("processForm called");
       // console.log(this.form.getRawValue());
       this.payLoad = JSON.stringify(this.form.getRawValue());
       this.formProcessingService.captureFormResults(this.form.getRawValue());
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions); //TODO decide if needed/necessary
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
-      console.log("addAnotherQuestion called")
+      // console.log("addAnotherQuestion called")
       let previousQuestionKeyLength = questionArray[index].key.length;
       let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true);
       let baseKey: string = question.key.split(/\d+/)[0];
@@ -69,7 +71,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
     }
     addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
-      console.log("addAnotherQuestionGroup called");
+      // console.log("addAnotherQuestionGroup called");
       // console.log(questionArray);
       // console.log("index is " + index);
       // let parentQuestionIndex = question.findParentQuestionIndex(question, questionArray, index);
@@ -80,7 +82,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       // console.log(updatedQuestion);
       // console.log(questionArray);
       questionArray[index] = updatedQuestion;
-      console.log(questionArray);
+      // console.log(questionArray);
       let newQuestionGroup = this.configOptions.getOriginalQuestionGroup();
       // console.log(newQuestionGroup);
       let renamedNewQuestionGroup = FormQuestionBase.renameNewQuestionGroup(questionArray, newQuestionGroup);
