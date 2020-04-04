@@ -1,4 +1,6 @@
 import { CategoryWithItems } from './categoryWithItems.model';
+import { FormQuestionBase } from './formQuestionBase.model';
+
 export class Collection {
   private details: Object;
   private id: string = "temp";
@@ -7,7 +9,10 @@ export class Collection {
   constructor(private name: string) {
    }
 
-   static fromForm (jsonObj: any): Collection{
+   static fromForm (jsonObj: any, questions: FormQuestionBase<string>[]): Collection{
+     console.log("fromForm in Collection model entered");
+     console.log(jsonObj);
+     console.log(questions);
      //TODO update for CategoryWithItems
      let detailObj = {};
      let jsonObjKeys = Object.keys(jsonObj);

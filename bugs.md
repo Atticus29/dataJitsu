@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Clicking on add item in the middle categoryWithItem groups creates additional add category buttons
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
   - [ ] Reproducible in cypress test; can't reproduce the effect manually
 - [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues.

@@ -1,5 +1,4 @@
 # TODO high priority
-- [ ] Re-write repopulateFormWithPreviousPayload to get desired results
 - [ ] Re-activate addCollectionToDatabase after you're done messing around with it
 - [ ] collection form allows you to add categories with items attached to each category
 - [ ] write tests for collection form
@@ -144,6 +143,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Re-write repopulateFormWithPreviousPayload to get desired results
 - [x] Custom categories
   - [x] weight class
     - [x] Dropdown

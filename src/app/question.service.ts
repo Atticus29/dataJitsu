@@ -72,15 +72,16 @@ export class QuestionService{
     newCollectionQuestions.push(this.collectionNameQuestion);
     newCollectionQuestions.push(this.categoryNameQuestion);
     newCollectionQuestions.push(this.collectionItemQuestion);
-    return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
+    // return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
+    return of(newCollectionQuestions);
   }
 
   getCollectionQuestionGroupQuestions(){
     let collectionQuestionGroupQuestions: FormQuestionBase<string>[] = [];
     collectionQuestionGroupQuestions.push(this.categoryNameQuestion);
     collectionQuestionGroupQuestions.push(this.collectionItemQuestion);
-
-    return of(collectionQuestionGroupQuestions.sort((a, b) => a.order - b.order));
+    // return of(collectionQuestionGroupQuestions.sort((a, b) => a.order - b.order));
+    return of(collectionQuestionGroupQuestions);
   }
 
 }
