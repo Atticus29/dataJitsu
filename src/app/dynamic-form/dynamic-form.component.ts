@@ -51,15 +51,17 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions); //TODO decide if needed/necessary
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
-      // console.log("addAnotherQuestion called")
+      // console.log("addAnotherQuestion called");
+      // let currentQuestionKey = questionArray[index].key;
+      // console.log(this.form.getRawValue()[questionArray[index].key]);
       let previousQuestionKeyLength = questionArray[index].key.length;
-      let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true);
+      let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true, true);
       let baseKey: string = question.key.split(/\d+/)[0];
       let newIndex: number = FormQuestionBase.calculateCurrentHighestIndexWithThisBaseKey(baseKey,questionArray) + 1;
       newQuestionToBeAdded = FormQuestionBase.createNewQuestionModifyingKeyOfExistingQuestion(newQuestionToBeAdded, baseKey+newIndex);
       // newQuestionToBeAdded = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(newQuestionToBeAdded, question.isThisQuestionTheLastOfAQuestionGroup);
       //TODO change modified question's index? Change its isThisQuestionTheLastOfAQuestionGroup?
-      let previousQuestionModified = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false);
+      let previousQuestionModified = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false, false);
       previousQuestionModified = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(previousQuestionModified, false);
       questionArray[index] = previousQuestionModified;
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, [newQuestionToBeAdded], index);
@@ -78,7 +80,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       let lastSiblingIndex = question.findLastSiblingQuestionIndex(question, questionArray, index);
       // console.log("lastSiblingIndex is: " + lastSiblingIndex);
       // console.log(questionArray);
-      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false, index);
+      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false);
       // console.log(updatedQuestion);
       // console.log(questionArray);
       questionArray[index] = updatedQuestion;
@@ -100,6 +102,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       // console.log("form after re-making with questionArrayCombiningNewAndOld");
       // console.log(this.form);
+
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
 
       // updateQuestion = updatedQuestion.modifyQuestionIsThisQuestionTheLastOfAQuestionGroupStatus
@@ -121,10 +124,25 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
       let payLoadKeys: string[] = Object.keys(payLoad);
       let payLoadValues: string[] = Object.values(payLoad);
       for(let i=0; i<payLoadKeys.length; i++){
-        if(questionArray[i]){
-          let populatedFormControl: FormControl = questionArray[i].required ? new FormControl(payLoadKeys[i] || '', Validators.required) :
-          new FormControl(payLoadKeys[i] || '');
-          form.setControl(payLoadKeys[i], new FormControl(payLoadValues[i]|| '', Validators.required));
+        // console.log("payLoadKey is: " + payLoadKeys[i]);
+        // console.log(payLoadKeys.length);
+        // console.log(payLoadValues.length);
+        // console.log(questionArray.length);
+        // console.log("questionArray's index for corresponding payLoad item is: " + questionArray.findIndex(q => q.key === payLoadKeys[i]));
+        if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
+          let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
+          // console.log("corresponding question is: ");
+          // console.log(questionArray[correspondingQuestionIndex]);
+          // console.log("payLoadKeys for same question: ");
+          // console.log(payLoadKeys[i]);
+          // let populatedFormControl: FormControl = questionArray[i].required ? new FormControl(payLoadKeys[i] || '', Validators.required) :
+          // new FormControl(payLoadKeys[i] || '');
+          // form.setControl(payLoadKeys[i], new FormControl(payLoadValues[i]|| '', Validators.required));
+          let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
+          new FormControl(payLoadValues[i] || '');
+          // console.log("populatedFormControl in repopulateFormWithPreviousPayload");
+          // console.log(populatedFormControl);
+          form.setControl(payLoadKeys[i], populatedFormControl);
         }else{
           // console.log(payLoadKeys[i]);
           // console.log(payLoadValues[i]);

@@ -17,6 +17,8 @@ export class FormProcessingService {
   }
 
   captureQuestionArrayOfCurrentForm(questionArray: FormQuestionBase<string>[]){
+    // console.log("captureQuestionArrayOfCurrentForm has been entered. New questionArray is: ");
+    // console.log(questionArray);
     this.questionArrayOfForm.next(questionArray);
   }
 }

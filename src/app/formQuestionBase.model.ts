@@ -4,6 +4,7 @@ export class FormQuestionBase<T> {
   label: string;
   required: boolean;
   giveOptionToAnswerThisQuestionMultipleTimes: boolean;
+  disableAddButtonIfCurrentValueIsBlank: boolean;
   pairThisQuestionWithPreviousQuestion: boolean;
   isThisQuestionTheLastOfAQuestionGroup: boolean;
   indentThisQuestion: boolean;
@@ -19,6 +20,7 @@ export class FormQuestionBase<T> {
       label?: string,
       required?: boolean,
       giveOptionToAnswerThisQuestionMultipleTimes?: boolean,
+      disableAddButtonIfCurrentValueIsBlank?: boolean,
       pairThisQuestionWithPreviousQuestion?: boolean,
       isThisQuestionTheLastOfAQuestionGroup?: boolean,
       indentThisQuestion?: boolean,
@@ -32,6 +34,7 @@ export class FormQuestionBase<T> {
     this.label = options.label || '';
     this.required = !!options.required;
     this.giveOptionToAnswerThisQuestionMultipleTimes = !!options.giveOptionToAnswerThisQuestionMultipleTimes;
+    this.disableAddButtonIfCurrentValueIsBlank = !!options.disableAddButtonIfCurrentValueIsBlank;
     this.pairThisQuestionWithPreviousQuestion = !!options.pairThisQuestionWithPreviousQuestion;
     this.isThisQuestionTheLastOfAQuestionGroup = !!options.isThisQuestionTheLastOfAQuestionGroup;
     this.indentThisQuestion = !!options.indentThisQuestion;
@@ -41,7 +44,7 @@ export class FormQuestionBase<T> {
     this.type = options.type || '';
   }
 
-  static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean): FormQuestionBase<string>{
+  static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean): FormQuestionBase<string>{
     // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
@@ -50,6 +53,7 @@ export class FormQuestionBase<T> {
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
+      disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -60,7 +64,9 @@ export class FormQuestionBase<T> {
     });
   }
   static createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(oldQuestion: FormQuestionBase<string>, newStatus:boolean): FormQuestionBase<string>{
-    // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
+    // console.log("entered createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion");
+    // console.log("old question is");
+    // console.log(oldQuestion);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
       value: oldQuestion.value,
@@ -68,6 +74,7 @@ export class FormQuestionBase<T> {
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
+      disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: newStatus,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -87,6 +94,7 @@ export class FormQuestionBase<T> {
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
+      disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -97,7 +105,7 @@ export class FormQuestionBase<T> {
     });
   }
 
-  modifyQuestionGiveOptionToAnswerThisQuestionMultipleTimesStatus(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: any){
+  modifyQuestionGiveOptionToAnswerThisQuestionMultipleTimesStatus(oldQuestion: FormQuestionBase<T>, newStatus:boolean, disableAddButtonWhenBlank: boolean, index: any){
     // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
@@ -106,6 +114,7 @@ export class FormQuestionBase<T> {
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
+      disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -116,7 +125,7 @@ export class FormQuestionBase<T> {
     });
   }
 
-  makeNewQuestionAsTheLastOfAQuestionGroup(oldQuestion: FormQuestionBase<T>, newStatus:boolean, index: any){
+  makeNewQuestionAsTheLastOfAQuestionGroup(oldQuestion: FormQuestionBase<T>, newStatus:boolean, disableAddButtonWhenBlank: boolean, index: any){
     // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
@@ -125,6 +134,7 @@ export class FormQuestionBase<T> {
       label: oldQuestion.label,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
+      disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: newStatus,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -196,6 +206,8 @@ export class FormQuestionBase<T> {
           // console.log("returnQuestion before modification");
           // console.log(returnQuestionArray[j])
           let updatedQuestion = FormQuestionBase.createNewQuestionModifyingKeyOfExistingQuestion(returnQuestionArray[j], baseKey+(currentHighestIndexWithThisBaseKey+1));
+          // console.log("updatedQuestion in renameNewQuestionGroup:");
+          // console.log(updatedQuestion);
           returnQuestionArray[j] = updatedQuestion;
           // console.log("returnQuestion after modification");
           // console.log(returnQuestionArray[j])

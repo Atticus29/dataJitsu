@@ -1,9 +1,12 @@
-# TODO high priority
+# TODO highest priority
 - [ ] Re-activate addCollectionToDatabase after you're done messing around with it
 - [ ] collection form allows you to add categories with items attached to each category
-- [ ] write tests for collection form
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
+
+# TODO high priority
+- [ ] Add ability to delete and edit collections and categories
+- [ ] write tests for collection form
 - [ ] The new match and create account forms are refactored to use dynamic forms
 - [ ] People can earn the privilege to be able to comment on moves or matches
 - [ ] Users can create collections
