@@ -1,5 +1,5 @@
 # Known issues
-- [ ] When you add a new item when there's already a blank one, it suddenly makes that blank one required
+- [ ] Adding a collection that is identical but has additional content registers as equal in doesCollectionAlreadyExistInDb
 - [ ] Adding the collection to the database adds it twice
 
 - [ ] Leaving item from previous category blank and then you click new category, the item becomes required
@@ -56,6 +56,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] When you add a new item when there's already a blank one, it suddenly makes that blank one required
 - [x] Clicking on add item in the middle categoryWithItem groups creates additional add category buttons
 - [x] Collection creation still seems to be creating two objects; problem occurs when I enter the URL (at least) from all-matches
 - [x] With collection form, when you submit, it only takes the most recent of each category (collection name, category name, item name)

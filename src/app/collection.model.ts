@@ -78,25 +78,34 @@ export class Collection {
    }
 
    static fromDataBase (jsonObj: any): Collection{
-     //TODO update with addCategoriesWithItems?? Maybe not?!
-     // let detailObj = {};
-     // let jsonObjKeys = Object.keys(jsonObj);
-     // let jsonObjVals = Object.values(jsonObj);
-     // for(let i = 0; i<jsonObjKeys.length; i++){
-     //   let parentString = jsonObjKeys[i].split(/\d+/)[0];
-     //   console.log(parentString);
-     //   if(parentString !== 'names' && parentString !== 'ids'){
-     //      detailObj[parentString] ? detailObj[parentString].push(jsonObjVals[i]): detailObj[parentString]=[jsonObjVals[i]];
-     //      detailObj[parentString] = detailObj[parentString].sort();
-     //   }
-     // }
-     // console.log(detailObj);
      let name = jsonObj.name;
      let newCollection = new Collection(name);
      newCollection.addDetails(jsonObj.details);
      newCollection.setId(jsonObj.id);
      newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
      return newCollection;
+   }
+
+   static isEqual(collection1: Collection, collection2: Collection){
+     console.log("isEqual from collection entered");
+     let nameMatch = collection1.name === collection2.name;
+     // console.log("do collection names match? " + nameMatch);
+     let categoriesWithItemsMatchCounter = 0;
+     collection1.categoriesWithItems.forEach(categoryWithItems =>{
+       for (let i=0; i<collection2.categoriesWithItems.length; i++){
+         if(CategoryWithItems.isEqual(categoryWithItems, collection2.categoriesWithItems[i])){
+           console.log("CategoryWithItems match at:");
+           console.log(categoryWithItems);
+           console.log("and");
+           console.log(collection2.categoriesWithItems[i]);
+           categoriesWithItemsMatchCounter += 1;
+           // return true;
+         }
+       }
+     });
+     let equalityStatus = nameMatch && categoriesWithItemsMatchCounter== collection2.categoriesWithItems.length;
+     console.log(" equalityStatus for collection is: " + equalityStatus);
+     return equalityStatus;
    }
 
    addDetails(detailsObj: Object){

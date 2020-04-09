@@ -5,6 +5,24 @@ export class CategoryWithItems {
   constructor(private categoryName: string, private items: string[]) {
    }
 
+   static isEqual(categoryWithItems1, categoryWithItems2){
+     let categoryNameMatch = categoryWithItems1.categoryName === categoryWithItems2.categoryName;
+     console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
+     let categoryWithItemsMatchCounter = 0;
+     categoryWithItems1.items.forEach(item =>{
+       for(let i=0; i<categoryWithItems2.items.length; i++){
+         if(item === categoryWithItems2.items[i]){
+           console.log("items detected as equal: " + item + " and " + categoryWithItems2.items[i]);
+           categoryWithItemsMatchCounter += 1;
+           // return true;
+         }
+       }
+     });
+     let equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length;
+     console.log(" equalityStatus is: " + equalityStatus);
+     return equalityStatus;
+   }
+
    // static fromForm (jsonObj: any): CategoryWithItems{
      //TODO
      // let detailObj = {};
@@ -29,7 +47,7 @@ export class CategoryWithItems {
      // let newCategoryWithItems = new CategoryWithItems(categoryName, jsonObj.items);
      // // newCategoryWithItems.setId(jsonObj.id);
      // return newCategoryWithItems;
-     
+
      return new CategoryWithItems(jsonObj.categoryName, jsonObj.items);
    }
 

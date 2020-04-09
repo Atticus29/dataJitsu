@@ -22,8 +22,9 @@ import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 export class CollectionCreationFormComponent extends BaseComponent implements OnInit {
   private localCollectionQuestions: FormQuestionBase<any>[];
   private localConfigOptions: DynamicFormConfiguration;
+  private localUser: any;
+  private localStop: boolean = false; //TODO faster than the observable, which seems to not be catching up with its own stop? Making it not useful??
   // private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
-
 
   constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
     super();
@@ -45,32 +46,49 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       // console.log("user is:");
       // console.log(user);
       if(user){
-        if(user.id){
-          this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
-            // console.log("formResults is:");
-            // console.log(formResults);
-            if(formResults){
-              if(formResults !== "Stop"){
-                if(formResults.collectionName){
-                  this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
-                    if(currentFormQuestions){
-                      if(currentFormQuestions !== "Stop"){
-                        // console.log("currentFormQuestions reached in collection-creation form");
-                        // console.log(currentFormQuestions);
-                        let newCollection = Collection.fromForm(formResults, currentFormQuestions);
-                        // console.log(newCollection);
-                        this.databaseService.addCollectionToDatabase(newCollection, user.id);
-                        this.formProcessingService.formResults.next("Stop");
-                        this.formProcessingService.questionArrayOfForm.next("Stop");
+        this.localUser = user;
+      }
+    });
+    this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
+      // console.log("formResults is:");
+      // console.log(formResults);
+      if(formResults){
+        if(formResults !== "Stop"){
+          // console.log("formResults isn't stop!")
+          if(formResults.collectionName){
+            this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
+              // console.log("currentFormQuestions is: ");
+              // console.log(currentFormQuestions);
+              if(currentFormQuestions){ //&& !this.localStop
+                if(currentFormQuestions !== "Stop"){
+                  // console.log("currentFormQuestions reached in collection-creation form");
+                  // console.log("(currentFormQuestions isn't stop)");
+                  // console.log(currentFormQuestions);
+                  let newCollection = Collection.fromForm(formResults, currentFormQuestions);
+                  // console.log(newCollection);
+                  if(this.localUser && this.localUser.id){
+                    // console.log("localUser and localUser.id exist");
+                    this.databaseService.doesCollectionAlreadyExistInDb(newCollection).subscribe(alreadyExists =>{ //.pipe(takeUntil(this.ngUnsubscribe))
+                      console.log("does collection already exist?: " + alreadyExists);
+                      if(alreadyExists){
+                        // alert("TODO snackbar for already exists");
                       }
-                    }
-                  });
+                      if(!alreadyExists){
+                        this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id);
+                        this.formProcessingService.formResults.next("Stop");
+                        this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
+                      }
+                    })
+                    // this.localStop = true;
+                    // console.log("stops supposedly issued");
+                  }
                 }
               }
-            }
-          });
+            });
+          }
         }
       }
     });
+
   }
 }
