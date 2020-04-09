@@ -7,6 +7,7 @@ export class CategoryWithItems {
 
    static isEqual(categoryWithItems1, categoryWithItems2){
      let categoryNameMatch = categoryWithItems1.categoryName === categoryWithItems2.categoryName;
+     let itemsCountsMatch = categoryWithItems1.items.length == categoryWithItems2.items.length
      console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
      let categoryWithItemsMatchCounter = 0;
      categoryWithItems1.items.forEach(item =>{
@@ -18,7 +19,7 @@ export class CategoryWithItems {
          }
        }
      });
-     let equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length;
+     let equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length && itemsCountsMatch;
      console.log(" equalityStatus is: " + equalityStatus);
      return equalityStatus;
    }

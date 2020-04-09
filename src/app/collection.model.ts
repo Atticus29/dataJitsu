@@ -89,6 +89,7 @@ export class Collection {
    static isEqual(collection1: Collection, collection2: Collection){
      console.log("isEqual from collection entered");
      let nameMatch = collection1.name === collection2.name;
+     let categoriesWithItemsCountsMatch = collection1.categoriesWithItems.length == collection2.categoriesWithItems.length
      // console.log("do collection names match? " + nameMatch);
      let categoriesWithItemsMatchCounter = 0;
      collection1.categoriesWithItems.forEach(categoryWithItems =>{
@@ -103,7 +104,7 @@ export class Collection {
          }
        }
      });
-     let equalityStatus = nameMatch && categoriesWithItemsMatchCounter== collection2.categoriesWithItems.length;
+     let equalityStatus = nameMatch && categoriesWithItemsMatchCounter== collection2.categoriesWithItems.length && categoriesWithItemsCountsMatch;
      console.log(" equalityStatus for collection is: " + equalityStatus);
      return equalityStatus;
    }
