@@ -59,7 +59,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
           // console.log("formResults isn't stop!")
           if(formResults.collectionName){
             this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
-              // console.log("currentFormQuestions is: ");
+              console.log("currentFormQuestions just emitted");
               // console.log(currentFormQuestions);
               if(currentFormQuestions){ //&& !this.localStop
                 if(currentFormQuestions !== "Stop"){
@@ -73,6 +73,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                     // console.log("localUser and localUser.id exist");
                     let dbCallCount = 0;
                     this.databaseService.doesCollectionAlreadyExistInDb(newCollection).subscribe(alreadyExists =>{ //.pipe(takeUntil(this.ngUnsubscribe))
+                      console.log("doesCollectionAlreadyExistInDb just emitted");
                       console.log("dbCallCount is: " + dbCallCount);
                       console.log("does collection already exist?: " + alreadyExists);
                       if(alreadyExists && dbCallCount<1){

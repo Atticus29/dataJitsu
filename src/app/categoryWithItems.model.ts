@@ -3,30 +3,30 @@ export class CategoryWithItems {
   // private categoryName: string;
   // constructor(public tournamentName: string, public location: string, public date: string, public athlete1Name: string, public athlete2Name: string, public weightClass: string, public rank: string, public videoUrl: string, public gender: string, public giStatus: boolean, public ageClass: string) {
   constructor(private categoryName: string, private items: string[]) {
-    console.log("items going into CategoryWithItems constructor: ");
-    console.log(this.items);
+    // console.log("items going into CategoryWithItems constructor: ");
+    // console.log(this.items);
     this.items = this.items.filter(obj => obj !== "");
     this.items = this.items.filter(obj => obj !== undefined);
-    console.log("items going out of CategoryWithItems constructor: ");
-    console.log(this.items);
+    // console.log("items going out of CategoryWithItems constructor: ");
+    // console.log(this.items);
    }
 
    static isEqual(categoryWithItems1, categoryWithItems2){
      let categoryNameMatch = categoryWithItems1.categoryName === categoryWithItems2.categoryName;
      let itemsCountsMatch = categoryWithItems1.items.length == categoryWithItems2.items.length
-     console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
+     // console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
      let categoryWithItemsMatchCounter = 0;
      categoryWithItems1.items.forEach(item =>{
        for(let i=0; i<categoryWithItems2.items.length; i++){
          if(item === categoryWithItems2.items[i]){
-           console.log("items detected as equal: " + item + " and " + categoryWithItems2.items[i]);
+           // console.log("items detected as equal: " + item + " and " + categoryWithItems2.items[i]);
            categoryWithItemsMatchCounter += 1;
            // return true;
          }
        }
      });
      let equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length && itemsCountsMatch;
-     console.log(" equalityStatus is: " + equalityStatus);
+     // console.log(" equalityStatus is: " + equalityStatus);
      return equalityStatus;
    }
 
@@ -59,13 +59,13 @@ export class CategoryWithItems {
    }
 
    addItems(newItems: string[]){
-     console.log("items going into addItems: ");
-     console.log(newItems);
+     // console.log("items going into addItems: ");
+     // console.log(newItems);
      let scrubbedItems = newItems.filter(obj => obj !== "");
      scrubbedItems = scrubbedItems.filter(obj => obj !== undefined);
      this.items = this.items.concat(scrubbedItems);
-     console.log("items going into addItems: ");
-     console.log(this.items);
+     // console.log("items going into addItems: ");
+     // console.log(this.items);
    }
 
    // setId(id: string){

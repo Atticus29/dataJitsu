@@ -64,8 +64,8 @@ export class Collection {
      // console.log(detailObj);
      newCollection.addDetails(detailObj);
      // newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
-     console.log("returning this collection:");
-     console.log(newCollection);
+     // console.log("returning this collection:");
+     // console.log(newCollection);
      return newCollection;
    }
 
@@ -87,7 +87,7 @@ export class Collection {
    }
 
    static isEqual(collection1: Collection, collection2: Collection){
-     console.log("isEqual from collection entered");
+     // console.log("isEqual from collection entered");
      let nameMatch = collection1.name === collection2.name;
      let categoriesWithItemsCountsMatch = collection1.categoriesWithItems.length == collection2.categoriesWithItems.length
      // console.log("do collection names match? " + nameMatch);
@@ -95,17 +95,17 @@ export class Collection {
      collection1.categoriesWithItems.forEach(categoryWithItems =>{
        for (let i=0; i<collection2.categoriesWithItems.length; i++){
          if(CategoryWithItems.isEqual(categoryWithItems, collection2.categoriesWithItems[i])){
-           console.log("CategoryWithItems match at:");
-           console.log(categoryWithItems);
-           console.log("and");
-           console.log(collection2.categoriesWithItems[i]);
+           // console.log("CategoryWithItems match at:");
+           // console.log(categoryWithItems);
+           // console.log("and");
+           // console.log(collection2.categoriesWithItems[i]);
            categoriesWithItemsMatchCounter += 1;
            // return true;
          }
        }
      });
      let equalityStatus = nameMatch && categoriesWithItemsMatchCounter== collection2.categoriesWithItems.length && categoriesWithItemsCountsMatch;
-     console.log(" equalityStatus for collection is: " + equalityStatus);
+     // console.log(" equalityStatus for collection is: " + equalityStatus);
      return equalityStatus;
    }
 
