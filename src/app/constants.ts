@@ -15,6 +15,8 @@ export var constants = {
     weightClassRemovedMessage: "Weight class name has been removed",
     locationRemovedMessage: "Location_name_has_been_removed",
     moveNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
+    collectionAddedNotification: "Your collection has been added",
+    collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,

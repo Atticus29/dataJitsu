@@ -1327,7 +1327,7 @@ export class DatabaseService {
               }
             } else{
               //it's not an object, it's not an array. I dunno
-              console.log("Congrats you found a bug I never expected. Please report!");
+              console.log("Congrats you found a bug I never expected in my doesMoveNameAlreadyExistInDb. Please report exactly what kind of move you were trying to make!");
               alert("Congrats you found a bug I never expected. Please report!");
             }
           }
@@ -1579,7 +1579,7 @@ export class DatabaseService {
 
   addCollectionToDatabase(collection: Collection, userId: string){
     console.log("addCollectionToDatabase called");
-    // console.log(collection);
+    console.log(collection);
     let ref = this.db.list('/collections');
     let collectionId = ref.push(collection).key;
     collection.setId(collectionId);
@@ -1591,30 +1591,43 @@ export class DatabaseService {
 
   doesCollectionAlreadyExistInDb(collection: Collection): Observable<boolean>{
     console.log("doesCollectionAlreadyExistInDb entered");
+    console.log(collection);
     let counter: number = 0;
     let ref = firebase.database().ref('/collections/');
     let obsRet = Observable.create(function(observer){
       console.log("got here should happen early!");
       // observer.next(true); //TODO eliminate?
       if(collection){
-        ref.orderByKey().on("child_added", snapshot =>{
-          // console.log("doesCollectionAlreadyExistInDb ")
-          // console.log();
-          let currentDbCollection: Collection = Collection.fromDataBase(snapshot.val());
-          console.log("collection checked: ")
-          console.log(currentDbCollection);
-          if(Collection.isEqual(collection, currentDbCollection)){
-            console.log("equal collection detected!");
-            observer.next(true);
-            counter += 1;
+        console.log("got here 1");
+        ref.orderByKey().on("value", snapshot =>{
+          console.log("got here 2");
+          console.log(snapshot);
+          if(snapshot.val()){
+            let collections = Object.values(snapshot.val());
+            collections.forEach(dbCollection =>{
+              let currentDbCollection: Collection = Collection.fromDataBase(dbCollection);
+              console.log("collection checked: ")
+              console.log(currentDbCollection);
+              if(Collection.isEqual(collection, currentDbCollection)){
+                console.log("equal collection detected!");
+                observer.next(true);
+                counter += 1;
+                return obsRet;
+              }
+            });
+            if(counter<1){
+              console.log("counter shenanigans");
+              observer.next(false);
+              return obsRet;
+            }
+          }else{
+            //snapshot doesn't exist
+            observer.next(false);
             return obsRet;
           }
         });
-        if(counter<1){
-          observer.next(false);
-          return obsRet;
-        }
       } else{
+        console.log("collection DNE");
         observer.next(false);
         return obsRet;
       }

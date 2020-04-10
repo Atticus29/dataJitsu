@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { takeUntil, takeLast, takeWhile, take } from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
+import { constants } from '../constants';
 import { QuestionService } from '../question.service';
 import { TrackerService } from '../tracker.service';
 import { FormProcessingService } from '../form-processing.service';
@@ -26,7 +28,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private localStop: boolean = false; //TODO faster than the observable, which seems to not be catching up with its own stop? Making it not useful??
   // private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
 
-  constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
+  constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService, public snackBar: MatSnackBar) {
     super();
   }
 
@@ -65,16 +67,23 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                   // console.log("(currentFormQuestions isn't stop)");
                   // console.log(currentFormQuestions);
                   let newCollection = Collection.fromForm(formResults, currentFormQuestions);
-                  // console.log(newCollection);
+                  console.log("newCollection after scrubbing?");
+                  console.log(newCollection);
                   if(this.localUser && this.localUser.id){
                     // console.log("localUser and localUser.id exist");
+                    let dbCallCount = 0;
                     this.databaseService.doesCollectionAlreadyExistInDb(newCollection).subscribe(alreadyExists =>{ //.pipe(takeUntil(this.ngUnsubscribe))
+                      console.log("dbCallCount is: " + dbCallCount);
                       console.log("does collection already exist?: " + alreadyExists);
-                      if(alreadyExists){
+                      if(alreadyExists && dbCallCount<1){
+                        console.log("already exists hit");
                         // alert("TODO snackbar for already exists");
+                        // this.openSnackBar(constants.collectionAlreadyExistsNotification);
                       }
                       if(!alreadyExists){
                         this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id);
+                        this.openSnackBar(constants.collectionAddedNotification);
+                        dbCallCount += 1;
                         this.formProcessingService.formResults.next("Stop");
                         this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
                       }
@@ -89,6 +98,10 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
         }
       }
     });
-
+  }
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 3000,
+    });
   }
 }

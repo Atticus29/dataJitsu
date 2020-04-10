@@ -64,8 +64,8 @@ export class Collection {
      // console.log(detailObj);
      newCollection.addDetails(detailObj);
      // newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
-     // console.log("returning this collection:");
-     // console.log(newCollection);
+     console.log("returning this collection:");
+     console.log(newCollection);
      return newCollection;
    }
 

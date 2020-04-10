@@ -3,6 +3,12 @@ export class CategoryWithItems {
   // private categoryName: string;
   // constructor(public tournamentName: string, public location: string, public date: string, public athlete1Name: string, public athlete2Name: string, public weightClass: string, public rank: string, public videoUrl: string, public gender: string, public giStatus: boolean, public ageClass: string) {
   constructor(private categoryName: string, private items: string[]) {
+    console.log("items going into CategoryWithItems constructor: ");
+    console.log(this.items);
+    this.items = this.items.filter(obj => obj !== "");
+    this.items = this.items.filter(obj => obj !== undefined);
+    console.log("items going out of CategoryWithItems constructor: ");
+    console.log(this.items);
    }
 
    static isEqual(categoryWithItems1, categoryWithItems2){
@@ -53,7 +59,13 @@ export class CategoryWithItems {
    }
 
    addItems(newItems: string[]){
-     this.items = this.items.concat(newItems);
+     console.log("items going into addItems: ");
+     console.log(newItems);
+     let scrubbedItems = newItems.filter(obj => obj !== "");
+     scrubbedItems = scrubbedItems.filter(obj => obj !== undefined);
+     this.items = this.items.concat(scrubbedItems);
+     console.log("items going into addItems: ");
+     console.log(this.items);
    }
 
    // setId(id: string){
