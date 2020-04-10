@@ -121,4 +121,11 @@ export class Collection {
      this.name = newName;
    }
 
+   getName(){
+     return this.name;
+   }
+   getId(){
+     return this.id? this.id: null;
+   }
+
 }

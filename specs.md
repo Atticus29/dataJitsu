@@ -1,4 +1,5 @@
 # TODO highest priority
+- [ ] User can edit personal collections
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
 
@@ -144,6 +145,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] User can delete personal collections
 - [x] Re-activate addCollectionToDatabase after you're done messing around with it
 - [x] collection form allows you to add categories with items attached to each category
 - [x] Re-write repopulateFormWithPreviousPayload to get desired results

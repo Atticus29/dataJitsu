@@ -1,7 +1,11 @@
 <div>
   <ul *ngFor="let collection of collections">
     <li>
-      <a routerLink="/collections/{{collection.id}}" name="collectionClick">{{collection.name}}</a>
+      <a routerLink="/collections/{{collection.id}}" name="collectionClick">{{collection.name}}
+      </a>
+      <span (click)="removeCollection(collection,localUser)" name="remove-collection" class="remove-collection">
+        <i class="material-icons right cancel">cancel</i>
+      </span>
     </li>
   </ul>
 </div>

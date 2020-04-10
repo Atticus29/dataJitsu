@@ -1647,4 +1647,28 @@ export class DatabaseService {
     return obsRet;
   }
 
+  getCollections(userId: string){
+    let ref = firebase.database().ref('users/' + userId + '/collections');
+    let obsRet = Observable.create(function(observer){
+      ref.once("value").then(snapshot =>{
+        console.log("snapshot.val() in getCollections:");
+        console.log(snapshot.val());
+        let collectionObjArray = Object.values(snapshot.val());
+        let collectionArray = collectionObjArray.map(Collection.fromDataBase)
+        observer.next(collectionArray);
+      });
+    });
+    return obsRet;
+  }
+
+  deleteCollection(collection: Collection, user: any){
+    console.log("deleteCollection entered");
+    let ref = firebase.database().ref('collections/' + collection.getId());
+    ref.remove();
+    //TODO if
+    console.log(user.id);
+    ref = firebase.database().ref('users/' + user.id + '/collections/' + collection.getId());
+    ref.remove();
+  }
+
 }
