@@ -65,11 +65,11 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
           if(formResults.collectionName){
             this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
               console.log("currentFormQuestions just emitted");
-              // console.log(currentFormQuestions);
+              console.log(currentFormQuestions);
               if(currentFormQuestions){ //&& !this.localStop
                 if(currentFormQuestions !== "Stop"){
                   // console.log("currentFormQuestions reached in collection-creation form");
-                  // console.log("(currentFormQuestions isn't stop)");
+                  console.log("(currentFormQuestions isn't stop)");
                   // console.log(currentFormQuestions);
                   let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                   console.log("newCollection after scrubbing?");
@@ -83,11 +83,14 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                       console.log("does collection already exist?: " + alreadyExists);
                       if(alreadyExists && dbCallCount<1){
                         console.log("already exists hit");
+                        this.openSnackBar(constants.collectionAlreadyExistsNotification);
+                        console.log("already exists beep");
+                        dbCallCount += 1;
                         // alert("TODO snackbar for already exists");
-                        // this.openSnackBar(constants.collectionAlreadyExistsNotification);
                       }
                       if(!alreadyExists){
                         this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id);
+                        console.log("added boop!");
                         this.openSnackBar(constants.collectionAddedNotification);
                         dbCallCount += 1;
                         this.formProcessingService.formResults.next("Stop");
@@ -107,7 +110,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 3000,
+      duration: 1000, //TODO change to 3000
     });
   }
 }

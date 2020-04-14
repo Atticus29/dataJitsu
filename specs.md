@@ -3,6 +3,12 @@
   - [ ] Delete collection
 
 - [ ] write tests for collection form
+  - [x] fills out simple collection form, does not see submit button enabled until all three filled out, and can see collection in user section, and deletes collection with confirmation that it disappears
+  - [ ] cannot create duplicate collection upon refresh/re-entry into the collection form page
+    - [ ] cannot create duplicate collection (not needed if above?)
+  - [ ] can create collection form with 2 additional items
+  - [ ] can create collection form with 2 additional items and one additional category
+  - [ ] can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank
 - [ ] User can edit personal collections
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??

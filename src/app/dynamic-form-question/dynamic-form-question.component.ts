@@ -11,7 +11,7 @@ import { FormQuestionBase } from '../formQuestionBase.model';
 export class DynamicFormQuestionComponent implements OnInit {
   @Input() question: FormQuestionBase<string>;
   @Input() form: FormGroup;
-  get isValid() { return this.form.controls[this.question.key].valid;}
+  get isValid() { return this.form.controls[this.question.key].valid? this.form.controls[this.question.key].valid: null;}
 
   constructor() { }
 

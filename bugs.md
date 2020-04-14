@@ -1,5 +1,6 @@
 # Known issues
 - [ ] Deleting a collection seems to display "collection added" snackbar
+- [ ] Adding a collection never dismissed the snackbar and it appears at the top
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
@@ -55,7 +56,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
-- [x] Deleting a collection does not make it disappear in the user display nor the database; 
+- [x] Deleting a collection does not make it disappear in the user display nor the database;
 - [x] Leaving item from previous category blank and then you click new category, the item becomes required
 - [x] Adding a collection that is identical but has additional content registers as equal in doesCollectionAlreadyExistInDb
 - [x] Adding the collection to the database adds it twice
