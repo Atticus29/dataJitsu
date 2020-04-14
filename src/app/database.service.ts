@@ -1653,9 +1653,13 @@ export class DatabaseService {
       ref.once("value").then(snapshot =>{
         console.log("snapshot.val() in getCollections:");
         console.log(snapshot.val());
-        let collectionObjArray = Object.values(snapshot.val());
-        let collectionArray = collectionObjArray.map(Collection.fromDataBase)
-        observer.next(collectionArray);
+        if(snapshot.val()){
+          let collectionObjArray = Object.values(snapshot.val());
+          let collectionArray = collectionObjArray.map(Collection.fromDataBase)
+          observer.next(collectionArray);
+        }else{
+          observer.next(null);
+        }
       });
     });
     return obsRet;
