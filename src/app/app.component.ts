@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ChangeDetectorRef } from '@angular/core';
 
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, first } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
+import { NgxFeedbackService, FeedbackData } from 'ngx-feedback';
 
 import { constants } from './constants';
 import { ProtectionGuard } from './protection.guard';
@@ -34,12 +35,21 @@ export class AppComponent extends BaseComponent implements OnInit {
   private localReputation: number = null;
   private localNewReputationCount: number = 0;
 
-  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone){
+  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, public afAuth: AngularFireAuth, private trackerService: TrackerService, public ngZone: NgZone, private readonly feedbackService: NgxFeedbackService){
     super();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     let self = this;
+    this.feedbackService.listenForFeedbacks().subscribe(async(data: FeedbackData) => {
+      // console.log("listenForFeedbacks called");
+      let tmpUsr = await this.trackerService.currentUserBehaviorSubject.pipe(first()).toPromise();
+      if(tmpUsr){
+        // console.log("user in listenForFeedbacks: ");
+        // console.log(tmpUsr);
+        this.dbService.addFeedbackToDatabase(data, tmpUsr.id);
+      }
+    });
 
     combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
       let result = results[0];

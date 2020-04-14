@@ -42,6 +42,7 @@ import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 import { FormProcessingService } from './form-processing.service';
+import { NgxFeedbackModule } from 'ngx-feedback';
 
 import {
   MatAutocompleteModule,
@@ -243,6 +244,7 @@ export const firebaseConfig = {
     ReactiveFormsModule,
     routing,
     NgxYoutubePlayerModule,
+    NgxFeedbackModule
   ],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions, QuestionControlService, QuestionService, FormProcessingService],
   bootstrap: [AppComponent],

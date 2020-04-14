@@ -1675,4 +1675,15 @@ export class DatabaseService {
     ref.remove();
   }
 
+  addFeedbackToDatabase(feedback: any, userId: string){
+    console.log("addFeedbackToDatabase called");
+    console.log(feedback);
+    console.log(userId);
+    let ref = this.db.list('/feeback');
+    let feedbackId = ref.push(feedback).key;
+    let updates = {};
+    updates['/feeback/' + feedbackId + '/userWhoSubmitted/'] = userId;
+    firebase.database().ref().update(updates);
+  }
+
 }
