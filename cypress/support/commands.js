@@ -11,14 +11,14 @@
 //
 // -- This is a parent command --
 
+Cypress.Commands.add('deleteCollection', (collectionName) =>{
+  cy.contains('li', collectionName).children('span[name=remove-collection]').click({force:true});
+});
+
 Cypress.Commands.add('fillOutSimpleCollection', (collectionName, categoryName, itemName) =>{
-  cy.visit('http://localhost:4200/create-collection');
-  // cy.loginAsAdmin();
-  // cy.wait(2000);
-  // cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
-  // cy.contains('span[class=mat-option-text]','500').click({force:true});
-  // cy.wait(2000);
-  // cy.get(`mat-cell[id="${identifyingId}"]>button`, {timeout:5000}).first().click({force:true});
+  cy.get('input[id=collectionName]').type(collectionName);
+  cy.get('input[id=categoryName]').type(categoryName);
+  cy.get('input[id=itemName]').type(itemName);
 });
 
 

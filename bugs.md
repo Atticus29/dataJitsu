@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Deleting a collection does not make it disappear in the user display nor the database; also seems to display "collection added" snackbar
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
