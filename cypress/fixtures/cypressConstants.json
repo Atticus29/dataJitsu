@@ -53,5 +53,8 @@
   "ageClassSelectName": "age-class-select",
   "ageClassNameRemovedMessage": "Age class has been removed",
   "locationSelectName": "location-select",
-  "locationNameRemovedMessage": "Location_name_has_been_removed"
+  "locationNameRemovedMessage": "Location_name_has_been_removed",
+  "collectionName": "My bug videos",
+  "categoryName": "Mating",
+  "itemName": "Arm Waving"
 }

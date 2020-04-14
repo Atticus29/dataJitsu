@@ -23,7 +23,9 @@ import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 })
 export class CollectionCreationFormComponent extends BaseComponent implements OnInit {
   private localCollectionQuestions: FormQuestionBase<any>[];
-  private localConfigOptions: DynamicFormConfiguration;
+  private localEntryDetailQuestions: FormQuestionBase<any>[];
+  private localCollectionConfigOptions: DynamicFormConfiguration;
+  private localEntryDetailConfigOptions: DynamicFormConfiguration;
   private localUser: any;
   private localStop: boolean = false; //TODO faster than the observable, which seems to not be catching up with its own stop? Making it not useful??
   // private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
@@ -39,9 +41,12 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       // console.log(collectionQuestions);
       this.localCollectionQuestions = collectionQuestions;
     });
+    this.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(entryQuestions =>{
+      this.localEntryDetailQuestions = entryQuestions;
+    });
     // this.localConfigOptions = this.questionService.getCollectionQuestionGroupQuestions();
     this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      this.localConfigOptions = new DynamicFormConfiguration(questionResults);
+      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults);
     });
     // this.localCategoryWithItemsQuestions = this.questionService.getNewCategoryWithItemsQuestions();
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{

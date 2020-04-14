@@ -1,6 +1,21 @@
 <div class="container">
   <div class="row">
-    <app-dynamic-form [configOptions]="localConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
-    <!-- <app-dynamic-form [questions]="localCategoryWithItemsQuestions | async"></app-dynamic-form> -->
+    <mat-horizontal-stepper>
+      <mat-step>
+        <app-dynamic-form [configOptions]="localCollectionConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+          <button mat-raised-button color="primary" matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
+        <div>
+          <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+          <button mat-raised-button color="primary" matStepperNext>Next</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+
   </div>
 </div>

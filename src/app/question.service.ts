@@ -49,26 +49,34 @@ export class QuestionService{
     type: 'text',
     order: 3
   });
-  // addQuestionAtIndex(question: FormQuestionBase<string>,questionArray: FormQuestionBase<string>[], index: number){
-  //   return questionArray.splice(index, 0, question);
-  // }
-
-  //TODO get from a remote source of question metadata
-  // getNewCategoryItemQuestion(){
-  //   let newCollectionItemQuestions: FormQuestionBase<string>[] = [];
-  //   let collectionItemQuestion: TextQuestion = new TextQuestion({
-  //     key: 'itemName',
-  //     label: 'Item Name',
-  //     value: '',
-  //     required: true,
-  //     giveOptionToAnswerThisQuestionMultipleTimes: true,
-  //     placeHolder: 'E.g., Mating display or Emergent Properties of Water',
-  //     type: 'text',
-  //     order: 1
-  //   });
-  //   newCollectionItemQuestions.push(collectionItemQuestion);
-  //   return of(newCollectionItemQuestions.sort((a, b) => a.order - b.order));
-  // }
+  private labelQuestion: TextQuestion = new TextQuestion({
+    key: 'labelQuestionName',
+    label: 'What label do you want to give your first question to your user?',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'E.g., Video URL',
+    type: 'text',
+    order: 1
+  });
+  private inputTypeQuestion: DropdownQuestion = new DropdownQuestion({
+    key: 'inputTypeQuestionName',
+    label: 'What type of question do you want this question to be?',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    type: 'dropdown',
+    order: 2,
+    options: [{key:'text', value:'text'}, {key:'dropdown', value:'dropdown'}]
+  });
 
   getNewCollectionQuestions(){
     let newCollectionQuestions: FormQuestionBase<string>[] = [];
@@ -85,6 +93,17 @@ export class QuestionService{
     collectionQuestionGroupQuestions.push(this.collectionItemQuestion);
     // return of(collectionQuestionGroupQuestions.sort((a, b) => a.order - b.order));
     return of(collectionQuestionGroupQuestions);
+  }
+
+  getNewEntryDetailQuestions(){
+    let entryDetailQuestions: FormQuestionBase<string>[] = [];
+    entryDetailQuestions.push(this.labelQuestion);
+    entryDetailQuestions.push(this.inputTypeQuestion);
+    // entryDetailQuestions.push(this.inputTypeQuestion);
+    // entryDetailQuestions.push(this.inputTypeQuestion);
+    // entryDetailQuestions.push(this.inputTypeQuestion);
+    // return of(entryDetailQuestions.sort((a, b) => a.order - b.order));
+    return of(entryDetailQuestions);
   }
 
 }

@@ -1,11 +1,14 @@
 # TODO highest priority
+- [ ] Add ability to delete and edit collections and categories
+  - [ ] Delete collection
+
+- [ ] write tests for collection form
 - [ ] User can edit personal collections
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
+- [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
 
 # TODO high priority
-- [ ] Add ability to delete and edit collections and categories
-- [ ] write tests for collection form
 - [ ] The new match and create account forms are refactored to use dynamic forms
 - [ ] People can earn the privilege to be able to comment on moves or matches
 - [ ] Users can create collections
