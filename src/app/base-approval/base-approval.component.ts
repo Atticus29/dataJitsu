@@ -29,8 +29,8 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.db.getGenericApprovedList(this.approvalConfig.localApprovedListPath).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("entered getGenericApprovedList");
-      console.log(results);
+      // console.log("entered getGenericApprovedList");
+      // console.log(results);
       this.approvalConfig.localApprovedNames = results;
     });
 
@@ -48,17 +48,17 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
     });
 
     this.db.getGenericCandidateNames(this.approvalConfig.candidatePath,'name').pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results from getGenericCandidateNames");
-      console.log(results);
+      // console.log("results from getGenericCandidateNames");
+      // console.log(results);
       this.approvalConfig.localCandidateNames = results;
     });
   }
 
   approveName(name: string, metaDataName: string){
-    console.log("approveName entered");
-    console.log(name);
-    console.log(metaDataName);
-    console.log(this.approvalConfig);
+    // console.log("approveName entered");
+    // console.log(name);
+    // console.log(metaDataName);
+    // console.log(this.approvalConfig);
     let confirmation = confirm("Are you sure you want to APPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
       this.db.addGenericItemToDb(this.approvalConfig.localApprovedListPath, name);
@@ -74,7 +74,7 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
     if(confirmation){
       this.db.getMatchUrlFromGenericCandidateName(this.approvalConfig.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
-          console.log("getMatchIdFromMatchUrl from disapproveName is " + matchIdResult);
+          // console.log("getMatchIdFromMatchUrl from disapproveName is " + matchIdResult);
           this.db.updateGenericNameInMatch(this.approvalConfig.localSubPathToMatchParameter,matchIdResult, this.approvalConfig.localReplacementText);
         });
       })

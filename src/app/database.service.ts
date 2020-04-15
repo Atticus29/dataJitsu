@@ -15,6 +15,7 @@ import { ReputationLog } from './reputationLog.model';
 import { constants } from './constants';
 import { Collection } from './collection.model';
 import { EventInVideo } from './eventInVideo.model';
+import { FeedbackItem } from './feedbackItem.model';
 
 @Injectable()
 export class DatabaseService {
@@ -1679,11 +1680,28 @@ export class DatabaseService {
     console.log("addFeedbackToDatabase called");
     console.log(feedback);
     console.log(userId);
-    let ref = this.db.list('/feeback');
+    let ref = this.db.list('/feedback');
     let feedbackId = ref.push(feedback).key;
     let updates = {};
-    updates['/feeback/' + feedbackId + '/userWhoSubmitted/'] = userId;
+    updates['/feedback/' + feedbackId + '/userWhoSubmitted/'] = userId;
     firebase.database().ref().update(updates);
   }
 
+  getFeedback(){
+    let ref = firebase.database().ref('/feedback');
+    let obsRet = Observable.create(function(observer){
+      ref.once("value").then(snapshot =>{
+        console.log("snapshot.val() in getFeedback:");
+        console.log(snapshot.val());
+        if(snapshot.val()){
+          let feedbackObjArray = Object.values(snapshot.val());
+          let feedbackItemArray = feedbackObjArray.map(FeedbackItem.fromDataBase)
+          observer.next(feedbackItemArray);
+        }else{
+          observer.next(null);
+        }
+      });
+    });
+    return obsRet;
+  }
 }
