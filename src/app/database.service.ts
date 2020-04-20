@@ -1578,18 +1578,6 @@ export class DatabaseService {
     return obsRet;
   }
 
-  addCollectionToDatabase(collection: Collection, userId: string){
-    console.log("addCollectionToDatabase called");
-    console.log(collection);
-    let ref = this.db.list('/collections');
-    let collectionId = ref.push(collection).key;
-    collection.setId(collectionId);
-    let updates = {};
-    updates['/users/' + userId + '/collections/' + collectionId] = collection;
-    updates['/collections/' + collectionId + '/id/'] = collectionId;
-    firebase.database().ref().update(updates);
-  }
-
   doesCollectionAlreadyExistInDb(collection: Collection): Observable<boolean>{
     console.log("doesCollectionAlreadyExistInDb entered");
     console.log(collection);
@@ -1617,7 +1605,7 @@ export class DatabaseService {
               }
             });
             if(counter<1){
-              console.log("counter shenanigans");
+              console.log("seems like we went through the whole collection of collections and found no match. Returning false...");
               observer.next(false);
               return obsRet;
             }
@@ -1632,6 +1620,33 @@ export class DatabaseService {
         observer.next(false);
         return obsRet;
       }
+    });
+    return obsRet;
+  }
+
+  addCollectionToDatabase(collection: Collection, userId: string): Observable<boolean>{
+    console.log("addCollectionToDatabase called");
+    let self = this;
+    let obsRet = Observable.create(function(observer){
+      self.doesCollectionAlreadyExistInDb(collection).pipe(take(1)).subscribe(alreadyExists =>{
+        if(alreadyExists){
+          observer.next(false);
+          return obsRet;
+        }else{
+          console.log("looks like entry doesn't already exist from addCollectionToDatabase function call to doesCollectionAlreadyExistInDb. Adding entry...");
+          console.log(collection);
+          let ref = self.db.list('/collections');
+          let collectionId = ref.push(collection).key;
+          collection.setId(collectionId);
+          let updates = {};
+          updates['/users/' + userId + '/collections/' + collectionId] = collection;
+          updates['/collections/' + collectionId + '/id/'] = collectionId;
+          firebase.database().ref().update(updates);
+          console.log("done writing to database");
+          observer.next(true);
+          return obsRet;
+        }
+      });
     });
     return obsRet;
   }

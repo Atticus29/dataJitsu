@@ -9,12 +9,16 @@
   - [ ] can create collection form with 2 additional items
   - [ ] can create collection form with 2 additional items and one additional category
   - [ ] can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank
-- [ ] User can edit personal collections
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
 - [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
 
 # TODO high priority
+- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)
+  - [ ] Feedback form implemented
+  - [ ] Capture user's email address
+  - [ ] Decode the snapshot image
+  - [ ] Admin can mark feedback as completed or delete it if not useful
 - [ ] The new match and create account forms are refactored to use dynamic forms
 - [ ] People can earn the privilege to be able to comment on moves or matches
 - [ ] Users can create collections
@@ -318,7 +322,6 @@
 - [ ] There's a way for a user to undo the most recent annotation they made?
 - [ ] Users can look back 5 seconds or forward 5 seconds in a match
 - [ ] Users see the advice to annotate what the ref awards points to if the match was reffed (can included other positions/moves that didn't score points, but can't disagree with ref)
-- [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)
 - [ ] Set up unit testing, especially for database stuff
 - [ ] Users can view embedded videos that are annotated with moves
 - [ ] Users can sort videos to view by any combination of:

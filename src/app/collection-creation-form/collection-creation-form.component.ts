@@ -75,28 +75,35 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                   console.log("newCollection after scrubbing?");
                   console.log(newCollection);
                   if(this.localUser && this.localUser.id){
-                    // console.log("localUser and localUser.id exist");
-                    let dbCallCount = 0;
-                    this.databaseService.doesCollectionAlreadyExistInDb(newCollection).subscribe(alreadyExists =>{ //.pipe(takeUntil(this.ngUnsubscribe))
-                      console.log("doesCollectionAlreadyExistInDb just emitted");
-                      console.log("dbCallCount is: " + dbCallCount);
-                      console.log("does collection already exist?: " + alreadyExists);
-                      if(alreadyExists && dbCallCount<1){
-                        console.log("already exists hit");
-                        this.openSnackBar(constants.collectionAlreadyExistsNotification);
-                        console.log("already exists beep");
-                        dbCallCount += 1;
-                        // alert("TODO snackbar for already exists");
-                      }
-                      if(!alreadyExists){
-                        this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id);
-                        console.log("added boop!");
+                    this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                      if(additionStatus){
                         this.openSnackBar(constants.collectionAddedNotification);
-                        dbCallCount += 1;
-                        this.formProcessingService.formResults.next("Stop");
-                        this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
+                      }else{
+                        this.openSnackBar(constants.collectionAlreadyExistsNotification);
                       }
-                    })
+                    });
+                    // console.log("localUser and localUser.id exist");
+                    // let dbCallCount = 0;
+                    // this.databaseService.doesCollectionAlreadyExistInDb(newCollection).subscribe(alreadyExists =>{ //.pipe(takeUntil(this.ngUnsubscribe))
+                    //   console.log("doesCollectionAlreadyExistInDb just emitted");
+                    //   console.log("dbCallCount is: " + dbCallCount);
+                    //   console.log("does collection already exist?: " + alreadyExists);
+                    //   if(alreadyExists && dbCallCount<1){
+                    //     console.log("already exists hit");
+                    //     this.openSnackBar(constants.collectionAlreadyExistsNotification);
+                    //     console.log("already exists beep");
+                    //     dbCallCount += 1;
+                    //     // alert("TODO snackbar for already exists");
+                    //   }
+                    //   if(!alreadyExists){
+                    //     this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id);
+                    //     console.log("added boop!");
+                    //     this.openSnackBar(constants.collectionAddedNotification);
+                    //     dbCallCount += 1;
+                    //     this.formProcessingService.formResults.next("Stop");
+                    //     this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
+                    //   }
+                    // });
                     // this.localStop = true;
                     // console.log("stops supposedly issued");
                   }

@@ -2,8 +2,10 @@
 
 ## Highly Urgent
 
-- [ ] Deleting a collection seems to display "collection added" snackbar
+- [ ] Collection added and collection already exists snackbars aren't displaying when they are supposed to
+- [ ] When you add a new item, the snackbar fires off
 - [ ] Adding a collection never dismissed the snackbar and it appears at the top
+- [ ] Deleting a collection seems to display "collection added" snackbar
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 
@@ -14,6 +16,8 @@
   - [ ] Submitting specific feedback in Safari sometimes freezes upon submission
   - [ ] Submitting general feedback pulls up a screenshot that has the top half of the screenshot in grey
   - [ ] Dismissing the specific dialog box before clicking submit works in some instances but not others
+- [ ] DynamicFormQuestionComponent.html:5 ERROR Error: Cannot find control with name: 'collectionName' whenever I submit a collection. Mostly doesn't seem to mess anything up, but I don't understand what's causing the error or how to fix it
+  - [ ] Oh I think the problem only exists when the collections node in the database is empty
 
 ### To Be Classified
 
