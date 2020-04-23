@@ -2,8 +2,8 @@
 
 ## Highly Urgent
 
-- [ ] Collection added and collection already exists snackbars aren't displaying when they are supposed to
 - [ ] When you add a new item, the snackbar fires off
+- [ ] Collection added and collection already exists snackbars aren't displaying when they are supposed to
 - [ ] Adding a collection never dismissed the snackbar and it appears at the top
 - [ ] Deleting a collection seems to display "collection added" snackbar
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { takeUntil, takeLast, takeWhile, take } from 'rxjs/operators';
+import { takeUntil, takeLast, takeWhile, take, withLatestFrom } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
 
 import { constants } from '../constants';
@@ -56,17 +56,21 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
         this.localUser = user;
       }
     });
-    this.formProcessingService.formResults.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
-      // console.log("formResults is:");
-      // console.log(formResults);
+    let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
+    formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+      let formResults = combinedResults[0];
+      let currentFormQuestions = combinedResults[1];
+      console.log("formResults just emitted");
+      console.log("formResults is:");
+      console.log(formResults);
       if(formResults){
         if(formResults !== "Stop"){
           // console.log("formResults isn't stop!")
           if(formResults.collectionName){
-            this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
-              console.log("currentFormQuestions just emitted");
-              console.log(currentFormQuestions);
+            // this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormQuestions =>{
+              // console.log("currentFormQuestions just emitted");
               if(currentFormQuestions){ //&& !this.localStop
+                console.log(currentFormQuestions);
                 if(currentFormQuestions !== "Stop"){
                   // console.log("currentFormQuestions reached in collection-creation form");
                   console.log("(currentFormQuestions isn't stop)");
@@ -109,7 +113,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                   }
                 }
               }
-            });
+            // });
           }
         }
       }

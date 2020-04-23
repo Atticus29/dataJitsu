@@ -44,11 +44,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      // console.log("processForm called");
+      console.log("processForm called");
+      console.log("questions are:");
+      console.log(questions);
       // console.log(this.form.getRawValue());
       this.payLoad = JSON.stringify(this.form.getRawValue());
-      this.formProcessingService.captureFormResults(this.form.getRawValue());
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
+      this.formProcessingService.captureFormResults(this.form.getRawValue());
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       // console.log("addAnotherQuestion called");

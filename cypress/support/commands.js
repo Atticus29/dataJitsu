@@ -21,6 +21,11 @@ Cypress.Commands.add('fillOutSimpleCollection', (collectionName, categoryName, i
   cy.get('input[id=itemName]').type(itemName);
 });
 
+Cypress.Commands.add('fillOutSimpleCategoryWithItem', (categoryName, categoryElementId, itemName, itemNameElementId) =>{
+  cy.get(`input[id="${categoryElementId}"]`).type(categoryName); //id="${identifyingId}"
+  cy.get(`input[id="${itemNameElementId}"]`).type(itemName);
+});
+
 
 Cypress.Commands.add('deleteMatch', (identifyingId) =>{
   cy.logout();
