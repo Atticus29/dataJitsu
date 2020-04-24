@@ -84,17 +84,17 @@ describe ('Tests involving match creation', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
       cy.contains('button','Submit').should('not.be.enabled');
-      cy.fillOutSimpleCategoryWithItem(cypressConstants.categoryName, cypressConstants.itemName);
+      cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=add-new-item-button]').click();
       cy.get('button[id=new-collection-submit]').should('be.enabled');
       cy.get('input[id=itemName1]').type(cypressConstants.itemName2);
       cy.get('button[id=add-new-item-button]').first().click();
       cy.get('input[id=itemName2]').type(cypressConstants.itemName3);
       cy.get('button[id=new-collection-submit]').should('be.enabled');
-      cy.get('button[id=add-new-question-group-button]').click();
+      cy.get('button[id=add-new-question-group-button]').first().click();
       cy.get('button[id=new-collection-submit]').should('be.disabled');
       //categoryName, categoryElementId, itemName, itemNameElementId
-      cy.fillOutSimpleCollection(cypressConstants.secondCategoryName,'categoryName1', cypressConstants.secondItemName, 'itemName1');
+      cy.fillOutSimpleCategoryWithItem(cypressConstants.secondCategoryName,'categoryName1', cypressConstants.secondItemName, 'itemName3');
       cy.contains('button','Submit').click();
       cy.get('button[id=settings-button]').click();
       cy.contains('button','User Info.').click();

@@ -23,7 +23,7 @@ Cypress.Commands.add('fillOutSimpleCollection', (collectionName, categoryName, i
 
 Cypress.Commands.add('fillOutSimpleCategoryWithItem', (categoryName, categoryElementId, itemName, itemNameElementId) =>{
   cy.get(`input[id="${categoryElementId}"]`).type(categoryName); //id="${identifyingId}"
-  cy.get(`input[id="${itemNameElementId}"]`).type(itemName);
+  cy.get(`input[id="${itemNameElementId}"]`).first().type(itemName);
 });
 
 
