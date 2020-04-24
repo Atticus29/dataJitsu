@@ -1,13 +1,6 @@
 # TODO highest priority
 - [ ] Add ability to delete and edit collections and categories
   - [ ] Delete collection
-
-- [ ] write tests for collection form
-  - [x] fills out simple collection form, does not see submit button enabled until all three filled out, and can see collection in user section, and deletes collection with confirmation that it disappears
-  - [x] cannot create duplicate collection upon refresh/re-entry into the collection form page
-  - [x] can create collection form with 2 additional items
-  - [x] can create collection form with 2 additional items and one additional category LEFT OFF HERE
-  - [ ] can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
 - [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
@@ -157,6 +150,12 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] write tests for collection form
+  - [x] fills out simple collection form, does not see submit button enabled until all three filled out, and can see collection in user section, and deletes collection with confirmation that it disappears
+  - [x] cannot create duplicate collection upon refresh/re-entry into the collection form page
+  - [x] can create collection form with 2 additional items
+  - [x] can create collection form with 2 additional items and one additional category LEFT OFF HERE
+  - [x] can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank
 - [x] User can delete personal collections
 - [x] Re-activate addCollectionToDatabase after you're done messing around with it
 - [x] collection form allows you to add categories with items attached to each category
