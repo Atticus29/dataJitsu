@@ -6,6 +6,7 @@ import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { DatabaseService } from '../database.service';
 import { Collection } from '../collection.model';
+import { FormProcessingService } from '../form-processing.service';
 
 @Component({
   selector: 'app-user-collections-display',
@@ -17,7 +18,7 @@ export class UserCollectionsDisplayComponent extends BaseComponent implements On
   private isAdmin: boolean = false;
   private localUser: any;
 
-  constructor(private trackerService: TrackerService, private databaseService: DatabaseService) {
+  constructor(private trackerService: TrackerService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService) {
     super();
   }
 
@@ -43,7 +44,13 @@ export class UserCollectionsDisplayComponent extends BaseComponent implements On
   removeCollection(collection: Collection, user: any){
     let confirmation = confirm("Are you sure you want to delete collection: " + collection.getName() + "?");
     if(confirmation){
-      this.databaseService.deleteCollection(collection, user);
+      this.databaseService.deleteCollectionAndConfirm(collection, user).pipe(takeUntil(this.ngUnsubscribe)).subscribe(deletionStatus =>{
+        console.log("deleteCollectionAndConfirm returned: " + deletionStatus);
+        if(deletionStatus === true){
+          this.formProcessingService.formResults.next("Stop");
+          this.formProcessingService.questionArrayOfForm.next("Stop");
+        }
+      });
       //TODO decide whether any points should be awarded here. I'm currently thinking no
     }
   }

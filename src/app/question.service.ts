@@ -24,6 +24,7 @@ export class QuestionService{
   private categoryNameQuestion: TextQuestion = new TextQuestion({
     key: 'categoryName',
     label: 'Category Name',
+    groupLabel: 'Category',
     value: '',
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
@@ -52,6 +53,22 @@ export class QuestionService{
   private labelQuestion: TextQuestion = new TextQuestion({
     key: 'labelQuestionName',
     label: 'What label do you want to give your first question to your user?',
+    groupLabel: "Question For Your Users",
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'E.g., Video URL',
+    type: 'text',
+    order: 1
+  });
+  private genericLabelQuestion: TextQuestion = new TextQuestion({
+    key: 'genericLabelQuestionName',
+    label: 'What label do you want to give your next question to your user?',
+    groupLabel: "Question For Your Users",
     value: '',
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
@@ -71,11 +88,11 @@ export class QuestionService{
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: true,
     pairThisQuestionWithPreviousQuestion: true,
-    isThisQuestionTheLastOfAQuestionGroup: false,
-    indentThisQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: true,
+    indentThisQuestion: true,
     type: 'dropdown',
     order: 2,
-    options: [{key:'text', value:'text'}, {key:'dropdown', value:'dropdown'}]
+    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}]
   });
 
   getNewCollectionQuestions(){
@@ -103,6 +120,13 @@ export class QuestionService{
     // entryDetailQuestions.push(this.inputTypeQuestion);
     // entryDetailQuestions.push(this.inputTypeQuestion);
     // return of(entryDetailQuestions.sort((a, b) => a.order - b.order));
+    return of(entryDetailQuestions);
+  }
+
+  getOriginalCollectionOwnerQuestionGroupQuestions(){
+    let entryDetailQuestions: FormQuestionBase<string>[] = [];
+    entryDetailQuestions.push(this.genericLabelQuestion);
+    entryDetailQuestions.push(this.inputTypeQuestion);
     return of(entryDetailQuestions);
   }
 

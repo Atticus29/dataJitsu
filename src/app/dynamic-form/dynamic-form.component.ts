@@ -116,13 +116,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
-      // console.log("entered repopulateFormWithPreviousPayload")
-      // console.log("form");
-      // console.log(form);
-      // console.log("payLoad");
-      // console.log(payLoad);
-      // console.log("questionArray");
-      // console.log(questionArray);
+      console.log("entered repopulateFormWithPreviousPayload")
+      console.log("form");
+      console.log(form);
+      console.log("payLoad");
+      console.log(payLoad);
+      console.log("questionArray");
+      console.log(questionArray);
       let payLoadKeys: string[] = Object.keys(payLoad);
       let payLoadValues: string[] = Object.values(payLoad);
       for(let i=0; i<payLoadKeys.length; i++){

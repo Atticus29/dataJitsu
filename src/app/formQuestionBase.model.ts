@@ -2,6 +2,7 @@ export class FormQuestionBase<T> {
   value: T;
   key: string;
   label: string;
+  groupLabel: string;
   required: boolean;
   giveOptionToAnswerThisQuestionMultipleTimes: boolean;
   disableAddButtonIfCurrentValueIsBlank: boolean;
@@ -18,6 +19,7 @@ export class FormQuestionBase<T> {
       value?: T,
       key?: string,
       label?: string,
+      groupLabel?: string,
       required?: boolean,
       giveOptionToAnswerThisQuestionMultipleTimes?: boolean,
       disableAddButtonIfCurrentValueIsBlank?: boolean,
@@ -32,6 +34,7 @@ export class FormQuestionBase<T> {
     this.value = options.value;
     this.key = options.key || '';
     this.label = options.label || '';
+    this.groupLabel = options.groupLabel || '';
     this.required = !!options.required;
     this.giveOptionToAnswerThisQuestionMultipleTimes = !!options.giveOptionToAnswerThisQuestionMultipleTimes;
     this.disableAddButtonIfCurrentValueIsBlank = !!options.disableAddButtonIfCurrentValueIsBlank;
@@ -51,6 +54,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key, //.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
@@ -72,6 +76,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key,
       label: oldQuestion.label,
+      groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
       disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
@@ -92,6 +97,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: newKey,
       label: oldQuestion.label,
+      groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
       disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
@@ -112,6 +118,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
@@ -132,6 +139,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,

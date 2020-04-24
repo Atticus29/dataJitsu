@@ -48,6 +48,10 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
       this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults);
     });
+
+    this.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
+      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults);
+    });
     // this.localCategoryWithItemsQuestions = this.questionService.getNewCategoryWithItemsQuestions();
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       // console.log("user is:");

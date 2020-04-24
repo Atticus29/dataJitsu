@@ -1,11 +1,9 @@
 # Known issues
 
 ## Highly Urgent
-
-- [ ] When you add a new item, the snackbar fires off
-- [ ] Collection added and collection already exists snackbars aren't displaying when they are supposed to
-- [ ] Adding a collection never dismissed the snackbar and it appears at the top
+- [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
 - [ ] Deleting a collection seems to display "collection added" snackbar
+
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 
@@ -74,6 +72,10 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] When you add a new item, the snackbar fires off
+- [x] Collection added and collection already exists snackbars aren't displaying when they are supposed to
+- [x] Adding a collection never dismissed the snackbar and it appears at the top
+- [x] Deleting collection and then going immediately back to the collection form re-populates the database with the question that was just deleted
 - [x] Deleting a collection does not make it disappear in the user display nor the database;
 - [x] Leaving item from previous category blank and then you click new category, the item becomes required
 - [x] Adding a collection that is identical but has additional content registers as equal in doesCollectionAlreadyExistInDb

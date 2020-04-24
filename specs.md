@@ -1,8 +1,9 @@
 # TODO highest priority
-- [ ] Add ability to delete and edit collections and categories
-  - [ ] Delete collection
+- [ ] write test for navigating away from user-info after deleting collection and returning to collection form page and then going back, you should not see the collection re-appear
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
+- [ ] Add ability to delete and edit collections and categories
+  - [ ] Delete collection
 - [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
 
 # TODO high priority

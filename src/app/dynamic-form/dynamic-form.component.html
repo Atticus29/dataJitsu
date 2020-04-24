@@ -15,7 +15,7 @@
         </div>
       </div>
       <br>
-      <button (click)="addAnotherQuestionGroup(question, questions, i)" *ngIf="question.isThisQuestionTheLastOfAQuestionGroup" id="add-new-question-group-button"  class="btn waves-effect waves-light" type="button">Add Another {{question.findParentQuestion(question, questions, i).label}}
+      <button (click)="addAnotherQuestionGroup(question, questions, i)" *ngIf="question.isThisQuestionTheLastOfAQuestionGroup" id="add-new-question-group-button"  class="btn waves-effect waves-light" type="button">Add Another {{question.findParentQuestion(question, questions, i).groupLabel}}
         <i class="material-icons right">add</i>
       </button>
     </div>

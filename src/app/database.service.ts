@@ -1681,14 +1681,21 @@ export class DatabaseService {
     return obsRet;
   }
 
-  deleteCollection(collection: Collection, user: any){
-    console.log("deleteCollection entered");
-    let ref = firebase.database().ref('collections/' + collection.getId());
-    ref.remove();
-    //TODO if
-    console.log(user.id);
-    ref = firebase.database().ref('users/' + user.id + '/collections/' + collection.getId());
-    ref.remove();
+  deleteCollectionAndConfirm(collection: Collection, user: any){
+    let obsRet = Observable.create(function(observer){
+      console.log("deleteCollection entered");
+      let ref = firebase.database().ref('collections/' + collection.getId());
+      ref.remove();
+      if(user){
+        if(user.id){
+          console.log(user.id);
+          ref = firebase.database().ref('users/' + user.id + '/collections/' + collection.getId());
+          ref.remove();
+          observer.next(true);
+        }
+      }
+    });
+    return obsRet;
   }
 
   addFeedbackToDatabase(feedback: any, userId: string){
