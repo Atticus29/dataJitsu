@@ -2,7 +2,7 @@
   <div class="row">
     <div class="">
       <div class="card title-buffer">
-        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
+        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left) vs. {{match?.videoDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>
@@ -83,19 +83,19 @@
           </div>
         </div>
         <div class="card-content">
-          <span><span class="match-label">Age Class: </span>{{match?.matchDeets?.ageClass}}</span>
+          <span><span class="match-label">Age Class: </span>{{match?.videoDeets?.ageClass}}</span>
           <br>
-          <span class="match-label">Weight Class: </span>{{match?.matchDeets?.weightClass}}
+          <span class="match-label">Weight Class: </span>{{match?.videoDeets?.weightClass}}
           <br>
           <span class="match-label">Gi/Nogi: </span>{{giStatus}}
           <br>
-          <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
+          <span class="match-label">Tournament: </span>{{match?.videoDeets?.tournamentName}}
           <br>
-          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.matchDeets?.date)}}
+          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.videoDeets?.date)}}
           <br>
-          <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
+          <span class="match-label">Location: </span>{{match?.videoDeets?.location}}
           <br>
-          <span class="match-label">Rank: </span>{{match?.matchDeets?.rank}}
+          <span class="match-label">Rank: </span>{{match?.videoDeets?.rank}}
 
         </div>
       </div>

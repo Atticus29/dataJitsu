@@ -75,7 +75,7 @@ describe ('Match custom tests: move name', () =>{
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.createCustomCervicalChoke("Darth Vader Choke");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.moveNameAlreadyExistsNotification).should('exist');
+      cy.contains(cypressConstants.eventNameAlreadyExistsNotification).should('exist');
       //deletes the move from admin page and confirms that it is missing from dropdown list
       cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");
       cy.deleteMove(cypressConstants.customMoveName);

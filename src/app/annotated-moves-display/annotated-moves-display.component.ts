@@ -22,7 +22,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   private annotations: Array<any> = new Array<any>();
   private localFlagMin: number = 1000;
   private isAdmin: boolean = false;
-  private matchId: string = null;
+  private videoId: string = null;
   private test: boolean = false;
   private localUserId: string = null;
   // private isFlaggedDirective: boolean = false;
@@ -35,10 +35,10 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   ngOnInit() {
     this.localFlagMin = constants.numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention;
     let self = this;
-    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{ //takeUntil(this.ngUnsubscribe)
-      this.matchId = matchId;
-      console.log("got into currentMatch: " + this.matchId);
-      this.fetchAnnotations(this.matchId);
+    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{ //takeUntil(this.ngUnsubscribe)
+      this.videoId = videoId;
+      console.log("got into currentMatch: " + this.videoId);
+      this.fetchAnnotations(this.videoId);
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
@@ -49,7 +49,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     this.trackerService.fetchNewAnnotations.pipe(takeUntil(this.ngUnsubscribe)).subscribe(shouldFetch =>{
       if(shouldFetch){
         // console.log("error starts in fetchAnnotations which is true listening for fetchNewAnnotations in trackerService?");
-        this.fetchAnnotations(this.matchId);
+        this.fetchAnnotations(this.videoId);
         this.trackerService.fetchNewAnnotations.next(false);
       } else{
         // console.log("fetchAnnotations is false");
@@ -73,11 +73,11 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
     // console.log(timeInitiated);
     let confirmation = confirm("Are you sure you want to delete this annotation?");
     if(confirmation){
-      this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
-        // console.log("matchId from tracker service in annotated moves display about to call removeAnnotationInMatchAndUserByStartTime: " + matchId);
-        this.databaseService.removeAnnotationInMatchAndUserByStartTime(matchId, timeInitiated, annotatorUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+      this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{
+        // console.log("videoId from tracker service in annotated moves display about to call removeAnnotationInMatchAndUserByStartTime: " + videoId);
+        this.databaseService.removeAnnotationInMatchAndUserByStartTime(videoId, timeInitiated, annotatorUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           if(status){
-              this.fetchAnnotations(this.matchId);
+              this.fetchAnnotations(this.videoId);
           }
         });
       });
@@ -103,38 +103,38 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   //   this.isFlaggedDirective = true;
   // }
 
-  fetchAnnotations(matchId: string){
-    if(matchId){
+  fetchAnnotations(videoId: string){
+    if(videoId){
       this.annotations = new Array();
-      this.databaseService.getAnnotationsSortedByStartTimeV2(matchId, 'matches/' + matchId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
+      this.databaseService.getAnnotationsSortedByStartTimeV2(videoId, 'matches/' + videoId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
         if(annotationResults){
           console.log("annotationResults in fetchAnnotations call of AnnotatedMovesDisplayComponent:");
           console.log(annotationResults);
           this.annotations = annotationResults;
         }else{
-          console.log("no matchId in fetchAnnotations call");
+          console.log("no videoId in fetchAnnotations call");
         }
       });
     }
   }
 
 
-  flagAnnotationForImprovement(matchId: string, timeInitiated: number, annotatorUserId: string){
+  flagAnnotationForImprovement(videoId: string, timeInitiated: number, annotatorUserId: string){
     // this.isFlaggedDirective = true;
     // this.cdr.detectChanges();
     let self = this;
     if(this.localUserId){
       // console.log("got here");
-      this.databaseService.toggleAnnotationFlag(matchId, timeInitiated, this.localUserId);
+      this.databaseService.toggleAnnotationFlag(videoId, timeInitiated, this.localUserId);
       //if this hits the flag threshold, deduct from annotator's reputation
       //numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction
       //numberOfPointsToDeductForBadAnnotation
-      this.databaseService.getNumberOfUniqueAnnotationFlags(matchId, timeInitiated).pipe(take(1)).subscribe(numberOfFlags =>{
+      this.databaseService.getNumberOfUniqueAnnotationFlags(videoId, timeInitiated).pipe(take(1)).subscribe(numberOfFlags =>{
         // console.log("got close");
-        this.fetchAnnotations(matchId);
+        this.fetchAnnotations(videoId);
         if(numberOfFlags >= constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction){
           // console.log("got closest!");
-          this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1), "Your annotation on match " + matchId + " was flagged too many times.");
+          this.databaseService.updateUserReputationPoints(annotatorUserId, (constants.numberOfPointsToDeductForBadAnnotation*-1), "Your annotation on match " + videoId + " was flagged too many times.");
         }
       });
     } else{

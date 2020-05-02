@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Match } from '../match.model';
-import { MatchDetails } from '../matchDetails.model';
+import { VideoDetails } from '../videoDetails.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { User } from '../user.model';
 import { DatabaseService } from '../database.service';

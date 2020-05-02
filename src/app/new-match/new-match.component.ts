@@ -14,7 +14,7 @@ import { User } from '../user.model';
 import { AuthorizationService } from '../authorization.service';
 import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
-import { MatchDetails } from '../matchDetails.model';
+import { VideoDetails } from '../videoDetails.model';
 import { Match } from '../match.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { DatabaseService } from '../database.service';
@@ -272,11 +272,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let self = this;
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
-    let matchDeets = new MatchDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
+    let videoDeets = new VideoDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){
-        let match = new Match(matchDeets, self.localUser.id, moves);
+        let match = new Match(videoDeets, self.localUser.id, moves);
         observer.next(match);
       }
     });
@@ -322,9 +322,9 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           // console.log(result)
-          let matchId = this.db.addMatchToDb(result);
+          let videoId = this.db.addMatchToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate(['matches/' + matchId]);
+          this.router.navigate(['matches/' + videoId]);
           //TODO navigate to annotation page??
         });
       } else{

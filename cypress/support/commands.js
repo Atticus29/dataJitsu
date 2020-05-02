@@ -26,7 +26,7 @@ Cypress.Commands.add('checkThatCustomMoveHasBeenRenamed', () =>{
   cy.visit('http://localhost:4200/matches');
   cy.get('a[name=videoClick]').first().click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.contains('span',cypressConstants.moveNameRemovedMessage).should('exist');
+    cy.contains('span',cypressConstants.eventNameRemovedMessage).should('exist');
     cy.contains('span','Darth Vader Choke').should('not.exist');
   });
 });
@@ -35,7 +35,7 @@ Cypress.Commands.add('removeNowRenamedAnnotation', () =>{
   //assumes logged in as admin
   cy.get('a[name=videoClick]').first().click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.removeAnnotation(cypressConstants.moveNameRemovedMessage);
+    cy.removeAnnotation(cypressConstants.eventNameRemovedMessage);
   });
 });
 
@@ -261,13 +261,13 @@ Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
   });
 });
 
-Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
+Cypress.Commands.add("createCustomCervicalChoke", (eventName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force: true, timeout:5000});
     cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
     cy.contains('mat-tree-node', "Add cervical submission").click();
   });
-  cy.get('input[id=moveNameFc]').clear().type(moveName);
+  cy.get('input[id=eventNameFc]').clear().type(eventName);
   cy.contains('span', 'Choose Move Subcategory').should('not.be.visible');
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.selectDropDown('move-category-select', cypressConstants.submissionNodeName);
@@ -277,11 +277,11 @@ Cypress.Commands.add("createCustomCervicalChoke", (moveName) => {
   cy.get('button[id=dialog-submit-button]').click();
 });
 
-Cypress.Commands.add('deleteMove', (moveName) =>{
+Cypress.Commands.add('deleteMove', (eventName) =>{
   cy.logout();
   cy.loginAsAdmin();
   cy.visit('http://localhost:4200/admin', {timeout: 5000});
-  cy.contains('li', moveName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
+  cy.contains('li', eventName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 
 Cypress.Commands.add('deleteGeneric', (genericName) =>{
@@ -291,22 +291,22 @@ Cypress.Commands.add('deleteGeneric', (genericName) =>{
   cy.contains('li', genericName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 
-Cypress.Commands.add('removeAnnotation', (moveName) =>{
+Cypress.Commands.add('removeAnnotation', (eventName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.get('mat-chip').contains(moveName).should('exist');
-  cy.get('mat-chip').contains('mat-chip', moveName).children('span[name=cancel-annotation]').click({force:true});
+  cy.get('mat-chip').contains(eventName).should('exist');
+  cy.get('mat-chip').contains('mat-chip', eventName).children('span[name=cancel-annotation]').click({force:true});
   cy.reload();
-  cy.get('mat-chip').contains(moveName).should('not.exist');
+  cy.get('mat-chip').contains(eventName).should('not.exist');
 });
 
-Cypress.Commands.add('disapproveMove', (moveName) =>{
+Cypress.Commands.add('disapproveMove', (eventName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.contains('li',moveName, {timeout: 5000}).should('exist');
-  cy.contains('li',moveName).children('span[name=disapprove-move]').click({force:true});
+  cy.contains('li',eventName, {timeout: 5000}).should('exist');
+  cy.contains('li',eventName).children('span[name=disapprove-move]').click({force:true});
   cy.reload();
-  cy.get('li').contains(moveName).should('not.exist');
+  cy.get('li').contains(eventName).should('not.exist');
 });
 
 Cypress.Commands.add('disapproveGeneric', (genericName) =>{
@@ -318,14 +318,14 @@ Cypress.Commands.add('disapproveGeneric', (genericName) =>{
   cy.get('li').contains(genericName).should('not.exist');
 });
 
-Cypress.Commands.add('approveMove', (moveName) =>{
+Cypress.Commands.add('approveMove', (eventName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.contains('li',moveName, {timeout: 5000}).should('exist');
+  cy.contains('li',eventName, {timeout: 5000}).should('exist');
   //TODO LEFT OFF HERE
-  cy.contains('li',moveName).children('span[name=approve-move]').click({force:true});
+  cy.contains('li',eventName).children('span[name=approve-move]').click({force:true});
   cy.reload();
-  cy.contains('li',moveName, {timeout: 5000}).should('exist');
+  cy.contains('li',eventName, {timeout: 5000}).should('exist');
 });
 
 Cypress.Commands.add('approveGeneric', (genericName) =>{

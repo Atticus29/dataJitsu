@@ -82,7 +82,7 @@ const appRoutes: Routes = [
   ...canActivate(redirectUnauthorizedTo(['login'])), //TODO add admin guard
   pathMatch: 'full'
 },{
-  path: 'matches/:matchId',
+  path: 'matches/:videoId',
   component: MatchDisplayComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
@@ -96,7 +96,7 @@ const appRoutes: Routes = [
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
-  path: 'matches/:matchId/annotate',
+  path: 'matches/:videoId/annotate',
   component: AnnotationDisplayComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'

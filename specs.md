@@ -31,7 +31,7 @@
     - [x] Feature to delete move name from move list
     - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [x] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -49,7 +49,7 @@
     - [ ] Feature to delete move name from move list
     - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [ ] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -67,7 +67,7 @@
     - [ ] Feature to delete move name from move list
     - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [ ] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -81,7 +81,7 @@
     - [ ] TODO link to how to lose them
 
   - [ ] //TODO flesh out getMainAnnotatorOfMatch
-- [ ] Improve moveCategory capture with a getCategoryFromItem method... it should use moves.ts, I think
+- [ ] Improve eventCategory capture with a getCategoryFromItem method... it should use moves.ts, I think
 - [ ] Add way to handle when someone is not connected
 - [ ] Track who flags things
 - [ ] What happens when a user tries to rate their own annotation currently?
@@ -202,7 +202,7 @@
   - [x] Feature to delete move name from move list
   - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
   - [x] Put delete feature under control of isAdmin (or isModerator?)
-  - [x] Added moveNames not in alphabetical order
+  - [x] Added eventNames not in alphabetical order
   - [x] Standardize how these things are capitalized
   - [x] Test written to make sure name addition is seen in match
   - [x] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -270,7 +270,7 @@
 - [x] Fix test for clicking pause
 
 # Tabled specs and TODOs
-- [x] Remove match and annotation rating from matchDeets because they live elsewhere now
+- [x] Remove match and annotation rating from videoDeets because they live elsewhere now
 
 # Specs
 - [ ] An annotation is not made if a similar enough one has already been made by someone else

@@ -22,7 +22,7 @@ export class WeightClassNameApprovalComponent extends BaseComponent implements O
   private localApprovalAndDisapprovalPhrase: string = 'weight class';
   private localReplacementText: string = constants.weightClassRemovedMessage;
   private localApprovalAndDisapprovalPoints: number = constants.numberOfPointsToAwardForApprovingWeigthClassName;
-  private localSubPathToMatchParameter: string = 'matchDeets/weightClass';
+  private localSubPathToMatchParameter: string = 'videoDeets/weightClass';
   private localApprovedListPath: string = '/weightClasses';
   private candidatePath: string = '/candidateWeightClasses';
 
@@ -72,9 +72,9 @@ export class WeightClassNameApprovalComponent extends BaseComponent implements O
     let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
       this.db.getMatchUrlFromGenericCandidateName(this.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
-          console.log("getMatchIdFromMatchUrl from disapproveName is " + matchIdResult);
-          this.db.updateGenericNameInMatch(this.localSubPathToMatchParameter,matchIdResult, this.localReplacementText);
+        this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+          console.log("getMatchIdFromMatchUrl from disapproveName is " + videoIdResult);
+          this.db.updateGenericNameInMatch(this.localSubPathToMatchParameter,videoIdResult, this.localReplacementText);
         });
       })
       this.db.removeGenericStringWithOrderByFromDb(this.candidatePath, 'name', name);

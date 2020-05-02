@@ -1,20 +1,53 @@
-import { constants } from './constants';
+  import { constants } from './constants';
 
 export class EventInVideo {
   private dateAdded: string;
   public isWin: boolean;
   public isDraw: boolean;
   public numFlags: number;
-  public isMatchActionDelimiter: boolean;
-  constructor(public moveName: string, public moveCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedMatchId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
+  public isVideoActionDelimiter: boolean;
+  constructor(public eventName: string, public eventCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedMatchId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
     this.dateAdded = new Date().toJSON();
     this.isWin = false;
     this.numFlags = 0;
-    this.isMatchActionDelimiter = constants.moveNamesThatAreDelimiters.includes(moveName);
+    this.isVideoActionDelimiter = constants.eventNamesThatAreDelimiters.includes(eventName);
   }
 
-  setIsMatchActionDelimiter(status: boolean){
-    this.isMatchActionDelimiter = status;
+  static fromJson (jsonObj: any): EventInVideo{
+    let moveName: string = jsonObj.moveName;
+    let moveCategory: string = jsonObj.moveCategory;
+    let actor: string = jsonObj.actor;
+    let recipient: string = jsonObj.recipient;
+    let timeInitiated: number = jsonObj.timeInitiated;
+    let timeCompleted: number = jsonObj.timeCompleted;
+    let points: number = jsonObj.points;
+    let associatedMatchId: string = jsonObj.associatedMatchId;
+    let isASubmission: boolean = jsonObj.isASubmission;
+    let isSuccessfulAttempt: boolean = jsonObj.isSuccessfulAttempt;
+    let annotatorUserId: string = jsonObj.annotatorUserId;
+    // console.log("got to mapping attempt")
+    let tmpEventInVideo = new EventInVideo( moveName, moveCategory, actor, recipient, timeInitiated, timeCompleted, points, associatedMatchId, isASubmission, isSuccessfulAttempt, annotatorUserId);
+    if(jsonObj.date){
+      tmpEventInVideo.setDate(jsonObj.date);
+    };
+    if(jsonObj.isWin){
+      tmpEventInVideo.setIsWin(jsonObj.isWin);
+    };
+    if(jsonObj.numFlags){
+      tmpEventInVideo.setNumFlag(jsonObj.numFlags);
+    };
+    if(jsonObj.moveName){
+      tmpEventInVideo.setIsVideoActionDelimiter(constants.eventNamesThatAreDelimiters.includes(jsonObj.moveName));
+    };
+    return tmpEventInVideo;
+  }
+
+  setDate(date: string){
+    this.dateAdded = date;
+  }
+
+  setIsVideoActionDelimiter(status: boolean){
+    this.isVideoActionDelimiter = status;
   }
 
   setIsWin(status: boolean){
@@ -37,6 +70,6 @@ export class EventInVideo {
   }
 
   getMoveName(){
-    return this.moveName;
+    return this.eventName;
   }
 }

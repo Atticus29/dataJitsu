@@ -6,7 +6,7 @@
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
 <br>
 <div class="" *ngIf='user'>
-  <div class="spinner-container" *ngIf="showLoader">
+  <div class="spinner-container" *ngIf="isLoadingResults">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
   <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -47,9 +47,9 @@
       <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
       <mat-cell *matCellDef="let entry" id={{entry.date}}> {{entry.date | date:'shortDate'}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="matchRating">
+    <ng-container matColumnDef="videoRating">
       <mat-header-cell *matHeaderCellDef> Match Rating </mat-header-cell>
-      <mat-cell *matCellDef="let entry"> {{entry.matchRating}}</mat-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.videoRating}}</mat-cell>
       <!-- <i class="material-icons right">video</i> -->
     </ng-container>
     <ng-container matColumnDef="annotationRating">
