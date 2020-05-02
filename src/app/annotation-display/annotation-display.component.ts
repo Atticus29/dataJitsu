@@ -24,7 +24,7 @@ import { DynamicDataSource } from '../dynamicDataSource.model';
 import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
-import { MoveInVideo } from '../moveInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 import { MatchDetails} from '../matchDetails.model';
 
 declare var $:any;
@@ -36,7 +36,7 @@ declare var $:any;
   // providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent extends BaseComponent implements OnInit {
-  @Output() moveSelected = new EventEmitter<MoveInVideo>();
+  @Output() moveSelected = new EventEmitter<EventInVideo>();
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
@@ -220,7 +220,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
-          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
+          this.db.addCandidateEventInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }
       //TODO add to an admin component

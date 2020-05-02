@@ -8,7 +8,7 @@ import { DatabaseService } from '../database.service';
 import { BaseComponent } from '../base/base.component';
 import { TrackerService } from '../tracker.service';
 import { TimelineElement } from '../horizontal-timeline/timeline-element';
-import { MoveInVideo } from '../moveInVideo.model';
+import { EventInVideo } from '../eventInVideo.model';
 
 @Component({
   selector: 'app-annotation-data-display',
@@ -49,7 +49,7 @@ export class AnnotationDataDisplayComponent extends BaseComponent implements OnI
       this.dbService.getMovesInMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
         // console.log("move from within AnnotationDataDisplayComponent:");
         // console.log(moves);
-        // let theMoves = new MoveInVideo(moves);
+        // let theMoves = new EventInVideo(moves);
         moves.forEach(move =>{
           // console.log(move);
           if(move.timeInitiated <= 0){

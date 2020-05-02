@@ -13,7 +13,7 @@ import { Match } from './match.model';
 import { ReputationLog } from './reputationLog.model';
 import { constants } from './constants';
 
-import { MoveInVideo } from './moveInVideo.model';
+import { EventInVideo } from './eventInVideo.model';
 
 @Injectable()
 export class DatabaseService {
@@ -525,8 +525,8 @@ export class DatabaseService {
     return userId;
   }
 
-  addMoveInVideoToMatchIfUniqueEnough(move: MoveInVideo): Observable<boolean>{
-    // console.log("move to add in addMoveInVideoToMatchIfUniqueEnough:");
+  addEventInVideoToMatchIfUniqueEnough(move: EventInVideo): Observable<boolean>{
+    // console.log("move to add in addEventInVideoToMatchIfUniqueEnough:");
     // console.log(move);
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
@@ -570,7 +570,7 @@ export class DatabaseService {
 
   }
 
-  moveIsUniqueEnough(move: MoveInVideo, path: string): Observable<boolean>{
+  moveIsUniqueEnough(move: EventInVideo, path: string): Observable<boolean>{
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
       // console.log("move.getMatchId(): " + move.getMatchId());
@@ -604,7 +604,7 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  annotationWithinTimeRange(oldMove: MoveInVideo, candidateNewMove: MoveInVideo): boolean{
+  annotationWithinTimeRange(oldMove: EventInVideo, candidateNewMove: EventInVideo): boolean{
     let candidateNewMoveDoesNotStartTooEarly = oldMove.timeInitiated - constants.numberOfSecondsToleratedToBeCalledSameAnnotation <= candidateNewMove.timeInitiated;
     let candidateNewMoveDoesNotStartTooLate = oldMove.timeInitiated + constants.numberOfSecondsToleratedToBeCalledSameAnnotation >= candidateNewMove.timeInitiated;
     let candidateNewMoveDoesNotEndTooEarly = oldMove.timeCompleted - constants.numberOfSecondsToleratedToBeCalledSameAnnotation <= candidateNewMove.timeCompleted;
@@ -650,15 +650,15 @@ export class DatabaseService {
               if(annotations.includes(snapshotVals)){
                 annotations = new Array();
               }
-              let currentMoveInVideo = new MoveInVideo(snapshotVals.moveName, snapshotVals.moveCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
-              currentMoveInVideo.updateDateAdded(snapshotVals.dateAdded);
-              currentMoveInVideo.setIsWin(snapshotVals.isWin);
-              currentMoveInVideo.setIsDraw(snapshotVals.isDraw);
-              currentMoveInVideo.setIsMatchActionDelimiter(snapshotVals.isMatchActionDelimiter);
-              currentMoveInVideo.setNumFlag(snapshotVals.numFlags);
+              let currentEventInVideo = new EventInVideo(snapshotVals.moveName, snapshotVals.moveCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
+              currentEventInVideo.updateDateAdded(snapshotVals.dateAdded);
+              currentEventInVideo.setIsWin(snapshotVals.isWin);
+              currentEventInVideo.setIsDraw(snapshotVals.isDraw);
+              currentEventInVideo.setIsMatchActionDelimiter(snapshotVals.isMatchActionDelimiter);
+              currentEventInVideo.setNumFlag(snapshotVals.numFlags);
               // console.log("move in video being added to annotations array:");
-              // console.log(currentMoveInVideo)
-              annotations.push(currentMoveInVideo);
+              // console.log(currentEventInVideo)
+              annotations.push(currentEventInVideo);
             }
           }
       });
@@ -687,7 +687,7 @@ export class DatabaseService {
           //   Object.keys(snapshotVals).forEach(key =>{
           //     // console.log(snapshotVals[key]);
           //     let tmpObj = snapshotVals[key]
-          //     // let newMove = new MoveInVideo(...snapshotVals[key]);
+          //     // let newMove = new EventInVideo(...snapshotVals[key]);
           //     // console.log(newMove);
           //     theObjects.push(tmpObj);
           //   });
@@ -714,15 +714,15 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  addMoveInVideoToUserIfUniqueEnough(move: MoveInVideo, currentUserId: string): Observable<boolean>{
-    // console.log("addMoveInVideoToUserIfUniqueEnough called in database service");
+  addEventInVideoToUserIfUniqueEnough(move: EventInVideo, currentUserId: string): Observable<boolean>{
+    // console.log("addEventInVideoToUserIfUniqueEnough called in database service");
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
         let counter: number = 0;
         if(move.getMoveName() !== "No Annotation Currently Selected"){
           this.moveIsUniqueEnough(move, 'users/' + currentUserId + '/movesAnnotated/').pipe(takeUntil(localUnsubscribeSubject)).subscribe(uniqueEnough =>{
             if(uniqueEnough && counter < 1){
-              // console.log("move is unique enough in addMoveInVideoToUserIfUniqueEnough");
+              // console.log("move is unique enough in addEventInVideoToUserIfUniqueEnough");
               let now: string = new Date().toJSON();
               let matchId = move.getMatchId();
               let ref = this.db.list('/users/' + currentUserId + '/movesAnnotated');
@@ -1282,7 +1282,7 @@ export class DatabaseService {
     // ref.remove();
   }
 
-  addCandidateMoveInVideoToDb(moveName: string, moveCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
+  addCandidateEventInVideoToDb(moveName: string, moveCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
     this.addGenericItemToDb('/candidateMoveNames/', {'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl});
     // let ref = firebase.database().ref('/candidateMoveNames/');
     // let keyId = ref.push({'moveName':moveName, 'moveCategory': moveCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;

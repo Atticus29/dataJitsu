@@ -1,14 +1,14 @@
 import { MatchDetails } from './matchDetails.model';
-import { MoveInVideo } from './moveInVideo.model';
+import { EventInVideo } from './eventInVideo.model';
 // import { User } from './user.model';
 
 export class Match {
   private isAnnotated: boolean;
-  constructor(public matchDeets: MatchDetails, public originalPosterId: string, public movesInTheVideo: Array<MoveInVideo>) {
+  constructor(public matchDeets: MatchDetails, public originalPosterId: string, public movesInTheVideo: Array<EventInVideo>) {
     this.updateAnnotationStatus();
    }
 
-  addMoveToMatch(move: MoveInVideo){
+  addMoveToMatch(move: EventInVideo){
     this.movesInTheVideo.push(move);
   }
 
@@ -33,7 +33,7 @@ export class Match {
     return this.movesInTheVideo;
   }
 
-  addMovesToAnnotation(movesInTheVideo: Array<MoveInVideo>){
+  addMovesToAnnotation(movesInTheVideo: Array<EventInVideo>){
     //TODO flesh out
     this.updateAnnotationStatus();
   }

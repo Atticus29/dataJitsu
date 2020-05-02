@@ -44,7 +44,7 @@
 - [x] the timeline annotation ticker doesn't have a line and scrolls by too quickly for some things to be clicked on
 
 # Not sure what this is about anymore
-- [x] //TODO createMoveInVideo from form submission
+- [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
