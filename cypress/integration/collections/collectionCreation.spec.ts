@@ -105,7 +105,7 @@ describe ('Tests involving match creation', () =>{
     });
   });
 
-  it.only('can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank', function(){
+  it('can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
       cy.contains('button','Submit').should('not.be.enabled');

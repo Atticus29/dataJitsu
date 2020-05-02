@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { takeUntil, takeLast, takeWhile, take, withLatestFrom } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
   templateUrl: './collection-creation-form.component.html',
   styleUrls: ['./collection-creation-form.component.scss']
 })
-export class CollectionCreationFormComponent extends BaseComponent implements OnInit {
+export class CollectionCreationFormComponent extends BaseComponent implements OnInit, OnDestroy {
   private localCollectionQuestions: FormQuestionBase<any>[];
   private localEntryDetailQuestions: FormQuestionBase<any>[];
   private localCollectionConfigOptions: DynamicFormConfiguration;
@@ -32,6 +32,11 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
 
   constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService, public snackBar: MatSnackBar) {
     super();
+  }
+
+  ngOnDestroy(){
+    this.formProcessingService.formResults.next("Stop");
+    this.formProcessingService.questionArrayOfForm.next("Stop");
   }
 
   ngOnInit() {

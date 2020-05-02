@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { Collection } from '../collection.model';
   templateUrl: './dynamic-form.component.html'
 })
 
-export class DynamicFormComponent extends BaseComponent implements OnInit{
+export class DynamicFormComponent extends BaseComponent implements OnInit, OnDestroy{
   @Input() questions: FormQuestionBase<string>[] = [];
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
@@ -142,8 +142,18 @@ export class DynamicFormComponent extends BaseComponent implements OnInit{
           // form.setControl(payLoadKeys[i], new FormControl(payLoadValues[i]|| '', Validators.required));
           let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
           new FormControl(payLoadValues[i] || '');
+          console.log(populatedFormControl);
+          if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
+            console.log("we have a dropdown question!");
+            console.log("question is:");
+            console.log(questionArray[correspondingQuestionIndex]);
+            console.log("value to be added is: " + payLoadValues[i]);
+            populatedFormControl.setValue(payLoadValues[i]);
+            console.log(populatedFormControl);
+          }
           // console.log("populatedFormControl in repopulateFormWithPreviousPayload");
           // console.log(populatedFormControl);
+          // form[payLoadKeys[i]] = populatedFormControl;
           form.setControl(payLoadKeys[i], populatedFormControl);
         }else{
           // console.log(payLoadKeys[i]);

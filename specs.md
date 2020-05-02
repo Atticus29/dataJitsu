@@ -5,6 +5,7 @@
 - [ ] Add ability to delete and edit collections and categories
   - [ ] Delete collection
 - [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
+- [ ] Collection owner can indicate which questions for their user they want to be displayed in the date; these labels and keys are saved
 
 # TODO high priority
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)

@@ -1,12 +1,12 @@
 # Known issues
 
 ## Highly Urgent
-- [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
-- [ ] Deleting a collection seems to display "collection added" snackbar
 
+- [ ] I have to click on dropdown for "add another question for your users" button to "work"
+  - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
+- [ ] Deleting a collection seems to display "collection added" snackbar
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
-
 
 ### Minorly Urgent
 
@@ -72,6 +72,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Tests pass in isolation but not together (need something to emit "Stop" whenever I leave the page)
 - [x] When you add a new item, the snackbar fires off
 - [x] Collection added and collection already exists snackbars aren't displaying when they are supposed to
 - [x] Adding a collection never dismissed the snackbar and it appears at the top
