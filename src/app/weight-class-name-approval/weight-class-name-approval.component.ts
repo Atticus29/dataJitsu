@@ -50,8 +50,8 @@ export class WeightClassNameApprovalComponent extends BaseComponent implements O
       }
     });
 
-    this.db.getGenericCandidateNames(this.candidatePath,'name').pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results from getGenericCandidateNames");
+    this.db.getGenericAndOrderBy(this.candidatePath,'name').pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      console.log("results from getGenericAndOrderBy");
       console.log(results);
       this.localCandidateNames = results;
     });
@@ -72,8 +72,8 @@ export class WeightClassNameApprovalComponent extends BaseComponent implements O
     let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
       this.db.getMatchUrlFromGenericCandidateName(this.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
-          console.log("getMatchIdFromMatchUrl from disapproveName is " + videoIdResult);
+        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+          console.log("getVideoIdFromVideohUrl from disapproveName is " + videoIdResult);
           this.db.updateGenericNameInMatch(this.localSubPathToMatchParameter,videoIdResult, this.localReplacementText);
         });
       })

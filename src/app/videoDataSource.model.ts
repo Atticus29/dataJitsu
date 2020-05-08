@@ -1,15 +1,15 @@
 // import {CollectionViewer} from "@angular/cdk/collections";
 import {MatTableDataSource} from '@angular/material/table';
 import { BehaviorSubject ,  Observable , of } from 'rxjs';
-import { catchError, finalize, take } from 'rxjs/operators';
-import { Match } from './match.model';
+import { takeUntil, catchError, finalize, take } from 'rxjs/operators';
+import { Video } from './video.model';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class VideoDataSource extends MatTableDataSource<Match> {
+export class VideoDataSource extends MatTableDataSource<Video> {
 
-  private matchesSubject = new BehaviorSubject<Match[]>([]);
+  private matchesSubject = new BehaviorSubject<Video[]>([]);
   private loadingMatches = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingMatches.asObservable();
 
@@ -81,16 +81,29 @@ export class VideoDataSource extends MatTableDataSource<Match> {
     // return result;
     }
 
-  async loadMatches(): Promise<any>{
-    // console.log("loadMatches entered");
-    let results = await this.dbService.getMatchesV2();
+  async loadVideos(): Promise<any>{
+    // console.log("loadVideos entered");
+    let results = await this.dbService.getVideosV2();
     // console.log("results");
     // console.log(results);
-    let dbMatches = results.map(Match.fromJson);
-    // console.log("dbMatches in loadMatches of videoDataSource show:");
+    let dbMatches = results.map(Video.fromJson);
+    // console.log("dbMatches in loadVideos of videoDataSource show:");
     // console.log(dbMatches);
     return dbMatches;
   }
+
+  // loadVideosObservable(): Observable<Video[]>{
+  //   console.log("got here hi");
+  //   let self = this;
+  //   let obsRet = Observable.create(function(observer){
+  //     self.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videos =>{
+  //       console.log("got here hi again");
+  //       let results = videos.map(Video.fromJson);
+  //       observer.next(results);
+  //     });
+  //   });
+  //   return obsRet;
+  // }
 
   makeIntoArray(matches: any){
     let results = []; //TODO there should be a way to tighten the below up

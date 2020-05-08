@@ -102,7 +102,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   sendToMatchToAnnotate(){
-    this.dbService.getLowRatedMatch().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    this.dbService.getLowRatedVideo().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.ngZone.run(() =>{
         this.router.navigate(['matches/'+result.id]);
       });

@@ -46,7 +46,7 @@ export class AnnotationDataDisplayComponent extends BaseComponent implements OnI
     let tracker: number = 2;
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.videoId = params['videoId'];
-      this.dbService.getMovesInMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
+      this.dbService.getEventsInVideo(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
         // console.log("move from within AnnotationDataDisplayComponent:");
         // console.log(moves);
         // let theMoves = new EventInVideo(moves);

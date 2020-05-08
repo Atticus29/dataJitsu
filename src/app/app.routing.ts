@@ -1,13 +1,13 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { YoutubeComponent } from './youtube/youtube.component';
-import { NewMatchComponent } from './new-match/new-match.component';
+import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
-import { MatchDisplayComponent } from './match-display/match-display.component';
+import { VideoDisplayComponent } from './video-display/video-display.component';
 import { LoginComponent } from './login/login.component';
-import { AllMatchesComponent } from './all-matches/all-matches.component';
+import { AllVideosComponent } from './all-videos/all-videos.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { TemporaryComponent } from './temporary/temporary.component';
@@ -28,7 +28,7 @@ const redirectLoggedInToAllMatches = () => redirectLoggedInTo(['matches']);
 const appRoutes: Routes = [
   {
     path: '',
-    component: AllMatchesComponent,
+    component: AllVideosComponent,
     ...canActivate(redirectUnauthorizedTo(['login'])),
     pathMatch: 'full'
   },{
@@ -40,7 +40,7 @@ const appRoutes: Routes = [
   // pathMatch: 'full'
 },{
   path: 'newmatch',
-  component: NewMatchComponent,
+  component: NewVideoComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
@@ -73,7 +73,7 @@ const appRoutes: Routes = [
   pathMatch: 'full'
 },{
   path: 'matches',
-  component: AllMatchesComponent,
+  component: AllVideosComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{
@@ -83,7 +83,7 @@ const appRoutes: Routes = [
   pathMatch: 'full'
 },{
   path: 'matches/:videoId',
-  component: MatchDisplayComponent,
+  component: VideoDisplayComponent,
   ...canActivate(redirectUnauthorizedTo(['login'])),
   pathMatch: 'full'
 },{

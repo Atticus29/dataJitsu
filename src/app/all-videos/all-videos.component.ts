@@ -16,16 +16,17 @@ import { TrackerService } from '../tracker.service';
 import { D3Service } from '../d3.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { VideoDataSource } from '../videoDataSource.model';
+import { Video } from '../video.model';
 // import { MatchDataSource } from '../matchDataSource.model';
 import { AuthorizationService } from '../authorization.service';
 import { User } from '../user.model';
 
 @Component({
-  selector: 'app-all-matches',
-  templateUrl: './all-matches.component.html',
-  styleUrls: ['./all-matches.component.scss']
+  selector: 'app-all-videos',
+  templateUrl: './all-videos.component.html',
+  styleUrls: ['./all-videos.component.scss']
 })
-export class AllMatchesComponent extends BaseComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AllVideosComponent extends BaseComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   private isLoadingResults: boolean = true;
@@ -55,14 +56,21 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
       }
     });
     this.dataSource = new VideoDataSource(this.dbService);
-    this.dataSource.data = await this.dataSource.loadMatches();
-    console.log("dataSource:");
-    console.log(this.dataSource.data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    if (this.dataSource.data) {
-      this.isLoadingResults = false;
-    }
+    this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
+      // console.log("videoObjs is: ");
+      // console.log(videoObjs);
+      let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
+      this.dataSource.data = videos;
+      console.log("dataSource:");
+      console.log(this.dataSource.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      if (this.dataSource.data) {
+        this.isLoadingResults = false;
+      }
+    });
+    // this.dataSource.data = await this.dataSource.loadVideos();
+    // this.dbService.getVideos()
   }
 
   applyFilter(filterValue: string) {
@@ -79,6 +87,7 @@ export class AllMatchesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   deleteMatch(videoId: any){
+    console.log("deleteMatch in all-matches passing videoId is " + videoId);
     let confirmation = confirm("Are you sure you want to delete this match?");
     if(confirmation){
       this.dbService.deleteMatch(videoId);

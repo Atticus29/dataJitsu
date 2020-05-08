@@ -106,8 +106,8 @@ export class DynamicDataSource {
     // console.log("expand? " + expand);
     node.isLoading = true;
     // console.log(node.item);
-    this.dbService.getMovesSubsetAsObject(node.item).subscribe(results=>{
-      // console.log("results in toggleNode getMovesSubsetAsObject call");
+    this.dbService.getEventsSubsetAsObject(node.item).subscribe(results=>{
+      // console.log("results in toggleNode getEventsSubsetAsObject call");
       // console.log(results);
       let children = null;
       if (Array.isArray(results)) { //results[0] === "string"

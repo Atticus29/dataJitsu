@@ -2,15 +2,17 @@ import { VideoDetails } from './videoDetails.model';
 import { EventInVideo } from './eventInVideo.model';
 // import { User } from './user.model';
 
-export class Match {
+export class Video {
   private isAnnotated: boolean;
   private videoRatings: number[];
-  private matchCreated: string;
+  private annotationRatings: number[];
+  private videoCreated: string;
+  private id: string;
   // public eventsInVideo: Array<EventInVideo>;
   constructor(public videoDeets: VideoDetails, public originalPosterId: string, public eventsInVideo: Array<EventInVideo>) {
     this.updateAnnotationStatus(false);
    }
-   static fromJson (jsonObj: any): Match{
+   static fromJson (jsonObj: any): Video{
      let originalPosterId = jsonObj.originalPosterId;
      let moves = null;
      let extractedEventsInVideo = null;
@@ -21,35 +23,47 @@ export class Match {
      }
      let isAnnotated = jsonObj.isAnnotated? jsonObj.isAnnotated: null;
      let videoRatings = jsonObj.videoRatings? jsonObj.videoRatings: null;
-     let matchCreated = jsonObj.matchCreated? jsonObj.matchCreated: null;
+     let videoCreated = jsonObj.videoCreated? jsonObj.videoCreated: null;
+     let annotationRatings = jsonObj.annotationRatings? jsonObj.annotationRatings: null;
      let videoDeets = jsonObj.videoDeets? jsonObj.videoDeets: null; //Object.values(jsonObj.videoDeets);
+     let id = jsonObj.id? jsonObj.id: null;
      if(videoDeets){
       videoDeets =  VideoDetails.fromJson(videoDeets);
      }
      if(extractedEventsInVideo){
-       let tmpMatch = new Match(videoDeets, originalPosterId, extractedEventsInVideo);
+       let tmpMatch = new Video(videoDeets, originalPosterId, extractedEventsInVideo);
+       if(id){
+         tmpMatch.setId(id);
+       }
        if(isAnnotated){
          tmpMatch.updateAnnotationStatus(isAnnotated)
        };
+       if(annotationRatings){
+         tmpMatch.updateAnnotationRatings(annotationRatings);
+       }
        if(videoRatings){
          tmpMatch.updateMatchRatings(videoRatings)
        };
        if(extractedEventsInVideo){
          tmpMatch.updateMoves(extractedEventsInVideo)
        };
-       if(matchCreated){
-         tmpMatch.updateMatchCreated(matchCreated)
+       if(videoCreated){
+         tmpMatch.updateMatchCreated(videoCreated)
        };
        return tmpMatch;
      }
    }
 
-   updateMatchCreated(matchCreated: string){
-     if(typeof matchCreated === 'object'){
-       let matchCreatedVals: string[] = Object.values(matchCreated);
-       this.matchCreated = matchCreatedVals[0]; //TODO check whether this is working
+   setId(id: string){
+     this.id = id;
+   }
+
+   updateMatchCreated(videoCreated: string){
+     if(typeof videoCreated === 'object'){
+       let videoCreatedVals: string[] = Object.values(videoCreated);
+       this.videoCreated = videoCreatedVals[0]; //TODO check whether this is working
      }else{
-       this.matchCreated = matchCreated;
+       this.videoCreated = videoCreated;
      }
    }
 
@@ -85,6 +99,10 @@ export class Match {
 
   updateAnnotationStatus(status: boolean){
     this.isAnnotated = status;
+  }
+
+  updateAnnotationRatings(annotationRatings){
+    this.annotationRatings = annotationRatings;
   }
 
   getVideoDetails(){

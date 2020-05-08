@@ -1,4 +1,4 @@
-import { Match } from './match.model';
+import { Video } from './video.model';
 import { VideoDetails } from './videoDetails.model';
 import { EventInVideo } from './eventInVideo.model';
 import { User } from './user.model';
@@ -10,8 +10,8 @@ describe ('tests for the match class', ()=>{
     let move2: EventInVideo = new EventInVideo("armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true, true,"annotatorIdTest");
     let moveArray: Array<EventInVideo> = [move1, move2];
     // let user1: User = new User("Bob the fake user", "bob@bob.com", "red1234567","black belt", "elite", "sbg", 33, 155, 100, "", "male",new Date().toJSON());
-    let match1: Match = new Match(videoDeets, "user1Id", moveArray);
-    let match2: Match = new Match(videoDeets,"user2Id", moveArray);
+    let match1: Video = new Video(videoDeets, "user1Id", moveArray);
+    let match2: Video = new Video(videoDeets,"user2Id", moveArray);
     expect(match1 instanceof Match).toBe(true);
     expect(match2 instanceof Match).toBe(false); //@TODO or to throw an error??
   });

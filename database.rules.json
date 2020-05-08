@@ -16,7 +16,7 @@
       ],
       "$videoId": {
         ".indexOn": [
-          "/matchCreated",
+          "/videoCreated",
           "/videoDeets",
           "videoDeets/videoUrl",
           "/videoDeets/annotationRating",

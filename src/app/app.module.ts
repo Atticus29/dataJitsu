@@ -11,11 +11,11 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 import { AppComponent } from './app.component';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { routing } from './app.routing';
-import { NewMatchComponent } from './new-match/new-match.component';
+import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
-import { MatchDisplayComponent } from './match-display/match-display.component';
+import { VideoDisplayComponent } from './video-display/video-display.component';
 import { AuthorizationService } from './authorization.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatabaseService } from './database.service';
@@ -24,7 +24,7 @@ import { ValidationService } from './validation.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
-import { AllMatchesComponent } from './all-matches/all-matches.component';
+import { AllVideosComponent } from './all-videos/all-videos.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { D3Service } from './d3.service';
 import { NotfoundComponent } from './notfound/notfound.component';
@@ -129,13 +129,13 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     YoutubeComponent,
-    NewMatchComponent,
+    NewVideoComponent,
     CreateAccountComponent,
     TestDbComponent,
     LandingComponent,
-    MatchDisplayComponent,
+    VideoDisplayComponent,
     LoginComponent,
-    AllMatchesComponent,
+    AllVideosComponent,
     AnnotationDisplayComponent,
     NotfoundComponent,
     UserStatusReportComponent,

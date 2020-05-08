@@ -1,5 +1,5 @@
 // import { TestBed, inject } from '@angular/core/testing';
-// import { Match } from './match.model';
+// import { Video } from './video.model';
 // import { VideoDetails } from './videoDetails.model';
 // import { EventInVideo } from './eventInVideo.model';
 // import { User } from './user.model';
@@ -26,7 +26,7 @@
 //     let move2: EventInVideo = new EventInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
 //     let moveArray: Array<EventInVideo> = [move1, move2];
 //     let user1: User = new User("testUser", "Bob the fake user", "bob@bob.com", "red", "sbg", 33, 155, "light", 100);
-//     let match1: Match = new Match(videoDeets, user1, moveArray);
+//     let match1: Video = new Video(videoDeets, user1, moveArray);
 //     let db: DatabaseService = new DatabaseService();
 //     db.createMatch(match1);
 //

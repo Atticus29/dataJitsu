@@ -15,7 +15,7 @@ import { AuthorizationService } from '../authorization.service';
 import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
 import { VideoDetails } from '../videoDetails.model';
-import { Match } from '../match.model';
+import { Video } from '../video.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
@@ -33,12 +33,12 @@ import { NewLocationNameDialogComponent } from '../new-location-name-dialog/new-
 declare var $:any;
 
 @Component({
-  selector: 'app-new-match',
-  templateUrl: './new-match.component.html',
-  styleUrls: ['./new-match.component.scss'],
+  selector: 'app-new-video',
+  templateUrl: './new-video.component.html',
+  styleUrls: ['./new-video.component.scss'],
 })
 
-export class NewMatchComponent extends BaseComponent implements OnInit {
+export class NewVideoComponent extends BaseComponent implements OnInit {
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
   private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
@@ -144,7 +144,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
     this.genders = constants.genders;
 
-    this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+    this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
       this.athleteNames = athleteNames.sort();
     });
 
@@ -276,7 +276,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){
-        let match = new Match(videoDeets, self.localUser.id, moves);
+        let match = new Video(videoDeets, self.localUser.id, moves);
         observer.next(match);
       }
     });
@@ -322,7 +322,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           // console.log(result)
-          let videoId = this.db.addMatchToDb(result);
+          let videoId = this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.router.navigate(['matches/' + videoId]);
           //TODO navigate to annotation page??
@@ -350,7 +350,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           console.log("got into result for submitFormAndReturnToMain call:");
           console.log(result);
-          this.db.addMatchToDb(result);
+          this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.ngZone.run(() =>{
             if(this.hasPaid || this.isAdmin){
@@ -366,7 +366,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     });
   }
 
-  pushToDb(match: Match){
+  pushToDb(match: Video){
 
   }
 
@@ -426,7 +426,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to new-match component?:");
       console.log(val);
-      this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+      this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
         // console.log(athleteNames);
         val.last = this.textTransformationService.capitalizeFirstLetter(val.last);
         val.first = this.textTransformationService.capitalizeFirstLetter(val.first);

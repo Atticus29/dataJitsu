@@ -105,7 +105,7 @@
 - [x] the youTube player isn't attached to the DOM upon logoff and log back in.
 - [x] the tree in the form stays imprinted on the previously annotated move
 - [x] Second time someone tries to annotate, nothing is reset
-- [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
+- [x] pauseAndAnnotate(currentTime: string) signature mismatches with video-display.component.html call
 - [x] Doesn't resume play after Done for annotate a move is clicked
 - [x] Cypress tests are still having issues with the chainable stuff
 - [x] Clicking on matches takes you to /matches/matches instead of just one /matches

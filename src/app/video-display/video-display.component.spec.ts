@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatchDisplayComponent } from './match-display.component';
+import { VideoDisplayComponent } from './video-display.component';
 
-describe('MatchDisplayComponent', () => {
-  let component: MatchDisplayComponent;
-  let fixture: ComponentFixture<MatchDisplayComponent>;
+describe('VideoDisplayComponent', () => {
+  let component: VideoDisplayComponent;
+  let fixture: ComponentFixture<VideoDisplayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MatchDisplayComponent ]
+      declarations: [ VideoDisplayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatchDisplayComponent);
+    fixture = TestBed.createComponent(VideoDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

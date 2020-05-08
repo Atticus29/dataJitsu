@@ -41,7 +41,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
       // console.log(results);
       this.localCandidateAthleteNames = results.sort();
     });
-    this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+    this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
       // console.log("athlete names db results");
       // console.log(results);
       this.localAtheleteNames = results.sort();
@@ -66,7 +66,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     if(confirmation){
       this.db.getMatchUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         console.log(urlResult);
-        this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
           this.db.updateAthleteNameInMatch(videoIdResult, name, "Un-named Athlete");
         });
       })

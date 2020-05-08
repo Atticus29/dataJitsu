@@ -15,7 +15,7 @@ import { TextTransformationService } from '../text-transformation.service';
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
 import { VideoDetails } from '../videoDetails.model';
-import { Match } from '../match.model';
+import { Video } from '../video.model';
 import { User } from '../user.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { DynamicFlatNode } from '../dynamicFlatNode.model';
@@ -24,15 +24,15 @@ import { constants } from '../constants';
 var player;
 
 @Component({
-  selector: 'app-match-display',
-  templateUrl: './match-display.component.html',
-  styleUrls: ['./match-display.component.scss']
+  selector: 'app-video-display',
+  templateUrl: './video-display.component.html',
+  styleUrls: ['./video-display.component.scss']
 })
 
-export class MatchDisplayComponent extends BaseComponent implements OnInit {
+export class VideoDisplayComponent extends BaseComponent implements OnInit {
   videoId : string;
   matchDetails: VideoDetails;
-  match: Observable<Match>;
+  match: Observable<Video>;
   matchUrl: string;
   currentTime: string;
   playCount: number = 0;
@@ -143,6 +143,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
         this.matchAverageRating = average;
       });
       this.db.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
+        console.log("got into getAverageAnnotationRating in match-display component. Average is:");
+        console.log (average);
         this.annotationAverageRating = average;
       });
       this.trackerService.currentMatch.next(this.videoId);
@@ -195,7 +197,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     });
   }
 
-  onRate($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+  onRate($event:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}) {
     let newRating = $event.newValue;
     if(this.userInDbId){
       this.db.addMatchRatingToUser(this.userInDbId, this.videoId, $event.newValue);
@@ -211,7 +213,7 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
     }
   }
 
-  onRateAnnotation($event:{oldValue:number, newValue:number, starRating:MatchDisplayComponent}) {
+  onRateAnnotation($event:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}) {
     let newRating = $event.newValue;
     if(this.userInDbId){
       console.log("userInDb already");
@@ -315,8 +317,8 @@ export class MatchDisplayComponent extends BaseComponent implements OnInit {
   processMatchEntryInDatabase(){
     console.log("processMatchEntryInDatabase entered");
     let annotationMadeCounter: number = 0;
-    this.db.addEventInVideoToMatchIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
-      console.log("addEventInVideoToMatchIfUniqueEnough entered");
+    this.db.addEventInVideoToVideoIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+      console.log("addEventInVideoToVideoIfUniqueEnough entered");
       if(!moveUniqueEnough){
         if(annotationMadeCounter < 1){
           this.openSnackBar("Annotation has already been made by another user");
