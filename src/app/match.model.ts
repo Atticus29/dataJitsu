@@ -6,16 +6,18 @@ export class Match {
   private isAnnotated: boolean;
   private videoRatings: number[];
   private matchCreated: string;
+  // public eventsInVideo: Array<EventInVideo>;
   constructor(public videoDeets: VideoDetails, public originalPosterId: string, public eventsInVideo: Array<EventInVideo>) {
     this.updateAnnotationStatus(false);
    }
    static fromJson (jsonObj: any): Match{
      let originalPosterId = jsonObj.originalPosterId;
      let moves = null;
+     let extractedEventsInVideo = null;
      if(jsonObj.event){
-      this.eventsInVideo = Object.values(jsonObj.eventsInVideo);
+      extractedEventsInVideo = Object.values(jsonObj.eventsInVideo);
      }else{
-      this.eventsInVideo = new Array<EventInVideo>();
+      extractedEventsInVideo = new Array<EventInVideo>();
      }
      let isAnnotated = jsonObj.isAnnotated? jsonObj.isAnnotated: null;
      let videoRatings = jsonObj.videoRatings? jsonObj.videoRatings: null;
@@ -24,16 +26,16 @@ export class Match {
      if(videoDeets){
       videoDeets =  VideoDetails.fromJson(videoDeets);
      }
-     if(this.eventsInVideo){
-       let tmpMatch = new Match(videoDeets, originalPosterId, this.eventsInVideo);
+     if(extractedEventsInVideo){
+       let tmpMatch = new Match(videoDeets, originalPosterId, extractedEventsInVideo);
        if(isAnnotated){
          tmpMatch.updateAnnotationStatus(isAnnotated)
        };
        if(videoRatings){
          tmpMatch.updateMatchRatings(videoRatings)
        };
-       if(this.eventsInVideo){
-         tmpMatch.updateMoves(this.eventsInVideo)
+       if(extractedEventsInVideo){
+         tmpMatch.updateMoves(extractedEventsInVideo)
        };
        if(matchCreated){
          tmpMatch.updateMatchCreated(matchCreated)
