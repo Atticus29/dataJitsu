@@ -30,7 +30,7 @@ export class DatabaseService {
   matchDetails: Observable<any>;
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, public db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateService: DateCalculationsService) {
+  constructor(private route: ActivatedRoute, public db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateCalculationsService: DateCalculationsService) {
     this.videos = db.list<Video>('/videos').valueChanges();
     this.weightClasses = db.list<String>('/weightClasses').valueChanges();
     this.giRanks = db.list<String>('/giRanks').valueChanges();
@@ -782,7 +782,7 @@ export class DatabaseService {
             let move = childSnapshot.val();
             // console.log("move in userHasAnnotatedEnough");
             // console.log(move.dateAdded);
-            if(this.dateService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
+            if(this.dateCalculationsService.calculateDaysSinceLastAnnotation(new Date(move.dateAdded)) <= constants.numDaysBeforeNewAnnotationNeeded){
               // console.log(move.dateAdded + " is recent enough to count. Adding it...");
               moveCount += 1;
             } else{
@@ -879,11 +879,11 @@ export class DatabaseService {
   }
 
   average(list: any[]){
-    return this.dateService.roundToDecimal(list.reduce((prev, curr) => prev + curr) / list.length, 2);
+    return this.dateCalculationsService.roundToDecimal(list.reduce((prev, curr) => prev + curr) / list.length, 2);
   }
 
 
-  getAverageMatchRating(videoId: string){
+  getAverageVideoRating(videoId: string){
     let ref = firebase.database().ref('videos/' + videoId + '/videoRatings/');
     let resultObservable = Observable.create(observer =>{
       ref.on('value', snapshot =>{

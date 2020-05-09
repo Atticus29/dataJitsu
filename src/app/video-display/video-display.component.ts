@@ -139,7 +139,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
           }
         });
       }
-      this.db.getAverageMatchRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
+      this.db.getAverageVideoRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
         this.matchAverageRating = average;
       });
       this.db.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE

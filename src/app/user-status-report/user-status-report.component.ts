@@ -28,7 +28,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   paidStatus: any = false;
   private notificationsSeen: boolean = false;
 
-  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService, public ngZone: NgZone) {
+  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateCalculationsService: DateCalculationsService, public ngZone: NgZone) {
     super();
   }
 
