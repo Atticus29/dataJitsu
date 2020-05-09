@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class VideoDataSource extends MatTableDataSource<Video> {
 
-  private matchesSubject = new BehaviorSubject<Video[]>([]);
+  // private matchesSubject = new BehaviorSubject<Video[]>([]);
   private loadingMatches = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingMatches.asObservable();
 
@@ -81,16 +81,16 @@ export class VideoDataSource extends MatTableDataSource<Video> {
     // return result;
     }
 
-  async loadVideos(): Promise<any>{
-    // console.log("loadVideos entered");
-    let results = await this.dbService.getVideosV2();
-    // console.log("results");
-    // console.log(results);
-    let dbMatches = results.map(Video.fromJson);
-    // console.log("dbMatches in loadVideos of videoDataSource show:");
-    // console.log(dbMatches);
-    return dbMatches;
-  }
+  // async loadVideos(): Promise<any>{
+  //   // console.log("loadVideos entered");
+  //   let results = await this.dbService.getVideosV2();
+  //   // console.log("results");
+  //   // console.log(results);
+  //   let dbMatches = results.map(Video.fromJson);
+  //   // console.log("dbMatches in loadVideos of videoDataSource show:");
+  //   // console.log(dbMatches);
+  //   return dbMatches;
+  // }
 
   // loadVideosObservable(): Observable<Video[]>{
   //   console.log("got here hi");

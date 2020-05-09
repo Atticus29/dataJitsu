@@ -123,8 +123,8 @@ export class Video {
      } else{
        eventNames = eventsInVideo.map(x=>x.eventName);
      }
-     console.log("eventNames");
-     console.log(eventNames.join(", "));
+     // console.log("eventNames");
+     // console.log(eventNames.join(", "));
      this.eventsAsCommaDelimitedString = eventNames.join(", ");
    }
 
