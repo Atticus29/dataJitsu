@@ -12,6 +12,7 @@ export class Video {
   private videoCreated: string;
   private id: string;
   private dateCalculationsService: DateCalculationsService = new DateCalculationsService();
+  private eventsAsCommaDelimitedString: string = null;
   // public eventsInVideo: Array<EventInVideo>;
   constructor(public videoDeets: VideoDetails, public originalPosterId: string, public eventsInVideo: Array<EventInVideo>) {
     this.updateAnnotationStatus(false);
@@ -20,8 +21,8 @@ export class Video {
      let originalPosterId = jsonObj.originalPosterId;
      let moves = null;
      let extractedEventsInVideo = null;
-     if(jsonObj.event){
-      extractedEventsInVideo = Object.values(jsonObj.eventsInVideo);
+     if(jsonObj.events){
+      extractedEventsInVideo = Object.values(jsonObj.events);
      }else{
       extractedEventsInVideo = new Array<EventInVideo>();
      }
@@ -34,8 +35,9 @@ export class Video {
      if(videoDeets){
       videoDeets =  VideoDetails.fromJson(videoDeets);
      }
-     if(extractedEventsInVideo){
+     if(extractedEventsInVideo && videoDeets && originalPosterId){
        let tmpMatch = new Video(videoDeets, originalPosterId, extractedEventsInVideo);
+       tmpMatch.updateEvents(extractedEventsInVideo)
        if(id){
          tmpMatch.setId(id);
        }
@@ -48,11 +50,8 @@ export class Video {
        if(videoRatings){
          tmpMatch.updateMatchRatings(videoRatings)
        };
-       if(extractedEventsInVideo){
-         tmpMatch.updateMoves(extractedEventsInVideo)
-       };
        if(videoCreated){
-         tmpMatch.updateMatchCreated(videoCreated)
+         tmpMatch.updateVideoCreated(videoCreated)
        };
        return tmpMatch;
      }
@@ -62,7 +61,7 @@ export class Video {
      this.id = id;
    }
 
-   updateMatchCreated(videoCreated: string){
+   updateVideoCreated(videoCreated: string){
      if(typeof videoCreated === 'object'){
        let videoCreatedVals: string[] = Object.values(videoCreated);
        this.videoCreated = videoCreatedVals[0]; //TODO check whether this is working
@@ -77,29 +76,56 @@ export class Video {
 
   average(inputArray: number[]){
     if(inputArray){
-      console.log("input array is");
-      console.log(inputArray);
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      let sum = inputArray.reduce(reducer);
-      let unroundedAverage = sum / inputArray.length;
-      return this.dateCalculationsService.roundToDecimal(unroundedAverage, 2);
+      // console.log("input array is");
+      // console.log(inputArray);
+      // const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      // let sum = inputArray.reduce((accumulator, currentValue) => accumulator + currentValue);
+      // let unroundedAverage = sum / inputArray.length;
+      // let unroundedAverage = inputArray.reduce((accumulator, currentValue) => accumulator + currentValue) / inputArray.length;
+      // return this.dateCalculationsService.roundToDecimal(unroundedAverage, 2);
+      return this.dateCalculationsService.roundToDecimal(inputArray.reduce((accumulator, currentValue) => accumulator + currentValue) / inputArray.length, 2);
     }else{
       return null;
     }
   }
 
-  updateMoves(movesObj: any){
+  updateEvents(movesObj: any){
+    // console.log("movesObj");
+    // console.log(movesObj);
      if(typeof movesObj === 'object'){
        let moves = Object.values(movesObj);
+       // console.log("moves");
+       // console.log(moves);
        let movesAsEventsInVideo =  moves.map(EventInVideo.fromJson);
        this.eventsInVideo = movesAsEventsInVideo;
+       this.updateEventsAsCommaDelimitedString(this.eventsInVideo, true);
      }else{
-       console.log("assuming this is an array?");
-       console.log(movesObj);
+       // console.log("assuming this is an array?");
+       // console.log(movesObj);
        let moves = movesObj;
+       // console.log("moves");
+       // console.log(moves);
        let movesAsEventsInVideo =  moves.map(EventInVideo.fromJson);
        this.eventsInVideo = movesAsEventsInVideo;
+       this.updateEventsAsCommaDelimitedString(this.eventsInVideo, true);
      }
+   }
+
+   updateEventsAsCommaDelimitedString(eventsInVideo: EventInVideo[], onlyGetSuccessful: boolean){
+     // console.log("eventsInVideo:");
+     // console.log(eventsInVideo);
+     let eventNames = null;
+     if(onlyGetSuccessful){
+       // console.log("onlyGetSuccessful ones desired");
+       // console.log("unfiltered: " + eventsInVideo.map(x=>x.eventName).length);
+       eventNames = eventsInVideo.filter(x=>x.isSuccessfulAttempt == true).map(x=>x.eventName);
+       // console.log("filtered: " + eventNames.length);
+     } else{
+       eventNames = eventsInVideo.map(x=>x.eventName);
+     }
+     console.log("eventNames");
+     console.log(eventNames.join(", "));
+     this.eventsAsCommaDelimitedString = eventNames.join(", ");
    }
 
   updateMatchRatings(videoRatingsObj: any){

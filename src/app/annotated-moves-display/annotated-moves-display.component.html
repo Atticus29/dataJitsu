@@ -20,7 +20,7 @@
       <span (click)="playStartingAt(annotation.timeInitiated)">
         : {{annotation.eventName}} performed by {{annotation.actor}}
       </span>
-      <span (click)="flagAnnotationForImprovement(annotation.associatedMatchId,annotation.timeInitiated, annotation.annotatorUserId)" name="flag-annotation-for-improvement" matTooltip="Flag Annotation for Improvement">
+      <span (click)="flagAnnotationForImprovement(annotation.associatedVideoId,annotation.timeInitiated, annotation.annotatorUserId)" name="flag-annotation-for-improvement" matTooltip="Flag Annotation for Improvement">
         <i class="material-icons">flag</i>
       </span>
       <span>  </span>

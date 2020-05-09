@@ -44,8 +44,8 @@ export class VideoDataSource extends MatTableDataSource<Video> {
 
     sortingDataAccessor = (item, property) => {
       console.log("sortingDataAccestor entered");
-      // console.log(item);
-      // console.log(property);
+      console.log(item);
+      console.log(property);
       if(item[property]){
         console.log("item at the base level. Bam. should be done");
         return item[property];

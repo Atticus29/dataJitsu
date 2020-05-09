@@ -529,13 +529,13 @@ export class DatabaseService {
     let resultObservable = Observable.create(observer =>{
       let counter: number = 0;
       //TODO if(eventIsUniqueEnoughToAddToMatch){} else {add toast thing saying as much}
-      this.eventIsUniqueEnough(move, 'videos/' + move.getMatchId() + '/events/').pipe(takeUntil(localUnsubscribeSubject)).subscribe(uniqueEnough =>{
+      this.eventIsUniqueEnough(move, 'videos/' + move.getVideoId() + '/events/').pipe(takeUntil(localUnsubscribeSubject)).subscribe(uniqueEnough =>{
         // console.log("unique enough?");
         // console.log(uniqueEnough);
         // console.log("value of counter: ");
         // console.log(counter);
         if(uniqueEnough && counter < 1){
-          let videoId = move.getMatchId();
+          let videoId = move.getVideoId();
           let ref = this.db.list('/videos/' + videoId + '/events');
           let moveId = ref.push(move).key;
           let updates = {};
@@ -570,8 +570,8 @@ export class DatabaseService {
   eventIsUniqueEnough(move: EventInVideo, path: string): Observable<boolean>{
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
-      // console.log("move.getMatchId(): " + move.getMatchId());
-      this.getAnnotations(move.getMatchId(), path).pipe(takeUntil(localUnsubscribeSubject)).subscribe(events =>{
+      // console.log("move.getVideoId(): " + move.getVideoId());
+      this.getAnnotations(move.getVideoId(), path).pipe(takeUntil(localUnsubscribeSubject)).subscribe(events =>{
         // console.log("got into getAnnotations in eventIsUniqueEnoughToAddToMatch:");
         // console.log(events);
         if(events){
@@ -647,7 +647,7 @@ export class DatabaseService {
               if(annotations.includes(snapshotVals)){
                 annotations = new Array();
               }
-              let currentEventInVideo = new EventInVideo(snapshotVals.eventName, snapshotVals.eventCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedMatchId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
+              let currentEventInVideo = new EventInVideo(snapshotVals.eventName, snapshotVals.eventCategory, snapshotVals.actor, snapshotVals.recipient, snapshotVals.timeInitiated, snapshotVals.timeCompleted, snapshotVals.points, snapshotVals.associatedVideoId, snapshotVals.isASubmission, snapshotVals.isSuccessfulAttempt, snapshotVals.annotatorUserId);
               currentEventInVideo.updateDateAdded(snapshotVals.dateAdded);
               currentEventInVideo.setIsWin(snapshotVals.isWin);
               currentEventInVideo.setIsDraw(snapshotVals.isDraw);
@@ -721,7 +721,7 @@ export class DatabaseService {
             if(uniqueEnough && counter < 1){
               // console.log("move is unique enough in addEventInVideoToUserIfUniqueEnough");
               let now: string = new Date().toJSON();
-              let videoId = move.getMatchId();
+              let videoId = move.getVideoId();
               let ref = this.db.list('/users/' + currentUserId + '/eventsAnnotated');
               let moveId = ref.push(move).key;
               let updates = {};
