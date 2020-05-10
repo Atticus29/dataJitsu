@@ -1,6 +1,6 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';

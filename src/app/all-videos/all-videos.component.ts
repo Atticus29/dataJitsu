@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DataSource } from '@angular/cdk/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { tap, takeUntil } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import { ChangeDetectorRef } from '@angular/core';
 
 import { BaseComponent } from '../base/base.component';

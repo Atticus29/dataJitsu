@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { FlatTreeControl } from '@angular/cdk/tree';
 
 import { Subject, Observable, BehaviorSubject, combineLatest } from 'rxjs';

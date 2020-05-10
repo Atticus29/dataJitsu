@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { takeUntil, switchMap, first } from 'rxjs/operators';
