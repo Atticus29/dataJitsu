@@ -1,5 +1,5 @@
-import { MaterializeModule } from 'angular2-materialize';
 import 'materialize-css';
+import { MaterializeModule } from 'angular2-materialize';
 // import { MaterializeModule } from 'angular2-materialize'
 import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
