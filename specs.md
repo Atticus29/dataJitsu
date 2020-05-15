@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Update security rules on firebase
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Set up a dev project in firebase and hook up there instead
