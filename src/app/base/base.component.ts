@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 
 import { Subject } from 'rxjs'; //combineLatest
 // import { takeUntil, take, last } from 'rxjs/operators';
-// import { AngularFireAuth } from 'angularfire2/auth';
+// import { AngularFireAuth } from '@angular/fire/auth';
 //
 // import { User } from './user.model';
 // import { AuthorizationService } from '../authorization.service';

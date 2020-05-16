@@ -219,7 +219,6 @@ export const firebaseConfig = {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MaterializeModule,
     RatingModule,
     ReactiveFormsModule,
     routing,

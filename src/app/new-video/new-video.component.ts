@@ -1,12 +1,12 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
+// import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {Location} from "@angular/common";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase,AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Subject ,  Observable } from 'rxjs';
 import { takeUntil, take, switchMap, first } from 'rxjs/operators';
 
