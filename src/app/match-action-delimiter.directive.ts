@@ -1,11 +1,11 @@
-import { Directive,Input, ElementRef, Renderer } from '@angular/core';
+import { Directive,Input, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appMatchActionDelimiter]'
 })
 export class MatchActionDelimiterDirective {
   @Input('appMatchActionDelimiter') isMatchActionDelimiter: boolean;
-  constructor(private el: ElementRef, private renderer: Renderer) { }
+  constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit(){
     if (this.isMatchActionDelimiter) {

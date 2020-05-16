@@ -1,11 +1,11 @@
-import { Directive, ElementRef, Renderer, OnInit, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, OnInit, Input } from '@angular/core';
 
 @Directive({
   selector: '[appUnsuccessfulAnnotation]'
 })
 export class UnsuccessfulAnnotationDirective {
   @Input('appUnsuccessfulAnnotation') isUnsuccessful: boolean;
-  constructor(private el: ElementRef, private renderer: Renderer) {
+  constructor(private el: ElementRef, private renderer: Renderer2) {
          // el.nativeElement.style.backgroundColor = "red";
   }
 

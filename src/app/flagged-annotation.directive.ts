@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appFlaggedAnnotation]'
@@ -6,7 +6,7 @@ import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 export class FlaggedAnnotationDirective {
   @Input('appFlaggedAnnotation') isFlagged: boolean;
 
-  constructor(private el: ElementRef, private renderer: Renderer) { }
+  constructor(private el: ElementRef, private renderer: Renderer2) { }
   ngOnInit(){
     if (this.isFlagged) {
       // this.el.nativeElement.style.borderColor = "green";
