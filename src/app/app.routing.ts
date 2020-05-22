@@ -29,7 +29,7 @@ const appRoutes: Routes = [
   {
     path: '',
     component: AllVideosComponent,
-    ...canActivate(redirectUnauthorizedTo(['login'])),
+    canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
     pathMatch: 'full'
   },{
   path: 'login',
@@ -41,17 +41,17 @@ const appRoutes: Routes = [
 },{
   path: 'newmatch',
   component: NewVideoComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'user/:userId',
   component: UserInfoComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'faq',
   component: FaqComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'createaccount',
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
 },{
   path: 'populatedb',
   component: TestDbComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'logout',
@@ -69,22 +69,22 @@ const appRoutes: Routes = [
 },{
   path: 'landing',
   component: LandingComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'matches',
   component: AllVideosComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'admin',
   component: AdminComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])), //TODO add admin guard
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])}, //TODO add admin guard
   pathMatch: 'full'
 },{
   path: 'matches/:videoId',
   component: VideoDisplayComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'news',
@@ -93,12 +93,12 @@ const appRoutes: Routes = [
 },{
   path: 'youtube',
   component: YoutubeComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'matches/:videoId/annotate',
   component: AnnotationDisplayComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'mark',
@@ -107,7 +107,7 @@ const appRoutes: Routes = [
 },{
   path: 'landing',
   component: LandingComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
   pathMatch: 'full'
 },{
   path: 'verify-email-address',
@@ -115,7 +115,7 @@ const appRoutes: Routes = [
 },{
   path: 'payment',
   component: PaymentComponent,
-  ...canActivate(redirectUnauthorizedTo(['login'])),
+  canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])} ,
   pathMatch: 'full'
 },{
   path: 'error',
