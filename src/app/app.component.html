@@ -1,5 +1,6 @@
 <nav>
   <div class="nav-wrapper">
+    <button type="button" name="button">Help</button>
     <div id="menu-wrapper">
       <button mat-icon-button [matMenuTriggerFor]="mainMenu" id="vertical-button"><mat-icon>more_vert</mat-icon></button>
       <mat-menu #mainMenu>
@@ -50,7 +51,7 @@
     <app-user-status-report *ngIf="user"></app-user-status-report>
   </div> -->
   <!-- <div class="flexbox-item"> -->
-    <router-outlet></router-outlet>
+  <router-outlet>loading...</router-outlet>
   <!-- </div> -->
 <!-- </div> -->
 <div *ngIf="!authenticationStatus" class="flexbox-item">

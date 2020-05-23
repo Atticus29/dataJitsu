@@ -37,8 +37,8 @@ const appRoutes: Routes = [
   children: [],
   component: LoginComponent,
   canActivate: [AngularFireAuthGuard],
-  data: { authGuardPipe: redirectLoggedInToAllMatches} //,
-  // pathMatch: 'full'
+  data: { authGuardPipe: redirectLoggedInToAllMatches},
+  pathMatch: 'full'
 },{
   path: 'newmatch',
   component: NewVideoComponent,
