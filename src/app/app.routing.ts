@@ -29,7 +29,8 @@ const appRoutes: Routes = [
   {
     path: '',
     component: AllVideosComponent,
-    canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},
+    canActivate: [AngularFireAuthGuard],
+    data: {authGuardPipe: redirectUnauthorizedToLogin},
     pathMatch: 'full'
   },{
   path: 'login',
