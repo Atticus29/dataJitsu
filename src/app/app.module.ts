@@ -111,6 +111,7 @@ import { BaseApprovalComponent } from './base-approval/base-approval.component';
 import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
 import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
 import { NewLocationNameDialogComponent } from './new-location-name-dialog/new-location-name-dialog.component';
+import { TestComponent } from './test/test.component';
 
 
 export const firebaseConfig = {
@@ -172,7 +173,8 @@ export const firebaseConfig = {
     BaseApprovalComponent,
     NewNoGiRankDialogComponent,
     NewAgeClassDialogComponent,
-    NewLocationNameDialogComponent
+    NewLocationNameDialogComponent,
+    TestComponent
   ],
   imports: [
     AngularFireDatabaseModule,

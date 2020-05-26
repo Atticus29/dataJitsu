@@ -18,6 +18,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { TestComponent } from './test/test.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
@@ -39,7 +40,12 @@ const appRoutes: Routes = [
   canActivate: [AngularFireAuthGuard],
   data: { authGuardPipe: redirectLoggedInToAllMatches},
   pathMatch: 'full'
-},{
+  },{
+  path: 'test',
+  children: [],
+  component: TestComponent,
+  pathMatch: 'full'
+  },{
   path: 'newmatch',
   component: NewVideoComponent,
   canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedTo(['login'])},

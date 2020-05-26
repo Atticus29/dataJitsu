@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ChangeDetectorRef } from '@angular/core';
+// import { MzNavbarModule } from 'ngx-materialize'
 
 import { takeUntil, take } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';

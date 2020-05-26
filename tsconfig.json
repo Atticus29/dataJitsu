@@ -20,7 +20,12 @@
       "esnext",
       "dom"
     ],
-    "types": ["firebase", "node", "cypress"],
+    "types": [
+      "jquery",
+      "materialize-css",
+      "firebase",
+      "node",
+      "cypress"],
     "skipLibCheck": true
   }
 }
