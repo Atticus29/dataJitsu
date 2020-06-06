@@ -1,3 +1,5 @@
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -8,7 +10,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { AppComponent } from './app.component';
 import { YoutubeComponent } from './youtube/youtube.component';
-import { routing } from './app.routing';
+import { AppRoutingModule} from './app-routing.module';
 import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { TestDbComponent } from './test-db/test-db.component';
@@ -36,7 +38,7 @@ import { VideoDataSource } from './videoDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { EmailLoginDialog } from './emailLoginDialog.model';
+// import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
@@ -221,11 +223,16 @@ export const firebaseConfig = {
     MatTreeModule,
     RatingModule,
     ReactiveFormsModule,
-    routing,
+    AppRoutingModule,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
-  bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
+  ],
+  entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// platformBrowserDynamic().bootstrapModule(AppModule)
+//   .catch(err => console.error(err));

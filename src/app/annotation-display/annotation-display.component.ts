@@ -1,11 +1,11 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
