@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, OnInit, Input } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 import { constants } from './constants';
 

@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ChangeDetectorRef } from '@angular/core';
+// import { MzNavbarModule } from 'ngx-materialize'
 
 import { takeUntil, take } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
@@ -42,6 +43,8 @@ export class AppComponent extends BaseComponent implements OnInit {
     let self = this;
 
     combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      console.log("results entered in combineLatest call");
+      console.log(results);
       let result = results[0];
       let authState = results[1];
       if(result && result.uid && authState){
@@ -68,8 +71,8 @@ export class AppComponent extends BaseComponent implements OnInit {
           this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
             this.user = dbUser;
             this.name = dbUser.name;
-            // console.log("db user from getUserByUid in app.component is:");
-            // console.log(dbUser);
+            console.log("db user from getUserByUid in app.component is:");
+            console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
             this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               // console.log("isAdmin? " + status);

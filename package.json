@@ -35,6 +35,7 @@
     "jquery": "^3.0.0",
     "moment": "^2.26.0",
     "ng-starrating": "^1.0.7",
+    "ngx-materialize": "^6.1.3",
     "ngx-youtube-player": "^7.1.1",
     "rxjs": "^6.0.0",
     "stripe": "^7.9.1",
