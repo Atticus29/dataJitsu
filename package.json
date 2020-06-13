@@ -27,7 +27,7 @@
     "@types/youtube": "^0.0.29",
     "ajv": "^6.10.2",
     "angular-froala-wysiwyg": "^2.7.2-1",
-    "core-js": "^3.0.0",
+    "core-js": "^2.0.0",
     "d3": "^4.13.0",
     "firebase": "^7.15.0",
     "grpc": "^1.24.3",

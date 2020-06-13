@@ -1,8 +1,9 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { AuthGuard } from './auth.guard';
+import { NgModule } from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { RatingModule } from 'ng-starrating';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { masterFirebaseConfig } from './api-keys';
 import { AngularFireModule } from '@angular/fire';
@@ -37,7 +38,7 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { VideoDataSource } from './videoDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+// import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 // import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
@@ -179,11 +180,11 @@ export const firebaseConfig = {
     TestComponent
   ],
   imports: [
+    BrowserModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(firebaseConfig),
     BrowserAnimationsModule,
-    BrowserModule,
     CdkTreeModule,
     FormsModule,
     MatAutocompleteModule,
@@ -228,7 +229,7 @@ export const firebaseConfig = {
     AppRoutingModule,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ],
   entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent],
