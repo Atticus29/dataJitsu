@@ -23,6 +23,7 @@ import { BaseComponent } from './base/base.component';
 })
 export class AppComponent extends BaseComponent implements OnInit {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private tmpStatus: boolean = true;
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
@@ -40,73 +41,74 @@ export class AppComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    let self = this;
-
-    combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results entered in combineLatest call");
-      console.log(results);
-      let result = results[0];
-      let authState = results[1];
-      if(result && result.uid && authState){
-        this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
-          this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
-            this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
-          });
-          this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
-          this.userObjFromDb = dbUser;
-        });
-      } else{
-        this.trackerService.currentUserBehaviorSubject.next(null);
-      }
-    });
-
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
-      console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
-      if(currentUser){
-        console.log(currentUser);
-        if(currentUser.uid){
-          console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
-          console.log("changing authenticationStatus to true...");
-          this.authenticationStatus = true;
-          this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-            this.user = dbUser;
-            this.name = dbUser.name;
-            console.log("db user from getUserByUid in app.component is:");
-            console.log(dbUser);
-            this.shouldAnnotate = dbUser.paymentStatus;
-            this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-              // console.log("isAdmin? " + status);
-              // console.log(typeof(status));
-              if(status === true){
-                // console.log("setting isAdmin to true");
-                this.isAdmin = status;
-              }
-            });
-            // this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-              // console.log("hasUserPaid? " + paymentStatus);
-              // console.log(typeof(paymentStatus));
-              // if(paymentStatus === true){
-              //   // console.log("setting paidStatus to true...");
-              //   this.paidStatus = paymentStatus;
-              // }else{
-              //   this.paidStatus = false;
-              // }
-            // });
-            this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
-              this.dbService.updatePrivileges(dbUser, Number(reputation));
-            });
-          })
-        } else {
-          console.log("currentUser id DNE; changing authenticationStatus to false ....")
-          this.authenticationStatus = false;
-          this.user = null; //shouldn't be necessary becuase authenticationStatus is doing this job right now, but here ya go anyway
-        }
-      } else{
-        console.log("currentUser DNE; changing authenticationStatus to false ....")
-        this.authenticationStatus = false;
-        this.name = "Anonymous User";
-      }
-    });
+    console.log("sup?")
+    // let self = this;
+    //
+    // combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+    //   console.log("results entered in combineLatest call");
+    //   console.log(results);
+    //   let result = results[0];
+    //   let authState = results[1];
+    //   if(result && result.uid && authState){
+    //     this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+    //       this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
+    //         this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
+    //       });
+    //       this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
+    //       this.userObjFromDb = dbUser;
+    //     });
+    //   } else{
+    //     this.trackerService.currentUserBehaviorSubject.next(null);
+    //   }
+    // });
+    //
+    // this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
+    //   console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
+    //   if(currentUser){
+    //     console.log(currentUser);
+    //     if(currentUser.uid){
+    //       console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
+    //       console.log("changing authenticationStatus to true...");
+    //       this.authenticationStatus = true;
+    //       this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
+    //         this.user = dbUser;
+    //         this.name = dbUser.name;
+    //         console.log("db user from getUserByUid in app.component is:");
+    //         console.log(dbUser);
+    //         this.shouldAnnotate = dbUser.paymentStatus;
+    //         this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+    //           // console.log("isAdmin? " + status);
+    //           // console.log(typeof(status));
+    //           if(status === true){
+    //             // console.log("setting isAdmin to true");
+    //             this.isAdmin = status;
+    //           }
+    //         });
+    //         // this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
+    //           // console.log("hasUserPaid? " + paymentStatus);
+    //           // console.log(typeof(paymentStatus));
+    //           // if(paymentStatus === true){
+    //           //   // console.log("setting paidStatus to true...");
+    //           //   this.paidStatus = paymentStatus;
+    //           // }else{
+    //           //   this.paidStatus = false;
+    //           // }
+    //         // });
+    //         this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
+    //           this.dbService.updatePrivileges(dbUser, Number(reputation));
+    //         });
+    //       })
+    //     } else {
+    //       console.log("currentUser id DNE; changing authenticationStatus to false ....")
+    //       this.authenticationStatus = false;
+    //       this.user = null; //shouldn't be necessary becuase authenticationStatus is doing this job right now, but here ya go anyway
+    //     }
+    //   } else{
+    //     console.log("currentUser DNE; changing authenticationStatus to false ....")
+    //     this.authenticationStatus = false;
+    //     this.name = "Anonymous User";
+    //   }
+    // });
   }
 
   loginGoogleComponent(){

@@ -17,6 +17,7 @@
     "@angular/cdk": "^9.2.4",
     "@angular/common": "^9.1.9",
     "@angular/compiler": "^9.1.9",
+    "@angular/compiler-cli": "^9.1.9",
     "@angular/core": "^9.1.9",
     "@angular/fire": "^6.0.0",
     "@angular/forms": "^9.1.9",
@@ -39,11 +40,12 @@
     "ngx-youtube-player": "^7.1.1",
     "rxjs": "^6.0.0",
     "stripe": "^7.9.1",
+    "tslib": "^1.10.0 ^1.9.0",
+    "typescript": ">=3.6.0 <=3.9.0",
     "zone.js": "^0.10.3"
   },
   "devDependencies": {
     "@angular/cli": "^9.1.7",
-    "@angular/compiler-cli": "^9.1.9",
     "@angular/language-service": "^6.0.3",
     "@cypress/webpack-preprocessor": "^4.1.0",
     "@types/bootstrap": "^3.3.36",
@@ -66,7 +68,6 @@
     "ts-loader": "^6.0.4",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
-    "typescript": "~3.7.0",
     "webpack": "^4.36.1"
   }
 }

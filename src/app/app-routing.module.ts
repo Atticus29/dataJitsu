@@ -32,7 +32,7 @@ const routes: Routes = [
   {
     path: '',
     component: AllVideosComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
     path: 'login',

@@ -1,33 +1,6 @@
-<!-- <app-login></app-login> -->
-<div class="mat-app-background basic-container">
-  <div id="menu-wrapper">
-    <button mat-icon-button [matMenuTriggerFor]="mainMenu" id="vertical-button"><mat-icon>more_vert</mat-icon></button>
-    <mat-menu #mainMenu>
-      <button mat-menu-item *ngIf="authenticationStatus" routerLink="newmatch"><mat-icon>add_circle</mat-icon> New Match</button>
-      <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="matches"><mat-icon>home</mat-icon> View All Matches</button>
-      <button mat-menu-item *ngIf="authenticationStatus" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> Annotate a video</button>
-      <button mat-menu-item routerLink="news"><mat-icon>announcement</mat-icon> News</button>
-      <button mat-menu-item *ngIf="!authenticationStatus" routerLink="login">Login or Create Account</button>
-      <button mat-menu-item *ngIf="authenticationStatus" routerLink="faq"><mat-icon>help</mat-icon> Help/F.A.Q.</button>
-    </mat-menu>
-    <div class="align-right" id="user-items">
-      <span *ngIf="authenticationStatus">
-        {{name}}
-      </span>
-      <span *ngIf="authenticationStatus" matBadge="{{localNewReputationCount}}" matBadgeOverlap="false">
-        {{localReputation}}
-      </span>
-      <app-user-status-report *ngIf="authenticationStatus && !paidStatus" class="move-left"></app-user-status-report>
-      <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu" id="settings-button"><mat-icon>settings_applications</mat-icon></button>
-      <mat-menu #userMenu>
-        <button mat-menu-item *ngIf="authenticationStatus" routerLink="user/{{userObjFromDb.id}}"><mat-icon>info</mat-icon> User Info.</button>
-        <button mat-menu-item *ngIf="authenticationStatus && isAdmin" routerLink="admin"><mat-icon>list</mat-icon> Admin Tasks</button>
-        <button mat-menu-item *ngIf="authenticationStatus" (click)="logout()" id="logOutLink">Log Out</button>
-      </mat-menu>
-    </div>
-  </div>
-
-  <router-outlet>loading...</router-outlet>
-  <!-- <div *ngIf="!authenticationStatus" class="flexbox-item">
-  </div> -->
-</div>
+<p>
+  Hey
+</p>
+<p *ngIf="tmpStatus">
+  Yo
+</p>

@@ -32,14 +32,14 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     console.log("got into login component");
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      this.user = result;
-      if(result){
-        this.loggedIn = true;
-      }else{
-        this.loggedIn = false;
-      }
-    });
+    // this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    //   this.user = result;
+    //   if(result){
+    //     this.loggedIn = true;
+    //   }else{
+    //     this.loggedIn = false;
+    //   }
+    // });
   }
 
   signInWithGoogle() {
