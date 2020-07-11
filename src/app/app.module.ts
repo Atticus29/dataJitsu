@@ -26,7 +26,7 @@ import { TextTransformationService } from './text-transformation.service';
 import { LoginComponent } from './login/login.component';
 // import { ProtectionGuard } from './protection.guard';
 import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
-// import { AllVideosComponent } from './all-videos/all-videos.component';
+import { AllVideosComponent } from './all-videos/all-videos.component';
 // import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 // import { D3Service } from './d3.service';
 // import { NotfoundComponent } from './notfound/notfound.component';
@@ -136,7 +136,7 @@ export const firebaseConfig = {
     // LandingComponent,
     // VideoDisplayComponent,
     LoginComponent,
-    // AllVideosComponent,
+    AllVideosComponent,
     // AnnotationDisplayComponent,
     // NotfoundComponent,
     UserStatusReportComponent,

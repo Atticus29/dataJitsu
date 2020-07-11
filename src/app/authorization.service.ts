@@ -114,34 +114,36 @@ export class AuthorizationService {
   }
 
   private socialSignIn(provider) {
-    return this.afAuth.signInWithPopup(provider)
-      .then((result) =>  {
-        this.ngZone.run(() =>{
-          this.authState = result.user;
-          // console.log("result.user in socialSignIn:");
-          // console.log(result.user);
-          this.router.navigate(['landing']);
-          //TODO switch user to the one in the db
-          // this.updateUserData()
-        });
-        // this.updateUserData(result.user);
-      })
-      .catch(error => {
-        window.alert(error);
-        // console.log(error);
-      });
+    // return this.afAuth.signInWithPopup(provider)
+    //   .then((result) =>  {
+    //     this.ngZone.run(() =>{
+    //       this.authState = result.user;
+    //       // console.log("result.user in socialSignIn:");
+    //       // console.log(result.user);
+    //       this.router.navigate(['landing']);
+    //       //TODO switch user to the one in the db
+    //       // this.updateUserData()
+    //     });
+    //     // this.updateUserData(result.user);
+    //   })
+    //   .catch(error => {
+    //     window.alert(error);
+    //     // console.log(error);
+    //   });
+    return true;
   }
 
 
   //// Anonymous Auth ////
 
   anonymousLogin() {
-    return this.afAuth.signInAnonymously()
-    .then((user) => {
-      this.authState = user;
-      // this.updateUserData()
-    })
-    .catch(error => console.log(error));
+    // return this.afAuth.signInAnonymously()
+    // .then((user) => {
+    //   this.authState = user;
+    //   // this.updateUserData()
+    // })
+    // .catch(error => console.log(error));
+    return false;
   }
 
   //// Email/Password Auth ////
@@ -149,89 +151,94 @@ export class AuthorizationService {
   emailSignUp(email:string, password:string) {
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let self = this;
-    return this.afAuth.createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        if(result){
-          if(result.user){
-            this.authState = result.user;
-            this.dbService.getNodeIdFromEmail(result.user.email).pipe(takeUntil(localUnsubscribeSubject)).subscribe((nodeId: string) =>{
-              // console.log("nodeId is " + nodeId);
-              if(nodeId){
-                this.dbService.setUidFromNodeId(result.user.uid,nodeId);
-                localUnsubscribeSubject.next();
-                localUnsubscribeSubject.complete();
-                // this.dbService.getUserById(nodeId).pipe().subscribe((user: User) =>{
-                  //   console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
-                  //   console.log(user);
-                  //   if(user){
-                    //
-                    //   }
-                    //   this.dbService.setUidFromNodeId(result.user.uid,nodeId);
-                    // });
-                  }
-                });
-                this.sendVerificationEmail();
-                // this.updateUserData()
-          }
-        }
-      })
-      .catch(error => {
-        window.alert(error.message);
-        // console.log(error);
-      });
+    // return this.afAuth.createUserWithEmailAndPassword(email, password)
+    //   .then((result) => {
+    //     if(result){
+    //       if(result.user){
+    //         this.authState = result.user;
+    //         this.dbService.getNodeIdFromEmail(result.user.email).pipe(takeUntil(localUnsubscribeSubject)).subscribe((nodeId: string) =>{
+    //           // console.log("nodeId is " + nodeId);
+    //           if(nodeId){
+    //             this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+    //             localUnsubscribeSubject.next();
+    //             localUnsubscribeSubject.complete();
+    //             // this.dbService.getUserById(nodeId).pipe().subscribe((user: User) =>{
+    //               //   console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
+    //               //   console.log(user);
+    //               //   if(user){
+    //                 //
+    //                 //   }
+    //                 //   this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+    //                 // });
+    //               }
+    //             });
+    //             this.sendVerificationEmail();
+    //             // this.updateUserData()
+    //       }
+    //     }
+    //   })
+    //   .catch(error => {
+    //     window.alert(error.message);
+    //     // console.log(error);
+    //   });
+    return true;
   }
 
   async sendVerificationEmail(){
-    return await this.afAuth.currentUser.then(u=>u.sendEmailVerification())
-    .then(() => {
-      this.router.navigate(['verify-email-address']);
-    });
+    // return await this.afAuth.currentUser.then(u=>u.sendEmailVerification())
+    // .then(() => {
+    //   this.router.navigate(['verify-email-address']);
+    // });
+    return false;
   }
 
   forgotPassword(passwordResetEmail: string){
-    return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      window.alert('Password reset email sent, check your inbox.');
-    }).catch((error) => {
-      window.alert(error)
-    });
+    // return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
+    // .then(() => {
+    //   window.alert('Password reset email sent, check your inbox.');
+    // }).catch((error) => {
+    //   window.alert(error)
+    // });
+    return false;
   }
 
   emailLogin(email:string, password:string) {
     // console.log("email in emailLogin in authorization service: " + email);
     // console.log("password in emailLogin in authorization service: " + password);
-     return this.afAuth.signInWithEmailAndPassword(email, password)
-       .then((result) => {
-         this.ngZone.run(() =>{
-           // console.log("user in emailLogin in authorization service");
-           // console.log(result);
-           this.authState = result; //TODO?
-           this.router.navigate(['matches']);
-         });
-         // console.log(this.currentUserId);
-         // this.updateUserData()
-       })
-       .catch(error => {
-         window.alert(error.message);
-         // console.log("error code is: ");
-         // console.log(error.code);
-         //  if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-         //      this.authError.next('The username and password you entered did not match our records. Please double-check and try again.');
-         //      // try {
-         //      //   alert("Log in failed. Attempting Google Login");
-         //      //   this.googleLogin();
-         //      // }
-         //      // catch(error) {
-         //      //   console.error(error);
-         //      //   // expected output: ReferenceError: nonExistentFunction is not defined
-         //      //   // Note - error messages will vary depending on browser
-         //      // }
-         //  } else if (error.code === 'auth/user-disabled') {
-         //      this.authError.next('Your account has been suspended. Please contact us directly to discuss this.');
-         //  } else {
-         //    this.authError.next(error.message);
-         //  }
-      });
+     // return this.afAuth.signInWithEmailAndPassword(email, password)
+     //   .then((result) => {
+     //     this.ngZone.run(() =>{
+     //       // console.log("user in emailLogin in authorization service");
+     //       // console.log(result);
+     //       this.authState = result; //TODO?
+     //       this.router.navigate(['matches']);
+     //     });
+     //     // console.log(this.currentUserId);
+     //     // this.updateUserData()
+     //   })
+     //   .catch(error => {
+     //     window.alert(error.message);
+     //     // console.log("error code is: ");
+     //     // console.log(error.code);
+     //     //  if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+     //     //      this.authError.next('The username and password you entered did not match our records. Please double-check and try again.');
+     //     //      // try {
+     //     //      //   alert("Log in failed. Attempting Google Login");
+     //     //      //   this.googleLogin();
+     //     //      // }
+     //     //      // catch(error) {
+     //     //      //   console.error(error);
+     //     //      //   // expected output: ReferenceError: nonExistentFunction is not defined
+     //     //      //   // Note - error messages will vary depending on browser
+     //     //      // }
+     //     //  } else if (error.code === 'auth/user-disabled') {
+     //     //      this.authError.next('Your account has been suspended. Please contact us directly to discuss this.');
+     //     //  } else {
+     //     //    this.authError.next(error.message);
+     //     //  }
+     //  });
+     console.log("email login reached");
+     return true;
   }
 
   // Sends email allowing user to reset password
@@ -246,16 +253,16 @@ export class AuthorizationService {
   //// Sign Out ////
   signOut(): void {
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
-    this.afAuth.signOut();
-    this.currentUserObservable.pipe(takeUntil(localUnsubscribeSubject)).subscribe(currentUsr =>{
-      // console.log("currentUsr in signOut in authorization service: ");
-      // console.log(currentUsr);
-      if(!currentUsr){
-        localUnsubscribeSubject.next();
-        localUnsubscribeSubject.complete();
-        this.router.navigate(['login']);
-      }
-    })
+    // this.afAuth.signOut();
+    // this.currentUserObservable.pipe(takeUntil(localUnsubscribeSubject)).subscribe(currentUsr =>{
+    //   // console.log("currentUsr in signOut in authorization service: ");
+    //   // console.log(currentUsr);
+    //   if(!currentUsr){
+    //     localUnsubscribeSubject.next();
+    //     localUnsubscribeSubject.complete();
+    //     this.router.navigate(['login']);
+    //   }
+    // })
   }
   //// Helpers ////
 
