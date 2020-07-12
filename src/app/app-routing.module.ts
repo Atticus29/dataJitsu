@@ -20,7 +20,7 @@ import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
-// import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AuthGuard } from './auth.guard';
 
 // const adminOnly = hasCustomClaim('admin');
@@ -38,7 +38,7 @@ const routes: Routes = [
     path: 'login',
     children: [],
     component: LoginComponent,
-    // canActivate: [AngularFireAuthGuard],
+    canActivate: [AngularFireAuthGuard],
     // data: { authGuardPipe: redirectLoggedInToAllMatches} //,
     // pathMatch: 'full'
   }
