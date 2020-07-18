@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ModuleWithProviders }  from '@angular/core';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
@@ -37,100 +37,100 @@ const routes: Routes = [
   },{
     path: 'login',
     children: [],
-    component: LoginComponent,
-    canActivate: [AngularFireAuthGuard],
+    component: LoginComponent, //TODO make redirect if logged in
+    // canActivate: [],
     // data: { authGuardPipe: redirectLoggedInToAllMatches} //,
     // pathMatch: 'full'
   }
-  //,
-  // {
-  //   path: 'newmatch',
-  //   component: NewVideoComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'user/:userId',
-  //   component: UserInfoComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'faq',
-  //   component: FaqComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'createaccount',
-  //   component: CreateAccountComponent,
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'populatedb',
-  //   component: TestDbComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'logout',
-  //   component: LogoutComponent, //don't redirectUnauthorizedTo with this one. Handled manually. You have already tried this
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'landing',
-  //   component: LandingComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'matches',
-  //   component: AllVideosComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'admin',
-  //   component: AdminComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])), //TODO add admin guard
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'matches/:videoId',
-  //   component: VideoDisplayComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'news',
-  //   component: NewsComponent,
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'youtube',
-  //   component: YoutubeComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'matches/:videoId/annotate',
-  //   component: AnnotationDisplayComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'mark',
-  //   component: TemporaryComponent,
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'landing',
-  //   component: LandingComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'verify-email-address',
-  //   component: VerifyEmailAddressComponent,
-  // },{
-  //   path: 'payment',
-  //   component: PaymentComponent,
-  //   ...canActivate(redirectUnauthorizedTo(['login'])),
-  //   pathMatch: 'full'
-  // },{
-  //   path: 'error',
-  //   component: NotfoundComponent,
-  //   pathMatch: 'full'
-  // },{
-  //   path: '**',
-  //   component: NotfoundComponent,
-  //   pathMatch: 'full'
-  // }
+  ,
+  {
+    path: 'newmatch',
+    component: NewVideoComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'user/:userId',
+    component: UserInfoComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'faq',
+    component: FaqComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'createaccount',
+    component: CreateAccountComponent,
+    pathMatch: 'full'
+  },{
+    path: 'populatedb',
+    component: TestDbComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'logout',
+    component: LogoutComponent, //don't redirectUnauthorizedTo with this one. Handled manually. You have already tried this
+    pathMatch: 'full'
+  },{
+    path: 'landing',
+    component: LandingComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'matches',
+    component: AllVideosComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard], //TODO add admin guard
+    pathMatch: 'full'
+  },{
+    path: 'matches/:videoId',
+    component: VideoDisplayComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'news',
+    component: NewsComponent,
+    pathMatch: 'full'
+  },{
+    path: 'youtube',
+    component: YoutubeComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'matches/:videoId/annotate',
+    component: AnnotationDisplayComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'mark',
+    component: TemporaryComponent,
+    pathMatch: 'full'
+  },{
+    path: 'landing',
+    component: LandingComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'verify-email-address',
+    component: VerifyEmailAddressComponent,
+  },{
+    path: 'payment',
+    component: PaymentComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: 'error',
+    component: NotfoundComponent,
+    pathMatch: 'full'
+  },{
+    path: '**',
+    component: NotfoundComponent,
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

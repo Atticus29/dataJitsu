@@ -53,6 +53,8 @@ export class AppComponent extends BaseComponent implements OnInit {
             this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
           });
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
+          console.log("dbUser entered! Got: ");
+          console.log(dbUser);
           this.userObjFromDb = dbUser;
         });
       } else{

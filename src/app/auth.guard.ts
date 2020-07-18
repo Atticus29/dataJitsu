@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { TrackerService } from './tracker.service';
+import { Subject } from 'rxjs';
+
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private trackerService: TrackerService, private router: Router){
+  ngUnsubscribe = new Subject<void>();
+  constructor(private authService: AuthorizationService, private router: Router, public afAuth: AngularFireAuth){
 
   }
   canActivate(
@@ -25,8 +29,10 @@ export class AuthGuard implements CanActivate {
   checkLogin(): Observable<boolean>{
     let self = this;
     let obsRet = Observable.create(function(observer){
-      self.trackerService.currentUserBehaviorSubject.subscribe(usr =>{ //.pipe(takeUntil(this.ngUnsubscribe))
-        if(usr){
+      combineLatest(self.authService.currentUserObservable, self.afAuth.authState).pipe(takeUntil(self.ngUnsubscribe)).subscribe(results =>{
+        let result = results[0];
+        let authState = results[1];
+        if(result && result.uid && authState){
           observer.next(true);
         }else{
           self.router.navigate(['/login']);
