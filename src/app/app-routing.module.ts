@@ -21,7 +21,8 @@ import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { LoggedInGuard } from './guards/logged-in.guard';
 
 // const adminOnly = hasCustomClaim('admin');
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
@@ -37,10 +38,9 @@ const routes: Routes = [
   },{
     path: 'login',
     children: [],
-    component: LoginComponent, //TODO make redirect if logged in
-    // canActivate: [],
-    // data: { authGuardPipe: redirectLoggedInToAllMatches} //,
-    // pathMatch: 'full'
+    component: LoginComponent,
+    canActivate: [LoggedInGuard],
+    pathMatch: 'full'
   }
   ,
   {

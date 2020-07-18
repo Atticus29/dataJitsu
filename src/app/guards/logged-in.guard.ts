@@ -5,12 +5,12 @@ import { Observable, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { AuthorizationService } from './authorization.service';
+import { AuthorizationService } from '../authorization.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class LoggedInGuard implements CanActivate {
   ngUnsubscribe = new Subject<void>();
   constructor(private authService: AuthorizationService, private router: Router, public afAuth: AngularFireAuth){
 
@@ -19,11 +19,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let loginStatusObservable = this.checkLogin();
-    loginStatusObservable.subscribe(loginStatus =>{ //.pipe(takeUntil(this.ngUnsubscribe))
-      console.log("loginStatus is ");
-      console.log(loginStatus);
-    });
-    return loginStatusObservable;
+    return !loginStatusObservable;
   }
 
   checkLogin(): Observable<boolean>{
@@ -33,6 +29,7 @@ export class AuthGuard implements CanActivate {
         let result = results[0];
         let authState = results[1];
         if(result && result.uid && authState){
+          self.router.navigate(['/']);
           observer.next(true);
         }else{
           self.router.navigate(['/login']);
@@ -42,5 +39,6 @@ export class AuthGuard implements CanActivate {
     });
     return obsRet;
   }
+
 
 }
