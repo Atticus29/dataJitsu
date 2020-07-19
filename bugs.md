@@ -47,6 +47,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Router not navigating to /login upon logout in auth guard bug
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - [x] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48

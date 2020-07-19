@@ -37,7 +37,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },{
     path: 'login',
-    children: [],
     component: LoginComponent,
     canActivate: [LoggedInGuard],
     pathMatch: 'full'

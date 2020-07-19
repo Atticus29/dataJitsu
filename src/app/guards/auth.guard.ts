@@ -19,10 +19,10 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let loginStatusObservable = this.checkLogin();
-    // loginStatusObservable.subscribe(loginStatus =>{ //.pipe(takeUntil(this.ngUnsubscribe))
-    //   console.log("loginStatus is ");
-    //   console.log(loginStatus);
-    // });
+    loginStatusObservable.subscribe(loginStatus =>{ //.pipe(takeUntil(this.ngUnsubscribe))
+      console.log("loginStatus is ");
+      console.log(loginStatus);
+    });
     return loginStatusObservable;
   }
 
@@ -32,11 +32,17 @@ export class AuthGuard implements CanActivate {
       combineLatest(self.authService.currentUserObservable, self.afAuth.authState).pipe(takeUntil(self.ngUnsubscribe)).subscribe(results =>{
         let result = results[0];
         let authState = results[1];
+        // console.log("result in checkLogin of auth.guard is: ");
+        // console.log(result);
+        // console.log("authState is: ");
+        // console.log(authState);
         if(result && result.uid && authState){
           observer.next(true);
+          // self.router.navigate(['/']);
         }else{
-          self.router.navigate(['/login']);
+          // console.log("User not logged in!");
           observer.next(false);
+          self.router.navigate(['/login']);
         }
       });
     });

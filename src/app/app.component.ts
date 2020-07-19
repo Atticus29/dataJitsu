@@ -43,8 +43,8 @@ export class AppComponent extends BaseComponent implements OnInit {
     let self = this;
 
     combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results entered in combineLatest call");
-      console.log(results);
+      // console.log("results entered in combineLatest call");
+      // console.log(results);
       let result = results[0];
       let authState = results[1];
       if(result && result.uid && authState){
@@ -63,18 +63,18 @@ export class AppComponent extends BaseComponent implements OnInit {
     });
 
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe((currentUser) =>{
-      console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
+      // console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
       if(currentUser){
         console.log(currentUser);
         if(currentUser.uid){
-          console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
-          console.log("changing authenticationStatus to true...");
+          // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
+          // console.log("changing authenticationStatus to true...");
           this.authenticationStatus = true;
           this.dbService.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
             this.user = dbUser;
             this.name = dbUser.name;
-            console.log("db user from getUserByUid in app.component is:");
-            console.log(dbUser);
+            // console.log("db user from getUserByUid in app.component is:");
+            // console.log(dbUser);
             this.shouldAnnotate = dbUser.paymentStatus;
             this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               // console.log("isAdmin? " + status);
