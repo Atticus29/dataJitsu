@@ -47,6 +47,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Annotated moves not displaying
 - [x] Router not navigating to /login upon logout in auth guard bug
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events

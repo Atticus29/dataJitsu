@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Change annotated-moves-display to annotated-events (after all of the current issues have been resolved)
 - [ ] Turn these into github issues
 - [ ] Change 'newmatch' paths to 'newvideo' paths
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)

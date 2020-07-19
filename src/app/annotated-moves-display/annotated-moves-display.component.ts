@@ -33,6 +33,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   }
 
   ngOnInit() {
+    console.log("ngOnInit in annotated-moved-display entered");
     this.localFlagMin = constants.numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention;
     let self = this;
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{ //takeUntil(this.ngUnsubscribe)
@@ -106,7 +107,7 @@ export class AnnotatedMovesDisplayComponent extends BaseComponent implements OnI
   fetchAnnotations(videoId: string){
     if(videoId){
       this.annotations = new Array();
-      this.databaseService.getAnnotationsSortedByStartTimeV2(videoId, 'matches/' + videoId + '/moves/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
+      this.databaseService.getAnnotationsSortedByStartTimeV2(videoId, 'videos/' + videoId + '/events/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(annotationResults =>{ //TODO ?
         if(annotationResults){
           console.log("annotationResults in fetchAnnotations call of AnnotatedMovesDisplayComponent:");
           console.log(annotationResults);
