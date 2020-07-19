@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Spinner in '/matches' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
 - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)

@@ -87,39 +87,45 @@ describe ('Login tests', () =>{
   it('logs back in and clicks on a match', ()=>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
+      cy.contains('Match Rating');
+      cy.contains('Video');
+      cy.wait(15000);
+      cy.get('input[id=table-filter-input]').click({force:true});
+      cy.contains(cypressConstants.testIndividualName, {timeout:60000});
+      cy.get('a[name=videoClick]').first().click({force:true});
+      cy.contains('vs.');
+      cy.contains('Age Class');
+      cy.contains('Location');
     });
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.contains('vs.');
-    cy.contains('Age Class');
-    cy.contains('Location');
   });
 
   it('plays and pauses a match', ()=>{ //TODO needs work
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
+      cy.contains('Match Rating');
+      cy.contains('Video');
+      cy.wait(15000);
+      cy.contains(cypressConstants.testIndividualName, {timeout:60000});
+      cy.get('a[name=videoClick]').first().click({force:true});
+      cy.contains('vs.');
+      cy.wait(2000);
+      cy.get('a[id=play]').click({force:true});
+      cy.wait(3000);
+      cy.get('a[id=pause-vid]').click({force:true});
+      cy.contains('Add an annotation to the match');
     });;
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.contains('vs.');
-    cy.wait(2000);
-    cy.get('a[id=play]').click({force:true});
-    cy.wait(3000);
-    cy.get('a[id=pause-vid]').click({force:true});
-    cy.contains('Add an annotation to the match');
   });
 
   it('still sees the table upon reload of the all-matches page', ()=>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
+      cy.contains('Match Rating');
+      cy.contains('Video');
+      cy.visit('http://localhost:4200/');
+      cy.contains('Match Rating');
+      cy.wait(15000);
+      cy.contains(cypressConstants.testIndividualName, {timeout:60000});
     });
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.visit('http://localhost:4200/');
-    cy.contains('Match Rating');
-    cy.contains('Adult'); //TODO improve
   });
 
   it('does not see delete match as an option because not logged in as admin', function(){

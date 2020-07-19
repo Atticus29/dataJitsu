@@ -10,7 +10,7 @@
         <mat-spinner id="spinner"></mat-spinner>
   </div>
   <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    <input matInput id="table-filter-input" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
   <mat-table matSort #table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- TODO add paidStatus to ngIf -->
