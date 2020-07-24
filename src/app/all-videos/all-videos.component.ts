@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import {MatSort} from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DataSource } from '@angular/cdk/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -29,7 +29,8 @@ import { User } from '../user.model';
 })
 export class AllVideosComponent extends BaseComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  // @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   private isLoadingResults: boolean = true;
   private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl']; //TODO make this dynamic somehow
   user: any = null;
@@ -38,6 +39,8 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   async ngOnInit() {
+    console.log("this.sort is:");
+    console.log(this.sort);
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       if(user && user.uid){
@@ -58,14 +61,19 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
     });
     this.dataSource = new VideoDataSource(this.dbService);
     this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
-      // console.log("videoObjs is: ");
-      // console.log(videoObjs);
+      console.log("videoObjs is: ");
+      console.log(videoObjs);
       let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
       this.dataSource.data = videos;
       console.log("dataSource:");
-      console.log(this.dataSource.data);
+      console.log(this.dataSource);
       this.dataSource.paginator = this.paginator;
+      console.log("got past paginator");
+      console.log(this.paginator);
+      console.log("sort is: ");
+      console.log(this.sort);
       this.dataSource.sort = this.sort;
+      console.log("got past sort  ");
       if (this.dataSource.data) {
         this.isLoadingResults = false;
       }
