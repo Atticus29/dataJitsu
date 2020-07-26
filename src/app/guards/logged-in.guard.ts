@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { AuthorizationService } from '../authorization.service';
+import { constants } from '../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class LoggedInGuard implements CanActivate {
         // console.log(authState);
         if(result && result.uid && authState){
           observer.next(false);
-          self.router.navigate(['/matches']);
+          self.router.navigate([constants.allVideosPathName]);
         }else{
           observer.next(true);
         }

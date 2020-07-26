@@ -4,7 +4,7 @@
     <button mat-icon-button [matMenuTriggerFor]="mainMenu" id="vertical-button"><mat-icon>more_vert</mat-icon></button>
     <mat-menu #mainMenu>
       <button mat-menu-item *ngIf="authenticationStatus" routerLink="newmatch"><mat-icon>add_circle</mat-icon> New Match</button>
-      <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="matches"><mat-icon>home</mat-icon> View All Matches</button>
+      <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="{{constants.allVideosPathName}}"><mat-icon>home</mat-icon> View All Matches</button>
       <button mat-menu-item *ngIf="authenticationStatus" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> Annotate a video</button>
       <button mat-menu-item routerLink="news"><mat-icon>announcement</mat-icon> News</button>
       <button mat-menu-item *ngIf="!authenticationStatus" routerLink="login">Login or Create Account</button>

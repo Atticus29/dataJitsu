@@ -10,7 +10,7 @@ describe ('Tests involving admin privleges and deletions', () =>{
 
   it('creates a match', function(){
     cy.wait(1000);
-    cy.visit('http://localhost:4200/newmatch');
+    cy.visit(cypressConstants.newMatchUrl);
     cy.fillInMatchCreationDetails();
     cy.get('button[id=new-match-submit-button]').click({force:true});
     cy.wait(2000);

@@ -2,7 +2,7 @@
 describe ('Match custom athlete name annotation tests', () =>{
 
   beforeEach(()=>{
-    // cy.visit('http://localhost:4200/');
+    // cy.visit(cypressConstants.allVideosUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
@@ -13,7 +13,7 @@ describe ('Match custom athlete name annotation tests', () =>{
   });
 
   it('creates match with two write-in names', function(){
-    cy.visit('http://localhost:4200/newmatch');
+    cy.visit(cypressConstants.newMatchUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.fillInMatchCreationDetailsWithWriteInAthleteNames(cypressConstants.athlete1FirstName, cypressConstants.athlete1LastName, cypressConstants.athlete2FirstName, cypressConstants.athlete2LastName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
@@ -22,7 +22,7 @@ describe ('Match custom athlete name annotation tests', () =>{
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
 
       //check it Exists
-      cy.visit('http://localhost:4200/matches');
+      cy.visit(cypressConstants.allVideosUrl);
       cy.wait(2000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
@@ -40,7 +40,7 @@ describe ('Match custom athlete name annotation tests', () =>{
 
     //go to admin info and thumb down one athlete name, approve the other, than delete it
     cy.log("go to admin info and thumb down one athlete name, approve the other, than delete it");
-    cy.visit('http://localhost:4200/admin');
+    cy.visit(cypressConstants.adminUrl);
     cy.wait(2000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click({force:true});
@@ -53,7 +53,7 @@ describe ('Match custom athlete name annotation tests', () =>{
 
     //check that one is now unknown name and the other is still the same name
     cy.log("check that one is now unknown name and the other is still the same name");
-    cy.visit('http://localhost:4200/matches');
+    cy.visit(cypressConstants.allVideosUrl);
     cy.wait(2000);
     cy.get('div[class=mat-select-arrow]').click({force:true});
     cy.contains('500').click({force:true});
@@ -70,17 +70,6 @@ describe ('Match custom athlete name annotation tests', () =>{
       cy.log("delete this match");
       cy.deleteMatch(cypressConstants.testLocation3);
     });
-    // cy.logout();
-    // cy.loginAsAdmin();
-    // cy.visit('http://localhost:4200/matches');
-    // // cy.wait(2000);
-    // cy.get('div[class=mat-select-arrow]').click({timeout:5000});
-    // cy.contains('500').click({force:true});
-    // cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    //   cy.get('mat-cell[id=APineappleUnderTheSea]>button').last().click({timeout:5000});
-    //   // cy.contains(cypressConstants.athlete2FirstName).find('button').click({force:true});
-    //   // cy.get('mat-cell>button').contains(cypressConstants.athlete2FirstName).click({force:true});
-    // });
-  })
+  });
 
 });

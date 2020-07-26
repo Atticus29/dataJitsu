@@ -81,5 +81,6 @@ export var constants = {
     get locationNameApprovalConfig(){
       return new ApprovalConfig(null, null, "Location name", "location", this.locationRemovedMessage, this.numberOfPointsToAwardForApprovingLocation, 'videoDeets/location', '/locations', '/candidateLocationNames')
     },
-    alreadyExistsNotification: "Your entry already exists in dropdown menu!"
+    alreadyExistsNotification: "Your entry already exists in dropdown menu!",
+    allVideosPathName: 'all-videos'
   };

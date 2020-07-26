@@ -23,9 +23,9 @@ Cypress.Commands.add('deleteMatch', (identifyingId) =>{
 
 Cypress.Commands.add('checkThatCustomMoveHasBeenRenamed', () =>{
   //assumes logged in as admin
-  cy.visit('http://localhost:4200/matches');
-  cy.get('a[name=videoClick]').first().click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.visit(cypressConstants.allVideosUrl);
+    cy.get('a[name=videoClick]').first().click({force:true});
     cy.contains('span',cypressConstants.eventNameRemovedMessage).should('exist');
     cy.contains('span','Darth Vader Choke').should('not.exist');
   });
@@ -280,20 +280,22 @@ Cypress.Commands.add("createCustomCervicalChoke", (eventName) => {
 Cypress.Commands.add('deleteMove', (eventName) =>{
   cy.logout();
   cy.loginAsAdmin();
-  cy.visit('http://localhost:4200/admin', {timeout: 5000});
+  cy.visit(cypressConstants.adminUrl, {timeout: 5000});
   cy.contains('li', eventName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 
 Cypress.Commands.add('deleteGeneric', (genericName) =>{
   cy.logout();
   cy.loginAsAdmin();
-  cy.visit('http://localhost:4200/admin', {timeout: 5000});
+  cy.visit(cypressConstants.adminUrl, {timeout: 5000});
   cy.contains('li', genericName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 
 Cypress.Commands.add('removeAnnotation', (eventName) =>{
   //Assumes you've already logged in as admin
-  cy.contains("Admin").should('exist');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.contains(cypressConstants.adminUserName).should('exist');
+  });
   cy.get('mat-chip').contains(eventName).should('exist');
   cy.get('mat-chip').contains('mat-chip', eventName).children('span[name=cancel-annotation]').click({force:true});
   cy.reload();
@@ -340,7 +342,9 @@ Cypress.Commands.add('approveGeneric', (genericName) =>{
 });
 
 Cypress.Commands.add("login", (email, pass) => {
-  cy.visit('http://localhost:4200/login');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.visit(cypressConstants.loginUrl);
+  });
   cy.wait(2000);
   cy.get('button[id=email-dialog-open-button]').click({force:true});
   cy.get('input[id=dialog-email-input]').type(email);
@@ -352,7 +356,7 @@ Cypress.Commands.add("login", (email, pass) => {
 });
 
 Cypress.Commands.add("loginAsAdmin", () => {
-  cy.visit('http://localhost:4200/login');
+  cy.visit(cypressConstants.loginUrl);
   cy.wait(2000);
   cy.get('button[id=email-dialog-open-button]').click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
@@ -367,7 +371,6 @@ Cypress.Commands.add("logout", () => {
   cy.wait(500);
   cy.get('button[id=settings-button]').click({force:true});
   cy.wait(500);
-  // cy.visit('http://localhost:4200/login');
   cy.get('button[id=logOutLink]').click({force:true});
   cy.wait(1000);
   cy.get('button[id=email-dialog-open-button]').should('exist');

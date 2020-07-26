@@ -23,11 +23,12 @@ import { BaseComponent } from './base/base.component';
 })
 export class AppComponent extends BaseComponent implements OnInit {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private constants: Object = constants;
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
   private name: string = "Anonymous User";
-  userObjFromDb: any = null;
+  userObjFromDb: Object = {id:null};
   title: string = constants.title;
   authenticationStatus: boolean =false;
   shouldAnnotate: boolean = false;
@@ -55,7 +56,9 @@ export class AppComponent extends BaseComponent implements OnInit {
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
           console.log("dbUser entered! Got: ");
           console.log(dbUser);
-          this.userObjFromDb = dbUser;
+          if(dbUser && dbUser.id){
+            this.userObjFromDb = dbUser;
+          }
         });
       } else{
         this.trackerService.currentUserBehaviorSubject.next(null);

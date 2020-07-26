@@ -1,4 +1,6 @@
 # Known issues
+- [ ]Weird extra underline in mat-inputs (see how you solved this for all-videos filter input)
+- [ ] Sometimes sort and paginator are undefined
 - [ ] Spinner in '/matches' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
@@ -48,6 +50,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Weird extra underline in mat-input for filter
 - [x] Annotated moves not displaying
 - [x] Router not navigating to /login upon logout in auth guard bug
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)

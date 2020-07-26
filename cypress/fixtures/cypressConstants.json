@@ -54,5 +54,15 @@
   "ageClassNameRemovedMessage": "Age class has been removed",
   "locationSelectName": "location-select",
   "locationNameRemovedMessage": "Location_name_has_been_removed",
-  "testIndividualName": "Garry"
+  "testIndividualName": "Garry",
+  "unfilteredExpectationText": "1 – 10 ",
+  "filterCriteria": "Mark",
+  "allVideosUrl": "http://localhost:4200/all-videos",
+  "allVideoEndUrlMatcher": "/all-videos/",
+  "newMatchUrl": "http://localhost:4200/newmatch",
+  "newMatchEndUrlMatcher": "/newmatch/",
+  "adminUrl": "http://localhost:4200/admin",
+  "adminUserName": "Admin",
+  "createAccountUrl": "http://localhost:4200/createaccount",
+  "loginUrl": "http://localhost:4200/login"
 }

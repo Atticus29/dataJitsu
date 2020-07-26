@@ -10,6 +10,7 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 import { DatabaseService } from './database.service';
 import { User } from './user.model';
+import { constants } from './constants';
 
 @Injectable({
   providedIn: 'root'
@@ -207,7 +208,7 @@ export class AuthorizationService {
            console.log(result);
            this.authState = result; //TODO?
            console.log("navigating to matches...");
-           this.router.navigate(['matches']);
+           this.router.navigate([constants.allVideosPathName]);
          });
          // console.log(this.currentUserId);
          // this.updateUserData()

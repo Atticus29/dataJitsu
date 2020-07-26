@@ -2,7 +2,6 @@
 describe ('Match annotation tests', () =>{
 
   beforeEach(()=>{
-    // cy.visit('http://localhost:4200/');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
@@ -297,15 +296,14 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.on('uncaught:exception', (err, runnable) => {
     return false;
     });
-    // cy.wait(1000);
-    cy.visit('http://localhost:4200/login');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.loginUrl);
+    });
 
     cy.logout();
-    // cy.wait(2000);
 
     //And then again
     cy.log("Second part");
-    // cy.visit('http://localhost:4200/');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });

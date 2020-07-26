@@ -11,6 +11,7 @@ import { tap, takeUntil } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { ChangeDetectorRef } from '@angular/core';
 
+import { constants } from '../constants';
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
@@ -33,6 +34,7 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   private isLoadingResults: boolean = true;
   private columnsToDisplay = ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl']; //TODO make this dynamic somehow
+  private constants: Object = constants;
   user: any = null;
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: VideoDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
     super();
@@ -67,6 +69,12 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
       this.dataSource.data = videos;
       console.log("dataSource:");
       console.log(this.dataSource);
+      if(this.paginator == undefined || this.sort == undefined){
+        console.log("Oh crud undefined!");
+        this.ngZone.run(() =>{
+          this.router.navigate([constants.allVideosPathName]);
+        });
+      }
       this.dataSource.paginator = this.paginator;
       console.log("got past paginator");
       console.log(this.paginator);

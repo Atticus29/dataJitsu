@@ -9,7 +9,7 @@
   <div class="spinner-container" *ngIf="isLoadingResults">
         <mat-spinner id="spinner"></mat-spinner>
   </div>
-  <mat-form-field>
+  <mat-form-field appearance="None">
     <input matInput id="table-filter-input" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
   <mat-table matSort #table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -68,10 +68,8 @@
     <ng-container matColumnDef="videoUrl">
       <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
       <mat-cell *matCellDef="let entry">
-        <a routerLink="/matches/{{entry.id}}" name="videoClick">
-          <!-- <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" matTooltip="Click To View Match In Detail"> -->
+        <a routerLink= "{{entry.id}}" name="videoClick">
             <i class="material-icons right">movie</i>
-          <!-- </button> -->
         </a>
       </mat-cell>
       <!-- <i class="material-icons right">video</i> -->

@@ -2,7 +2,6 @@
 describe ('Match custom tests: move name', () =>{
 
   beforeEach(()=>{
-    // cy.visit('http://localhost:4200/');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
@@ -43,7 +42,7 @@ describe ('Match custom tests: move name', () =>{
     // cy.loginAsAdmin();
     // cy.get('a[name=videoClick]').first().click({force:true});
     // cy.removeAnnotation("Darth Vader Choke");
-    // cy.visit('http://localhost:4200/admin')
+    // cy.visit(cypressConstants.adminUrl)
     // cy.disapproveMove("Darth Vader Choke");
 
   });
@@ -51,9 +50,9 @@ describe ('Match custom tests: move name', () =>{
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.visit('http://localhost:4200/admin');
+    cy.visit(cypressConstants.adminUrl);
     cy.approveMove("Darth Vader Choke");
-    cy.visit('http://localhost:4200/matches', {timeout:5000});
+    cy.visit(cypressConstants.allVideosUrl, {timeout:5000});
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
@@ -79,7 +78,7 @@ describe ('Match custom tests: move name', () =>{
       //deletes the move from admin page and confirms that it is missing from dropdown list
       cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");
       cy.deleteMove(cypressConstants.customMoveName);
-      cy.visit('http://localhost:4200/matches',{timeout: 5000});
+      cy.visit(cypressConstants.allVideosUrl,{timeout: 5000});
       cy.get('a[name=videoClick]').first().click({force:true});
       cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
       cy.get('div[id=annotationModal]').should('be.visible');
@@ -104,7 +103,7 @@ describe ('Match custom tests: move name', () =>{
     cy.reload();
 
     //Then create the annotation and custom move again
-    cy.visit("http://localhost:4200/matches");
+    cy.visit(cypressConstants.allVideosUrl);
     cy.get('a[name=videoClick]').first().click({timeout:5000});
     cy.log("Then create the annotation and custom move again");
     // cy.reload();
@@ -134,7 +133,7 @@ describe ('Match custom tests: move name', () =>{
       // cy.logout();
       // cy.loginAsAdmin();
       cy.log("disapproveMove");
-      cy.visit('http://localhost:4200/admin');
+      cy.visit(cypressConstants.adminUrl);
       cy.disapproveMove(cypressConstants.customMoveName);
     });
 
@@ -143,7 +142,7 @@ describe ('Match custom tests: move name', () =>{
     cy.reload();
     cy.checkThatCustomMoveHasBeenRenamed();
 
-    cy.visit("http://localhost:4200/matches");
+    cy.visit(cypressConstants.allVideosUrl);
     cy.removeNowRenamedAnnotation();
   });
 

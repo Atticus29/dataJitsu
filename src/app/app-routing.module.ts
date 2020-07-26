@@ -23,6 +23,7 @@ import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-g
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
+import { constants } from './constants';
 
 // const adminOnly = hasCustomClaim('admin');
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
@@ -76,7 +77,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
-    path: 'matches',
+    path: constants.allVideosPathName,
     component: AllVideosComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'
@@ -86,7 +87,7 @@ const routes: Routes = [
     canActivate: [AuthGuard], //TODO add admin guard
     pathMatch: 'full'
   },{
-    path: 'matches/:videoId',
+    path: constants.allVideosPathName + '/:videoId',
     component: VideoDisplayComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'
@@ -100,7 +101,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
-    path: 'matches/:videoId/annotate',
+    path: constants.allVideosPathName + '/:videoId/annotate',
     component: AnnotationDisplayComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'
