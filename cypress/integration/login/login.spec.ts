@@ -8,8 +8,9 @@ describe('Login tests with no beforeEach', ()=>{
 
 describe ('Login tests', () =>{
   beforeEach(()=>{
-    // cy.logout();
-    cy.visit(cypressConstants.allVideosUrl);
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.allVideosUrl);
+    });
   });
 
   afterEach(() =>{

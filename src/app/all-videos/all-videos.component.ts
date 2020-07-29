@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, NgZone, OnChanges } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
@@ -38,11 +38,11 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   user: any = null;
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: VideoDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
     super();
+    this.dataSource = new VideoDataSource(this.dbService);
   }
 
-  async ngOnInit() {
-    console.log("this.sort is:");
-    console.log(this.sort);
+  ngOnInit() {
+    this.dataSource = new VideoDataSource(this.dbService);
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
       this.user = user;
       if(user && user.uid){
@@ -61,31 +61,6 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
         // alert("didn't get a uid in all-matches");
       }
     });
-    this.dataSource = new VideoDataSource(this.dbService);
-    this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
-      console.log("videoObjs is: ");
-      console.log(videoObjs);
-      let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
-      this.dataSource.data = videos;
-      console.log("dataSource:");
-      console.log(this.dataSource);
-      if(this.paginator == undefined || this.sort == undefined){
-        console.log("Oh crud undefined!");
-        this.ngZone.run(() =>{
-          this.router.navigate([constants.allVideosPathName]);
-        });
-      }
-      this.dataSource.paginator = this.paginator;
-      console.log("got past paginator");
-      console.log(this.paginator);
-      console.log("sort is: ");
-      console.log(this.sort);
-      this.dataSource.sort = this.sort;
-      console.log("got past sort  ");
-      if (this.dataSource.data) {
-        this.isLoadingResults = false;
-      }
-    });
     // this.dataSource.data = await this.dataSource.loadVideos();
     // this.dbService.getVideos()
   }
@@ -101,6 +76,33 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   ngAfterViewInit(){
+    console.log("ngAfterViewInit entered")
+    this.dataSource.paginator = this.paginator;
+    console.log("got past paginator");
+    console.log(this.paginator);
+    this.dataSource.sort = this.sort;
+    console.log("sort is: ");
+    console.log(this.sort);
+    console.log("got past sort ");
+    this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
+      console.log("videoObjs is: ");
+      console.log(videoObjs);
+      let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
+      this.dataSource.data = videos;
+      console.log("dataSource:");
+      console.log(this.dataSource);
+      if(this.paginator == undefined || this.sort == undefined){
+        console.log("Oh crud undefined!");
+        this.ngZone.run(() =>{
+          this.router.navigate([constants.allVideosPathName]);
+          // location.reload();
+        });
+      }
+      if (this.dataSource.data && this.dataSource.sort && this.dataSource.paginator) {
+        console.log("data and everything exists")
+        this.isLoadingResults = false;
+      }
+    });
   }
 
   deleteMatch(videoId: any){
