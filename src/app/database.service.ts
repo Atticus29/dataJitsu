@@ -1171,8 +1171,10 @@ export class DatabaseService {
   addGenericCandidateNameToDb(path: string, name: string, associatedMatchUrl: string){
     console.log("addGenericCandidateNameToDb called");
     console.log("name is " + name);
+    console.log("path is: " + path);
     let ref = firebase.database().ref(path);
     let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    console.log("addGenericCandidateNameToDb done");
   }
 
   addAthleteNameToDb(name: string){

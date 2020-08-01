@@ -287,7 +287,9 @@ Cypress.Commands.add('deleteMove', (eventName) =>{
 Cypress.Commands.add('deleteGeneric', (genericName) =>{
   cy.logout();
   cy.loginAsAdmin();
-  cy.visit(cypressConstants.adminUrl, {timeout: 5000});
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.visit(cypressConstants.adminUrl, {timeout: 5000});
+  });
   cy.contains('li', genericName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 
@@ -356,10 +358,10 @@ Cypress.Commands.add("login", (email, pass) => {
 });
 
 Cypress.Commands.add("loginAsAdmin", () => {
-  cy.visit(cypressConstants.loginUrl);
-  cy.wait(2000);
-  cy.get('button[id=email-dialog-open-button]').click({force:true});
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.visit(cypressConstants.loginUrl);
+    cy.wait(2000);
+    cy.get('button[id=email-dialog-open-button]').click({force:true});
     cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);
     cy.get('input[id=dialog-pw-input]').type(cypressConstants.adminPassword);
   });
