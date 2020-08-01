@@ -63,12 +63,12 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
     });
     this.dataSource = new VideoDataSource(this.dbService);
     this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
-      console.log("videoObjs is: ");
-      console.log(videoObjs);
+      // console.log("videoObjs is: ");
+      // console.log(videoObjs);
       let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
       this.dataSource.data = videos;
-      console.log("dataSource:");
-      console.log(this.dataSource);
+      // console.log("dataSource:");
+      // console.log(this.dataSource);
       if(this.paginator == undefined || this.sort == undefined){
         console.log("Oh crud undefined!");
         this.ngZone.run(() =>{
@@ -76,12 +76,12 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
         });
       }
       this.dataSource.paginator = this.paginator;
-      console.log("got past paginator");
-      console.log(this.paginator);
-      console.log("sort is: ");
-      console.log(this.sort);
+      // console.log("got past paginator");
+      // console.log(this.paginator);
+      // console.log("sort is: ");
+      // console.log(this.sort);
       this.dataSource.sort = this.sort;
-      console.log("got past sort  ");
+      // console.log("got past sort  ");
       if (this.dataSource.data) {
         this.isLoadingResults = false;
       }
@@ -104,7 +104,7 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   deleteMatch(videoId: any){
-    console.log("deleteMatch in all-matches passing videoId is " + videoId);
+    // console.log("deleteMatch in all-matches passing videoId is " + videoId);
     let confirmation = confirm("Are you sure you want to delete this match?");
     if(confirmation){
       this.dbService.deleteMatch(videoId);

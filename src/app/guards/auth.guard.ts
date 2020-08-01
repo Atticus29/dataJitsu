@@ -20,8 +20,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let loginStatusObservable = this.checkLogin();
     loginStatusObservable.subscribe(loginStatus =>{ //.pipe(takeUntil(this.ngUnsubscribe))
-      console.log("loginStatus is ");
-      console.log(loginStatus);
+      // console.log("loginStatus is ");
+      // console.log(loginStatus);
     });
     return loginStatusObservable;
   }

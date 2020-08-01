@@ -54,8 +54,9 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
             this.userObjFromDb = dbUser;
             // this.togglePaymentThings();
             this.dbService.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
-              console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
-              console.log(hasUserAnnotatedEnough);
+              // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
+              // console.log(hasUserAnnotatedEnough);
+
               // if(!hasUserAnnotatedEnough){
               //   this.toggleAnnotationPrompt(true);
               //   this.togglePayMentPrompt(true);
@@ -104,7 +105,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   sendToMatchToAnnotate(){
     this.dbService.getLowRatedVideo().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.ngZone.run(() =>{
-        this.router.navigate(['matches/'+result.id]);
+        this.router.navigate([constants.allVideosPathName+result.id]);
       });
     });
   }
@@ -143,7 +144,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
 navigateToVideoInNeedOfAnnotation(){
   this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
     this.ngZone.run(() =>{
-      this.router.navigate(['matches/' + match.id]);
+      this.router.navigate([constants.allVideosPathName + match.id]);
     });
   });
 }

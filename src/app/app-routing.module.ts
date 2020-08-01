@@ -27,7 +27,7 @@ import { constants } from './constants';
 
 // const adminOnly = hasCustomClaim('admin');
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-// const redirectLoggedInToAllMatches = () => redirectLoggedInTo(['matches']);
+// const redirectLoggedInToAllMatches = () => redirectLoggedInTo([constants.allVideosPathName]);
 
 
 const routes: Routes = [

@@ -38,6 +38,7 @@ export class LoggedInGuard implements CanActivate {
         // console.log("authState is: ");
         // console.log(authState);
         if(result && result.uid && authState){
+          console.log("babie, you logged in according to logged-in guard");
           observer.next(false);
           self.router.navigate([constants.allVideosPathName]);
         }else{

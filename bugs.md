@@ -1,10 +1,10 @@
 # Known issues
-- [ ]Weird extra underline in mat-inputs (see how you solved this for all-videos filter input)
-- [ ] Sometimes sort and paginator are undefined
-- [ ] Spinner in '/matches' seems to go on forever under certain as yet unclear circumstances *until* you click something
+- [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
+- [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
 - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
+- [ ] Weird extra underline in mat-inputs (see how you solved this for all-videos filter input)
 - [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
 - [ ] In mobile, clicking on video doesn't let it stay embedded.

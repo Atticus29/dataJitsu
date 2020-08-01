@@ -324,7 +324,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
           // console.log(result)
           let videoId = this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate(['matches/' + videoId]);
+          this.router.navigate([constants.allVideosPathName + videoId]);
           //TODO navigate to annotation page??
         });
       } else{
@@ -354,7 +354,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
           this.openSnackBar("Match Successfully Created!", null);
           this.ngZone.run(() =>{
             if(this.hasPaid || this.isAdmin){
-              this.router.navigate(['matches'])
+              this.router.navigate([constants.allVideosPathName]);
             }else {
               this.router.navigate(['landing']);
             }
