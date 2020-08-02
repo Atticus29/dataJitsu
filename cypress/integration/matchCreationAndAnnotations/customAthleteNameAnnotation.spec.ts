@@ -13,8 +13,8 @@ describe ('Match custom athlete name annotation tests', () =>{
   });
 
   it('creates match with two write-in names', function(){
-    cy.visit(cypressConstants.newMatchUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.newMatchUrl);
       cy.fillInMatchCreationDetailsWithWriteInAthleteNames(cypressConstants.athlete1FirstName, cypressConstants.athlete1LastName, cypressConstants.athlete2FirstName, cypressConstants.athlete2LastName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.wait(2000);
@@ -40,9 +40,9 @@ describe ('Match custom athlete name annotation tests', () =>{
 
     //go to admin info and thumb down one athlete name, approve the other, than delete it
     cy.log("go to admin info and thumb down one athlete name, approve the other, than delete it");
-    cy.visit(cypressConstants.adminUrl);
-    cy.wait(2000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
+      cy.wait(2000);
       cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click({force:true});
       cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).should('not.exist');
       cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click({force:true});
@@ -53,11 +53,11 @@ describe ('Match custom athlete name annotation tests', () =>{
 
     //check that one is now unknown name and the other is still the same name
     cy.log("check that one is now unknown name and the other is still the same name");
-    cy.visit(cypressConstants.allVideosUrl);
-    cy.wait(2000);
-    cy.get('div[class=mat-select-arrow]').click({force:true});
-    cy.contains('500').click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.allVideosUrl);
+      cy.wait(2000);
+      cy.get('div[class=mat-select-arrow]').click({force:true});
+      cy.contains('500').click({force:true});
       cy.contains('Un-named Athlete');
       cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000});
       cy.contains(cypressConstants.athlete2LastName, {timeout: 5000});

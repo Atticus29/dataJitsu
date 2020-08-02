@@ -50,13 +50,13 @@ describe ('Match custom tests: move name', () =>{
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.visit(cypressConstants.adminUrl);
-    cy.approveMove("Darth Vader Choke");
-    cy.visit(cypressConstants.allVideosUrl, {timeout:5000});
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
+      cy.approveMove("Darth Vader Choke");
+      cy.visit(cypressConstants.allVideosUrl, {timeout:5000});
+      cy.get('a[name=videoClick]').first().click({force:true});
+      cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
+      cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
       cy.contains('mat-tree-node', cypressConstants.submissionNodeName).children('button').click({force: true});
       cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle).children('button').click({force:true});
       cy.contains('mat-tree-node', "Darth Vader Choke").should('exist');
@@ -103,14 +103,14 @@ describe ('Match custom tests: move name', () =>{
     cy.reload();
 
     //Then create the annotation and custom move again
-    cy.visit(cypressConstants.allVideosUrl);
-    cy.get('a[name=videoClick]').first().click({timeout:5000});
-    cy.log("Then create the annotation and custom move again");
-    // cy.reload();
-    cy.get('button[id=begin-move]', {timeout: 5000}).click({timeout:5000});
-    cy.wait(1000);
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.allVideosUrl);
+      cy.get('a[name=videoClick]').first().click({timeout:5000});
+      cy.log("Then create the annotation and custom move again");
+      // cy.reload();
+      cy.get('button[id=begin-move]', {timeout: 5000}).click({timeout:5000});
+      cy.wait(1000);
+      cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
       cy.createCustomCervicalChoke(cypressConstants.customMoveName);
       cy.get('mat-select[id=performer]').click({force:true});
       cy.get('mat-option').first().click({force:true});
@@ -135,15 +135,13 @@ describe ('Match custom tests: move name', () =>{
       cy.log("disapproveMove");
       cy.visit(cypressConstants.adminUrl);
       cy.disapproveMove(cypressConstants.customMoveName);
+      cy.log("checkThatCustomMoveHasBeenRenamed");
+      cy.reload();
+      cy.checkThatCustomMoveHasBeenRenamed();
+
+      cy.visit(cypressConstants.allVideosUrl);
+      cy.removeNowRenamedAnnotation();
     });
-
-
-    cy.log("checkThatCustomMoveHasBeenRenamed");
-    cy.reload();
-    cy.checkThatCustomMoveHasBeenRenamed();
-
-    cy.visit(cypressConstants.allVideosUrl);
-    cy.removeNowRenamedAnnotation();
   });
 
 });

@@ -89,8 +89,8 @@ describe ('Match custom match tests: no gi rank', () =>{
     cy.logout();
     cy.loginAsAdmin();
     cy.log("disapprove custom thing");
-    cy.visit(cypressConstants.adminUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
       cy.disapproveGeneric(cypressConstants.customLocation);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
 

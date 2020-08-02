@@ -32,8 +32,8 @@ describe ('Match custom match tests: tournament name', () =>{
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.visit(cypressConstants.adminUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
       cy.approveGeneric(cypressConstants.customTournamentName);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
       cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
@@ -92,12 +92,11 @@ describe ('Match custom match tests: tournament name', () =>{
     cy.logout();
     cy.loginAsAdmin();
     cy.log("disapprove custom thing");
-    cy.visit(cypressConstants.adminUrl);
-    cy.wait(3000);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
+      cy.wait(3000);
       cy.disapproveGeneric(cypressConstants.customTournamentName);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
-
       cy.log("check custom thing has been renamed");
       cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);

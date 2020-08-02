@@ -241,11 +241,13 @@ Cypress.Commands.add("selectAdvantageAnnotation", () => {
 Cypress.Commands.add("selectCrossCollarChoke", () => {
   // cy.get('mat-icon').eq(9).click({force:true});
   // cy.get('mat-icon').eq(12).click({force:true});
-  cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force:true, timeout:5000});
-  cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
-  cy.wait(1000);
-  cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click({force:true});
-  cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.contains('mat-tree-node', cypressConstants.submissionNodeName, {timeout:5000}).children('button').click({force:true, timeout:5000});
+    cy.contains('mat-tree-node', cypressConstants.moveSubcategoryTitle, {timeout:5000}).children('button').click({force:true, timeout:5000});
+    cy.wait(1000);
+    cy.get('div[id=annotationModal]').contains('Cross Collar Choke').first().click({force:true});
+    cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
+  });
 });
 
 Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
@@ -280,7 +282,9 @@ Cypress.Commands.add("createCustomCervicalChoke", (eventName) => {
 Cypress.Commands.add('deleteMove', (eventName) =>{
   cy.logout();
   cy.loginAsAdmin();
-  cy.visit(cypressConstants.adminUrl, {timeout: 5000});
+  cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+    cy.visit(cypressConstants.adminUrl, {timeout: 5000});
+  });
   cy.contains('li', eventName, {timeout: 5000}).children('span[name=delete-move-name]').click({force:true});
 });
 

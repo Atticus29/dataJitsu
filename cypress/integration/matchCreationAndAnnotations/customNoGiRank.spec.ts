@@ -29,8 +29,8 @@ describe ('Match custom match tests: no gi rank', () =>{
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.visit(cypressConstants.adminUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
       cy.wait(4000);
       cy.approveGeneric(cypressConstants.customNoGiRankName);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
@@ -88,8 +88,8 @@ describe ('Match custom match tests: no gi rank', () =>{
     cy.logout();
     cy.loginAsAdmin();
     cy.log("disapprove custom thing");
-    cy.visit(cypressConstants.adminUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
       cy.disapproveGeneric(cypressConstants.customNoGiRankName);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
 
