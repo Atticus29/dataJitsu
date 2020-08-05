@@ -62,12 +62,12 @@ describe ('Match custom tests: move name', () =>{
 
   it('cannot create a customMove that has already been created and approved, then deletes the move from admin page and confirms that it is missing from dropdown list', function(){
     cy.log("Clicks on move and asserts that move have been re-named")
-    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
-    cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
-    cy.createCustomCervicalChoke("Darth Vader Choke");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
+      cy.get('a[name=videoClick]').first().click({force:true});
+      cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
+      cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
+      cy.createCustomCervicalChoke("Darth Vader Choke");
       cy.contains(cypressConstants.eventNameAlreadyExistsNotification).should('exist');
       //deletes the move from admin page and confirms that it is missing from dropdown list
       cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");

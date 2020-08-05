@@ -302,10 +302,10 @@ Cypress.Commands.add('removeAnnotation', (eventName) =>{
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.contains(cypressConstants.adminUserName).should('exist');
   });
-  cy.get('mat-chip').contains(eventName).should('exist');
-  cy.get('mat-chip').contains('mat-chip', eventName).children('span[name=cancel-annotation]').click({force:true});
+  cy.contains(eventName, {timeout:5000}).should('exist');//get('mat-chip').
+  cy.contains('mat-chip', eventName, {timeout:5000}).children('span[name=cancel-annotation]').click({force:true}); //get('mat-chip').
   cy.reload();
-  cy.get('mat-chip').contains(eventName).should('not.exist');
+  cy.contains(eventName, {timeout:5000}).should('not.exist'); //.get('mat-chip')
 });
 
 Cypress.Commands.add('disapproveMove', (eventName) =>{
