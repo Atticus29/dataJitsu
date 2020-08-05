@@ -76,8 +76,9 @@ describe ('Match custom match tests: no gi rank', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
-      cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
+      // cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
+      // cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
+      cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customNoGiRankName).should('exist');

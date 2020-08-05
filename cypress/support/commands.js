@@ -329,11 +329,11 @@ Cypress.Commands.add('disapproveGeneric', (genericName) =>{
 Cypress.Commands.add('approveMove', (eventName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.contains('li',eventName, {timeout: 5000}).should('exist');
+  cy.contains(eventName, {timeout: 5000}).should('exist'); //'li',
   //TODO LEFT OFF HERE
-  cy.contains('li',eventName).children('span[name=approve-move]').click({force:true});
+  cy.contains(eventName).children('span[name=approve-move]').click({force:true}); //'li',
   cy.reload();
-  cy.contains('li',eventName, {timeout: 5000}).should('exist');
+  cy.contains(eventName, {timeout: 5000}).should('exist'); //'li',
 });
 
 Cypress.Commands.add('approveGeneric', (genericName) =>{
