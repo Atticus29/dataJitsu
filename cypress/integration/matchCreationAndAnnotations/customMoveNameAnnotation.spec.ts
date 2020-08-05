@@ -28,22 +28,14 @@ describe ('Match custom tests: move name', () =>{
     cy.wait(2000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click();
+    cy.get('button[id=end-move]').click({force:true});
     // cy.get('button[id=end-move]').click({force:true});
     // cy.on('uncaught:exception', (err, runnable) => {
     // return false;
     // });
     // cy.wait(2000);
-    cy.contains("Annotation Recorded").should('exist');
+    cy.contains("Annotation Recorded", {timeout:50000}).should('exist');
     // cy.contains('span','Darth Vader Choke', {timeout:5000}).should('exist');
-
-    //TODO remove these
-    // cy.logout();
-    // cy.loginAsAdmin();
-    // cy.get('a[name=videoClick]').first().click({force:true});
-    // cy.removeAnnotation("Darth Vader Choke");
-    // cy.visit(cypressConstants.adminUrl)
-    // cy.disapproveMove("Darth Vader Choke");
 
   });
 
@@ -53,7 +45,8 @@ describe ('Match custom tests: move name', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.adminUrl);
       cy.approveMove("Darth Vader Choke");
-      cy.visit(cypressConstants.allVideosUrl, {timeout:5000});
+      cy.visit(cypressConstants.allVideosUrl);
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
       cy.get('a[name=videoClick]').first().click({force:true});
       cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
       cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
@@ -69,6 +62,7 @@ describe ('Match custom tests: move name', () =>{
 
   it('cannot create a customMove that has already been created and approved, then deletes the move from admin page and confirms that it is missing from dropdown list', function(){
     cy.log("Clicks on move and asserts that move have been re-named")
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
@@ -79,6 +73,7 @@ describe ('Match custom tests: move name', () =>{
       cy.log("deletes the move from admin page and confirms that it is missing from dropdown list");
       cy.deleteMove(cypressConstants.customMoveName);
       cy.visit(cypressConstants.allVideosUrl,{timeout: 5000});
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
       cy.get('a[name=videoClick]').first().click({force:true});
       cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
       cy.get('div[id=annotationModal]').should('be.visible');
@@ -97,7 +92,7 @@ describe ('Match custom tests: move name', () =>{
     cy.logout();
     cy.loginAsAdmin();
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.testIndividualName).should('exist');
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
       cy.get('a[name=videoClick]').first().click({force:true});
       cy.removeAnnotation(cypressConstants.customMoveName);
     });
@@ -106,6 +101,7 @@ describe ('Match custom tests: move name', () =>{
     //Then create the annotation and custom move again
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.allVideosUrl);
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
       cy.get('a[name=videoClick]').first().click({timeout:5000});
       cy.log("Then create the annotation and custom move again");
       // cy.reload();

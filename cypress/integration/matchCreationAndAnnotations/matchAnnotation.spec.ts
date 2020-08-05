@@ -55,6 +55,7 @@ describe ('Match annotation tests', () =>{
 
 
   it('cannot annotate a match with a move without the move', ()=>{
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -65,6 +66,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('cannot annotate a match with a move without the performer of the move', ()=>{
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -76,6 +78,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('cannot annotate a match with a move without the points', ()=>{
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -88,12 +91,14 @@ describe ('Match annotation tests', () =>{
   });
 
   it('should have the end move disabled before done button has been clicked', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]', {timeout: 5000}).first().click({force:true});
     cy.get('button[id=begin-move]').should('be.enabled');
     cy.get('button[id=end-move]').should('be.disabled');
   });
 
   it('should still have end move disabled if cancel in the modal is clicked', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -104,6 +109,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('should have begin move disabled and end move enabled after done have been clicked', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('a[id=play]').click({force:true});
     cy.wait(2000);
@@ -128,6 +134,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('annotates a move once and when it is done it does it again and finds the previous options unselected', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
    cy.get('a[name=videoClick]').first().click({force:true});
    cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
    cy.get('div[id=annotationModal]').should('be.visible');
@@ -181,6 +188,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('can click into the deepest part of the tree', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -192,6 +200,7 @@ describe ('Match annotation tests', () =>{
   });
 
   it('cannot make the same exact annotation twice', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
@@ -255,6 +264,7 @@ describe ('Match annotation tests', () =>{
     //TODO now login as admin and remove the annotation entirely
     cy.logout();
     cy.loginAsAdmin();
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('mat-chip').contains('Cross Collar Choke').should('exist');
     cy.get('.cancel-annotation').first().click({force:true});
@@ -273,6 +283,7 @@ describe ('Match annotation tests with no afterEach', () =>{
   });
 
   it('logs in and logs out and logs in again and still sees the annotation tree on a match', function(){
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.wait(3000);
     cy.get('a[id=play]').click({force:true});
@@ -307,6 +318,7 @@ describe ('Match annotation tests with no afterEach', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.get('button[id=begin-move]',{timeout:5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible');
@@ -318,6 +330,7 @@ describe ('Match annotation tests with no afterEach', () =>{
     //then cleans up after itself by logging in as admin and deleting the annotation and logging out
     cy.logout();
     cy.loginAsAdmin();
+    cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
     cy.get('a[name=videoClick]').first().click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.removeAnnotation(cypressConstants.defaultAnnotationMoveName);
