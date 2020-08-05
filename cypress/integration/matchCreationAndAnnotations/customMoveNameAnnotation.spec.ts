@@ -12,7 +12,7 @@ describe ('Match custom tests: move name', () =>{
   });
 
   it('adds custom name and submits annotation', function(){
-    cy.get('a[name=videoClick]').first().click({force:true});
+    cy.get('a[name=videoClick]', {timeout: 50000}).first().click({force:true});
     cy.get('button[id=end-move]').should('not.be.enabled');
     cy.get('button[id=begin-move]', {timeout: 5000}).click();
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})
@@ -96,8 +96,9 @@ describe ('Match custom tests: move name', () =>{
     cy.log("First delete the annotation that already exists");
     cy.logout();
     cy.loginAsAdmin();
-    cy.get('a[name=videoClick]').first().click({force:true});
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains(cypressConstants.testIndividualName).should('exist');
+      cy.get('a[name=videoClick]').first().click({force:true});
       cy.removeAnnotation(cypressConstants.customMoveName);
     });
     cy.reload();

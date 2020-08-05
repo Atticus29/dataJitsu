@@ -1,4 +1,5 @@
 # TODO high priority
+- [ ] Enter should be submit click on custom items for match creation
 - [ ] Change annotated-moves-display to annotated-events (after all of the current issues have been resolved)
 - [ ] Turn these into github issues
 - [ ] Change 'newmatch' paths to 'newvideo' paths

@@ -320,10 +320,10 @@ Cypress.Commands.add('disapproveMove', (eventName) =>{
 Cypress.Commands.add('disapproveGeneric', (genericName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.contains('li',genericName, {timeout: 5000}).should('exist');
-  cy.contains('li',genericName).children('span[name=disapprove-move]').click({force:true});
+  cy.contains(genericName, {timeout: 5000}).should('exist');
+  cy.contains(genericName, {timeout:5000}).children('span[name=disapprove-move]').click({force:true});
   cy.reload();
-  cy.get('li').contains(genericName).should('not.exist');
+  cy.contains(genericName).should('not.exist');
 });
 
 Cypress.Commands.add('approveMove', (eventName) =>{
@@ -339,12 +339,12 @@ Cypress.Commands.add('approveMove', (eventName) =>{
 Cypress.Commands.add('approveGeneric', (genericName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin", {timeout:5000}).should('exist');
-  cy.contains('li',genericName, {timeout: 5000}).should('exist');
+  cy.contains(genericName, {timeout: 5000}).should('exist');
   //TODO LEFT OFF HERE
-  cy.contains('li',genericName).children('span[name=approve-move]').click({force:true});
+  cy.contains(genericName, {timeout: 5000}).children('span[name=approve-move]').click({force:true});
   cy.reload();
   cy.wait(3000);
-  cy.contains('li',genericName, {timeout: 5000}).should('exist');
+  cy.contains(genericName, {timeout: 5000}).should('exist');
 });
 
 Cypress.Commands.add("login", (email, pass) => {

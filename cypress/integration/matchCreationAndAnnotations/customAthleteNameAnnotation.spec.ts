@@ -22,7 +22,7 @@ describe ('Match custom athlete name annotation tests', () =>{
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
 
       //check it Exists
-      cy.visit(cypressConstants.allVideosUrl);
+      // cy.visit(cypressConstants.allVideosUrl);
       cy.wait(2000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
@@ -42,13 +42,13 @@ describe ('Match custom athlete name annotation tests', () =>{
     cy.log("go to admin info and thumb down one athlete name, approve the other, than delete it");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.adminUrl);
-      cy.wait(2000);
-      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).find('i[id=down]').click({force:true});
-      cy.get('li').contains(cypressConstants.athlete1FirstName, {timeout: 5000}).should('not.exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click({force:true});
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('exist');
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=delete]').click({force:true});
-      cy.get('li').contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('not.exist');;
+      cy.wait(4000);
+      cy.contains(cypressConstants.athlete1FirstName, {timeout: 60000}).find('i[id=down]').click({force:true});
+      cy.contains(cypressConstants.athlete1FirstName, {timeout: 5000}).should('not.exist');
+      cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=up]').click({force:true});
+      cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('exist');
+      cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000}).find('i[id=delete]').click({force:true});
+      cy.contains(cypressConstants.athlete2FirstName, {timeout: 5000}).should('not.exist');;
     });
 
     //check that one is now unknown name and the other is still the same name

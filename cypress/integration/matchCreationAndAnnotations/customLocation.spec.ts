@@ -18,20 +18,22 @@ describe ('Match custom match tests: no gi rank', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.visit(cypressConstants.allVideosUrl);
+      // cy.visit(cypressConstants.allVideosUrl);
       cy.wait(3000);
       cy.get('div[class=mat-select-arrow]').click();
       cy.contains('500').click({timeout:5000});
       cy.wait(3000);
       cy.contains(cypressConstants.customLocation, {timeout:5000}).should('exist');
+      cy.visit(cypressConstants.adminUrl);
+      cy.contains(cypressConstants.customLocation, {timeout:50000}).should('exist');
     });
   });
 
   it('approves name in admin and checks that it is on the dropdown list now', function(){
     cy.logout();
     cy.loginAsAdmin();
-    cy.visit(cypressConstants.adminUrl);
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.adminUrl);
       cy.wait(4000);
       cy.approveGeneric(cypressConstants.customLocation);
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
@@ -77,8 +79,9 @@ describe ('Match custom match tests: no gi rank', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
-      cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
+      // cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
+      // cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
+      cy.contains(cypressConstants.textSignalThatYouAreInTableView).should('exist');
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customLocation).should('exist');

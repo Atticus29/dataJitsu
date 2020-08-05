@@ -537,7 +537,7 @@ export class DatabaseService {
         if(uniqueEnough && counter < 1){
           let videoId = move.getVideoId();
           let ref = this.db.list('/videos/' + videoId + '/events');
-          let moveId = ref.push(move).key;
+          let moveId = ref.push(move).key; //().set
           let updates = {};
           updates['/videos/' + videoId + '/events/' + moveId] = move;
           firebase.database().ref().update(updates);
@@ -1173,7 +1173,10 @@ export class DatabaseService {
     console.log("name is " + name);
     console.log("path is: " + path);
     let ref = firebase.database().ref(path);
-    let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    ref.push().set({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    // ref.transaction(current_value =>{
+    //   return {'name':name, 'associatedMatchUrl': associatedMatchUrl};
+    // });
     console.log("addGenericCandidateNameToDb done");
   }
 
