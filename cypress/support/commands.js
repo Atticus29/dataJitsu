@@ -11,6 +11,18 @@
 //
 // -- This is a parent command --
 
+Cypress.Commands.add('endMove', (identifyingId) =>{
+  cy.get('button[id=end-move]').should('be.enabled');
+  // cy.get('button[id=end-move]').trigger('mouseover').click(); //{force:true}, {timeout:50000}
+  cy.get('button[id=end-move]').pipe($el => $el.click()) // try this
+  // .pipe(
+  //   // next line will make assertions on the element returned by this pipe
+  //   () => cy.get(calculatorScreen.resultOutput.idLocator)
+  // )
+  // .should("contain", "0");
+});
+
+
 Cypress.Commands.add('deleteMatch', (identifyingId) =>{
   cy.logout();
   cy.loginAsAdmin();

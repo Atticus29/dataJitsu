@@ -94,7 +94,8 @@ describe ('Match custom match tests: no gi rank', () =>{
     cy.log("disapprove custom thing");
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.adminUrl);
-      cy.disapproveGeneric(cypressConstants.customLocation);
+      cy.wait(2000);
+      cy.disapproveGeneric(cypressConstants.customLocation, {timeout:50000});
       cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
 
       cy.log("check custom thing has been renamed");
@@ -104,7 +105,7 @@ describe ('Match custom match tests: no gi rank', () =>{
       cy.visit(cypressConstants.allVideosUrl, {timeout:5000});
       cy.wait(2000);
       cy.get('div[class=mat-select-arrow]', {timeout:5000}).click({force:true});
-      cy.contains('span[class=mat-option-text]','500').click({force:true});
+      cy.contains('500').click({force:true});
       cy.wait(2000);
       cy.contains(cypressConstants.locationNameRemovedMessage).should('exist');
       cy.log("delete match")

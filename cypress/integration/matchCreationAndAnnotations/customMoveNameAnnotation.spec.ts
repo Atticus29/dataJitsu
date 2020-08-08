@@ -11,7 +11,10 @@ describe ('Match custom tests: move name', () =>{
     cy.logout();
   });
 
-  it('adds custom name and submits annotation', function(){
+  it.only('adds custom name and submits annotation', function(){
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
+    });
     cy.get('a[name=videoClick]', {timeout: 50000}).first().click({force:true});
     cy.get('button[id=end-move]').should('not.be.enabled');
     cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
@@ -27,16 +30,8 @@ describe ('Match custom tests: move name', () =>{
     cy.get('button[id=done-button-performers]').click();
     cy.wait(2000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
-    cy.get('button[id=end-move]').should('be.enabled');
-    cy.get('button[id=end-move]').click({force:true});
-    // cy.get('button[id=end-move]').click({force:true});
-    // cy.on('uncaught:exception', (err, runnable) => {
-    // return false;
-    // });
-    // cy.wait(2000);
+    cy.endMove();
     cy.contains("Annotation Recorded", {timeout:50000}).should('exist');
-    // cy.contains('span','Darth Vader Choke', {timeout:5000}).should('exist');
-
   });
 
   it('approves name in admin and checks that it is on the dropdown list now', function(){
@@ -118,8 +113,7 @@ describe ('Match custom tests: move name', () =>{
       cy.get('button[id=done-button-performers]').should('not.be.disabled');
       cy.get('button[id=done-button-performers]').click({force:true});
       cy.get('div[id=annotationModal]').should('not.be.visible');
-      cy.get('button[id=end-move]').should('be.enabled');
-      cy.get('button[id=end-move]').click({force:true});
+      cy.endMove();
       cy.wait(5000);
       cy.on('uncaught:exception', (err, runnable) => {
         return false;
