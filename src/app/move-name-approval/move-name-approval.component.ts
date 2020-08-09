@@ -68,30 +68,30 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
     });
   }
 
-    approveMove(moveName: string, categoryName: string, subcategoryName: string){
-      let confirmation = confirm("Are you sure you want to APPROVE the move " + moveName + "?");
+    approveMove(eventName: string, categoryName: string, subcategoryName: string){
+      let confirmation = confirm("Are you sure you want to APPROVE the move " + eventName + "?");
       if(confirmation){
-        this.db.addMoveNameToDb(moveName, categoryName, subcategoryName);
-        this.db.removeMoveNameFromCandidateList(moveName);
+        this.db.addMoveNameToDb(eventName, categoryName, subcategoryName);
+        this.db.removeMoveNameFromCandidateList(eventName);
         if(this.localUser){
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You approved move name " + moveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You approved move name " + eventName);
         }
       }
     }
 
-    disapproveMove(moveName: string){
-      let confirmation = confirm("Are you sure you want to DISAPPROVE the move " + moveName + "?");
+    disapproveMove(eventName: string){
+      let confirmation = confirm("Are you sure you want to DISAPPROVE the move " + eventName + "?");
       if(confirmation){
-        this.db.getMatchUrlFromCandidateMoveName(moveName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-          this.db.getMatchIdFromMatchUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchIdResult =>{
-            this.db.getMoveIdFromMatchId(matchIdResult, moveName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
-              this.db.updateMoveNameInMatch(matchIdResult, moveIdResult, moveName, constants.moveNameRemovedMessage);
+        this.db.getMatchUrlFromCandidateMoveName(eventName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+          this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+            this.db.getMoveIdFromMatchId(videoIdResult, eventName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
+              this.db.updateMoveNameInMatch(videoIdResult, moveIdResult, eventName, constants.eventNameRemovedMessage);
             });
           });
         })
-        this.db.removeMoveNameFromCandidateList(moveName);
+        this.db.removeMoveNameFromCandidateList(eventName);
         if(this.localUser){
-          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You disapproved move name " + moveName);
+          this.db.updateUserReputationPoints(this.localUser.id, constants.numberOfPointsToAwardForApprovingMoveName, "You disapproved move name " + eventName);
         }
       }
     }

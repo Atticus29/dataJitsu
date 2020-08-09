@@ -32,7 +32,7 @@ export class FaqComponent extends BaseComponent implements OnInit {
     console.log("clicked navigateToVideoInNeedOfAnnotation");
     this.db.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
       this.ngZone.run(() =>{
-        this.router.navigate(['matches/' + match.id]);
+        this.router.navigate([constants.allVideosPathName + match.id]);
       });
     });
   }

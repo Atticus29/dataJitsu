@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "module": "es6",
     "target": "es6",
     "typeRoots": [
@@ -19,7 +20,12 @@
       "esnext",
       "dom"
     ],
-    "types": ["firebase", "node", "cypress"],
+    "types": [
+      "jquery",
+      "materialize-css",
+      "firebase",
+      "node",
+      "cypress"],
     "skipLibCheck": true
   }
 }

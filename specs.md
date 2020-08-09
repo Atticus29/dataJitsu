@@ -1,8 +1,13 @@
 # TODO high priority
+- [ ] Enter should be submit click on custom items for match creation
+- [ ] Change annotated-moves-display to annotated-events (after all of the current issues have been resolved)
+- [ ] Turn these into github issues
+- [ ] Change 'newmatch' paths to 'newvideo' paths
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Set up a dev project in firebase and hook up there instead
 - [ ] Write tests for stripe subscription and cancellation
+- [ ] Reputation log filters by most recent X with option to view all
 - [x] Have custom no gi rank option, and add unknown to it
     - [x] Passing tests
 - [x] Have custom age class, and add unknown to it
@@ -31,7 +36,7 @@
     - [x] Feature to delete move name from move list
     - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [x] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -49,7 +54,7 @@
     - [ ] Feature to delete move name from move list
     - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [ ] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -67,7 +72,7 @@
     - [ ] Feature to delete move name from move list
     - [ ] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
     - [ ] Put delete feature under control of isAdmin (or isModerator?)
-    - [ ] Added moveNames not in alphabetical order
+    - [ ] Added eventNames not in alphabetical order
     - [ ] Standardize how these things are capitalized
     - [ ] Test written to make sure name addition is seen in match
     - [ ] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -81,7 +86,7 @@
     - [ ] TODO link to how to lose them
 
   - [ ] //TODO flesh out getMainAnnotatorOfMatch
-- [ ] Improve moveCategory capture with a getCategoryFromItem method... it should use moves.ts, I think
+- [ ] Improve eventCategory capture with a getCategoryFromItem method... it should use moves.ts, I think
 - [ ] Add way to handle when someone is not connected
 - [ ] Track who flags things
 - [ ] What happens when a user tries to rate their own annotation currently?
@@ -202,7 +207,7 @@
   - [x] Feature to delete move name from move list
   - [x] Renames move in the other matches that used it since? ...NOPE not needed, I don't think
   - [x] Put delete feature under control of isAdmin (or isModerator?)
-  - [x] Added moveNames not in alphabetical order
+  - [x] Added eventNames not in alphabetical order
   - [x] Standardize how these things are capitalized
   - [x] Test written to make sure name addition is seen in match
   - [x] Test written to make sure name approval is seen in admin list; delete name at the end
@@ -270,7 +275,7 @@
 - [x] Fix test for clicking pause
 
 # Tabled specs and TODOs
-- [x] Remove match and annotation rating from matchDeets because they live elsewhere now
+- [x] Remove match and annotation rating from videoDeets because they live elsewhere now
 
 # Specs
 - [ ] An annotation is not made if a similar enough one has already been made by someone else

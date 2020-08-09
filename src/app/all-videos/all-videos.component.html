@@ -1,0 +1,89 @@
+<script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type='text/javascript' src='d3fire.min.js'></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.js?2.1.3"></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"></script>
+<br>
+<div class="">
+  <div class="spinner-container" *ngIf="isLoadingResults">
+        <mat-spinner id="spinner"></mat-spinner>
+  </div>
+  <mat-form-field appearance="None">
+    <input matInput id="table-filter-input" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <mat-table matSort #table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- TODO add paidStatus to ngIf -->
+    <ng-container matColumnDef="rank">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Rank </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.videoDeets.rank}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="weightClass">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Weight Class </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.weightClass}}> {{entry.videoDeets.weightClass}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ageClass">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Age Class </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.ageClass}}> {{entry.videoDeets.ageClass}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="athlete1Name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Athlete 1 </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.athlete1Name}}> {{entry.videoDeets.athlete1Name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="athlete2Name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Athlete 2 </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.athlete2Name}}> {{entry.videoDeets.athlete2Name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="gender">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.gender}}> {{entry.videoDeets.gender}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="location">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Location </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.location}}> {{entry.videoDeets.location}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="tournamentName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tournament </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.tournamentName}}> {{entry.videoDeets.tournamentName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.date}}> {{entry.videoDeets.date | date:'shortDate'}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="videoRating">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Match Rating </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.videoRating}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="annotationRating">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Annotation Rating </mat-header-cell>
+      <mat-cell *matCellDef="let entry"> {{entry.annotationRating}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="annotationsInMatch">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="true"> Moves </mat-header-cell>
+      <mat-cell *matCellDef="let entry" [hidden]="true"> {{entry.eventsAsCommaDelimitedString}}</mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="videoUrl">
+      <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
+      <mat-cell *matCellDef="let entry">
+        <a routerLink= "{{'/' + constants.individualPathName + '/' + entry.id}}" name="videoClick">
+            <i class="material-icons right">movie</i>
+        </a>
+      </mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+    <ng-container matColumnDef="deleteMatch">
+      <mat-header-cell *matHeaderCellDef> Delete Match </mat-header-cell>
+      <mat-cell *matCellDef="let entry" id={{entry.videoDeets.location}}>
+        <button id="delete-button" class="btn waves-effect waves-light" (click)="deleteMatch(entry.id)">Delete Match</button>
+      </mat-cell>
+      <!-- <i class="material-icons right">video</i> -->
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+  </mat-table>
+</div>
+<mat-paginator [length]='matchCount' [pageSize]="10" [pageSizeOptions]="[2, 10, 20, 50, 500]" id="all-matches-paginator"></mat-paginator>

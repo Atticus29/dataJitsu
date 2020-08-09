@@ -20,14 +20,19 @@ describe ('Tests involving match creation', () =>{
   });
 
   it('creates a match', function(){
-    cy.visit('http://localhost:4200/newmatch');
-    cy.fillInMatchCreationDetails();
-    cy.get('button[id=new-match-submit-button]').click({force:true});
-    cy.wait(2000);
-    cy.get('h4').contains('Annotate your submission?').click({force:true});
-    cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-    cy.url().should('not.match',/newmatch/);
-    cy.url().should('match',/matches/);
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.newMatchUrl);
+      cy.fillInMatchCreationDetails();
+      cy.get('button[id=new-match-submit-button]').click({force:true});
+      cy.wait(2000);
+      cy.get('h4').contains('Annotate your submission?').click({force:true});
+      cy.get('button[id=add-to-queue-modal-button]').click({force:true});
+      cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
+      // cy.wait(2000);
+      // cy.contains("Annotation Rating");
+      // cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
+      // cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
+    });
   });
 
   it('created match appears on table', function(){
@@ -39,7 +44,9 @@ describe ('Tests involving match creation', () =>{
   });
 
   it('cannot create duplicate match', function(){
-    cy.visit('http://localhost:4200/newmatch');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.newMatchUrl);
+    });
     cy.fillInMatchCreationDetails();
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});

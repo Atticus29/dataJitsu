@@ -1,30 +1,32 @@
-import { MaterializeModule } from 'angular2-materialize'
-import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
+import { AuthGuard } from './guards/auth.guard';
+import { LoggedInGuard } from './guards/logged-in.guard';
 import { NgModule } from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import { RatingModule } from 'ng-starrating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { masterFirebaseConfig } from './api-keys';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { AppComponent } from './app.component';
 import { YoutubeComponent } from './youtube/youtube.component';
-import { routing } from './app.routing';
-import { NewMatchComponent } from './new-match/new-match.component';
+import { AppRoutingModule} from './app-routing.module';
+import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { TestDbComponent } from './test-db/test-db.component';
 import { LandingComponent } from './landing/landing.component';
-import { MatchDisplayComponent } from './match-display/match-display.component';
+import { VideoDisplayComponent } from './video-display/video-display.component';
 import { AuthorizationService } from './authorization.service';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DatabaseService } from './database.service';
 import { TextTransformationService } from './text-transformation.service';
 import { ValidationService } from './validation.service';
 import { LoginComponent } from './login/login.component';
 import { ProtectionGuard } from './protection.guard';
 import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
-import { AllMatchesComponent } from './all-matches/all-matches.component';
+import { AllVideosComponent } from './all-videos/all-videos.component';
 import { AnnotationDisplayComponent } from './annotation-display/annotation-display.component';
 import { D3Service } from './d3.service';
 import { NotfoundComponent } from './notfound/notfound.component';
@@ -32,53 +34,51 @@ import { UserStatusReportComponent } from './user-status-report/user-status-repo
 import { PaymentOrAnnotationDetailsComponent } from './payment-or-annotation-details/payment-or-annotation-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatOptionModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { MatchDataSource } from './matchDataSource.model';
+import { VideoDataSource } from './videoDataSource.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { EmailLoginDialog } from './emailLoginDialog.model';
+// import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+// import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
-import {
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatRippleModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { TemporaryComponent } from './temporary/temporary.component';
 import { AnnotationDataDisplayComponent } from './annotation-data-display/annotation-data-display.component';
 import { EmailLoginDialogComponent } from './email-login-dialog/email-login-dialog.component';
@@ -115,6 +115,7 @@ import { BaseApprovalComponent } from './base-approval/base-approval.component';
 import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
 import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
 import { NewLocationNameDialogComponent } from './new-location-name-dialog/new-location-name-dialog.component';
+import { TestComponent } from './test/test.component';
 
 
 export const firebaseConfig = {
@@ -129,13 +130,13 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     YoutubeComponent,
-    NewMatchComponent,
+    NewVideoComponent,
     CreateAccountComponent,
     TestDbComponent,
     LandingComponent,
-    MatchDisplayComponent,
+    VideoDisplayComponent,
     LoginComponent,
-    AllMatchesComponent,
+    AllVideosComponent,
     AnnotationDisplayComponent,
     NotfoundComponent,
     UserStatusReportComponent,
@@ -176,17 +177,17 @@ export const firebaseConfig = {
     BaseApprovalComponent,
     NewNoGiRankDialogComponent,
     NewAgeClassDialogComponent,
-    NewLocationNameDialogComponent
+    NewLocationNameDialogComponent,
+    TestComponent
   ],
   imports: [
+    BrowserModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(firebaseConfig),
     BrowserAnimationsModule,
-    BrowserModule,
     CdkTreeModule,
     FormsModule,
-    HttpModule,
     MatAutocompleteModule,
     MatBadgeModule,
     MatBottomSheetModule,
@@ -224,14 +225,18 @@ export const firebaseConfig = {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MaterializeModule,
     RatingModule,
     ReactiveFormsModule,
-    routing,
+    AppRoutingModule,
     NgxYoutubePlayerModule,
   ],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, D3Service, ValidationService, TextTransformationService, MatchDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions],
-  bootstrap: [AppComponent],
-  entryComponents: [EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent]
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, LoggedInGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
+  ],
+  entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// platformBrowserDynamic().bootstrapModule(AppModule)
+//   .catch(err => console.error(err));

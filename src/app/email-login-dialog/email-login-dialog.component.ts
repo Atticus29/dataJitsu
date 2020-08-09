@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import { takeUntil } from 'rxjs/operators';
 
@@ -53,7 +53,7 @@ export class EmailLoginDialogComponent extends BaseDialogComponent implements On
 
   keyDownFunction(event) {
   if(event.keyCode == 13 && this.allValid()) {
-    console.log('you just clicked enter');
+    // console.log('you just clicked enter');
     this.dialogRef.close(this.form.value);
   }
 }

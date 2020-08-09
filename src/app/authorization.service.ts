@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database'; //removed FirebaseListObservable
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from '@angular/fire/database'; //removed FirebaseListObservable
+import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { Router } from "@angular/router";
 // import * as firebase from 'firebase';
@@ -10,6 +10,7 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 import { DatabaseService } from './database.service';
 import { User } from './user.model';
+import { constants } from './constants';
 
 @Injectable({
   providedIn: 'root'
@@ -114,7 +115,7 @@ export class AuthorizationService {
   }
 
   private socialSignIn(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
+    return this.afAuth.signInWithPopup(provider)
       .then((result) =>  {
         this.ngZone.run(() =>{
           this.authState = result.user;
@@ -136,7 +137,7 @@ export class AuthorizationService {
   //// Anonymous Auth ////
 
   anonymousLogin() {
-    return this.afAuth.auth.signInAnonymously()
+    return this.afAuth.signInAnonymously()
     .then((user) => {
       this.authState = user;
       // this.updateUserData()
@@ -149,7 +150,7 @@ export class AuthorizationService {
   emailSignUp(email:string, password:string) {
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let self = this;
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         if(result){
           if(result.user){
@@ -181,15 +182,15 @@ export class AuthorizationService {
       });
   }
 
-  sendVerificationEmail(){
-    return this.afAuth.auth.currentUser.sendEmailVerification()
+  async sendVerificationEmail(){
+    return await this.afAuth.currentUser.then(u=>u.sendEmailVerification())
     .then(() => {
       this.router.navigate(['verify-email-address']);
     });
   }
 
   forgotPassword(passwordResetEmail: string){
-    return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
+    return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
       window.alert('Password reset email sent, check your inbox.');
     }).catch((error) => {
@@ -200,13 +201,14 @@ export class AuthorizationService {
   emailLogin(email:string, password:string) {
     // console.log("email in emailLogin in authorization service: " + email);
     // console.log("password in emailLogin in authorization service: " + password);
-     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+     return this.afAuth.signInWithEmailAndPassword(email, password)
        .then((result) => {
          this.ngZone.run(() =>{
            // console.log("user in emailLogin in authorization service");
            // console.log(result);
            this.authState = result; //TODO?
-           this.router.navigate(['matches']);
+           // console.log("navigating to matches...");
+           this.router.navigate([constants.allVideosPathName]);
          });
          // console.log(this.currentUserId);
          // this.updateUserData()
@@ -246,7 +248,7 @@ export class AuthorizationService {
   //// Sign Out ////
   signOut(): void {
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
-    this.afAuth.auth.signOut();
+    this.afAuth.signOut();
     this.currentUserObservable.pipe(takeUntil(localUnsubscribeSubject)).subscribe(currentUsr =>{
       // console.log("currentUsr in signOut in authorization service: ");
       // console.log(currentUsr);

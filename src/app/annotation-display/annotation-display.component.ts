@@ -1,11 +1,11 @@
 import { Injectable, Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import {MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+// import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
@@ -24,8 +24,8 @@ import { DynamicDataSource } from '../dynamicDataSource.model';
 import { allCurrentMoves } from '../moves';
 import { constants } from '../constants';
 
-import { MoveInVideo } from '../moveInVideo.model';
-import { MatchDetails} from '../matchDetails.model';
+import { EventInVideo } from '../eventInVideo.model';
+import { VideoDetails} from '../videoDetails.model';
 
 declare var $:any;
 
@@ -36,7 +36,7 @@ declare var $:any;
   // providers: [DynamicDatabase]
 })
 export class AnnotationDisplayComponent extends BaseComponent implements OnInit {
-  @Output() moveSelected = new EventEmitter<MoveInVideo>();
+  @Output() moveSelected = new EventEmitter<EventInVideo>();
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
@@ -48,7 +48,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private selectedAnnotation: string = "No Annotation Currently Selected";
   private disabledStatus: boolean = true;
   private performers: any[];
-  private localMatchDeets: MatchDetails;
+  private localMatchDeets: VideoDetails;
   private disabledPerformer: boolean = false;
   private moveValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private moveValidStatus: boolean = false;
@@ -83,17 +83,17 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
       }
     });
     this.trackerService.startTimePoint.next(1);
-    this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
-          if(moveName !== "No Annotation Currently Selected"){
+    this.trackerService.eventName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(eventName =>{
+          if(eventName !== "No Annotation Currently Selected"){
             this.moveValidSubject.next(true);
           }
     });
-    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchId =>{
-      console.log("matchId in current match tracker " + matchId);
-      this.db.getMatchDetails(matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchDeets =>{
-        console.log("matchDeets in current match tracker service subscribe in annotation-display.component: ");
-        console.log(Array.of(matchDeets));
-        this.localMatchDeets =  Array.of(matchDeets).map(MatchDetails.fromJson)[0];
+    this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{
+      console.log("videoId in current match tracker " + videoId);
+      this.db.getVideoDetails(videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoDeets =>{
+        console.log("videoDeets in current match tracker service subscribe in annotation-display.component: ");
+        console.log(Array.of(videoDeets));
+        this.localMatchDeets =  Array.of(videoDeets).map(VideoDetails.fromJson)[0];
         // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
@@ -107,8 +107,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         this.moveValidStatus = false;
       }
     });
-    this.trackerService.moveName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveName =>{
-      this.selectedAnnotation = moveName;
+    this.trackerService.eventName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(eventName =>{
+      this.selectedAnnotation = eventName;
     });
   }
 
@@ -126,10 +126,10 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     if(item.charAt(0)==="A" && item.charAt(1)==="d" && item.charAt(2)==="d"){
       // console.log("add a move reached");
       this.openAddNameDialog();
-      //TODO eventually when you listen for it to come back, send moveName to tracker service
+      //TODO eventually when you listen for it to come back, send eventName to tracker service
     }
     else{
-      this.trackerService.moveName.next(item);
+      this.trackerService.eventName.next(item);
       // console.log("item selected: " + item);
     }
   }
@@ -137,8 +137,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   registerCategory(category: string){
     console.log("registerCategory entered. Category is " + category);
     if(constants.rootNodes.includes(category)){
-      console.log(category + " from registerCategory function. Adding to moveCategory...");
-      this.trackerService.moveCategory.next(category);
+      console.log(category + " from registerCategory function. Adding to eventCategory...");
+      this.trackerService.eventCategory.next(category);
     }
   }
 
@@ -209,8 +209,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
       // this.openSnackBar("Name already exists in dropdown menu!", null);
       val.move = this.textTransformationService.capitalizeFirstLetter(val.move);
 
-      this.trackerService.moveName.next(val.move);
-      this.trackerService.moveCategory.next(val.moveCategory);
+      this.trackerService.eventName.next(val.move);
+      this.trackerService.eventCategory.next(val.eventCategory);
       this.trackerService.moveSubcategory.next(val.moveSubcategory);
       if(this.localUser.id){
         // console.log("user db id is: ");
@@ -220,7 +220,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
-          this.db.addCandidateMoveInVideoToDb(val.move, val.moveCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
+          this.db.addCandidateEventInVideoToDb(val.move, val.eventCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }
       //TODO add to an admin component
