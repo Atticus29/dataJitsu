@@ -101,6 +101,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
+      // debugger;
       if(this.asssembleCheck()){
         self.tempMove = new EventInVideo(this.eventName, this.eventCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.videoId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         this.handleSettingMoveNameStatuses(self.tempMove, this.eventName);
@@ -175,6 +176,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.moveAssembledStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+      console.log("this happens");
+      // debugger;
       if(status && this.moveCompletelyLegit()){
       try {
         this.processMatchEntryInDatabase();
@@ -279,8 +282,10 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
+    console.log("asssembleCheck entered");
+    debugger;
     if(this.eventName && this.eventName !=="No Annotation Currently Selected" && this.eventCategory && this.eventCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.videoId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
-      // console.log("everything is true in asssembleCheck");
+      console.log("everything is true in asssembleCheck");
       return true;
     } else{
       // console.log("asssembleCheck is false");
@@ -338,7 +343,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
       } else{
         this.db.addEventInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
           if(moveUniqueEnoughInUser){
-            this.openSnackBar("Annotation Recorded");
+            this.openSnackBar(constants.annotationRecordedMessage);
             annotationMadeCounter ++;
             this.handleNullingAndResettingLocalAndTrackedVariables();
           }else{

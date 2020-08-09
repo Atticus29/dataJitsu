@@ -17,8 +17,9 @@ describe ('Tests involving admin privleges and deletions', () =>{
     cy.get('button[id=new-match-submit-button]').click({force:true});
     cy.wait(2000);
     cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-    cy.wait(2000);
-    cy.url().should('not.match',/newmatch/);
+    cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
+    // cy.wait(2000);
+    // cy.url().should('not.match',/newmatch/);
   });
 
 

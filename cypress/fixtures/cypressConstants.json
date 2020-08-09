@@ -65,5 +65,6 @@
   "adminUserName": "Admin",
   "createAccountUrl": "http://localhost:4200/createaccount",
   "loginUrl": "http://localhost:4200/login",
-  "textSignalThatYouAreInTableView": "Annotation Rating"
+  "textSignalThatYouAreInTableView": "Annotation Rating",
+  "versusTextInsideSingleVideo": "(left) vs."
 }

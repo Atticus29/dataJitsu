@@ -13,9 +13,11 @@ describe ('Match custom tests: move name', () =>{
 
   it.only('adds custom name and submits annotation', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
+      cy.contains(cypressConstants.testIndividualName,{timeout:50000}).should('exist');
+      cy.wait(1000);
+      cy.get('a[name=videoClick]', {timeout: 50000}).first().click({force:true});
+      cy.contains(cypressConstants.versusTextInsideSingleVideo, {timeout:50000}).should('exist');
     });
-    cy.get('a[name=videoClick]', {timeout: 50000}).first().click({force:true});
     cy.get('button[id=end-move]').should('not.be.enabled');
     cy.get('button[id=begin-move]', {timeout: 5000}).click({force:true});
     cy.get('div[id=annotationModal]').should('be.visible'); //.click({force:true})

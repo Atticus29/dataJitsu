@@ -68,7 +68,7 @@
     <ng-container matColumnDef="videoUrl">
       <mat-header-cell *matHeaderCellDef> Video </mat-header-cell>
       <mat-cell *matCellDef="let entry">
-        <a routerLink= "{{entry.id}}" name="videoClick">
+        <a routerLink= "{{'/' + constants.individualPathName + '/' + entry.id}}" name="videoClick">
             <i class="material-icons right">movie</i>
         </a>
       </mat-cell>

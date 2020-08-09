@@ -27,8 +27,9 @@ describe ('Tests involving match creation', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.wait(2000);
-      cy.contains("Annotation Rating");
+      cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
+      // cy.wait(2000);
+      // cy.contains("Annotation Rating");
       // cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
       // cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
     });

@@ -87,7 +87,7 @@ const routes: Routes = [
     canActivate: [AuthGuard], //TODO add admin guard
     pathMatch: 'full'
   },{
-    path: constants.allVideosPathName + '/:videoId',
+    path: constants.individualPathName + '/:videoId',
     component: VideoDisplayComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'

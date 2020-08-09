@@ -712,7 +712,8 @@ export class DatabaseService {
   }
 
   addEventInVideoToUserIfUniqueEnough(move: EventInVideo, currentUserId: string): Observable<boolean>{
-    // console.log("addEventInVideoToUserIfUniqueEnough called in database service");
+    console.log("addEventInVideoToUserIfUniqueEnough called in database service");
+    // debugger;
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let resultObservable = Observable.create(observer =>{
         let counter: number = 0;

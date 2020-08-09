@@ -17,7 +17,8 @@ describe ('Match custom match tests: age class', () =>{
       cy.wait(4000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.wait(3000);
+      cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
+      // cy.wait(3000);
       // cy.visit(cypressConstants.allVideosUrl);
       // cy.wait(4000);
       cy.get('div[class=mat-select-arrow]').click();
@@ -78,11 +79,12 @@ describe ('Match custom match tests: age class', () =>{
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      cy.wait(1000);
-      cy.contains(cypressConstants.textSignalThatYouAreInTableView);
+      cy.contains(cypressConstants.testIndividualName, {timeout:50000}).should('exist');
+      // cy.wait(1000);
+      // cy.contains(cypressConstants.textSignalThatYouAreInTableView);
       // cy.url().should('not.match',cypressConstants.newMatchEndUrlMatcher);
       // cy.url().should('match',cypressConstants.allVideoEndUrlMatcher);
-      cy.wait(4000);
+      // cy.wait(4000);
       cy.get('div[class=mat-select-arrow]').click({force:true});
       cy.contains('500').click({force:true});
       cy.contains(cypressConstants.customAgeClassName).should('exist');

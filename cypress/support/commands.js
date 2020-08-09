@@ -13,8 +13,9 @@
 
 Cypress.Commands.add('endMove', (identifyingId) =>{
   cy.get('button[id=end-move]').should('be.enabled');
-  // cy.get('button[id=end-move]').trigger('mouseover').click(); //{force:true}, {timeout:50000}
-  cy.get('button[id=end-move]').pipe($el => $el.click()) // try this
+  cy.wait(2000);
+  cy.get('button[id=end-move]').trigger('mouseover').click({force:true}); //{force:true}, {timeout:50000}
+  // cy.get('button[id=end-move]').pipe($el => $el.click()) // try this
   // .pipe(
   //   // next line will make assertions on the element returned by this pipe
   //   () => cy.get(calculatorScreen.resultOutput.idLocator)
@@ -332,8 +333,8 @@ Cypress.Commands.add('disapproveMove', (eventName) =>{
 Cypress.Commands.add('disapproveGeneric', (genericName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin").should('exist');
-  cy.contains(genericName, {timeout: 5000}).should('exist');
-  cy.contains(genericName, {timeout:5000}).children('span[name=disapprove-move]').click({force:true});
+  cy.contains(genericName, {timeout: 50000}).should('exist');
+  cy.contains(genericName, {timeout:50000}).children('span[name=disapprove-move]').click({force:true});
   cy.reload();
   cy.contains(genericName).should('not.exist');
 });
