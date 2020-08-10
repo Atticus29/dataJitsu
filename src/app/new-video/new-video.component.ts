@@ -471,6 +471,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
         let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
         console.log("candidateNameCapitalized is " + candidateNameCapitalized);
         if(genericStringNames.includes(candidateNameCapitalized)){
+          // debugger;
           this.openSnackBar(constants.alreadyExistsNotification, null);
           return null;
         }else{

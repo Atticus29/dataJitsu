@@ -335,6 +335,7 @@ Cypress.Commands.add('disapproveGeneric', (genericName) =>{
   cy.contains("Admin").should('exist');
   cy.contains(genericName, {timeout: 50000}).should('exist');
   cy.contains(genericName, {timeout:50000}).children('span[name=disapprove-move]').click({force:true});
+  cy.contains(genericName, {timeout: 50000}).should('not.exist');
   cy.reload();
   cy.contains(genericName).should('not.exist');
 });
@@ -353,8 +354,8 @@ Cypress.Commands.add('approveGeneric', (genericName) =>{
   //Assumes you've already logged in as admin
   cy.contains("Admin", {timeout:5000}).should('exist');
   cy.contains(genericName, {timeout: 5000}).should('exist');
-  //TODO LEFT OFF HERE
   cy.contains(genericName, {timeout: 5000}).children('span[name=approve-move]').click({force:true});
+  cy.contains(genericName, {timeout: 50000}).should('exist');
   cy.reload();
   cy.wait(3000);
   cy.contains(genericName, {timeout: 5000}).should('exist');
