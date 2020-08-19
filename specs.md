@@ -41,6 +41,7 @@
 - [ ] Store local preferences for items per page in all-matches
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
+- [ ] write test for annotation rating of new match
 - [ ] Enter should be submit click on custom items for match creation
 - [ ] Change annotated-moves-display to annotated-events (after all of the current issues have been resolved)
 - [ ] Turn these into github issues

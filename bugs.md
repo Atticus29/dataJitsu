@@ -10,6 +10,7 @@
 
 ### Minorly Urgent
 
+- [ ] Rating the video starts the video
 - [ ] Video is full screen
 - [ ] Video automatically starts upon page view
 - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
