@@ -1,4 +1,5 @@
 # Known issues
+- [ ] Annotate a video link is broken
 - [ ] Rating the video starts the video
 - [ ] Video is full screen
 - [ ] Video automatically starts upon page view
