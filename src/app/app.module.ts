@@ -4,7 +4,6 @@ import { LoggedInGuard } from './guards/logged-in.guard';
 import { NgModule } from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
-import { RatingModule } from 'ng-starrating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { masterFirebaseConfig } from './api-keys';
 import { AngularFireModule } from '@angular/fire';
@@ -227,7 +226,6 @@ export const firebaseConfig = {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    RatingModule,
     ReactiveFormsModule,
     AppRoutingModule,
     NgxYoutubePlayerModule,
