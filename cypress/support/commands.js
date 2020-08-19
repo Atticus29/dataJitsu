@@ -365,8 +365,8 @@ Cypress.Commands.add("login", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
     cy.visit(cypressConstants.loginUrl);
   });
-  cy.wait(2000);
-  cy.get('button[id=email-dialog-open-button]').click({force:true});
+  // cy.wait(2000);
+  cy.get('button[id=email-dialog-open-button]', {timeout:50000}).click({force:true});
   cy.get('input[id=dialog-email-input]').type(email);
   cy.get('input[id=dialog-pw-input]').type(pass);
   cy.get('button[id=dialog-submit-button]').click({force:true});
@@ -382,9 +382,11 @@ Cypress.Commands.add("loginAsAdmin", () => {
     cy.get('button[id=email-dialog-open-button]').click({force:true});
     cy.get('input[id=dialog-email-input]').type(cypressConstants.adminEmailAddress);
     cy.get('input[id=dialog-pw-input]').type(cypressConstants.adminPassword);
+    cy.get('button[id=dialog-submit-button]', {timeout:5000}).click({force:true});
+    cy.contains(cypressConstants.testIndividualName,{timeout:50000}).should('exist');
   });
-  cy.get('button[id=dialog-submit-button]', {timeout:5000}).click({force:true});
-  cy.wait(1000);
+
+  // cy.wait(1000);
 });
 
 Cypress.Commands.add("logout", () => {

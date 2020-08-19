@@ -124,7 +124,8 @@ export class DatabaseService {
     // console.log(childNodeName);
     let ref = firebase.database().ref('/events/');
     let obsRet = Observable.create(function(observer){
-    if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
+    if(constants.subCategories.indexOf(childNodeName)>-1){
+    // if (["Ankle Ligaments", "Back", "Choke Or Cervical Submissions", "Elbow", "Groin", "Knee Ligaments", "Shoulder", "Wrist"].indexOf(childNodeName)>-1){
       ref.orderByChild('/Submissions or Submission Attempts/' + childNodeName).on("value", snapshot =>{
         // console.log("getEventsSubsetAsObject special snapshot: ");
         // console.log(snapshot.val());
@@ -857,6 +858,7 @@ export class DatabaseService {
   }
 
   addMatchRatingToUser(userId: string, videoId: string, rating: number){
+    console.log("addMatchRatingToUser entered")
     let updates = {};
     updates['/users/' + userId + '/videosRated/' + videoId + '/videoRating/'] = rating;
     firebase.database().ref().update(updates);

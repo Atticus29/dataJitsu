@@ -324,8 +324,10 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
           // console.log(result)
           let videoId = this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate([constants.allVideosPathName + videoId]);
-          //TODO navigate to annotation page??
+          this.ngZone.run(() =>{
+              // this.router.navigate(['landing']);
+              this.router.navigate([constants.individualPathName + '/' + videoId]);
+          });
         });
       } else{
         this.openSnackBar("Match Already Exists in the Database!", null);

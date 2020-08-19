@@ -32,25 +32,29 @@ describe ('Match annotation tests', () =>{
     cy.get('mat-radio-button[id=successful-radio-button]').click({force:true});
     cy.get('button[id=done-button-performers]').should('not.be.disabled');
     cy.get('button[id=done-button-performers]').click();
-    cy.wait(3000);
+    // cy.wait(3000);
     cy.get('div[id=annotationModal]').should('not.be.visible');
     cy.get('button[id=end-move]').should('be.enabled');
+    cy.wait(2000);
     cy.get('button[id=end-move]').click({force:true});
-    cy.on('uncaught:exception', (err, runnable) => {
-    return false;
-    });
-    cy.wait(5000);
+    // cy.on('uncaught:exception', (err, runnable) => {
+    // return false;
+    // });
+    cy.wait(2000);
     // cy.contains("Annotation Recorded").should('exist');
 
     //Delete annotation
     cy.logout();
     cy.loginAsAdmin();
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains(cypressConstants.testIndividualName,{timeout:5000}).should('exist');
+    });
     cy.get('a[name=videoClick]').first().click({force: true});
-    cy.get('mat-chip').contains('Advantage Awarded').should('exist');
+    cy.contains('Advantage Awarded').should('exist'); //get('mat-chip')
     cy.get('.cancel-annotation').first().click({force:true});
     cy.reload();
     cy.wait(2000);
-    cy.get('mat-chip').contains('Advantage Awarded').should('not.exist');
+    cy.contains('Advantage Awarded').should('not.exist'); //.get('mat-chip')
   });
 
 

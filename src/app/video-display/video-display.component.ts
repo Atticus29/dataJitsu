@@ -11,6 +11,7 @@ import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
 import { AuthorizationService } from '../authorization.service';
 import { TextTransformationService } from '../text-transformation.service';
+import { StarRatingColor } from '../star-rating/star-rating.component';
 
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
@@ -30,6 +31,11 @@ var player;
 })
 
 export class VideoDisplayComponent extends BaseComponent implements OnInit {
+  private rating:number = 3;
+  private starCount:number = 5;
+  private starColor:StarRatingColor = StarRatingColor.accent;
+  private starColorP:StarRatingColor = StarRatingColor.primary;
+  private starColorW:StarRatingColor = StarRatingColor.warn;
   videoId : string;
   matchDetails: VideoDetails;
   match: Observable<Video>;
@@ -62,7 +68,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private displayAnnotationRating: boolean = true;
   private annotationFinishButtonDisabled: boolean = true;
   private selectedAnnotation: string = "No Annotation Currently Selected";
-  private matchAverageRating: number = 0;
+  private videoAverageRating: number = 0;
   private annotationAverageRating: number = 0;
   private flaggedRemovedStatus: string = "Fetching...";
   private flaggedInappropriateStatus: string = "Fetching...";
@@ -141,7 +147,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         });
       }
       this.db.getAverageVideoRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
-        this.matchAverageRating = average;
+        this.videoAverageRating = average;
       });
       this.db.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
         console.log("got into getAverageAnnotationRating in match-display component. Average is:");
@@ -200,28 +206,32 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     });
   }
 
-  onRate($event:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}) {
-    let newRating = $event.newValue;
-    if(this.userInDbId){
-      this.db.addMatchRatingToUser(this.userInDbId, this.videoId, $event.newValue);
-      this.db.addMatchRatingToMatch(this.userInDbId, this.videoId, $event.newValue);
+  onRateVideo($event) { //:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
+    console.log("onRatingChanged entered");
+    console.log($event);
+    let newRating = $event;
+    if(this.userInDbId && newRating!=null){
+      this.db.addMatchRatingToUser(this.userInDbId, this.videoId, newRating);
+      this.db.addMatchRatingToMatch(this.userInDbId, this.videoId, newRating);
     }else{
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
         this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
           let userInDb: string = uzr.id;
-          this.db.addMatchRatingToUser(userInDb, this.videoId, $event.newValue);
-          this.db.addMatchRatingToMatch(userInDb, this.videoId, $event.newValue);
+          console.log("userInDb is: " + userInDb);
+          this.db.addMatchRatingToUser(userInDb, this.videoId, newRating);
+          this.db.addMatchRatingToMatch(userInDb, this.videoId, newRating);
         });
       });
     }
   }
 
-  onRateAnnotation($event:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}) {
-    let newRating = $event.newValue;
+  onRateAnnotation($event) {//:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
+
+    let newRating = $event;
     if(this.userInDbId){
       console.log("userInDb already");
-      this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.videoId, $event.newValue);
-      this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.videoId, $event.newValue);
+      this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.videoId, newRating);
+      this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.videoId, newRating);
       if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
         this.db.getMainAnnotatorOfMatch(this.videoId).pipe(take(1)).subscribe(majorityAnnotator =>{
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
@@ -237,8 +247,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         console.log(usr);
         this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(result => {
           let userDbId: string = result.id;
-          this.db.addMatchAnnotationRatingToUser(userDbId, this.videoId, $event.newValue);
-          this.db.addMatchAnnotationRatingToMatch(userDbId, this.videoId, $event.newValue);
+          this.db.addMatchAnnotationRatingToUser(userDbId, this.videoId, newRating);
+          this.db.addMatchAnnotationRatingToMatch(userDbId, this.videoId, newRating);
           if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
             this.db.getMainAnnotatorOfMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
               if(majorityAnnotator.annotatorUserId !== userDbId){
@@ -283,12 +293,23 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
   asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
     console.log("asssembleCheck entered");
-    debugger;
+    // debugger;
+    console.log(this.eventName);
+    console.log(this.eventCategory);
+    console.log(this.performer);
+    console.log(this.recipient);
+    console.log(this.startTime);
+    console.log(this.endTime);
+    console.log(this.points);
+    console.log(this.videoId);
+    console.log(this.submissionStatus);
+    console.log(this.attemptStatus);
+    console.log(this.userInDbId);
     if(this.eventName && this.eventName !=="No Annotation Currently Selected" && this.eventCategory && this.eventCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.videoId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
       console.log("everything is true in asssembleCheck");
       return true;
     } else{
-      // console.log("asssembleCheck is false");
+      console.log("asssembleCheck is false");
       return false;
     }
   }

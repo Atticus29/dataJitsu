@@ -27,17 +27,17 @@ export var constants = {
     requiredAnnotationsPerMonth: 1,
     rootNodes: [
     "Advantage",
-    "Match Logistics",
+    "Discliplinary Action",
+    "Event Logistics",
     "Guard Passes or Guard Pass Attempts",
-    "Take Downs or Take Down Attempts",
-    "Submissions or Submission Attempts",
-    "Sweeps or Sweep Attempts",
     "Positional Changes That Score Points In Most Rule Sets",
     "Positions With Names That Do Not Score Points In Most Rule Sets",
-    "Discliplinary Action"
+    "Submissions or Submission Attempts",
+    "Sweeps or Sweep Attempts",
+    "Take Downs or Take Down Attempts"
     ],
     rootNodesWithSubcategories: ["Submissions or Submission Attempts"],
-    subCategories: ["Choke Or Cervical Submissions", "Elbow", "Shoulder", "Knee Ligaments", "Back", "Ankle Ligaments", "Groin", "Wrist"],
+    subCategories: ["Choke Or Cervical Submissions", "Elbow", "Shoulder", "Knee Ligaments", "Back", "Ankle Ligaments", "Groin", "Wrist", "Verbal Tap"],
     privilegeLevels: {
       1: 100,
       2: 200,

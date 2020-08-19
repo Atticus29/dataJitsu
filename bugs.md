@@ -1,7 +1,7 @@
 # Known issues
+- [ ] Video is full screen
+- [ ] Video automatically starts upon page view
 - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
-- [ ] Last and first should be displayed on individual dialog box
-- [ ] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
 - [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
 - [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Stripe is broken; also, write a test for this? Related:
@@ -53,6 +53,9 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
+- [x] Last and first should be displayed on individual dialog box
+- [x] Match and annotation ratings don't work
 - [x] Weird extra underline in mat-input for filter
 - [x] Annotated moves not displaying
 - [x] Router not navigating to /login upon logout in auth guard bug

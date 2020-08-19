@@ -116,6 +116,7 @@ import { NewNoGiRankDialogComponent } from './new-no-gi-rank-dialog/new-no-gi-ra
 import { NewAgeClassDialogComponent } from './new-age-class-dialog/new-age-class-dialog.component';
 import { NewLocationNameDialogComponent } from './new-location-name-dialog/new-location-name-dialog.component';
 import { TestComponent } from './test/test.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 
 export const firebaseConfig = {
@@ -178,7 +179,8 @@ export const firebaseConfig = {
     NewNoGiRankDialogComponent,
     NewAgeClassDialogComponent,
     NewLocationNameDialogComponent,
-    TestComponent
+    TestComponent,
+    StarRatingComponent
   ],
   imports: [
     BrowserModule,
