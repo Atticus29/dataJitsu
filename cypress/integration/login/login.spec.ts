@@ -8,8 +8,9 @@ describe('Login tests with no beforeEach', ()=>{
 
 describe ('Login tests', () =>{
   beforeEach(()=>{
-    // cy.logout();
-    cy.visit('http://localhost:4200/');
+    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.allVideosUrl);
+    });
   });
 
   afterEach(() =>{
@@ -34,8 +35,8 @@ describe ('Login tests', () =>{
        }
        return result;
     }
-    cy.visit('http://localhost:4200/createaccount');
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.visit(cypressConstants.createAccountUrl);
       cy.get('input[id=affiliation]').type(cypressConstants.affiliation);
       cy.get('input[id=password]').type(cypressConstants.pass);
       cy.get('input[id=email]').type("test" + makeid(7) + "@gmail.com"); //TODO add random letters here
@@ -68,64 +69,14 @@ describe ('Login tests', () =>{
   it('blocks protected routes', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
-    });
-    cy.contains("Rank").should('exist');
-    cy.logout();
-    cy.visit('localhost:4200/matches');
-    cy.wait(2000);
-    cy.url().should('match',/login/);
-    cy.contains("Rank").should('not.exist');
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.contains("Rank").should('exist');
+      cy.logout();
+      cy.visit(cypressConstants.allVideosUrl);
+      cy.wait(2000);
+      cy.url().should('match',/login/);
+      cy.contains("Rank").should('not.exist');
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
     });
   });
 
-  it.skip('logs out', ()=>{
-    cy.logout();
-  });
-
-  it('logs back in and clicks on a match', ()=>{
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.usrnm,cypressConstants.passw);
-    });
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.contains('vs.');
-    cy.contains('Age Class');
-    cy.contains('Location');
-  });
-
-  it('plays and pauses a match', ()=>{ //TODO needs work
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.usrnm,cypressConstants.passw);
-    });;
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.get('a[name=videoClick]').first().click({force:true});
-    cy.contains('vs.');
-    cy.wait(2000);
-    cy.get('a[id=play]').click({force:true});
-    cy.wait(3000);
-    cy.get('a[id=pause-vid]').click({force:true});
-    cy.contains('Add an annotation to the match');
-  });
-
-  it('still sees the table upon reload of the all-matches page', ()=>{
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.usrnm,cypressConstants.passw);
-    });
-    cy.contains('Match Rating');
-    cy.contains('Video');
-    cy.visit('http://localhost:4200/');
-    cy.contains('Match Rating');
-    cy.contains('Adult'); //TODO improve
-  });
-
-  it('does not see delete match as an option because not logged in as admin', function(){
-    cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.login(cypressConstants.usrnm,cypressConstants.passw);
-    });
-    cy.contains("Delete Match").should('not.exist');
-  });
 });

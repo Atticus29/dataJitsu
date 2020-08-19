@@ -12,7 +12,7 @@ import { TrackerService } from '../tracker.service';
 import { BaseComponent } from '../base/base.component';
 import { AuthorizationService } from '../authorization.service';
 import { ValidationService } from '../validation.service';
-import { EmailLoginDialog } from '../emailLoginDialog.model';
+// import { EmailLoginDialog } from '../emailLoginDialog.model';
 import { EmailLoginDialogComponent } from '../email-login-dialog/email-login-dialog.component';
 import { User } from '../user.model';
 

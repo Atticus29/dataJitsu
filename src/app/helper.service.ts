@@ -34,7 +34,7 @@ export class HelperService {
   }
 
   // getSubcategories(category: string){
-  //   this.dbService.getMovesSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+  //   this.dbService.getEventsSubsetAsObject(category).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
   //     console.log("results in getSubcategories call from helper service: ");
   //     console.log(result);
   //   });

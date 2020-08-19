@@ -5,28 +5,28 @@ export class EventInVideo {
   public isWin: boolean;
   public isDraw: boolean;
   public numFlags: number;
-  public isMatchActionDelimiter: boolean;
-  constructor(public moveName: string, public moveCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedMatchId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
+  public isVideoActionDelimiter: boolean;
+  constructor(public eventName: string, public eventCategory: string, public actor: string, public recipient: string, public timeInitiated: number, public timeCompleted: number, public points: number, public associatedVideoId: string, public isASubmission: boolean, public isSuccessfulAttempt: boolean, public annotatorUserId: string) {
     this.dateAdded = new Date().toJSON();
     this.isWin = false;
     this.numFlags = 0;
-    this.isMatchActionDelimiter = constants.moveNamesThatAreDelimiters.includes(moveName);
+    this.isVideoActionDelimiter = constants.eventNamesThatAreDelimiters.includes(eventName);
   }
 
   static fromJson (jsonObj: any): EventInVideo{
-    let moveName: string = jsonObj.moveName;
-    let moveCategory: string = jsonObj.moveCategory;
+    let eventName: string = jsonObj.eventName;
+    let eventCategory: string = jsonObj.eventCategory;
     let actor: string = jsonObj.actor;
     let recipient: string = jsonObj.recipient;
     let timeInitiated: number = jsonObj.timeInitiated;
     let timeCompleted: number = jsonObj.timeCompleted;
     let points: number = jsonObj.points;
-    let associatedMatchId: string = jsonObj.associatedMatchId;
+    let associatedVideoId: string = jsonObj.associatedVideoId;
     let isASubmission: boolean = jsonObj.isASubmission;
     let isSuccessfulAttempt: boolean = jsonObj.isSuccessfulAttempt;
     let annotatorUserId: string = jsonObj.annotatorUserId;
     // console.log("got to mapping attempt")
-    let tmpEventInVideo = new EventInVideo( moveName, moveCategory, actor, recipient, timeInitiated, timeCompleted, points, associatedMatchId, isASubmission, isSuccessfulAttempt, annotatorUserId);
+    let tmpEventInVideo = new EventInVideo( eventName, eventCategory, actor, recipient, timeInitiated, timeCompleted, points, associatedVideoId, isASubmission, isSuccessfulAttempt, annotatorUserId);
     if(jsonObj.date){
       tmpEventInVideo.setDate(jsonObj.date);
     };
@@ -36,8 +36,8 @@ export class EventInVideo {
     if(jsonObj.numFlags){
       tmpEventInVideo.setNumFlag(jsonObj.numFlags);
     };
-    if(jsonObj.moveName){
-      tmpEventInVideo.setIsMatchActionDelimiter(constants.moveNamesThatAreDelimiters.includes(jsonObj.moveName));
+    if(jsonObj.eventName){
+      tmpEventInVideo.setIsVideoActionDelimiter(constants.eventNamesThatAreDelimiters.includes(jsonObj.eventName));
     };
     return tmpEventInVideo;
   }
@@ -46,8 +46,8 @@ export class EventInVideo {
     this.dateAdded = date;
   }
 
-  setIsMatchActionDelimiter(status: boolean){
-    this.isMatchActionDelimiter = status;
+  setIsVideoActionDelimiter(status: boolean){
+    this.isVideoActionDelimiter = status;
   }
 
   setIsWin(status: boolean){
@@ -62,14 +62,14 @@ export class EventInVideo {
     this.numFlags = newVal;
   }
 
-  getMatchId(): string{
-    return this.associatedMatchId;
+  getVideoId(): string{
+    return this.associatedVideoId;
   }
   updateDateAdded(date: string){
     this.dateAdded = date;
   }
 
   getMoveName(){
-    return this.moveName;
+    return this.eventName;
   }
 }

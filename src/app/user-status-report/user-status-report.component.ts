@@ -28,7 +28,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   paidStatus: any = false;
   private notificationsSeen: boolean = false;
 
-  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateService: DateCalculationsService, public ngZone: NgZone) {
+  constructor(private authService: AuthorizationService, private dbService: DatabaseService, private router: Router, private cdr: ChangeDetectorRef, private trackerService: TrackerService, private dateCalculationsService: DateCalculationsService, public ngZone: NgZone) {
     super();
   }
 
@@ -56,7 +56,6 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
             this.dbService.userHasAnnotatedEnough(this.userObjFromDb.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasUserAnnotatedEnough =>{
               // console.log("results of userHasAnnotatedEnough call in user-status-report component: ");
               // console.log(hasUserAnnotatedEnough);
-              
               // if(!hasUserAnnotatedEnough){
               //   this.toggleAnnotationPrompt(true);
               //   this.togglePayMentPrompt(true);
@@ -103,9 +102,9 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
   }
 
   sendToMatchToAnnotate(){
-    this.dbService.getLowRatedMatch().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    this.dbService.getLowRatedVideo().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       this.ngZone.run(() =>{
-        this.router.navigate(['matches/'+result.id]);
+        this.router.navigate([constants.allVideosPathName+result.id]);
       });
     });
   }
@@ -144,7 +143,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
 navigateToVideoInNeedOfAnnotation(){
   this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
     this.ngZone.run(() =>{
-      this.router.navigate(['matches/' + match.id]);
+      this.router.navigate([constants.allVideosPathName + match.id]);
     });
   });
 }

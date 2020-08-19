@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Match } from '../match.model';
+import { Video } from '../video.model';
 import { VideoDetails } from '../videoDetails.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { User } from '../user.model';

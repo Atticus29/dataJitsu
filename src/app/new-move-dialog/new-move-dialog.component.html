@@ -5,25 +5,18 @@
     <form materialize [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
-        <input matInput [formControl]="moveNameFc" placeholder="Move Name" id="moveNameFc" value="E.g., Triangle" required>
-        <mat-error *ngIf="!vs.validateString(moveNameFc.value)">{{getErrorMessage()}}</mat-error>
+        <input matInput [formControl]="eventNameFc" placeholder="Move Name" id="eventNameFc" value="E.g., Triangle" required>
+        <mat-error *ngIf="!vs.validateString(eventNameFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <div class="select-menu-wrapper">
-        <mat-form-field class="flex-item">
-          <mat-select [formControl]="moveCategoryFc" placeholder="Choose Move Category" id="move-category-select">
-            <mat-option value="" [disabled]="displayCategoryName">Choose Move Category</mat-option>
-            <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="subcategory-field" *ngIf="displaySubcategorySelect">
-          <br>
-          <mat-form-field class="flex-item">
-            <mat-select class="select-menu-wrapper" appendTo="body" [formControl]="moveSubcategoryFc" placeholder="Choose Move Subcategory" id="move-subcategory-select">
-              <mat-option value="" [disabled]="displaySubcategorySelect">Choose Move Subcategory</mat-option>
-              <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory" id="subcategory-name-dropdown">{{subcategory}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <mat-select [formControl]="eventCategoryFc" placeholder="Choose Move Category" id="move-category-select">
+          <mat-option value="" [disabled]="displayCategoryName">Choose Move Category</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category" id="category-name-dropdown">{{category}}</mat-option>
+        </mat-select>
+        <mat-select class="select-menu-wrapper" *ngIf="displaySubcategorySelect" appendTo="body" [formControl]="moveSubcategoryFc" placeholder="Choose Move Subcategory" id="move-subcategory-select">
+          <mat-option value="" [disabled]="displaySubcategorySelect">Choose Move Subcategory</mat-option>
+          <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory" id="subcategory-name-dropdown">{{subcategory}}</mat-option>
+        </mat-select>
       </div>
       <br>
     </form>

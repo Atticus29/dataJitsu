@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 
 import { VideoDetails } from '../videoDetails.model';
-import { Match } from '../match.model';
+import { Video } from '../video.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
@@ -38,9 +38,9 @@ export class TestDbComponent extends BaseComponent implements OnInit {
 //  "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
 // "Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
 
-    // this.db.addAthleteNamesToDb(this.athleteNames);
+    // this.db.addIndividualNamesToDb(this.athleteNames);
     //
-    // let matchDeets: VideoDetails = new VideoDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
+    // let videoDeets: VideoDetails = new VideoDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
     // let move1: EventInVideo = new EventInVideo("move 123456", "mount", "athlete1", "athlete2", 361, 379, 4, "testId", false);
     // let move2: EventInVideo = new EventInVideo("move 123456", "armbar", "athlete1", "athlete2", 361, 379, 0, "testId", true);
     // let moveArray: Array<EventInVideo> = [move1, move2];
@@ -49,8 +49,8 @@ export class TestDbComponent extends BaseComponent implements OnInit {
     // let uid = this.db.addUserToDbAndReturnUserId(user1);
     // user1.setUid(uid);
     //
-    // let match1: Match = new Match(matchDeets, uid, moveArray);
-    // this.db.addMatchToDb(match1);
+    // let match1: Video = new Video(videoDeets, uid, moveArray);
+    // this.db.addVideoToDb(match1);
     //
     // this.weightClasses = ["Rooster", "Bantam", "Light-feather", "Feather", "Light", "Middle", "Medium-heavy", "Heavy", "Super-heavy", "Ultra-heavy", "Absolute", "Add new weight class"];
     // this.weightClasses.forEach(weightClass=>{

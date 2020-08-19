@@ -10,20 +10,20 @@
     },
     "matches": {
       ".indexOn": [
-        "matchDeets/videoUrl",
-        "matchDeets/athlete1Name",
-        "matchDeets/athlete2Name"
+        "videoDeets/videoUrl",
+        "videoDeets/athlete1Name",
+        "videoDeets/athlete2Name"
       ],
-      "$matchId": {
+      "$videoId": {
         ".indexOn": [
-          "/matchCreated",
-          "/matchDeets",
-          "matchDeets/videoUrl",
-          "/matchDeets/annotationRating",
-          "/matchDeets/athlete1Name",
-          "/matchDeets/athlete2Name"
+          "/videoCreated",
+          "/videoDeets",
+          "videoDeets/videoUrl",
+          "/videoDeets/annotationRating",
+          "/videoDeets/athlete1Name",
+          "/videoDeets/athlete2Name"
         ],
-        "matchDeets": {
+        "videoDeets": {
           ".indexOn": [
             "videoUrl",
             "annotationRating",

@@ -16,7 +16,7 @@ import { EventInVideo } from '../eventInVideo.model';
   styleUrls: ['./annotation-data-display.component.scss']
 })
 export class AnnotationDataDisplayComponent extends BaseComponent implements OnInit {
-  private matchId: string;
+  private videoId: string;
   private timeline: TimelineElement[] = [];
   content = `Lorem ipsum dolor sit amet`;
 
@@ -45,8 +45,8 @@ export class AnnotationDataDisplayComponent extends BaseComponent implements OnI
     ];
     let tracker: number = 2;
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.matchId = params['matchId'];
-      this.dbService.getMovesInMatch(this.matchId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
+      this.videoId = params['videoId'];
+      this.dbService.getEventsInVideo(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moves =>{
         // console.log("move from within AnnotationDataDisplayComponent:");
         // console.log(moves);
         // let theMoves = new EventInVideo(moves);
@@ -55,7 +55,7 @@ export class AnnotationDataDisplayComponent extends BaseComponent implements OnI
           if(move.timeInitiated <= 0){
             move.timeInitiated = 1;
           }
-          // this.timeline.push({caption: move.moveName, startTime: tracker, title: move.moveName, content: move.moveName + " performed by " + move.actor + " at " + move.timeInitiated + ". Scored " + move.points + " points."})
+          // this.timeline.push({caption: move.eventName, startTime: tracker, title: move.eventName, content: move.eventName + " performed by " + move.actor + " at " + move.timeInitiated + ". Scored " + move.points + " points."})
           tracker += 1;
           // console.log("tracker is " + tracker);
         });

@@ -1,12 +1,12 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
+// import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {Location} from "@angular/common";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AngularFireDatabase,AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase,AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Subject ,  Observable } from 'rxjs';
 import { takeUntil, take, switchMap, first } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { AuthorizationService } from '../authorization.service';
 import { TrackerService } from '../tracker.service';
 import { ProtectionGuard } from '../protection.guard';
 import { VideoDetails } from '../videoDetails.model';
-import { Match } from '../match.model';
+import { Video } from '../video.model';
 import { EventInVideo } from '../eventInVideo.model';
 import { DatabaseService } from '../database.service';
 import { ValidationService } from '../validation.service';
@@ -33,12 +33,12 @@ import { NewLocationNameDialogComponent } from '../new-location-name-dialog/new-
 declare var $:any;
 
 @Component({
-  selector: 'app-new-match',
-  templateUrl: './new-match.component.html',
-  styleUrls: ['./new-match.component.scss'],
+  selector: 'app-new-video',
+  templateUrl: './new-video.component.html',
+  styleUrls: ['./new-video.component.scss'],
 })
 
-export class NewMatchComponent extends BaseComponent implements OnInit {
+export class NewVideoComponent extends BaseComponent implements OnInit {
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
   private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
@@ -144,7 +144,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
 
     this.genders = constants.genders;
 
-    this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+    this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
       this.athleteNames = athleteNames.sort();
     });
 
@@ -272,11 +272,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     let self = this;
     let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = rankBound==undefined ? "" : rankBound;
-    let matchDeets = new VideoDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
+    let videoDeets = new VideoDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){
-        let match = new Match(matchDeets, self.localUser.id, moves);
+        let match = new Video(videoDeets, self.localUser.id, moves);
         observer.next(match);
       }
     });
@@ -322,10 +322,12 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
       if(!result){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           // console.log(result)
-          let matchId = this.db.addMatchToDb(result);
+          let videoId = this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
-          this.router.navigate(['matches/' + matchId]);
-          //TODO navigate to annotation page??
+          this.ngZone.run(() =>{
+              // this.router.navigate(['landing']);
+              this.router.navigate([constants.individualPathName + '/' + videoId]);
+          });
         });
       } else{
         this.openSnackBar("Match Already Exists in the Database!", null);
@@ -350,11 +352,11 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           console.log("got into result for submitFormAndReturnToMain call:");
           console.log(result);
-          this.db.addMatchToDb(result);
+          this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.ngZone.run(() =>{
             if(this.hasPaid || this.isAdmin){
-              this.router.navigate(['matches'])
+              this.router.navigate([constants.allVideosPathName]);
             }else {
               this.router.navigate(['landing']);
             }
@@ -366,7 +368,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     });
   }
 
-  pushToDb(match: Match){
+  pushToDb(match: Video){
 
   }
 
@@ -426,7 +428,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
       console.log("got dialog data to new-match component?:");
       console.log(val);
-      this.db.getAthleteNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
+      this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
         // console.log(athleteNames);
         val.last = this.textTransformationService.capitalizeFirstLetter(val.last);
         val.first = this.textTransformationService.capitalizeFirstLetter(val.first);
@@ -471,6 +473,7 @@ export class NewMatchComponent extends BaseComponent implements OnInit {
         let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
         console.log("candidateNameCapitalized is " + candidateNameCapitalized);
         if(genericStringNames.includes(candidateNameCapitalized)){
+          // debugger;
           this.openSnackBar(constants.alreadyExistsNotification, null);
           return null;
         }else{

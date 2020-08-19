@@ -10,6 +10,11 @@
 
 ### Minorly Urgent
 
+- [ ] Video is full screen
+- [ ] Video automatically starts upon page view
+- [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
+- [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
+- [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Feedback button
   - [ ] Submitting specific feedback in Safari sometimes freezes upon submission
   - [ ] Submitting general feedback pulls up a screenshot that has the top half of the screenshot in grey
@@ -27,6 +32,7 @@
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
 - [ ] Stripe webhooks don't work correctly?
 - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
+- [ ] Weird extra underline in mat-inputs (see how you solved this for all-videos filter input)
 - [ ] Running the tests at least creates extra delete buttons in the main table
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
 - [ ] In mobile, clicking on video doesn't let it stay embedded.
@@ -88,6 +94,12 @@
 - [x] Pressing enter in any textfield in collection creation form adds another field to category name
 - [x] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value
 - [x] With collection form, if you click add another foo, it clears the whole form
+- [x] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
+- [x] Last and first should be displayed on individual dialog box
+- [x] Match and annotation ratings don't work
+- [x] Weird extra underline in mat-input for filter
+- [x] Annotated moves not displaying
+- [x] Router not navigating to /login upon logout in auth guard bug
 - [x] Clicking "annotate a video" from inside a match-display component loads some new info, but doesn't load a new video (works fine if navigating from /matches)
 - [x] The YouTube player is not attached to the DOM. API calls should be made after the onReady event. See more: https://developers.google.com/youtube/iframe_api_reference#Events
 - [x] Clicking the play button doesn't always work (i.e., sometimes the video API is attached, and sometimes it isn't) ... raised an issue with the software developer of the package: https://github.com/orizens/ngx-youtube-player/issues/48
@@ -146,7 +158,7 @@
 - [x] the youTube player isn't attached to the DOM upon logoff and log back in.
 - [x] the tree in the form stays imprinted on the previously annotated move
 - [x] Second time someone tries to annotate, nothing is reset
-- [x] pauseAndAnnotate(currentTime: string) signature mismatches with match-display.component.html call
+- [x] pauseAndAnnotate(currentTime: string) signature mismatches with video-display.component.html call
 - [x] Doesn't resume play after Done for annotate a move is clicked
 - [x] Cypress tests are still having issues with the chainable stuff
 - [x] Clicking on matches takes you to /matches/matches instead of just one /matches

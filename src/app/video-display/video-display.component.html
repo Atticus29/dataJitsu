@@ -2,7 +2,7 @@
   <div class="row">
     <div class="">
       <div class="card title-buffer">
-        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.matchDeets?.athlete1Name}} (left) vs. {{match?.matchDeets?.athlete2Name}} (right)</h5></span>
+        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left) vs. {{match?.videoDeets?.athlete2Name}} (right)</h5></span>
         <div class="card-image">
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>
@@ -69,33 +69,34 @@
           <!-- <input id="pause" type="submit" value="pause" /> -->
           <div class="flexbox-container">
             <div id="match-star-rating-div" class="flexbox-item">
-              <p>Rate the <span class="emphasis">Match</span><span>
-                <star-rating value="5" checkedcolor="purple" uncheckedcolor="black" size="24px"    readonly="false" (rate)="onRate($event)"></star-rating>
+              <p>Rate the <span class="emphasis">Video</span><span>
+                <!-- <star-rating value="5" checkedcolor="purple" uncheckedcolor="black" size="24px" readonly="false" (rate)="onRate($event)"></star-rating> -->
+                <app-star-rating [rating]="rating"  [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRateVideo($event)"></app-star-rating>
               </span></p>
-              <p>Current Rating: {{matchAverageRating}}</p>
+              <p>Current Rating: {{videoAverageRating}}</p>
             </div>
             <div *ngIf="displayAnnotationRating" id="annotation-star-rating-div" class="flexbox-item">
               <p>Rate the <span class="emphasis">Annotation</span>
-                <star-rating value="5" checkedcolor="gold" uncheckedcolor="black" size="24px"    readonly="false" (rate)="onRateAnnotation($event)"></star-rating>
+                <app-star-rating [rating]="rating"  [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRateAnnotation($event)"></app-star-rating>
               </p>
               <p>Current Rating: {{annotationAverageRating}}</p>
             </div>
           </div>
         </div>
         <div class="card-content">
-          <span><span class="match-label">Age Class: </span>{{match?.matchDeets?.ageClass}}</span>
+          <span><span class="match-label">Age Class: </span>{{match?.videoDeets?.ageClass}}</span>
           <br>
-          <span class="match-label">Weight Class: </span>{{match?.matchDeets?.weightClass}}
+          <span class="match-label">Weight Class: </span>{{match?.videoDeets?.weightClass}}
           <br>
           <span class="match-label">Gi/Nogi: </span>{{giStatus}}
           <br>
-          <span class="match-label">Tournament: </span>{{match?.matchDeets?.tournamentName}}
+          <span class="match-label">Tournament: </span>{{match?.videoDeets?.tournamentName}}
           <br>
-          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.matchDeets?.date)}}
+          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.videoDeets?.date)}}
           <br>
-          <span class="match-label">Location: </span>{{match?.matchDeets?.location}}
+          <span class="match-label">Location: </span>{{match?.videoDeets?.location}}
           <br>
-          <span class="match-label">Rank: </span>{{match?.matchDeets?.rank}}
+          <span class="match-label">Rank: </span>{{match?.videoDeets?.rank}}
 
         </div>
       </div>

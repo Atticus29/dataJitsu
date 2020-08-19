@@ -1,7 +1,8 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { ChangeDetectorRef } from '@angular/core';
+// import { MzNavbarModule } from 'ngx-materialize'
 
 import { takeUntil, take, first } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
@@ -21,13 +22,14 @@ import { BaseComponent } from './base/base.component';
   styleUrls: ['./app.component.scss'],
   providers:[AuthorizationService, ProtectionGuard]
 })
-export class AppComponent extends BaseComponent implements OnInit {
+export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private constants: Object = constants;
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
   private name: string = "Anonymous User";
-  userObjFromDb: any = null;
+  userObjFromDb: Object = {id:null};
   title: string = constants.title;
   authenticationStatus: boolean =false;
   shouldAnnotate: boolean = false;
@@ -40,6 +42,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log("ngOnInit entered");
     let self = this;
     this.feedbackService.listenForFeedbacks().subscribe(async(data: FeedbackData) => {
       // console.log("listenForFeedbacks called");
@@ -52,6 +55,8 @@ export class AppComponent extends BaseComponent implements OnInit {
     });
 
     combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
+      // console.log("results entered in combineLatest call");
+      // console.log(results);
       let result = results[0];
       let authState = results[1];
       if(result && result.uid && authState){
@@ -60,7 +65,11 @@ export class AppComponent extends BaseComponent implements OnInit {
             this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
           });
           this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
-          this.userObjFromDb = dbUser;
+          // console.log("dbUser entered! Got: ");
+          // console.log(dbUser);
+          if(dbUser && dbUser.id){
+            this.userObjFromDb = dbUser;
+          }
         });
       } else{
         this.trackerService.currentUserBehaviorSubject.next(null);
@@ -89,16 +98,6 @@ export class AppComponent extends BaseComponent implements OnInit {
                 this.isAdmin = status;
               }
             });
-            // this.dbService.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-              // console.log("hasUserPaid? " + paymentStatus);
-              // console.log(typeof(paymentStatus));
-              // if(paymentStatus === true){
-              //   // console.log("setting paidStatus to true...");
-              //   this.paidStatus = paymentStatus;
-              // }else{
-              //   this.paidStatus = false;
-              // }
-            // });
             this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(reputation =>{
               this.dbService.updatePrivileges(dbUser, Number(reputation));
             });
@@ -133,9 +132,13 @@ export class AppComponent extends BaseComponent implements OnInit {
   navigateToVideoInNeedOfAnnotation(){
     this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
       this.ngZone.run(() =>{
-        this.router.navigate(['matches/' + match.id]);
+        this.router.navigate([constants.allVideosPathName + match.id]);
       });
     });
+  }
+
+  ngOnDestroy(){
+    console.log("ngOnDestroy entered");
   }
 
 }
