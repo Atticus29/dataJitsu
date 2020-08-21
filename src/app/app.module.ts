@@ -252,7 +252,7 @@ export const firebaseConfig = {
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, LoggedInGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, EmailLoginDialog, HelperService, AngularFireFunctions,QuestionControlService, QuestionService, FormProcessingService,
+  providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, LoggedInGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,QuestionControlService, QuestionService, FormProcessingService,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ],
 })

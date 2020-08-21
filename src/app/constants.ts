@@ -86,5 +86,6 @@ export var constants = {
     alreadyExistsNotification: "Your entry already exists in dropdown menu!",
     allVideosPathName: 'all-videos',
     individualPathName: 'videos',
-    annotationRecordedMessage: "Annotation Recorded"
+    annotationRecordedMessage: "Annotation Recorded",
+    columnsToDisplay: ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl']
   };
