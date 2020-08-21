@@ -122,7 +122,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   navigateToVideoInNeedOfAnnotation(){
     this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
       this.ngZone.run(() =>{
-        this.router.navigate([constants.allVideosPathName + match.id]);
+        this.router.navigate([constants.individualPathName + "/" + match.id]);
       });
     });
   }
