@@ -1,7 +1,8 @@
 # Known issues
 
 ## Highly Urgent
-
+- [ ] FAQ looks terrible
+- [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
   - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
 - [ ] Deleting a collection seems to display "collection added" snackbar

@@ -1,4 +1,6 @@
 # TODO highest priority
+- [ ] Expansion panel for FAQ
+- [ ] Autocomplete for lots of the dropdown menu item in create match
 - [ ] write test for navigating away from user-info after deleting collection and returning to collection form page and then going back, you should not see the collection re-appear
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
   - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
