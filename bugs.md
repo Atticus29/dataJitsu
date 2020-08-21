@@ -1,5 +1,16 @@
 # Known issues
-- [ ] Annotate a video link is broken
+
+## Highly Urgent
+- [ ] FAQ looks terrible
+- [ ] Feedback button is janky (in collections branch)
+- [ ] I have to click on dropdown for "add another question for your users" button to "work"
+  - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
+- [ ] Deleting a collection seems to display "collection added" snackbar
+- [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
+- [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
+
+### Minorly Urgent
+
 - [ ] Rating the video starts the video
 - [ ] Video is full screen
 - [ ] Video automatically starts upon page view
