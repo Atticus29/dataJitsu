@@ -1,5 +1,4 @@
 # TODO highest priority
-- [ ] Expansion panel for FAQ
 - [ ] Autocomplete for lots of the dropdown menu item in create match
 - [ ] write test for navigating away from user-info after deleting collection and returning to collection form page and then going back, you should not see the collection re-appear
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
@@ -193,7 +192,8 @@
 - [ ] Flesh out README with details about what it is and how it works
 - [ ] Add more passes to moves.ts
 
-# Completed TODOs
+# Completed Specs
+- [x] Expansion panel for FAQ
 - [x] Have custom weight class options, and add unknown to it
 - [x] ADDING FEATURE WHERE DISAPPROVED NAME GETS SUBSTITUTED and check whether the same exists for tournament name cross listed in spec file
 - [x] Enter upon password completion for login should trigger login button

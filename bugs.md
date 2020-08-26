@@ -1,7 +1,6 @@
 # Known issues
 
 ## Highly Urgent
-- [ ] FAQ looks terrible
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
   - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
@@ -66,6 +65,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] FAQ looks terrible
 - [x] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
 - [x] Last and first should be displayed on individual dialog box
 - [x] Match and annotation ratings don't work
