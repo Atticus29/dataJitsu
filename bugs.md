@@ -10,6 +10,7 @@
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 
 ### Minorly Urgent
+- [ ] Upon load of video page, clicking on first annotation time simply starts the video, and it's not until the second click that it jumps to the time point
 - [ ] Upon ending an annotation, video sometimes pauses, sometimes starts, and sometimes starts when a previous annotation begins(?) or ends(?)
 - [ ] Video is full screen
 - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
