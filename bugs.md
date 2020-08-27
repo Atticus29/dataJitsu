@@ -1,6 +1,7 @@
 # Known issues
 
 ## Highly Urgent
+- [ ] Video rating click doesn't fill the stars
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
   - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
@@ -9,10 +10,8 @@
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
 
 ### Minorly Urgent
-
-- [ ] Rating the video starts the video
+- [ ] Upon ending an annotation, video sometimes pauses, sometimes starts, and sometimes starts when a previous annotation begins(?) or ends(?)
 - [ ] Video is full screen
-- [ ] Video automatically starts upon page view
 - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
 - [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
 - [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
@@ -65,6 +64,8 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Rating the video starts the video
+- [x] Video automatically starts upon page view
 - [x] FAQ looks terrible
 - [x] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
 - [x] Last and first should be displayed on individual dialog box
