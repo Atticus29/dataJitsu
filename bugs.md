@@ -1,6 +1,7 @@
 # Known issues
 
 ## Highly Urgent
+- [ ] Clicking annotate a video from another video doesn't do anything
 - [ ] Video rating click doesn't fill the stars
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
