@@ -1,6 +1,8 @@
 # Known issues
 
 ## Highly Urgent
+- [ ] Confirm password required warning in create account for name and email as well
+- [ ] Gender and gi rank overlap in create account; others are missing inputs
 - [ ] Clicking annotate a video from another video doesn't do anything
 - [ ] Video rating click doesn't fill the stars
 - [ ] Feedback button is janky (in collections branch)
