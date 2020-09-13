@@ -43,6 +43,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: true,
     disableAddButtonIfCurrentValueIsBlank: true,
+    disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
     pairThisQuestionWithPreviousQuestion: true,
     isThisQuestionTheLastOfAQuestionGroup: true,
     indentThisQuestion: true,
@@ -55,7 +56,7 @@ export class QuestionService{
     label: 'What label do you want to give your first question to your user?',
     groupLabel: "Question For Your Users",
     value: '',
-    required: false,
+    required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: true,
     pairThisQuestionWithPreviousQuestion: false,
@@ -81,6 +82,21 @@ export class QuestionService{
     order: 1
   });
   private inputTypeQuestion: DropdownQuestion = new DropdownQuestion({
+    key: 'inputTypeQuestionName',
+    label: 'What type of question do you want this question to be?',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: true,
+    disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
+    indentThisQuestion: false,
+    type: 'dropdown',
+    order: 2,
+    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}]
+  });
+  private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
     key: 'inputTypeQuestionName',
     label: 'What type of question do you want this question to be?',
     value: '',
@@ -116,6 +132,8 @@ export class QuestionService{
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
     entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
+    // entryDetailQuestions.push(this.genericLabelQuestion);
+    // entryDetailQuestions.push(this.genericInputTypeQuestion);
     // entryDetailQuestions.push(this.inputTypeQuestion);
     // entryDetailQuestions.push(this.inputTypeQuestion);
     // entryDetailQuestions.push(this.inputTypeQuestion);

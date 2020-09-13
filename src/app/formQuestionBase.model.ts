@@ -6,6 +6,10 @@ export class FormQuestionBase<T> {
   required: boolean;
   giveOptionToAnswerThisQuestionMultipleTimes: boolean;
   disableAddButtonIfCurrentValueIsBlank: boolean;
+  disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: boolean;
+  smallSize: number;
+  mediumSize: number;
+  largeSize: number;
   pairThisQuestionWithPreviousQuestion: boolean;
   isThisQuestionTheLastOfAQuestionGroup: boolean;
   indentThisQuestion: boolean;
@@ -23,6 +27,10 @@ export class FormQuestionBase<T> {
       required?: boolean,
       giveOptionToAnswerThisQuestionMultipleTimes?: boolean,
       disableAddButtonIfCurrentValueIsBlank?: boolean,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank?: boolean,
+      smallSize?: number,
+      mediumSize?: number,
+      largeSize?: number,
       pairThisQuestionWithPreviousQuestion?: boolean,
       isThisQuestionTheLastOfAQuestionGroup?: boolean,
       indentThisQuestion?: boolean,
@@ -38,6 +46,10 @@ export class FormQuestionBase<T> {
     this.required = !!options.required;
     this.giveOptionToAnswerThisQuestionMultipleTimes = !!options.giveOptionToAnswerThisQuestionMultipleTimes;
     this.disableAddButtonIfCurrentValueIsBlank = !!options.disableAddButtonIfCurrentValueIsBlank;
+    this.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank = !!options.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank;
+    this.smallSize = options.smallSize === undefined? 12: options.smallSize;
+    this.mediumSize = options.mediumSize === undefined? 12: options.mediumSize;
+    this.largeSize = options.largeSize === undefined? 12: options.largeSize;
     this.pairThisQuestionWithPreviousQuestion = !!options.pairThisQuestionWithPreviousQuestion;
     this.isThisQuestionTheLastOfAQuestionGroup = !!options.isThisQuestionTheLastOfAQuestionGroup;
     this.indentThisQuestion = !!options.indentThisQuestion;
@@ -58,6 +70,10 @@ export class FormQuestionBase<T> {
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: oldQuestion.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank,
+      smallSize: oldQuestion.smallSize,
+      mediumSize: oldQuestion.mediumSize,
+      largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -80,6 +96,10 @@ export class FormQuestionBase<T> {
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
       disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: oldQuestion.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank,
+      smallSize: oldQuestion.smallSize,
+      mediumSize: oldQuestion.mediumSize,
+      largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: newStatus,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -101,6 +121,10 @@ export class FormQuestionBase<T> {
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
       disableAddButtonIfCurrentValueIsBlank: oldQuestion.disableAddButtonIfCurrentValueIsBlank,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: oldQuestion.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank,
+      smallSize: oldQuestion.smallSize,
+      mediumSize: oldQuestion.mediumSize,
+      largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -122,6 +146,10 @@ export class FormQuestionBase<T> {
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: oldQuestion.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank,
+      smallSize: oldQuestion.smallSize,
+      mediumSize: oldQuestion.mediumSize,
+      largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
@@ -143,6 +171,10 @@ export class FormQuestionBase<T> {
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
       disableAddButtonIfCurrentValueIsBlank: disableAddButtonWhenBlank,
+      disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: oldQuestion.disableAddNewQuestionGroupButtonIfCurrentValueIsBlank,
+      smallSize: oldQuestion.smallSize,
+      mediumSize: oldQuestion.mediumSize,
+      largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
       isThisQuestionTheLastOfAQuestionGroup: newStatus,
       indentThisQuestion: oldQuestion.indentThisQuestion,

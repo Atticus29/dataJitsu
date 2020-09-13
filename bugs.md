@@ -5,6 +5,7 @@
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
   - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
+- [ ] Adding collection on first stepper makes that stepper appear when you click "next"
 - [ ] Deleting a collection seems to display "collection added" snackbar
 - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
 - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database

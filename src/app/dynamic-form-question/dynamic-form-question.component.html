@@ -1,13 +1,19 @@
 <div [formGroup]="form">
   <div [appIndent]="question.indentThisQuestion">
-    <label [attr.for]="question.key">{{question.label}}</label>
     <div [ngSwitch]="question.controlType">
+      <label [attr.for]="question.key" *ngSwitchCase="'textbox'">{{question.label}}</label>
       <input *ngSwitchCase="'textbox'" [formControlName]="question.key? question.key: null" [id]="question.key" [type]="question.type" [placeholder]="question.placeHolder">
-      <mat-select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+      <mat-label *ngSwitchCase="'dropdown'" class="col s12 m7 l7">{{question.label}}</mat-label>
+      <mat-select class="col s12 m6 l6" [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
         <mat-option *ngFor="let opt of question.options" [value]="opt.value">{{opt.value}}</mat-option>
       </mat-select>
+    <div *ngSwitchCase="'textbox'">
+      <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
     </div>
-    <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
+    <div class="row col s12 m7 l7" *ngSwitchCase="'dropdown'">
+      <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
+    </div>
+  </div>
     <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required
     </div> -->
   </div>

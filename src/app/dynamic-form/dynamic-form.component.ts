@@ -21,6 +21,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';
+    // gridLengthsForButtons: number = null;
+    // gridLengthsForInput: number = null;
 
     constructor(private qcs: QuestionControlService, private formProcessingService: FormProcessingService) {
       super();
@@ -28,6 +30,10 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
+      // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
+      // console.log("gridLengthsForButtons are: " + this.gridLengthsForButtons);
+      // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
+      // console.log("gridLengthsForInput is: " + this.gridLengthsForInput);
       // console.log("questions upon entry into ngOnInit of DynamicFormComponent are");
       // console.log(this.questions);
       this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
