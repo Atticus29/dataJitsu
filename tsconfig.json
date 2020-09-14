@@ -22,7 +22,6 @@
     ],
     "types": [
       "jquery",
-      "materialize-css",
       "firebase",
       "node",
       "cypress"],

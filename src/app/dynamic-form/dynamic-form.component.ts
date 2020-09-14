@@ -21,6 +21,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';
+    private threadCount: number = this.configOptions.getThreadNum();
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 
@@ -36,7 +37,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // console.log("gridLengthsForInput is: " + this.gridLengthsForInput);
       // console.log("questions upon entry into ngOnInit of DynamicFormComponent are");
       // console.log(this.questions);
-      this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
+      this.formProcessingService.questionThread[this.threadCount-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
         // console.log("questionArrayOfForm emitted in formProcessingService. questionArrayOfForm is: ");
         // console.log(questionArrayOfForm);
         if(questionArrayOfForm){
@@ -55,8 +56,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       console.log(questions);
       // console.log(this.form.getRawValue());
       this.payLoad = JSON.stringify(this.form.getRawValue());
-      this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
-      this.formProcessingService.captureFormResults(this.form.getRawValue());
+      this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questions, this.threadCount-1);
+      this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadCount);
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       // console.log("addAnotherQuestion called");
@@ -76,7 +77,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // questionArray.splice(index+1, 0, newQuestionToBeAdded);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
-      this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
+      this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadCount-1);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
     }
@@ -106,7 +107,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // console.log(questionArray);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
-      this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
+      this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadCount-1);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       // console.log("form after re-making with questionArrayCombiningNewAndOld");
       // console.log(this.form);

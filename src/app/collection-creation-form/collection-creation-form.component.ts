@@ -35,8 +35,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnDestroy(){
-    this.formProcessingService.formResults.next("Stop");
-    this.formProcessingService.questionArrayOfForm.next("Stop");
+    this.formProcessingService.setAllFormThreadsTo("Stop");
+    this.formProcessingService.setAllQuestionThreadsTo("Stop");
   }
 
   ngOnInit() {
@@ -51,11 +51,11 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     });
     // this.localConfigOptions = this.questionService.getCollectionQuestionGroupQuestions();
     this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults);
+      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults,1);
     });
 
     this.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults);
+      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults,2);
     });
     // this.localCategoryWithItemsQuestions = this.questionService.getNewCategoryWithItemsQuestions();
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
