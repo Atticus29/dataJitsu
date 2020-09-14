@@ -52,8 +52,9 @@ export class FormProcessingService {
   }
 }
 
-setAllQuestionThreadsTo(val: String){
-  for(let i = 0; i<this.questionThread.length; i++){
-    this.questionThread[i].next(val);
+  setAllQuestionThreadsTo(val: String){
+    for(let i = 0; i<this.questionThread.length; i++){
+      this.questionThread[i].next(val);
+    }
   }
 }
