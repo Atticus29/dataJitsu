@@ -14,7 +14,7 @@ describe ('Match custom athlete name annotation tests', () =>{
 
   it('creates match with two write-in names', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.fillInMatchCreationDetailsWithWriteInAthleteNames(cypressConstants.athlete1FirstName, cypressConstants.athlete1LastName, cypressConstants.athlete2FirstName, cypressConstants.athlete2LastName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.wait(2000);

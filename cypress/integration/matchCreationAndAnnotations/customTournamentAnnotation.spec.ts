@@ -13,13 +13,13 @@ describe ('Match custom match tests: tournament name', () =>{
 
   it('adds custom thing and submits new match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.fillInMatchCreationDetailsWithCustomTournamentName(cypressConstants.customTournamentName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.wait(2000);
       cy.get('h4').contains('Annotate your submission?').click({force:true});
       cy.get('button[id=add-to-queue-modal-button]').click({force:true});
-      // cy.url().should('not.match',/newmatch/);
+      // cy.url().should('not.match',/newvideo/);
       // cy.url().should('match',/matches/);
       // cy.visit(cypressConstants.allVideosUrl);
       // cy.wait(3000);
@@ -36,7 +36,7 @@ describe ('Match custom match tests: tournament name', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.adminUrl);
       cy.approveGeneric(cypressConstants.customTournamentName);
-      cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
+      cy.visit(cypressConstants.newVideoUrl, {timeout:5000});
       cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', cypressConstants.customTournamentName);
       });
@@ -47,7 +47,7 @@ describe ('Match custom match tests: tournament name', () =>{
 
   it('cannot create a custom thing that has already been created and approved, then deletes the thing from admin page and confirms that it is missing from dropdown list', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
       cy.selectCustomTournament(cypressConstants.customTournamentName);
       cy.contains(cypressConstants.alreadyExistsNotification).should('exist');
@@ -58,7 +58,7 @@ describe ('Match custom match tests: tournament name', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.log("deletes the thing from admin page and confirms that it is missing from dropdown list");
       cy.deleteGeneric(cypressConstants.customTournamentName);
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.get('input[id=matchURL]', {timeout:5000}).clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
       cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);
@@ -74,7 +74,7 @@ describe ('Match custom match tests: tournament name', () =>{
 
       //Now creates a new match with custom thing
       cy.log("Now creates a new match with custom thing");
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.fillInMatchCreationDetailsWithCustomTournamentName(cypressConstants.customTournamentName);
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.wait(2000);
@@ -98,7 +98,7 @@ describe ('Match custom match tests: tournament name', () =>{
       cy.visit(cypressConstants.adminUrl);
       cy.wait(3000);
       cy.disapproveGeneric(cypressConstants.customTournamentName);
-      cy.visit(cypressConstants.newMatchUrl, {timeout:5000});
+      cy.visit(cypressConstants.newVideoUrl, {timeout:5000});
       cy.log("check custom thing has been renamed");
       cy.get(`mat-select[id="${cypressConstants.tournamentSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customTournamentName);

@@ -21,7 +21,7 @@ describe ('Tests involving match creation', () =>{
 
   it('creates a match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
       cy.fillInMatchCreationDetails();
       cy.get('button[id=new-match-submit-button]').click({force:true});
       cy.wait(2000);
@@ -45,7 +45,7 @@ describe ('Tests involving match creation', () =>{
 
   it('cannot create duplicate match', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-      cy.visit(cypressConstants.newMatchUrl);
+      cy.visit(cypressConstants.newVideoUrl);
     });
     cy.fillInMatchCreationDetails();
       cy.get('button[id=new-match-submit-button]').click({force:true});

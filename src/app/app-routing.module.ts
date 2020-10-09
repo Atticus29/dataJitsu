@@ -46,7 +46,7 @@ const routes: Routes = [
   }
   ,
   {
-    path: 'newmatch',
+    path: 'newvideo',
     component: NewVideoComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'

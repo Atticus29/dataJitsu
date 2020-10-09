@@ -4,9 +4,9 @@
     <button mat-icon-button [matMenuTriggerFor]="mainMenu" id="vertical-button"><mat-icon>more_vert</mat-icon></button>
     <mat-menu #mainMenu>
       <button mat-menu-item *ngIf="authenticationStatus" routerLink="create-collection"><mat-icon>add_circle</mat-icon> New Collection</button>
-      <button mat-menu-item *ngIf="authenticationStatus" routerLink="newmatch"><mat-icon>add_circle</mat-icon> New Match</button>
-      <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="{{constants.allVideosPathName}}"><mat-icon>home</mat-icon> View All Matches</button>
-      <button mat-menu-item *ngIf="authenticationStatus" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> Annotate a video</button>
+      <button mat-menu-item *ngIf="authenticationStatus" routerLink="newvideo"><mat-icon>add_circle</mat-icon> New Video</button>
+      <button mat-menu-item *ngIf="authenticationStatus && (paidStatus || isAdmin || canViewAllMatches)" routerLink="{{constants.allVideosPathName}}"><mat-icon>home</mat-icon> View All Videos</button>
+      <button mat-menu-item *ngIf="authenticationStatus" (click)="navigateToVideoInNeedOfAnnotation()"><mat-icon>edit</mat-icon> Annotate a Video</button>
       <button mat-menu-item routerLink="news"><mat-icon>announcement</mat-icon> News</button>
       <button mat-menu-item *ngIf="!authenticationStatus" routerLink="login">Login or Create Account</button>
       <button mat-menu-item *ngIf="authenticationStatus" routerLink="faq"><mat-icon>help</mat-icon> Help/F.A.Q.</button>

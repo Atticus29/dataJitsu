@@ -47,7 +47,6 @@
 - [ ] Enter should be submit click on custom items for match creation
 - [ ] Change annotated-moves-display to annotated-events (after all of the current issues have been resolved)
 - [ ] Turn these into github issues
-- [ ] Change 'newmatch' paths to 'newvideo' paths
 - [ ] Some annotation manipulations affect video play for another person's instance (test using aws version and localhost version?)
   - [ ] Characterize the problem better
 - [ ] Set up a dev project in firebase and hook up there instead
@@ -165,6 +164,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Change 'newmatch' paths to 'newvideo' paths
 - [x] Have custom no gi rank option, and add unknown to it
     - [x] Passing tests
 - [x] Have custom age class, and add unknown to it
