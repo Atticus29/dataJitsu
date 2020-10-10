@@ -47,8 +47,8 @@ export class UserCollectionsDisplayComponent extends BaseComponent implements On
       this.databaseService.deleteCollectionAndConfirm(collection, user).pipe(takeUntil(this.ngUnsubscribe)).subscribe(deletionStatus =>{
         console.log("deleteCollectionAndConfirm returned: " + deletionStatus);
         if(deletionStatus === true){
-          this.formProcessingService.formResults.next("Stop");
-          this.formProcessingService.questionArrayOfForm.next("Stop");
+          this.formProcessingService.setAllFormThreadsTo("Stop");
+          this.formProcessingService.setAllQuestionThreadsTo("Stop");
         }
       });
       //TODO decide whether any points should be awarded here. I'm currently thinking no

@@ -60,7 +60,9 @@ export class FormQuestionBase<T> {
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean): FormQuestionBase<string>{
-    // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs. Index is " + index);
+    // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs");
+    // console.log("oldQuestion is: ");
+    // console.log(oldQuestion);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;
     return new FormQuestionBase({
       value: oldQuestion.value,
@@ -129,7 +131,7 @@ export class FormQuestionBase<T> {
       isThisQuestionTheLastOfAQuestionGroup: oldQuestion.isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
       placeHolder: oldQuestion.placeHolder,
-      order: oldQuestion.order,
+      order: oldQuestion.order + 1,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
     });
@@ -281,6 +283,12 @@ export class FormQuestionBase<T> {
 
   static spliceWithoutManipulatingOriginal(oldQuestionArray: FormQuestionBase<string>[], newAdditionalQuestionArray: FormQuestionBase<string>[], indexAfterWhichToInsert: number){
     // console.log("spliceWithoutManipulatingOriginal entered");
+    // console.log("oldQuestionArray:");
+    // console.log(oldQuestionArray);
+    // console.log("newAdditionalQuestionArray");
+    // console.log(newAdditionalQuestionArray);
+    // console.log("indexAfterWhichToInsert");
+    // console.log(indexAfterWhichToInsert);
     let returnQuestionArray = new Array<FormQuestionBase<string>>();
     for(let i=0; i<oldQuestionArray.length; i++){
       returnQuestionArray.push(oldQuestionArray[i]);

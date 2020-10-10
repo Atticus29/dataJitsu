@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <mat-horizontal-stepper>
+    <mat-horizontal-stepper #stepper linear>
       <mat-step id="step1">
         <app-dynamic-form [configOptions]="localCollectionConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
         <div>
