@@ -116,7 +116,6 @@ export class QuestionService{
     newCollectionQuestions.push(this.collectionNameQuestion);
     newCollectionQuestions.push(this.categoryNameQuestion);
     newCollectionQuestions.push(this.collectionItemQuestion);
-    // return of(newCollectionQuestions.sort((a, b) => a.order - b.order));
     return of(newCollectionQuestions);
   }
 
@@ -124,7 +123,6 @@ export class QuestionService{
     let collectionQuestionGroupQuestions: FormQuestionBase<string>[] = [];
     collectionQuestionGroupQuestions.push(this.categoryNameQuestion);
     collectionQuestionGroupQuestions.push(this.collectionItemQuestion);
-    // return of(collectionQuestionGroupQuestions.sort((a, b) => a.order - b.order));
     return of(collectionQuestionGroupQuestions);
   }
 
@@ -132,12 +130,6 @@ export class QuestionService{
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
     entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
-    // entryDetailQuestions.push(this.genericLabelQuestion);
-    // entryDetailQuestions.push(this.genericInputTypeQuestion);
-    // entryDetailQuestions.push(this.inputTypeQuestion);
-    // entryDetailQuestions.push(this.inputTypeQuestion);
-    // entryDetailQuestions.push(this.inputTypeQuestion);
-    // return of(entryDetailQuestions.sort((a, b) => a.order - b.order));
     return of(entryDetailQuestions);
   }
 

@@ -58,9 +58,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
             if(formResults){
               if(formResults !== "Stop"){
                 if(formResults.collectionName){
-                    console.log("currentFormQuestions just emitted");
                     if(currentFormQuestions){ //&& !this.localStop
-                      console.log(currentFormQuestions);
                       if(currentFormQuestions !== "Stop"){
                         let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                         if(this.localUser && this.localUser.id){
@@ -84,7 +82,6 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnInit() {
-    // console.log("ngOnInit in CollectionCreationFormComponent called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionQuestions =>{
       this.localCollectionQuestions = collectionQuestions;
     });
