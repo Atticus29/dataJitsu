@@ -24,7 +24,7 @@ import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 })
 export class CollectionCreationFormComponent extends BaseComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', {static:false}) stepper: MatStepper;
-  private currentStep: number;
+  private localCurrentStep: number;
   private localCollectionQuestions: FormQuestionBase<any>[];
   private localEntryDetailQuestions: FormQuestionBase<any>[];
   private localCollectionConfigOptions: DynamicFormConfiguration;
@@ -44,20 +44,36 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
   ngAfterViewInit(){
     let stepNum = this.stepper?this.stepper.selectedIndex:0;
+
+    //change questions being displayed --------
     this.formProcessingService.questionThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentQuestionThreadNum =>{
+      // console.log("currentQuestionThreadNum emits. currentQuestionThreadNum is: "+ currentQuestionThreadNum);
+      // this.localCurrentStep = currentQuestionThreadNum;
       if(currentQuestionThreadNum >0){
+        // console.log("currentQuestionThreadNum is: "+ currentQuestionThreadNum);
         this.formProcessingService.questionThread[currentQuestionThreadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
+          // console.log("newQuestions emits");
           this.localCollectionQuestions = newQuestions;
         });
-        let formThread = this.formProcessingService.formThread;
-        if(formThread.length>0){
-          let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
-          formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
-            let formResults = combinedResults[0];
-            let currentFormQuestions = combinedResults[1];
-            if(formResults){
-              if(formResults !== "Stop"){
-                if(formResults.collectionName){
+    //-------------------------------------------
+        this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
+          let formThread = this.formProcessingService.formThread;
+          // console.log("formThread is:");
+          // console.log(formThread);
+          if(formThread.length>0){
+            let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
+            let formResultsWithLatestSubmissionConfirmation = formResultObservableWithLatestQuestions.pipe(withLatestFrom(this.formProcessingService.formSubmitted));
+            formResultsWithLatestSubmissionConfirmation.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResultsAndChecker =>{
+              console.log("combinedResultsAndChecker is:");
+              console.log(combinedResultsAndChecker);
+              let formSubmitted = combinedResultsAndChecker[1];
+              let combinedResults = combinedResultsAndChecker[0];
+              let formResults = combinedResults[0];
+              let currentFormQuestions = combinedResults[1];
+              if(formSubmitted && formResults){
+                console.log("form has been submitted and there are form results");
+                if(formResults !== "Stop"){
+                  if(formResults.collectionName){
                     if(currentFormQuestions){ //&& !this.localStop
                       if(currentFormQuestions !== "Stop"){
                         let newCollection = Collection.fromForm(formResults, currentFormQuestions);
@@ -77,6 +93,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
               }
             });
           }
+        });
       }
     });
   }
@@ -106,5 +123,9 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     this.snackBar.open(message, '', {
       duration: 1000, //TODO change to 3000 once testing is complete a feature is good to go
     });
+  }
+
+  saveProgress(){
+    this.formProcessingService.captureDesiredInDynamicForm.next(true);
   }
 }

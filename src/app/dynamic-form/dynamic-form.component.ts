@@ -39,13 +39,29 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           }
         });
       }
+      this.formProcessingService.captureDesiredInDynamicForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(captureFormDesired =>{
+        // console.log("captureFormDesired is: " + captureFormDesired);
+        if(captureFormDesired){
+          // this.propagateCaptureOfFormResults();
+          this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(this.questions, this.threadNum);
+          this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
+          this.formProcessingService.captureDesiredInDynamicForm.next(false);
+        }
+      });
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      this.payLoad = JSON.stringify(this.form.getRawValue());
+      console.log("processForm clicked");
+      // this.payLoad = JSON.stringify(this.form.getRawValue());
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questions, this.threadNum);
       this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
+      this.formProcessingService.formSubmitted.next(true);
     }
+
+    // propagateCaptureOfFormResults(){
+    //     this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
+    // }
+
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true, true);
       let baseKey: string = question.key.split(/\d+/)[0];
@@ -55,7 +71,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       previousQuestionModified = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(previousQuestionModified, false);
       questionArray[index] = previousQuestionModified;
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, [newQuestionToBeAdded], index);
-      this.payLoad = JSON.stringify(this.form.getRawValue());
+      // this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadNum);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);

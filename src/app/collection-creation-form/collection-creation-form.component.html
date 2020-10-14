@@ -4,15 +4,15 @@
       <mat-step id="step1">
         <app-dynamic-form [configOptions]="localCollectionConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
         <div>
-          <button mat-raised-button color="primary" matStepperPrevious>Back</button>
-          <button mat-raised-button color="primary" matStepperNext>Next</button>
+          <!-- <button mat-raised-button color="primary" matStepperPrevious>Back</button> -->
+          <button mat-raised-button color="primary" matStepperNext (click)="saveProgress()">Next</button>
         </div>
       </mat-step>
       <mat-step id="step2">
         <app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
         <div>
           <button mat-raised-button color="primary" matStepperPrevious>Back</button>
-          <button mat-raised-button color="primary" matStepperNext>Next</button>
+          <!-- <button mat-raised-button color="primary" matStepperNext>Next</button> -->
         </div>
       </mat-step>
     </mat-horizontal-stepper>

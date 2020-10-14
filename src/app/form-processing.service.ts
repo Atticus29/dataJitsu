@@ -12,25 +12,40 @@ export class FormProcessingService {
   public formThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();
   public questionThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();
   public questionThreadCounter: BehaviorSubject<number> = new BehaviorSubject(null);
+  public formResultsThreadCounter: BehaviorSubject<number> = new BehaviorSubject(null);
+  public captureDesiredInDynamicForm: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
   constructor() { }
 
   captureFormResultsInThread(formResults: any, threadNum: number){
+    // console.log("captureFormResultsInThread entered");
     if(this.formThread.length < threadNum){
       for(let i = 0; i<threadNum-this.formThread.length; i++){
         this.formThread.push(new BehaviorSubject<any>(null));
+        this.formResultsThreadCounter.next(threadNum);
       }
     }
     this.formThread[threadNum-1].next(formResults);
+    // console.log("this.formThread[threadNum-1] is:");
+    // console.log(this.formThread[threadNum-1]);
   }
 
   captureQuestionArrayOfCurrentFormInThread(newValue:any, threadNum: number){
+    // console.log("captureQuestionArrayOfCurrentFormInThread entered");
     if(this.questionThread.length < threadNum){
       for(let i = 0; i<threadNum-this.questionThread.length; i++){
+        // console.log("previous this.questionThread size was: " + this.questionThread.length);
         this.questionThread.push(new BehaviorSubject<any>(null));
+        // console.log("new this.questionThread size is: " + this.questionThread.length);
         this.questionThreadCounter.next(threadNum);
       }
     }
+    // console.log("threadNum-1 is: " + (threadNum-1));
+    // console.log("newValue is ");
+    // console.log(newValue);
+    // console.log("this.questionThread is:");
+    // console.log(this.questionThread);
     this.questionThread[threadNum-1].next(newValue);
   }
 
