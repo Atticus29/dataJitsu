@@ -19,7 +19,8 @@ export class QuestionService{
     indentThisQuestion: false,
     placeHolder: 'E.g., Pyrenean Ibex Behavior Videos or Biology 101 Course Videos',
     type: 'text',
-    order: 1
+    order: 1,
+    submitAfterThisQuestion: false
   });
   private categoryNameQuestion: TextQuestion = new TextQuestion({
     key: 'categoryName',
@@ -34,7 +35,8 @@ export class QuestionService{
     indentThisQuestion: false,
     placeHolder: 'E.g., Mating Behavior or Chapter Section',
     type: 'text',
-    order: 2
+    order: 2,
+    submitAfterThisQuestion: false
   });
   private collectionItemQuestion: TextQuestion = new TextQuestion({
     key: 'itemName',
@@ -49,7 +51,8 @@ export class QuestionService{
     indentThisQuestion: true,
     placeHolder: 'E.g., Mating display or Emergent Properties of Water',
     type: 'text',
-    order: 3
+    order: 3,
+    submitAfterThisQuestion: false
   });
   private labelQuestion: TextQuestion = new TextQuestion({
     key: 'labelQuestionName',
@@ -64,7 +67,8 @@ export class QuestionService{
     indentThisQuestion: false,
     placeHolder: 'E.g., Video URL',
     type: 'text',
-    order: 1
+    order: 1,
+    submitAfterThisQuestion: false
   });
   private genericLabelQuestion: TextQuestion = new TextQuestion({
     key: 'genericLabelQuestionName',
@@ -79,7 +83,8 @@ export class QuestionService{
     indentThisQuestion: false,
     placeHolder: 'E.g., Video URL',
     type: 'text',
-    order: 1
+    order: 1,
+    submitAfterThisQuestion: false
   });
   private inputTypeQuestion: DropdownQuestion = new DropdownQuestion({
     key: 'inputTypeQuestionName',
@@ -94,7 +99,8 @@ export class QuestionService{
     indentThisQuestion: false,
     type: 'dropdown',
     order: 2,
-    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}]
+    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    submitAfterThisQuestion: true
   });
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
     key: 'inputTypeQuestionName',
@@ -108,7 +114,8 @@ export class QuestionService{
     indentThisQuestion: true,
     type: 'dropdown',
     order: 2,
-    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}]
+    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    submitAfterThisQuestion: true
   });
 
   getNewCollectionQuestions(){

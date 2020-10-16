@@ -16,6 +16,7 @@ export class FormQuestionBase<T> {
   placeHolder: string;
   order: number;
   controlType: string;
+  submitAfterThisQuestion: boolean;
   type: string;
   options: {key: string, value: string}[];
 
@@ -37,6 +38,7 @@ export class FormQuestionBase<T> {
       placeHolder?: string,
       order?: number,
       controlType?: string,
+      submitAfterThisQuestion?: boolean,
       type?: string
     } = {}) {
     this.value = options.value;
@@ -56,10 +58,11 @@ export class FormQuestionBase<T> {
     this.placeHolder = options.placeHolder || '';
     this.order = options.order === undefined ? 1 : options.order;
     this.controlType = options.controlType || '';
+    this.submitAfterThisQuestion = options.submitAfterThisQuestion === undefined? false: options.submitAfterThisQuestion;
     this.type = options.type || '';
   }
 
-  static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean): FormQuestionBase<string>{
+  static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
     // console.log("entered makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs");
     // console.log("oldQuestion is: ");
     // console.log(oldQuestion);
@@ -82,6 +85,7 @@ export class FormQuestionBase<T> {
       placeHolder: oldQuestion.placeHolder,
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
+      submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
     });
   }
@@ -108,6 +112,7 @@ export class FormQuestionBase<T> {
       placeHolder: oldQuestion.placeHolder,
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
       type: oldQuestion.type,
     });
   }
@@ -134,6 +139,7 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order + 1,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
     });
   }
 
@@ -159,6 +165,7 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
     });
   }
 
@@ -184,6 +191,7 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
     });
   }
 
