@@ -45,7 +45,6 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
   ngAfterViewInit(){
     this.formProcessingService.formEntriesValid.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formEntriesValid =>{
-      console.log("localValid about to be assigned: " + formEntriesValid);
       this.localValid = formEntriesValid;
     });
     let stepNum = this.stepper?this.stepper.selectedIndex:0;
