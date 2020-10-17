@@ -33,6 +33,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private localStop: boolean = false; //TODO faster than the observable, which seems to not be catching up with its own stop? Making it not useful??
   // private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
   private currentStepInStepper: Observable<number>;
+  private localValid: boolean = false;
 
   constructor(private questionService: QuestionService, private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService, public snackBar: MatSnackBar) {
     super();
@@ -43,6 +44,10 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     this.formProcessingService.setAllQuestionThreadsTo("Stop");
   }
   ngAfterViewInit(){
+    this.formProcessingService.formEntriesValid.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formEntriesValid =>{
+      console.log("localValid about to be assigned: " + formEntriesValid);
+      this.localValid = formEntriesValid;
+    });
     let stepNum = this.stepper?this.stepper.selectedIndex:0;
 
     //change questions being displayed --------
@@ -67,6 +72,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
               console.log("combinedResultsAndChecker is:");
               console.log(combinedResultsAndChecker);
               let formSubmitted = combinedResultsAndChecker[1];
+              console.log("formSubmitted is: " + formSubmitted);
               let combinedResults = combinedResultsAndChecker[0];
               let formResults = combinedResults[0];
               let currentFormQuestions = combinedResults[1];

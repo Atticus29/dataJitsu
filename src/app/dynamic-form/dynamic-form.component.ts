@@ -29,6 +29,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
+      this.trackFormValidationAndEmit();
       this.threadNum = this.configOptions.getThreadNum();
       if(this.formProcessingService.questionThread.length>0){
         this.formProcessingService.questionThread[this.threadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
@@ -48,6 +49,49 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           this.formProcessingService.captureDesiredInDynamicForm.next(false);
         }
       });
+    }
+
+    trackFormValidationAndEmit(){
+      this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(valueChanges =>{
+        let objKeys: string[] = Object.keys(valueChanges);
+        console.log("objKeys are: ");
+        console.log(objKeys);
+        let objVals: string[] = Object.values(valueChanges);
+        let givenValidValues: number[] = objVals.map(entry=>{if(entry){return 1;}else{return 0;}});
+        console.log("givenValidValues are: ");
+        console.log(givenValidValues);
+        if(this.questions){
+          console.log("this.questions are:");
+          console.log(this.questions);
+          let questionKeys: string[] = this.questions.map(entry =>{
+            return entry.key;
+          });
+          console.log("questionKeys are:");
+          console.log(questionKeys);
+          let requireds: number[] = this.questions.map(entry=>{ if(entry.required){return 1;} else{return 0;}});
+          console.log("requireds are: ");
+          console.log(requireds);
+          let counter: number = 0;
+          for(let i=0; i<requireds.length; i++){
+            counter ++;
+            if(requireds[i]>givenValidValues[objKeys.indexOf(questionKeys[i])]){ // objKeys.indexOf(questionKeys[i])
+              console.log("mismatch at index: " + i);
+              console.log("requireds[i]: " +requireds[i]);
+              console.log("givenValidValues[i]: " + givenValidValues[i]);
+                this.formProcessingService.formEntriesValid.next(false);
+                counter --; //deduct counter because there's a mismatch
+            }
+          }
+          if(counter == requireds.length){
+            console.log("no mismatches");
+            this.formProcessingService.formEntriesValid.next(true);
+          } //everything that's required had values, so all valid
+        }
+      });
+    }
+
+    getSum(total, num){
+      return total + num;
     }
 
     processForm(questions: FormQuestionBase<string>[]){
@@ -102,7 +146,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
             populatedFormControl.setValue(payLoadValues[i]);
           }
+          console.log("got to set control");
           form.setControl(payLoadKeys[i], populatedFormControl);
+          this.trackFormValidationAndEmit();
         }else{
         }
       }

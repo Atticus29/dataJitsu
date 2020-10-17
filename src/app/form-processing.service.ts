@@ -15,6 +15,7 @@ export class FormProcessingService {
   public formResultsThreadCounter: BehaviorSubject<number> = new BehaviorSubject(null);
   public captureDesiredInDynamicForm: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public formEntriesValid: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
