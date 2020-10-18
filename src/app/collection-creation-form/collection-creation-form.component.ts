@@ -64,41 +64,50 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     //-------------------------------------------
 
     //when form is submitted --------------------
-        this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
-          let formThread = this.formProcessingService.formThread;
-          // console.log("formThread is:");
-          // console.log(formThread);
-          if(formThread.length>0){
-            let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
-            let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
-            formResultsWithLatestSubmissionConfirmation.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResultsAndChecker =>{
-              console.log("combinedResultsAndChecker is:");
-              console.log(combinedResultsAndChecker);
-              let formSubmitted = combinedResultsAndChecker[1];
-              console.log("has form been submitted?: " + formSubmitted);
-              let combinedResults = combinedResultsAndChecker[0];
-              let formResults = combinedResults[0];
-              let currentFormQuestions = combinedResults[1];
-              if(formSubmitted && formResults){
-                console.log("form has been submitted and there are form results");
-                if(formResults !== "Stop"){
-                  if(formResults.collectionName){
-                    if(currentFormQuestions){
-                      if(currentFormQuestions !== "Stop"){
-                        let newCollection = Collection.fromForm(formResults, currentFormQuestions);
-                        if(this.localUser && this.localUser.id){
-                          this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
-                            if(additionStatus){
-                              this.openSnackBar(constants.collectionAddedNotification);
-                            }else{
-                              this.openSnackBar(constants.collectionAlreadyExistsNotification);
+        this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
+          console.log("isFormSubmitted is: " + isFormSubmitted);
+          if(isFormSubmitted){
+            this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
+              let formThread = this.formProcessingService.formThread;
+              // console.log("formThread is:");
+              // console.log(formThread);
+              if(formThread.length>0){
+                let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
+                // let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
+                formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+                  // console.log("combinedResultsAndChecker is:");
+                  // console.log(combinedResultsAndChecker);
+                  // let formSubmitted = combinedResultsAndChecker[1];
+                  // console.log("has form been submitted?: " + formSubmitted);
+                  // let combinedResults = combinedResultsAndChecker[0];
+                  let formResults = combinedResults[0];
+                  console.log("formResults are:");
+                  console.log(formResults);
+                  let currentFormQuestions = combinedResults[1];
+                  console.log("currentFormQuestions are:");
+                  console.log(currentFormQuestions);
+                  if(formResults){ //formSubmitted &&
+                    console.log("form has been submitted and there are form results");
+                    if(formResults !== "Stop"){
+                      if(formResults.collectionName){
+                        if(currentFormQuestions){
+                          if(currentFormQuestions !== "Stop"){
+                            let newCollection = Collection.fromForm(formResults, currentFormQuestions);
+                            if(this.localUser && this.localUser.id){
+                              this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                                if(additionStatus){
+                                  this.openSnackBar(constants.collectionAddedNotification);
+                                }else{
+                                  this.openSnackBar(constants.collectionAlreadyExistsNotification);
+                                }
+                              });
                             }
-                          });
+                          }
                         }
                       }
                     }
                   }
-                }
+                });
               }
             });
           }

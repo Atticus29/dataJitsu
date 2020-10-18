@@ -1,6 +1,7 @@
 # Known issues
 
 ## Highly Urgent
+- [ ] Collection creation sometimes doubles up on creation (find circumstances and fix)
 - [ ] FAQ looks terrible
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"
