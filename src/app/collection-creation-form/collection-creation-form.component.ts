@@ -30,8 +30,6 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private localCollectionConfigOptions: DynamicFormConfiguration;
   private localEntryDetailConfigOptions: DynamicFormConfiguration;
   private localUser: any;
-  private localStop: boolean = false; //TODO faster than the observable, which seems to not be catching up with its own stop? Making it not useful??
-  // private localCategoryWithItemsQuestions: Observable<FormQuestionBase<any>[]>;
   private currentStepInStepper: Observable<number>;
   private localValid: boolean = false;
 
@@ -56,22 +54,28 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       if(currentQuestionThreadNum >0){
         // console.log("currentQuestionThreadNum is: "+ currentQuestionThreadNum);
         this.formProcessingService.questionThread[currentQuestionThreadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-          // console.log("newQuestions emits");
-          this.localCollectionQuestions = newQuestions;
+          // console.log("newQuestions emits the following new questions");
+          // console.log(newQuestions);
+          if(newQuestions){
+            this.localCollectionQuestions = newQuestions;
+            //TODO do something here that captures new formControls?
+          }
         });
     //-------------------------------------------
+
+    //when form is submitted --------------------
         this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
           let formThread = this.formProcessingService.formThread;
           // console.log("formThread is:");
           // console.log(formThread);
           if(formThread.length>0){
             let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
-            let formResultsWithLatestSubmissionConfirmation = formResultObservableWithLatestQuestions.pipe(withLatestFrom(this.formProcessingService.formSubmitted));
+            let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
             formResultsWithLatestSubmissionConfirmation.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResultsAndChecker =>{
               console.log("combinedResultsAndChecker is:");
               console.log(combinedResultsAndChecker);
               let formSubmitted = combinedResultsAndChecker[1];
-              console.log("formSubmitted is: " + formSubmitted);
+              console.log("has form been submitted?: " + formSubmitted);
               let combinedResults = combinedResultsAndChecker[0];
               let formResults = combinedResults[0];
               let currentFormQuestions = combinedResults[1];
@@ -79,7 +83,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                 console.log("form has been submitted and there are form results");
                 if(formResults !== "Stop"){
                   if(formResults.collectionName){
-                    if(currentFormQuestions){ //&& !this.localStop
+                    if(currentFormQuestions){
                       if(currentFormQuestions !== "Stop"){
                         let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                         if(this.localUser && this.localUser.id){
@@ -99,6 +103,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
             });
           }
         });
+        //----end form submission doing things
+
       }
     });
   }

@@ -7,7 +7,7 @@ import { FormQuestionBase } from './formQuestionBase.model';
   providedIn: 'root'
 })
 export class FormProcessingService {
-  public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
+  // public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
   public formThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();
   public questionThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();

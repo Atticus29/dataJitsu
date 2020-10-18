@@ -31,11 +31,16 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.form = this.qcs.toFormGroup(this.questions);
       this.trackFormValidationAndEmit();
       this.threadNum = this.configOptions.getThreadNum();
+      console.log("this.threadNum is: " + this.threadNum);
       if(this.formProcessingService.questionThread.length>0){
         this.formProcessingService.questionThread[this.threadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
+          console.log("questionArrayOfForm is:");
+          console.log(questionArrayOfForm);
           if(questionArrayOfForm){
             if(questionArrayOfForm!== "Stop"){
+              console.log("questions assignment 1");
               this.questions = questionArrayOfForm;
+              this.repopulateFormWithPreviousPayload(this.form, {}, questionArrayOfForm);
             }
           }
         });
@@ -75,7 +80,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      console.log("processForm clicked");
+      console.log("processForm clicked hi hello");
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questions, this.threadNum);
       this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
       this.formProcessingService.formSubmitted.next(true);
