@@ -47,8 +47,19 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       }
       this.formProcessingService.captureDesiredInDynamicForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(captureFormDesired =>{
         if(captureFormDesired){
+          console.log("this.questions when next button clicked is:");
+          console.log(this.questions);
+          console.log("this.threadNum when next button clicked is: " + this.threadNum);
+          console.log("this.form.getRawValue() when next button clicked is:");
+          console.log(this.form);
+          console.log(this.form.getRawValue());
           this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(this.questions, this.threadNum);
           this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
+          console.log("form before:");
+          console.log(this.form);
+          this.form = this.qcs.toFormGroup(this.questions);
+          console.log("form after");
+          console.log(this.form);
           this.formProcessingService.captureDesiredInDynamicForm.next(false);
         }
       });
@@ -87,6 +98,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number, submitAfterThisQuestion: boolean){
+      console.log("addAnotherQuestion entered");
+      console.log("question is: ")
+      console.log(question);
+      console.log("questionArray is: ");
+      console.log(questionArray);
+      console.log("index is: " + index);
+      console.log("submitAfterThisQuestion is: " + submitAfterThisQuestion);
       let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true, true, submitAfterThisQuestion); //TODO last argument true??
       let baseKey: string = question.key.split(/\d+/)[0];
       let newIndex: number = FormQuestionBase.calculateCurrentHighestIndexWithThisBaseKey(baseKey,questionArray) + 1;
@@ -116,18 +134,37 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
+      // console.log("repopulateFormWithPreviousPayload entered");
+      // console.log("form is: ");
+      // console.log(form);
+      // console.log("payLoad is:");
+      // console.log(payLoad);
+      // console.log("questionArray is:");
+      // console.log(questionArray);
       let payLoadKeys: string[] = Object.keys(payLoad);
+      console.log("payLoadKeys is:");
+      console.log(payLoadKeys);
       let payLoadValues: string[] = Object.values(payLoad);
+      console.log("got here 1");
       for(let i=0; i<payLoadKeys.length; i++){
+        console.log("got here 2");
         if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
+          console.log("got here 3");
           let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
           let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
           new FormControl(payLoadValues[i] || '');
+          console.log("got here 4");
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
             populatedFormControl.setValue(payLoadValues[i]);
+            console.log("got here 5");
           }
           console.log("got to set control");
+          console.log("before set control");
+          console.log(form);
           form.setControl(payLoadKeys[i], populatedFormControl);
+          console.log("after");
+          console.log(form);
+          this.form.setControl(payLoadKeys[i], populatedFormControl);
           this.trackFormValidationAndEmit();
         }else{
         }

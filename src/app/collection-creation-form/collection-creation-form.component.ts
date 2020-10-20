@@ -65,7 +65,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
 
     //when form is submitted --------------------
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
-          console.log("isFormSubmitted is: " + isFormSubmitted);
+          // console.log("isFormSubmitted is: " + isFormSubmitted);
           if(isFormSubmitted){
             this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
               let formThread = this.formProcessingService.formThread;
