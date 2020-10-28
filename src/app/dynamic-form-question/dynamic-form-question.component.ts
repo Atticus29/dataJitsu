@@ -62,6 +62,27 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
         });
       }
     });
+
+    // this.fps.captureDesiredInDynamicForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(captureFormDesired =>{
+    //   if(captureFormDesired){
+    //     console.log("this.question when next button clicked is:");
+    //     console.log(this.question);
+    //     console.log("this.threadNum when next button clicked is: " + this.threadNum);
+    //     console.log("this.form.getRawValue() when next button clicked is:");
+    //     console.log(this.form);
+    //     console.log(this.form.getRawValue());
+    //     this.fps.captureQuestionArrayOfCurrentFormInThread(this.questions, this.threadNum);
+    //     this.fps.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
+    //     console.log("form before:");
+    //     console.log(this.form);
+    //     this.form = this.qcs.toFormGroup(this.questions);
+    //     console.log("form after");
+    //     console.log(this.form);
+    //     this.fps.captureDesiredInDynamicForm.next(false);
+    //   }
+    // });
+
+    
   }
 
   repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
@@ -90,36 +111,32 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
         console.log("after");
         console.log(form);
         this.form.setControl(payLoadKeys[i], populatedFormControl);
-        // this.trackFormValidationAndEmit();
+        this.trackFormValidationAndEmit();
       }else{
       }
     }
   }
 
-  // trackFormValidationAndEmit(){
-  //   console.log("trackFormValidationAndEmit in dynamic-form-QUESTION");
-  //   this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(valueChanges =>{
-  //     let objKeys: string[] = Object.keys(valueChanges);
-  //     let objVals: string[] = Object.values(valueChanges);
-  //     let givenValidValues: number[] = objVals.map(entry=>{if(entry){return 1;}else{return 0;}});
-  //     if(this.questions){
-  //       let questionKeys: string[] = this.questions.map(entry =>{
-  //         return entry.key;
-  //       });
-  //       let requireds: number[] = this.questions.map(entry=>{ if(entry.required){return 1;} else{return 0;}});
-  //       let counter: number = 0;
-  //       for(let i=0; i<requireds.length; i++){
-  //         counter ++;
-  //         if(requireds[i]>givenValidValues[objKeys.indexOf(questionKeys[i])]){ //because as soon as new form fields are added, question keys and object keys are no longer paralelle
-  //             this.fps.formEntriesValid.next(false);
-  //             counter --; //deduct counter because there's a mismatch
-  //         }
-  //       }
-  //       if(counter == requireds.length){
-  //         this.fps.formEntriesValid.next(true); //everything that's required had values, so all valid
-  //       }
-  //     }
-  //   });
-  // }
+  trackFormValidationAndEmit(){
+    console.log("trackFormValidationAndEmit in dynamic-form-QUESTION");
+    this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(valueChanges =>{
+      let objKeys: string[] = Object.keys(valueChanges);
+      let objVals: string[] = Object.values(valueChanges);
+      let givenValidValues: number[] = objVals.map(entry=>{if(entry){return 1;}else{return 0;}});
+      if(this.question){
+        let questionKeys: string = this.question.key;
+        let requireds: number = this.question.required? 1:0;
+        let counter: number = 0;
+        counter ++;
+        if(requireds>givenValidValues[objKeys.indexOf(questionKeys)]){ //because as soon as new form fields are added, question keys and object keys are no longer paralelle
+            this.fps.formEntriesValid.next(false);
+            counter --; //deduct counter because there's a mismatch
+        }
+        if(counter == 1){
+          this.fps.formEntriesValid.next(true); //everything that's required had values, so all valid
+        }
+      }
+    });
+  }
 
 }

@@ -67,6 +67,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     trackFormValidationAndEmit(){
       this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(valueChanges =>{
+        console.log("valueChanges in trackFormValidationAndEmit happens:");
+        console.log(valueChanges);
         let objKeys: string[] = Object.keys(valueChanges);
         let objVals: string[] = Object.values(valueChanges);
         let givenValidValues: number[] = objVals.map(entry=>{if(entry){return 1;}else{return 0;}});
@@ -78,7 +80,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           let counter: number = 0;
           for(let i=0; i<requireds.length; i++){
             counter ++;
-            if(requireds[i]>givenValidValues[objKeys.indexOf(questionKeys[i])]){ //because as soon as new form fields are added, question keys and object keys are no longer paralelle
+            if(requireds[i]>givenValidValues[objKeys.indexOf(questionKeys[i])]){ //because as soon as new form fields are added, question keys and object keys are no longer parallele
                 this.formProcessingService.formEntriesValid.next(false);
                 counter --; //deduct counter because there's a mismatch
             }
@@ -117,7 +119,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let objectPayLoad = this.form.getRawValue();
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadNum);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
+      console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
+      console.log(this.form.getRawValue()[question.key]);
     }
     addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       let lastSiblingIndex = question.findLastSiblingQuestionIndex(question, questionArray, index);
@@ -130,7 +134,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let objectPayLoad = this.form.getRawValue();
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadNum);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
+      console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
+      console.log(this.form.getRawValue()[question.key]);
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
@@ -142,28 +148,28 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // console.log("questionArray is:");
       // console.log(questionArray);
       let payLoadKeys: string[] = Object.keys(payLoad);
-      console.log("payLoadKeys is:");
-      console.log(payLoadKeys);
+      // console.log("payLoadKeys is:");
+      // console.log(payLoadKeys);
       let payLoadValues: string[] = Object.values(payLoad);
-      console.log("got here 1");
+      // console.log("got here 1");
       for(let i=0; i<payLoadKeys.length; i++){
-        console.log("got here 2");
+        // console.log("got here 2");
         if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
-          console.log("got here 3");
+          // console.log("got here 3");
           let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
           let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
           new FormControl(payLoadValues[i] || '');
-          console.log("got here 4");
+          // console.log("got here 4");
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
             populatedFormControl.setValue(payLoadValues[i]);
-            console.log("got here 5");
+            // console.log("got here 5");
           }
-          console.log("got to set control");
-          console.log("before set control");
-          console.log(form);
+          // console.log("got to set control");
+          // console.log("before set control");
+          // console.log(form);
           form.setControl(payLoadKeys[i], populatedFormControl);
-          console.log("after");
-          console.log(form);
+          // console.log("after");
+          // console.log(form);
           this.form.setControl(payLoadKeys[i], populatedFormControl);
           this.trackFormValidationAndEmit();
         }else{
