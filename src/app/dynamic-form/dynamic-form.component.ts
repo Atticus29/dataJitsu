@@ -31,14 +31,14 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.form = this.qcs.toFormGroup(this.questions);
       this.trackFormValidationAndEmit();
       this.threadNum = this.configOptions.getThreadNum();
-      console.log("this.threadNum is: " + this.threadNum);
+      // console.log("this.threadNum is: " + this.threadNum);
       if(this.formProcessingService.questionThread.length>0){
         this.formProcessingService.questionThread[this.threadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-          console.log("questionArrayOfForm is:");
-          console.log(questionArrayOfForm);
+          // console.log("questionArrayOfForm is:");
+          // console.log(questionArrayOfForm);
           if(questionArrayOfForm){
             if(questionArrayOfForm!== "Stop"){
-              console.log("questions assignment 1");
+              // console.log("questions assignment 1");
               this.questions = questionArrayOfForm;
               this.repopulateFormWithPreviousPayload(this.form, {}, questionArrayOfForm);
             }
@@ -47,19 +47,19 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       }
       this.formProcessingService.captureDesiredInDynamicForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(captureFormDesired =>{
         if(captureFormDesired){
-          console.log("this.questions when next button clicked is:");
-          console.log(this.questions);
-          console.log("this.threadNum when next button clicked is: " + this.threadNum);
-          console.log("this.form.getRawValue() when next button clicked is:");
-          console.log(this.form);
-          console.log(this.form.getRawValue());
+          // console.log("this.questions when next button clicked is:");
+          // console.log(this.questions);
+          // console.log("this.threadNum when next button clicked is: " + this.threadNum);
+          // console.log("this.form.getRawValue() when next button clicked is:");
+          // console.log(this.form);
+          // console.log(this.form.getRawValue());
           this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(this.questions, this.threadNum);
           this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
-          console.log("form before:");
-          console.log(this.form);
+          // console.log("form before:");
+          // console.log(this.form);
           this.form = this.qcs.toFormGroup(this.questions);
-          console.log("form after");
-          console.log(this.form);
+          // console.log("form after");
+          // console.log(this.form);
           this.formProcessingService.captureDesiredInDynamicForm.next(false);
         }
       });
@@ -93,20 +93,20 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      console.log("processForm clicked hi hello");
+      // console.log("processForm clicked hi hello");
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questions, this.threadNum);
       this.formProcessingService.captureFormResultsInThread(this.form.getRawValue(), this.threadNum);
       this.formProcessingService.formSubmitted.next(true);
     }
 
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number, submitAfterThisQuestion: boolean){
-      console.log("addAnotherQuestion entered");
-      console.log("question is: ")
-      console.log(question);
-      console.log("questionArray is: ");
-      console.log(questionArray);
-      console.log("index is: " + index);
-      console.log("submitAfterThisQuestion is: " + submitAfterThisQuestion);
+      // console.log("addAnotherQuestion entered");
+      // console.log("question is: ")
+      // console.log(question);
+      // console.log("questionArray is: ");
+      // console.log(questionArray);
+      // console.log("index is: " + index);
+      // console.log("submitAfterThisQuestion is: " + submitAfterThisQuestion);
       let newQuestionToBeAdded: FormQuestionBase<string> = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, true, true, submitAfterThisQuestion); //TODO last argument true??
       let baseKey: string = question.key.split(/\d+/)[0];
       let newIndex: number = FormQuestionBase.calculateCurrentHighestIndexWithThisBaseKey(baseKey,questionArray) + 1;
@@ -134,9 +134,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let objectPayLoad = this.form.getRawValue();
       this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadNum);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
-      console.log(this.form.getRawValue()[question.key]);
+      // console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
-      console.log(this.form.getRawValue()[question.key]);
+      // console.log(this.form.getRawValue()[question.key]);
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){

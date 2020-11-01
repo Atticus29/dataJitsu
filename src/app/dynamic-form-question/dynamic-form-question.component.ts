@@ -47,15 +47,15 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
     this.fps.questionThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionThreadCount =>{
       if(questionThreadCount>0){
         this.fps.questionThread[questionThreadCount-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-          console.log("questionArrayOfForm in dynamic-for-QUESTION component is:");
-          console.log(questionArrayOfForm);
+          // console.log("questionArrayOfForm in dynamic-for-QUESTION component is:");
+          // console.log(questionArrayOfForm);
           if(questionArrayOfForm){
             if(questionArrayOfForm!== "Stop"){
               let objectPayLoad = this.form.getRawValue();
               // this.fps.captureQuestionArrayOfCurrentFormInThread(questionArrayOfForm, questionThreadCount);
               this.form = this.qcs.toFormGroup(questionArrayOfForm);
-              console.log("objectPayLoad in dynamic-form-QUESTION component is: ");
-              console.log(objectPayLoad);
+              // console.log("objectPayLoad in dynamic-form-QUESTION component is: ");
+              // console.log(objectPayLoad);
               this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayOfForm);
             }
           }
@@ -82,34 +82,34 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
     //   }
     // });
 
-    
+
   }
 
   repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
-    console.log("repopulateFormWithPreviousPayload  in dynamic-form-QUESTION");
+    // console.log("repopulateFormWithPreviousPayload  in dynamic-form-QUESTION");
     let payLoadKeys: string[] = Object.keys(payLoad);
-    console.log("payLoadKeys is:");
-    console.log(payLoadKeys);
+    // console.log("payLoadKeys is:");
+    // console.log(payLoadKeys);
     let payLoadValues: string[] = Object.values(payLoad);
-    console.log("got here 1");
+    // console.log("got here 1");
     for(let i=0; i<payLoadKeys.length; i++){
-      console.log("got here 2");
+      // console.log("got here 2");
       if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
-        console.log("got here 3");
+        // console.log("got here 3");
         let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
         let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
         new FormControl(payLoadValues[i] || '');
-        console.log("got here 4");
+        // console.log("got here 4");
         if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
           populatedFormControl.setValue(payLoadValues[i]);
-          console.log("got here 5");
+          // console.log("got here 5");
         }
-        console.log("got to set control");
-        console.log("before set control");
-        console.log(form);
+        // console.log("got to set control");
+        // console.log("before set control");
+        // console.log(form);
         form.setControl(payLoadKeys[i], populatedFormControl);
-        console.log("after");
-        console.log(form);
+        // console.log("after");
+        // console.log(form);
         this.form.setControl(payLoadKeys[i], populatedFormControl);
         this.trackFormValidationAndEmit();
       }else{
@@ -118,8 +118,11 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   trackFormValidationAndEmit(){
-    console.log("trackFormValidationAndEmit in dynamic-form-QUESTION");
+    // console.log("trackFormValidationAndEmit in dynamic-form-QUESTION");
     this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(valueChanges =>{
+      // console.log("form value changes in dynamic form QUESTION");
+      // console.log("valueChanges are:");
+      // console.log(valueChanges);
       let objKeys: string[] = Object.keys(valueChanges);
       let objVals: string[] = Object.values(valueChanges);
       let givenValidValues: number[] = objVals.map(entry=>{if(entry){return 1;}else{return 0;}});
@@ -133,6 +136,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
             counter --; //deduct counter because there's a mismatch
         }
         if(counter == 1){
+          // console.log("all is valid...");
           this.fps.formEntriesValid.next(true); //everything that's required had values, so all valid
         }
       }

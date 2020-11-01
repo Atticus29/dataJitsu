@@ -1,23 +1,21 @@
 # Known issues
 
 ## Highly Urgent
-- [ ] Collection creation sometimes doubles up on creation (find circumstances and fix)
-- [ ] FAQ looks terrible
-- [ ] Feedback button is janky (in collections branch)
-- [ ] I have to click on dropdown for "add another question for your users" button to "work"
-  - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
-- [ ] Adding collection on first stepper makes that stepper appear when you click "next"
-- [ ] Deleting a collection seems to display "collection added" snackbar
-- [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
-- [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
+<!-- - [ ] Collection creation sometimes doubles up on creation (find circumstances and fix) -->
+<!-- - [ ] Feedback button is janky (in collections branch) -->
+<!-- - [ ] I have to click on dropdown for "add another question for your users" button to "work" -->
+  <!-- - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections -->
+<!-- - [ ] Adding collection on first stepper makes that stepper appear when you click "next" -->
+<!-- - [ ] Deleting a collection seems to display "collection added" snackbar -->
+<!-- - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database. -->
+<!-- - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database -->
 
 ### Minorly Urgent
 
-- [ ] Rating the video starts the video
-- [ ] Video is full screen
-- [ ] Video automatically starts upon page view
-- [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
-- [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
+<!-- - [ ] Rating the video starts the video -->
+<!-- - [ ] Video is full screen -->
+<!-- - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db -->
+<!-- - [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related) -->
 - [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
 - [ ] Feedback button
   - [ ] Submitting specific feedback in Safari sometimes freezes upon submission
@@ -82,6 +80,8 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+- [x] Video automatically starts upon page view
+- [x] FAQ looks terrible
 - [x] Tests pass in isolation but not together (need something to emit "Stop" whenever I leave the page)
 - [x] When you add a new item, the snackbar fires off
 - [x] Collection added and collection already exists snackbars aren't displaying when they are supposed to
