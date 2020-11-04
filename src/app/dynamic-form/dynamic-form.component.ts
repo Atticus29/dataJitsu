@@ -21,6 +21,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';
+    private localButtonDisplayName: String;
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 
@@ -30,6 +31,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
+      this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // console.log("gridLengthsForButtons are: " + this.gridLengthsForButtons);
       // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
@@ -57,6 +59,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.payLoad = JSON.stringify(this.form.getRawValue());
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
       this.formProcessingService.captureFormResults(this.form.getRawValue());
+      this.formProcessingService.nextButtonClicked.next(true);
     }
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       // console.log("addAnotherQuestion called");

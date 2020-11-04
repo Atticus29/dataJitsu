@@ -5,13 +5,17 @@ export class DynamicFormConfiguration {
   // private includeSubmitButton: boolean, private attachToPreviousFormGroupStatus: boolean,
   // private gridLengthsForInput: number = 12;
   // private gridLengthsForButtons: number = 12;
-  constructor(private originalQuestionGroup: FormQuestionBase<string>[]) { //, private gridLengthsForInput: number, private gridLengthsForButtons: number
+  constructor(private originalQuestionGroup: FormQuestionBase<string>[], private submitButtonDisplay: String) { //, private gridLengthsForInput: number, private gridLengthsForButtons: number
     // this.gridLengthsForInput = gridLengthsForInput;
     // this.gridLengthsForButtons = gridLengthsForButtons;
    }
 
    getOriginalQuestionGroup(){
      return this.originalQuestionGroup;
+   }
+
+   getSubmitButtonDisplay(){
+     return this.submitButtonDisplay;
    }
 
    // getGridLengthsForInput(): number{

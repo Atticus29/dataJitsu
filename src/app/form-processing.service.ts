@@ -9,6 +9,8 @@ import { FormQuestionBase } from './formQuestionBase.model';
 export class FormProcessingService {
   public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
+  public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
