@@ -9,13 +9,8 @@ import { FormQuestionBase } from './formQuestionBase.model';
 export class FormProcessingService {
   // public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
-  public formThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();
-  public questionThread: BehaviorSubject<any>[] = new Array<BehaviorSubject<any>>();
-  public questionThreadCounter: BehaviorSubject<number> = new BehaviorSubject(null);
-  public formResultsThreadCounter: BehaviorSubject<number> = new BehaviorSubject(null);
-  public captureDesiredInDynamicForm: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  public formEntriesValid: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 

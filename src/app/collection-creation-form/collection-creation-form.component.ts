@@ -119,6 +119,13 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnInit() {
+    this.formProcessingService.nextButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(nextButtonClicked=>{
+      console.log("nextButtonClicked in collection-creation form is: " + nextButtonClicked);
+      if(nextButtonClicked){
+
+      }
+    });
+    // console.log("ngOnInit in CollectionCreationFormComponent called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionQuestions =>{
       this.localCollectionQuestions = collectionQuestions;
     });
@@ -126,11 +133,11 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       this.localEntryDetailQuestions = entryQuestions;
     });
     this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults,1);
+      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, "Next");
     });
 
     this.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults,2);
+      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, "Submit");
     });
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){

@@ -5,7 +5,7 @@
         <app-dynamic-form [configOptions]="localCollectionConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
         <div>
           <!-- <button mat-raised-button color="primary" matStepperPrevious>Back</button> -->
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!localValid" (click)="saveProgress()">Next</button>
+          <button mat-raised-button color="primary" matStepperNext>Next</button>
         </div>
       </mat-step>
       <mat-step id="step2">

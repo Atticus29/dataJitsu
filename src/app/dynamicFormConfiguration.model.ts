@@ -5,7 +5,7 @@ export class DynamicFormConfiguration {
   // private includeSubmitButton: boolean, private attachToPreviousFormGroupStatus: boolean,
   // private gridLengthsForInput: number = 12;
   // private gridLengthsForButtons: number = 12;
-  constructor(private originalQuestionGroup: FormQuestionBase<string>[], private threadNum: number) { //, private gridLengthsForInput: number, private gridLengthsForButtons: number
+  constructor(private originalQuestionGroup: FormQuestionBase<string>[], private submitButtonDisplay: String) { //, private gridLengthsForInput: number, private gridLengthsForButtons: number
     // this.gridLengthsForInput = gridLengthsForInput;
     // this.gridLengthsForButtons = gridLengthsForButtons;
    }
@@ -14,8 +14,8 @@ export class DynamicFormConfiguration {
      return this.originalQuestionGroup;
    }
 
-   getThreadNum(): number{
-     return this.threadNum;
+   getSubmitButtonDisplay(){
+     return this.submitButtonDisplay;
    }
 
    // getGridLengthsForInput(): number{
