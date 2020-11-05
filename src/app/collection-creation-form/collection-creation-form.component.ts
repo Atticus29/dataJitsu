@@ -38,24 +38,19 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnDestroy(){
-    this.formProcessingService.setAllFormThreadsTo("Stop");
-    this.formProcessingService.setAllQuestionThreadsTo("Stop");
+    // this.formProcessingService.setAllFormThreadsTo("Stop");
+    // this.formProcessingService.setAllQuestionThreadsTo("Stop");
+    this.formProcessingService.captureFormResults("Stop");
+    this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
   }
   ngAfterViewInit(){
-    this.formProcessingService.formEntriesValid.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formEntriesValid =>{
-      this.localValid = formEntriesValid;
-    });
+    // this.formProcessingService.formEntriesValid.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formEntriesValid =>{
+    //   this.localValid = formEntriesValid;
+    // });
     let stepNum = this.stepper?this.stepper.selectedIndex:0;
 
     //change questions being displayed --------
-    this.formProcessingService.questionThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentQuestionThreadNum =>{
-      // console.log("currentQuestionThreadNum emits. currentQuestionThreadNum is: "+ currentQuestionThreadNum);
-      // this.localCurrentStep = currentQuestionThreadNum;
-      if(currentQuestionThreadNum >0){
-        // console.log("currentQuestionThreadNum is: "+ currentQuestionThreadNum);
-        this.formProcessingService.questionThread[currentQuestionThreadNum-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-          // console.log("newQuestions emits the following new questions");
-          // console.log(newQuestions);
+        this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
           if(newQuestions){
             this.localCollectionQuestions = newQuestions;
             //TODO do something here that captures new formControls?
@@ -64,17 +59,16 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     //-------------------------------------------
 
     //when form is submitted --------------------
+        let self = this;
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
           // console.log("isFormSubmitted is: " + isFormSubmitted);
           if(isFormSubmitted){
-            this.formProcessingService.formResultsThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentFormResultsThreadNum =>{
-              let formThread = this.formProcessingService.formThread;
-              // console.log("formThread is:");
-              // console.log(formThread);
-              if(formThread.length>0){
-                let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
+                // let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
+                let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 // let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+                  console.log("combinedResults are: ");
+                  console.log(combinedResults);
                   // console.log("combinedResultsAndChecker is:");
                   // console.log(combinedResultsAndChecker);
                   // let formSubmitted = combinedResultsAndChecker[1];
@@ -96,9 +90,9 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                             if(this.localUser && this.localUser.id){
                               this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
                                 if(additionStatus){
-                                  this.openSnackBar(constants.collectionAddedNotification);
+                                  self.openSnackBar(constants.collectionAddedNotification);
                                 }else{
-                                  this.openSnackBar(constants.collectionAlreadyExistsNotification);
+                                  self.openSnackBar(constants.collectionAlreadyExistsNotification);
                                 }
                               });
                             }
@@ -109,13 +103,9 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
                   }
                 });
               }
-            });
-          }
         });
         //----end form submission doing things
 
-      }
-    });
   }
 
   ngOnInit() {
@@ -146,13 +136,11 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     });
 
   }
+
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
       duration: 1000, //TODO change to 3000 once testing is complete a feature is good to go
     });
   }
 
-  saveProgress(){
-    this.formProcessingService.captureDesiredInDynamicForm.next(true);
-  }
 }

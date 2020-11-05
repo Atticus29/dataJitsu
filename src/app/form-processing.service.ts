@@ -11,6 +11,7 @@ export class FormProcessingService {
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
   public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
