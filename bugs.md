@@ -16,28 +16,28 @@
 <!-- - [ ] Video is full screen -->
 <!-- - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db -->
 <!-- - [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related) -->
-- [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
-- [ ] Feedback button
-  - [ ] Submitting specific feedback in Safari sometimes freezes upon submission
-  - [ ] Submitting general feedback pulls up a screenshot that has the top half of the screenshot in grey
-  - [ ] Dismissing the specific dialog box before clicking submit works in some instances but not others
-- [ ] DynamicFormQuestionComponent.html:5 ERROR Error: Cannot find control with name: 'collectionName' whenever I submit a collection. Mostly doesn't seem to mess anything up, but I don't understand what's causing the error or how to fix it
-  - [ ] Oh I think the problem only exists when the collections node in the database is empty
+<!-- - [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something -->
+<!-- - [ ] Feedback button -->
+  <!-- - [ ] Submitting specific feedback in Safari sometimes freezes upon submission -->
+  <!-- - [ ] Submitting general feedback pulls up a screenshot that has the top half of the screenshot in grey -->
+  <!-- - [ ] Dismissing the specific dialog box before clicking submit works in some instances but not others -->
+<!-- - [ ] DynamicFormQuestionComponent.html:5 ERROR Error: Cannot find control with name: 'collectionName' whenever I submit a collection. Mostly doesn't seem to mess anything up, but I don't understand what's causing the error or how to fix it -->
+  <!-- - [ ] Oh I think the problem only exists when the collections node in the database is empty -->
 
 ### To Be Classified
 
-- [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
-  - [ ] Reproducible in cypress test; can't reproduce the effect manually
-- [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues.
-  - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things)
-- [ ] Stripe is broken; also, write a test for this? Related:
+<!-- - [ ] Custom move (choke) is sometimes being added to the candidate list and sometimes not; not clear yet why
+  - [ ] Reproducible in cypress test; can't reproduce the effect manually -->
+<!-- - [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues. -->
+  <!-- - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things) -->
+<!-- - [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
-- [ ] Stripe webhooks don't work correctly?
-- [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?)
-- [ ] Weird extra underline in mat-inputs (see how you solved this for all-videos filter input)
-- [ ] Running the tests at least creates extra delete buttons in the main table
+- [ ] Stripe webhooks don't work correctly? -->
+<!-- - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?) -->
+<!-- - [ ] Weird extra underline in mat-inputs (see how you solved this for all-videos filter input) -->
+<!-- - [ ] Running the tests at least creates extra delete buttons in the main table -->
 - [ ] Size of video frame grows as annotation count grows (and fills more space)
-- [ ] In mobile, clicking on video doesn't let it stay embedded.
+<!-- - [ ] In mobile, clicking on video doesn't let it stay embedded. -->
 - [ ] Creating match and then clicking annotate match makes the nav bar disappear and cuts off the top part of the video?... didn't happen this time TODO
 - [ ] the admin option doesn't appear for without admin status, but they (at least Dirt) can navigate to '/admin' and see somethings (but not delete things)... decide whether this is desired and give them the option to navigate through the UI
 - [ ] /matches when you first login doesn't display until you refresh the page

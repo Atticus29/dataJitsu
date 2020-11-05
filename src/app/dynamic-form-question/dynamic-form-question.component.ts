@@ -44,24 +44,18 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
-    this.fps.questionThreadCounter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionThreadCount =>{
-      if(questionThreadCount>0){
-        this.fps.questionThread[questionThreadCount-1].pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-          // console.log("questionArrayOfForm in dynamic-for-QUESTION component is:");
-          // console.log(questionArrayOfForm);
-          if(questionArrayOfForm){
-            if(questionArrayOfForm!== "Stop"){
-              let objectPayLoad = this.form.getRawValue();
-              // this.fps.captureQuestionArrayOfCurrentFormInThread(questionArrayOfForm, questionThreadCount);
-              this.form = this.qcs.toFormGroup(questionArrayOfForm);
-              // console.log("objectPayLoad in dynamic-form-QUESTION component is: ");
-              // console.log(objectPayLoad);
-              this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayOfForm);
-            }
-          }
-        });
+        // this.fps.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
+        //   // console.log("questionArrayOfForm in dynamic-for-QUESTION component is:");
+        //   // console.log(questionArrayOfForm);
+        //   if(questionArrayOfForm){
+        //     if(questionArrayOfForm!== "Stop"){
+        //       let objectPayLoad = this.form.getRawValue();
+        //       this.form = this.qcs.toFormGroup(questionArrayOfForm);
+        //       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayOfForm);
+        //     }
+        //   }
+        // });
       }
-    });
 
     // this.fps.captureDesiredInDynamicForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(captureFormDesired =>{
     //   if(captureFormDesired){

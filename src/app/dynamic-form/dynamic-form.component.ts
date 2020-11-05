@@ -93,7 +93,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, renamedNewQuestionGroup, lastSiblingIndex);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
-      this.formProcessingService.captureQuestionArrayOfCurrentFormInThread(questionArrayCombiningNewAndOld, this.threadNum);
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       // console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
@@ -132,7 +132,6 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           // console.log("after");
           // console.log(form);
           this.form.setControl(payLoadKeys[i], populatedFormControl);
-          this.trackFormValidationAndEmit();
         }else{
         }
       }
