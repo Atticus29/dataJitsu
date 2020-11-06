@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import {MatSnackBar} from '@angular/material';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { QuestionService } from '../question.service';
 import { FormProcessingService } from '../form-processing.service';
+import { BaseComponent } from '../base/base.component';
+import { DatabaseService } from '../database.service';
 
 @Component({
   selector: 'app-collection-creation-stepper-two',
@@ -13,8 +18,11 @@ import { FormProcessingService } from '../form-processing.service';
 export class CollectionCreationStepperTwoComponent  extends BaseComponent implements OnInit, OnDestroy {
   private localEntryDetailConfigOptions: DynamicFormConfiguration;
   private localEntryDetailQuestions: FormQuestionBase<any>[];
+  private localUser: any;
 
-  constructor(private questionService: QuestionService, private formProcessingService:FormProcessingService) { }
+  constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar) {
+    super();
+  }
 
   ngOnInit() {
     this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
