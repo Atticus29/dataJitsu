@@ -2,14 +2,14 @@
   <div class="row">
     <mat-horizontal-stepper #stepper linear>
       <mat-step id="step1">
-        <app-dynamic-form [configOptions]="localCollectionConfigOptions" [questions]="localCollectionQuestions"></app-dynamic-form>
+        <app-collection-creation-stepper-one></app-collection-creation-stepper-one>
         <div>
           <!-- <button mat-raised-button color="primary" matStepperPrevious>Back</button> -->
           <button mat-raised-button color="primary" matStepperNext>Next</button>
         </div>
       </mat-step>
       <mat-step id="step2">
-        <app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
+        <app-collection-creation-stepper-two></app-collection-creation-stepper-two>
         <div>
           <button mat-raised-button color="primary" matStepperPrevious>Back</button>
           <!-- <button mat-raised-button color="primary" matStepperNext>Next</button> -->

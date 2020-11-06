@@ -128,6 +128,8 @@ import { IndentDirective } from './indent.directive';
 import { FeedbackViewComponent } from './feedback-view/feedback-view.component';
 import { TestComponent } from './test/test.component';
 import { StarRatingComponent } from './star-rating/star-rating.component';
+import { CollectionCreationStepperOneComponent } from './collection-creation-stepper-one/collection-creation-stepper-one.component';
+import { CollectionCreationStepperTwoComponent } from './collection-creation-stepper-two/collection-creation-stepper-two.component';
 
 
 export const firebaseConfig = {
@@ -198,7 +200,9 @@ export const firebaseConfig = {
     CollectionDisplayComponent,
     UserCollectionsDisplayComponent,
     IndentDirective,
-    FeedbackViewComponent
+    FeedbackViewComponent,
+    CollectionCreationStepperOneComponent,
+    CollectionCreationStepperTwoComponent
   ],
   imports: [
     BrowserModule,
