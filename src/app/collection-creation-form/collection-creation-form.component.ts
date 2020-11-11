@@ -5,7 +5,7 @@ import { takeUntil, takeLast, takeWhile, take, withLatestFrom } from 'rxjs/opera
 // import {MatSnackBar} from '@angular/material';
 import {MatStepper} from '@angular/material/stepper';
 
-import { constants } from '../constants';
+// import { constants } from '../constants';
 
 import { TrackerService } from '../tracker.service';
 import { FormProcessingService } from '../form-processing.service';
@@ -30,7 +30,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private currentStepInStepper: Observable<number>;
   private localValid: boolean = false;
 
-  constructor(private databaseService: DatabaseService, private formProcessingService:FormProcessingService, private trackerService: TrackerService, public snackBar: MatSnackBar) {
+  constructor(private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
     super();
   }
 

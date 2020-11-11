@@ -3,12 +3,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { constants } from '../constants';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { QuestionService } from '../question.service';
 import { FormProcessingService } from '../form-processing.service';
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
+import { Collection } from '../collection.model';
 
 @Component({
   selector: 'app-collection-creation-stepper-two',
@@ -78,6 +80,12 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
               }
         });
         //----end form submission doing things
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 1000, //TODO change to 3000 once testing is complete a feature is good to go
+    });
   }
 
 }
