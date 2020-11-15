@@ -1583,33 +1583,33 @@ export class DatabaseService {
   }
 
   doesCollectionAlreadyExistInDb(collection: Collection): Observable<boolean>{
-    console.log("doesCollectionAlreadyExistInDb entered");
-    console.log(collection);
+    // console.log("doesCollectionAlreadyExistInDb entered");
+    // console.log(collection);
     let counter: number = 0;
     let ref = firebase.database().ref('/collections/');
     let obsRet = Observable.create(function(observer){
-      console.log("got here should happen early!");
+      // console.log("got here should happen early!");
       // observer.next(true); //TODO eliminate?
       if(collection){
-        console.log("got here 1");
+        // console.log("got here 1");
         ref.orderByKey().on("value", snapshot =>{
-          console.log("got here 2");
-          console.log(snapshot);
+          // console.log("got here 2");
+          // console.log(snapshot);
           if(snapshot.val()){
             let collections = Object.values(snapshot.val());
             collections.forEach(dbCollection =>{
               let currentDbCollection: Collection = Collection.fromDataBase(dbCollection);
-              console.log("collection checked: ")
-              console.log(currentDbCollection);
+              // console.log("collection checked: ")
+              // console.log(currentDbCollection);
               if(Collection.isEqual(collection, currentDbCollection)){
-                console.log("equal collection detected!");
+                // console.log("equal collection detected!");
                 observer.next(true);
                 counter += 1;
                 return obsRet;
               }
             });
             if(counter<1){
-              console.log("seems like we went through the whole collection of collections and found no match. Returning false...");
+              // console.log("seems like we went through the whole collection of collections and found no match. Returning false...");
               observer.next(false);
               return obsRet;
             }
@@ -1620,7 +1620,7 @@ export class DatabaseService {
           }
         });
       } else{
-        console.log("collection DNE");
+        // console.log("collection DNE");
         observer.next(false);
         return obsRet;
       }
@@ -1629,7 +1629,7 @@ export class DatabaseService {
   }
 
   addCollectionToDatabase(collection: Collection, userId: string): Observable<boolean>{
-    console.log("addCollectionToDatabase called");
+    // console.log("addCollectionToDatabase called");
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.doesCollectionAlreadyExistInDb(collection).pipe(take(1)).subscribe(alreadyExists =>{
@@ -1637,8 +1637,8 @@ export class DatabaseService {
           observer.next(false);
           return obsRet;
         }else{
-          console.log("looks like entry doesn't already exist from addCollectionToDatabase function call to doesCollectionAlreadyExistInDb. Adding entry...");
-          console.log(collection);
+          // console.log("looks like entry doesn't already exist from addCollectionToDatabase function call to doesCollectionAlreadyExistInDb. Adding entry...");
+          // console.log(collection);
           let ref = self.db.list('/collections');
           let collectionId = ref.push(collection).key;
           collection.setId(collectionId);
@@ -1646,7 +1646,7 @@ export class DatabaseService {
           updates['/users/' + userId + '/collections/' + collectionId] = collection;
           updates['/collections/' + collectionId + '/id/'] = collectionId;
           firebase.database().ref().update(updates);
-          console.log("done writing to database");
+          // console.log("done writing to database");
           observer.next(true);
           return obsRet;
         }

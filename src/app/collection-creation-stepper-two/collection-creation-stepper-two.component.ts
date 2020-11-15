@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import {MatSnackBar} from '@angular/material';
-import { takeUntil, withLatestFrom } from 'rxjs/operators';
+import { takeUntil, withLatestFrom, take } from 'rxjs/operators';
 
 import { constants } from '../constants';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
@@ -11,6 +11,7 @@ import { FormProcessingService } from '../form-processing.service';
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { Collection } from '../collection.model';
+import { TrackerService } from '../tracker.service';
 
 @Component({
   selector: 'app-collection-creation-stepper-two',
@@ -22,33 +23,44 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
   private localEntryDetailQuestions: FormQuestionBase<any>[];
   private localUser: any;
 
-  constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar) {
+  constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar, private trackerService: TrackerService) {
     super();
   }
 
   ngOnInit() {
-    this.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      console.log("questionResults are: ");
+    this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
+      if(user){
+        this.localUser = user;
+      }
+    });
+    console.log("got here stepper two");
+    this.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
+      console.log("questionResults from getNewEntryDetailQuestions from stepper two are: ");
       console.log(questionResults);
-      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, "Next");
+      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, "Submit");
+      this.localEntryDetailQuestions = questionResults;
+    });
+
+    this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
+      console.log("newQuestions in stepper two:");
+      console.log(newQuestions);
+      if(newQuestions){
+        // console.log("newQuestions are: ");
+        // console.log(newQuestions);
+        // this.localEntryDetailQuestions = newQuestions;
+        //TODO do something here that captures new formControls?
+      }
     });
 
     //when form is submitted --------------------
         let self = this;
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
-          // console.log("isFormSubmitted is: " + isFormSubmitted);
+          console.log("isFormSubmitted in stepper two is: " + isFormSubmitted);
           if(isFormSubmitted){
-                // let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
-                // let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
-                  console.log("combinedResults are: ");
+                  console.log("combinedResults in stepper two are: ");
                   console.log(combinedResults);
-                  // console.log("combinedResultsAndChecker is:");
-                  // console.log(combinedResultsAndChecker);
-                  // let formSubmitted = combinedResultsAndChecker[1];
-                  // console.log("has form been submitted?: " + formSubmitted);
-                  // let combinedResults = combinedResultsAndChecker[0];
                   let formResults = combinedResults[0];
                   console.log("formResults are:");
                   console.log(formResults);
@@ -58,6 +70,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
                   if(formResults){ //formSubmitted &&
                     console.log("form has been submitted and there are form results");
                     if(formResults !== "Stop"){
+                      console.log("got here a not stop");
                       if(formResults.collectionName){
                         if(currentFormQuestions){
                           if(currentFormQuestions !== "Stop"){

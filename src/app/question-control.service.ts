@@ -13,8 +13,8 @@ export class QuestionControlService {
 
   toFormGroup (questions: FormQuestionBase<string>[]){ //TODO maybe a toFormGroup with payLoad should be added to replace the repopulateFormWithPreviousPayload method in dynamic-form.component?
     //TODO add configurationDetails here? Eventually?
-    console.log("questions in question-control-service");
-    console.log(questions);
+    // console.log("questions in question-control-service");
+    // console.log(questions);
     if(questions){
       let group: any = {};
       questions.forEach(question =>{

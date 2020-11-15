@@ -52,7 +52,7 @@ export class QuestionService{
     placeHolder: 'E.g., Mating display or Emergent Properties of Water',
     type: 'text',
     order: 3,
-    submitAfterThisQuestion: false
+    submitAfterThisQuestion: true
   });
   private labelQuestion: TextQuestion = new TextQuestion({
     key: 'labelQuestionName',

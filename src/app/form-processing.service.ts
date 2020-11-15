@@ -24,4 +24,9 @@ export class FormProcessingService {
     // console.log(newValue);
     this.questionArrayOfForm.next(newValue);
   }
+
+  stopFormAndQuestions(){
+    this.formResults.next("Stop");
+    this.questionArrayOfForm.next("Stop");
+  }
 }

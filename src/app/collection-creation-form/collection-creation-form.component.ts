@@ -63,7 +63,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     this.formProcessingService.nextButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(nextButtonClicked=>{
       console.log("nextButtonClicked in collection-creation form is: " + nextButtonClicked);
       if(nextButtonClicked){
-
+        this.stepper.next();
       }
     });
     // console.log("ngOnInit in CollectionCreationFormComponent called");

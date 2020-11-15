@@ -57,7 +57,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.payLoad = JSON.stringify(this.form.getRawValue());
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
       this.formProcessingService.captureFormResults(this.form.getRawValue());
-      this.formProcessingService.nextButtonClicked.next(true);
+      this.formProcessingService.formSubmitted.next(true);
+      // if(this.configOptions.getSubmitButtonDisplay()==="Next"){
+      //   this.formProcessingService.nextButtonClicked.next(true);
+      // }
+      // if(this.configOptions.getSubmitButtonDisplay()==="Back"){
+      //   this.formProcessingService.backButtonClicked.next(true);
+      // }
     }
 
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number, submitAfterThisQuestion: boolean){
