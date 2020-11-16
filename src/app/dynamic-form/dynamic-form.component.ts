@@ -67,7 +67,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number, submitAfterThisQuestion: boolean){
-      // console.log("addAnotherQuestion entered");
+      console.log("addAnotherQuestion entered");
       // console.log("question is: ")
       // console.log(question);
       // console.log("questionArray is: ");
@@ -96,10 +96,14 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false, false);
       questionArray[index] = updatedQuestion;
       let newQuestionGroup = this.configOptions.getSupplementaryQuestionGroup();
+      console.log("newQuestionGroup is:");
+      console.log(newQuestionGroup);
       let renamedNewQuestionGroup = FormQuestionBase.renameNewQuestionGroup(questionArray, newQuestionGroup);
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, renamedNewQuestionGroup, lastSiblingIndex);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
+      console.log("questionArrayCombiningNewAndOld is: ");
+      console.log(questionArrayCombiningNewAndOld);
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       // console.log(this.form.getRawValue()[question.key]);
@@ -108,36 +112,39 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
-      // console.log("repopulateFormWithPreviousPayload entered");
-      // console.log("form is: ");
-      // console.log(form);
-      // console.log("payLoad is:");
-      // console.log(payLoad);
-      // console.log("questionArray is:");
-      // console.log(questionArray);
+      console.log("repopulateFormWithPreviousPayload entered");
+      console.log("form is: ");
+      console.log(form);
+      console.log("payLoad is:");
+      console.log(payLoad);
+      console.log("questionArray is:");
+      console.log(questionArray);
       let payLoadKeys: string[] = Object.keys(payLoad);
-      // console.log("payLoadKeys is:");
-      // console.log(payLoadKeys);
+      console.log("payLoadKeys is:");
+      console.log(payLoadKeys);
       let payLoadValues: string[] = Object.values(payLoad);
-      // console.log("got here 1");
+      console.log("got here 1");
       for(let i=0; i<payLoadKeys.length; i++){
-        // console.log("got here 2");
+        console.log("got here 2");
         if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
-          // console.log("got here 3");
+          console.log("got here 3");
           let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
           let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
           new FormControl(payLoadValues[i] || '');
-          // console.log("got here 4");
+          console.log("got here 4");
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
+            console.log("type is dropdown. Setting value of form control to: " + payLoadValues[i]);
             populatedFormControl.setValue(payLoadValues[i]);
-            // console.log("got here 5");
+            console.log("got here 5");
           }
-          // console.log("got to set control");
-          // console.log("before set control");
-          // console.log(form);
+          console.log("got to set control");
+          console.log("before set control");
+          console.log(form);
           form.setControl(payLoadKeys[i], populatedFormControl);
-          // console.log("after");
-          // console.log(form);
+          console.log("after");
+          console.log(form);
+          console.log("populatedFormControl is: ");
+          console.log(populatedFormControl);
           this.form.setControl(payLoadKeys[i], populatedFormControl);
         }else{
         }
