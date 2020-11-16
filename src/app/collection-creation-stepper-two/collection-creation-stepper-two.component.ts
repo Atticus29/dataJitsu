@@ -22,12 +22,15 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
   private localEntryDetailConfigOptions: DynamicFormConfiguration;
   private localEntryDetailQuestions: FormQuestionBase<any>[];
   private localUser: any;
+  private stopCounter: number = 0;
+  private isLoading: boolean = true;
 
   constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar, private trackerService: TrackerService) {
     super();
   }
 
   ngOnInit() {
+    let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){
         this.localUser = user;
@@ -35,25 +38,35 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
     });
     console.log("got here stepper two");
     this.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      console.log("questionResults from getNewEntryDetailQuestions from stepper two are: ");
-      console.log(questionResults);
-      this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, "Submit");
-      this.localEntryDetailQuestions = questionResults;
+      self.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestionGroupResults =>{
+        console.log("questionResults from getNewEntryDetailQuestions from stepper two are: ");
+        console.log(questionResults);
+        this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Submit");
+        this.localEntryDetailQuestions = questionResults;
+      });
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
       console.log("newQuestions in stepper two:");
       console.log(newQuestions);
-      if(newQuestions){
-        // console.log("newQuestions are: ");
-        // console.log(newQuestions);
-        // this.localEntryDetailQuestions = newQuestions;
+      if(newQuestions!="Stop" && this.stopCounter<1){
+        //TODO loading
+        this.isLoading = true;
+      }
+      if(newQuestions==="Stop"){
+        this.stopCounter ++;
+        this.isLoading = true; //TODO ??
+      }
+      if(newQuestions!="Stop" && this.stopCounter>0){
+        console.log("newQuestions are: ");
+        console.log(newQuestions);
+        this.localEntryDetailQuestions = newQuestions;
+        this.isLoading = false;
         //TODO do something here that captures new formControls?
       }
     });
 
     //when form is submitted --------------------
-        let self = this;
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
           console.log("isFormSubmitted in stepper two is: " + isFormSubmitted);
           if(isFormSubmitted){

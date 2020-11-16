@@ -90,6 +90,9 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
 
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
+                                    self.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionOwnerQuestions=>{
+                                      self.formProcessingService.questionArrayOfForm.next(collectionOwnerQuestions);
+                                    });
                                   }
                                 }else{
                                   self.openSnackBar(constants.collectionAlreadyExistsNotification);

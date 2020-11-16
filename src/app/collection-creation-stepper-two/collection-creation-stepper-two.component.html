@@ -1,1 +1,6 @@
-<app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
+<div class="spinner-container" *ngIf="isLoading">
+      <mat-spinner id="spinner"></mat-spinner>
+</div>
+<div *ngIf="!isLoading">
+  <app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
+</div>

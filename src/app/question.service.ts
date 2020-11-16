@@ -133,14 +133,14 @@ export class QuestionService{
     return of(collectionQuestionGroupQuestions);
   }
 
-  getNewEntryDetailQuestions(){
+  getOriginalCollectionOwnerQuestionGroupQuestions(){
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
     entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
     return of(entryDetailQuestions);
   }
 
-  getOriginalCollectionOwnerQuestionGroupQuestions(){
+  getNewEntryDetailQuestions(){
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
     entryDetailQuestions.push(this.genericLabelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
