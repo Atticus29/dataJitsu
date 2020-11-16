@@ -91,10 +91,11 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       console.log(this.form.getRawValue()[question.key]);
     }
     addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
+      console.log("addAnotherQuestionGroup entered");
       let lastSiblingIndex = question.findLastSiblingQuestionIndex(question, questionArray, index);
-      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false);
+      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false, false);
       questionArray[index] = updatedQuestion;
-      let newQuestionGroup = this.configOptions.getOriginalQuestionGroup();
+      let newQuestionGroup = this.configOptions.getSupplementaryQuestionGroup();
       let renamedNewQuestionGroup = FormQuestionBase.renameNewQuestionGroup(questionArray, newQuestionGroup);
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, renamedNewQuestionGroup, lastSiblingIndex);
       this.payLoad = JSON.stringify(this.form.getRawValue());

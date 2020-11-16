@@ -27,16 +27,21 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
   }
 
   ngOnInit() {
+    let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){
         this.localUser = user;
       }
     });
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-      // console.log("questionResults are: ");
-      // console.log(questionResults);
-      this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, "Next");
-      this.localCollectionQuestions = questionResults;
+      self.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestionGroupResults =>{
+        console.log("newQuestionGroupResults are: ");
+        console.log(newQuestionGroupResults);
+        // console.log("questionResults are: ");
+        // console.log(questionResults);
+        this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Next");
+        this.localCollectionQuestions = questionResults;
+      });
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
@@ -51,7 +56,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
     });
 
     //when form is submitted --------------------
-        let self = this;
+
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
           // console.log("isFormSubmitted is: " + isFormSubmitted);
           if(isFormSubmitted){

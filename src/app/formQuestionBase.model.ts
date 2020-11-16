@@ -89,7 +89,7 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
     });
   }
-  static createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(oldQuestion: FormQuestionBase<string>, newStatus:boolean): FormQuestionBase<string>{
+  static createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
     // console.log("entered createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion");
     // console.log("old question is");
     // console.log(oldQuestion);
@@ -107,12 +107,12 @@ export class FormQuestionBase<T> {
       mediumSize: oldQuestion.mediumSize,
       largeSize: oldQuestion.largeSize,
       pairThisQuestionWithPreviousQuestion: oldQuestion.pairThisQuestionWithPreviousQuestion,
-      isThisQuestionTheLastOfAQuestionGroup: newStatus,
+      isThisQuestionTheLastOfAQuestionGroup: isThisQuestionTheLastOfAQuestionGroup,
       indentThisQuestion: oldQuestion.indentThisQuestion,
       placeHolder: oldQuestion.placeHolder,
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
-      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
+      submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
     });
   }
@@ -233,34 +233,18 @@ export class FormQuestionBase<T> {
   }
 
   static renameNewQuestionGroup(oldQuestionArray: FormQuestionBase<string>[], newQuestionArray: FormQuestionBase<string>[]): FormQuestionBase<string>[]{
-    // console.log("renameNewQuestionGroup entered");
-    // console.log(oldQuestionArray);
-    // console.log(newQuestionArray);
     let returnQuestionArray = new Array<FormQuestionBase<string>>(); //TODO if the copy method ends up not being the problem
     newQuestionArray.forEach(entry =>{
       returnQuestionArray.push(entry);
     });
     for(let i=0; i<oldQuestionArray.length; i++){
-      // console.log("i is " + i)
       for(let j=0; j<returnQuestionArray.length; j++){
-        // console.log("j is " + j);
         if(returnQuestionArray[j].key === oldQuestionArray[i].key || returnQuestionArray[j].key === newQuestionArray[j].key){
-          // console.log("statement evaluates to true");
           let keySeparatedIntoStringAndDigits = returnQuestionArray[j].key.split(/\d+/);
           let baseKey = keySeparatedIntoStringAndDigits[0];
-          // console.log("baseKey: " + baseKey);
-          // let remainder = +keySeparatedIntoStringAndDigits.slice(1).join('');
-          //TODO get the highest number from that baseKey in oldQuestionArray
           let currentHighestIndexWithThisBaseKey = FormQuestionBase.calculateCurrentHighestIndexWithThisBaseKey(baseKey, oldQuestionArray);
-          // console.log("remainder: " + remainder + " and remainder+1: " + (remainder+1));
-          // console.log("returnQuestion before modification");
-          // console.log(returnQuestionArray[j])
           let updatedQuestion = FormQuestionBase.createNewQuestionModifyingKeyOfExistingQuestion(returnQuestionArray[j], baseKey+(currentHighestIndexWithThisBaseKey+1));
-          // console.log("updatedQuestion in renameNewQuestionGroup:");
-          // console.log(updatedQuestion);
           returnQuestionArray[j] = updatedQuestion;
-          // console.log("returnQuestion after modification");
-          // console.log(returnQuestionArray[j])
         } else{
           // console.log(returnQuestionArray[j].key + " is not equal to " + oldQuestionArray[i].key + " nor to " + newQuestionArray[j].key);
         }
