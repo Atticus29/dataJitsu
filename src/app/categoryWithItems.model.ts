@@ -13,25 +13,30 @@ export class CategoryWithItems {
 
    static isEqual(categoryWithItems1, categoryWithItems2){
      let equalityStatus: boolean = false;
-     let categoryNameMatch = categoryWithItems1.categoryName === categoryWithItems2.categoryName;
-     let itemsCountsMatch: boolean = false
-     if(categoryWithItems1.items && categoryWithItems2.items){
-       itemsCountsMatch = categoryWithItems1.items.length == categoryWithItems2.items.length;
-       // console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
-       let categoryWithItemsMatchCounter = 0;
-       categoryWithItems1.items.forEach(item =>{
-         for(let i=0; i<categoryWithItems2.items.length; i++){
-           if(item === categoryWithItems2.items[i]){
-             // console.log("items detected as equal: " + item + " and " + categoryWithItems2.items[i]);
-             categoryWithItemsMatchCounter += 1;
-             // return true;
-           }
+     let categoryNameMatch: boolean = false;
+     if(categoryWithItems1 && categoryWithItems2){
+       if(categoryWithItems1.categoryName && categoryWithItems2.categoryName){
+         categoryNameMatch = categoryWithItems1.categoryName === categoryWithItems2.categoryName;
+         let itemsCountsMatch: boolean = false
+         if(categoryWithItems1.items && categoryWithItems2.items){
+           itemsCountsMatch = categoryWithItems1.items.length == categoryWithItems2.items.length;
+           // console.log("do category names match in CategoryWithItems? " + categoryNameMatch);
+           let categoryWithItemsMatchCounter = 0;
+           categoryWithItems1.items.forEach(item =>{
+             for(let i=0; i<categoryWithItems2.items.length; i++){
+               if(item === categoryWithItems2.items[i]){
+                 // console.log("items detected as equal: " + item + " and " + categoryWithItems2.items[i]);
+                 categoryWithItemsMatchCounter += 1;
+                 // return true;
+               }
+             }
+           });
+           equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length && itemsCountsMatch;
+           // console.log(" equalityStatus is: " + equalityStatus);
+         } else{
+           equalityStatus = categoryNameMatch;
          }
-       });
-       equalityStatus = categoryNameMatch && categoryWithItemsMatchCounter==categoryWithItems2.items.length && itemsCountsMatch;
-       // console.log(" equalityStatus is: " + equalityStatus);
-     } else{
-       equalityStatus = categoryNameMatch;
+       }
      }
      return equalityStatus;
    }

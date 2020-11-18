@@ -48,12 +48,13 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
       console.log("newQuestions in stepper two:");
-      console.log(newQuestions);
+      // console.log(newQuestions);
       if(newQuestions!="Stop" && this.stopCounter<1){
         //TODO loading
         this.isLoading = true;
       }
       if(newQuestions==="Stop"){
+        console.log("Stop has been hit! Adding to counter...");
         this.stopCounter ++;
         this.isLoading = true; //TODO ??
       }

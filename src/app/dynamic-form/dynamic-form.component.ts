@@ -31,6 +31,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
+      // this.formProcessingService.form
       this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // console.log("gridLengthsForButtons are: " + this.gridLengthsForButtons);
@@ -79,7 +80,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let newIndex: number = FormQuestionBase.calculateCurrentHighestIndexWithThisBaseKey(baseKey,questionArray) + 1;
       newQuestionToBeAdded = FormQuestionBase.createNewQuestionModifyingKeyOfExistingQuestion(newQuestionToBeAdded, baseKey+newIndex);
       let previousQuestionModified = FormQuestionBase.makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(question, false, false, false);
-      previousQuestionModified = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(previousQuestionModified, false);
+      previousQuestionModified = FormQuestionBase.createNewQuestionByModifyingExistingQuestion(previousQuestionModified, false, false);
       questionArray[index] = previousQuestionModified;
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, [newQuestionToBeAdded], index);
       // this.payLoad = JSON.stringify(this.form.getRawValue());
@@ -93,18 +94,26 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     addAnotherQuestionGroup(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number){
       console.log("addAnotherQuestionGroup entered");
       let lastSiblingIndex = question.findLastSiblingQuestionIndex(question, questionArray, index);
-      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(question, false, false);
+      let updatedQuestion: FormQuestionBase<string> = FormQuestionBase.createNewQuestionByModifyingExistingQuestion(question, false, false);
+      console.log("new old question is: ");
+      console.log(updatedQuestion);
+      console.log("index into which it is to be inserted is: " + index);
       questionArray[index] = updatedQuestion;
       let newQuestionGroup = this.configOptions.getSupplementaryQuestionGroup();
       console.log("newQuestionGroup is:");
       console.log(newQuestionGroup);
       let renamedNewQuestionGroup = FormQuestionBase.renameNewQuestionGroup(questionArray, newQuestionGroup);
+      console.log("renamedNewQuestionGroup is: ");
+      console.log(renamedNewQuestionGroup);
       let questionArrayCombiningNewAndOld = FormQuestionBase.spliceWithoutManipulatingOriginal(questionArray, renamedNewQuestionGroup, lastSiblingIndex);
       this.payLoad = JSON.stringify(this.form.getRawValue());
       let objectPayLoad = this.form.getRawValue();
       console.log("questionArrayCombiningNewAndOld is: ");
       console.log(questionArrayCombiningNewAndOld);
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
+      let tmp = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
+      console.log("new form is: ");
+      console.log(tmp);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
       // console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
@@ -128,10 +137,15 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         console.log("got here 2");
         if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
           console.log("got here 3");
+          console.log("payLoadValues[i] is: " + payLoadValues[i]);
           let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
+          console.log("correspondingQuestionIndex is: " + correspondingQuestionIndex);
           let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
-          new FormControl(payLoadValues[i] || '');
+          console.log("populatedFormControl is: ");
+          console.log(populatedFormControl);
+          new FormControl(payLoadValues[i] || ''); //TODO what happens if I remove this?
           console.log("got here 4");
+          console.log("questionArray[correspondingQuestionIndex].type is: " + questionArray[correspondingQuestionIndex].type);
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
             console.log("type is dropdown. Setting value of form control to: " + payLoadValues[i]);
             populatedFormControl.setValue(payLoadValues[i]);
@@ -143,10 +157,12 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           form.setControl(payLoadKeys[i], populatedFormControl);
           console.log("after");
           console.log(form);
-          console.log("populatedFormControl is: ");
-          console.log(populatedFormControl);
+          // console.log("populatedFormControl is: ");
+          // console.log(populatedFormControl);
           this.form.setControl(payLoadKeys[i], populatedFormControl);
+          console.log("form set control for index " + i + " has completed");
         }else{
+          console.log("ack hit a bad else...");
         }
       }
     }

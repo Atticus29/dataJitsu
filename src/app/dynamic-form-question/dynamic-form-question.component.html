@@ -4,7 +4,8 @@
       <label [attr.for]="question.key" *ngSwitchCase="'textbox'">{{question.label}}</label>
       <input *ngSwitchCase="'textbox'" [formControlName]="question.key? question.key: null" [id]="question.key" [type]="question.type" [placeholder]="question.placeHolder">
       <mat-label *ngSwitchCase="'dropdown'" class="col s12 m7 l7">{{question.label}}</mat-label>
-      <mat-select class="col s12 m6 l6" [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+      <p>{{question.options}}</p>
+      <mat-select class="col s12 m6 l6" [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key? question.key: null">
         <mat-option *ngFor="let opt of question.options" [value]="opt.value">{{opt.value}}</mat-option>
       </mat-select>
     <div *ngSwitchCase="'textbox'">

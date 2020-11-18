@@ -89,8 +89,8 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
     });
   }
-  static createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
-    // console.log("entered createNewQuestionModifyingIsThisQuestionTheLastOfAQuestionGroupStatusOfExistingQuestion");
+  static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
+    // console.log("entered createNewQuestionByModifyingExistingQuestion");
     // console.log("old question is");
     // console.log(oldQuestion);
     // this.giveOptionToAnswerThisQuestionMultipleTimes = newStatus;

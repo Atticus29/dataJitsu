@@ -89,6 +89,7 @@ export class QuestionService{
   private inputTypeQuestion: DropdownQuestion = new DropdownQuestion({
     key: 'inputTypeQuestionName',
     label: 'What type of question do you want this question to be?',
+    groupLabel: "Question For Your Users",
     value: '',
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
@@ -105,6 +106,7 @@ export class QuestionService{
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
     key: 'inputTypeQuestionName',
     label: 'What type of question do you want this question to be?',
+    groupLabel: "Question For Your Users",
     value: '',
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
@@ -142,7 +144,7 @@ export class QuestionService{
 
   getNewEntryDetailQuestions(){
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
-    entryDetailQuestions.push(this.genericLabelQuestion);
+    entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
     return of(entryDetailQuestions);
   }
