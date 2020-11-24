@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
+
 import { FormQuestionBase } from './formQuestionBase.model';
 
 
@@ -12,6 +15,7 @@ export class FormProcessingService {
   public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public actualForm: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
 
   constructor() { }
 

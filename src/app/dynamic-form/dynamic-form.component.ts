@@ -31,7 +31,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
-      // this.formProcessingService.form
+      this.formProcessingService.actualForm.next(this.form);
       this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // console.log("gridLengthsForButtons are: " + this.gridLengthsForButtons);
@@ -87,6 +87,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let objectPayLoad = this.form.getRawValue();
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questionArrayCombiningNewAndOld);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
+      this.formProcessingService.actualForm.next(this.form);
+      console.log("current question key is: " + question.key);
       console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
       console.log(this.form.getRawValue()[question.key]);
@@ -115,6 +117,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       console.log("new form is: ");
       console.log(tmp);
       this.form = this.qcs.toFormGroup(questionArrayCombiningNewAndOld);
+      this.formProcessingService.actualForm.next(this.form);
       // console.log(this.form.getRawValue()[question.key]);
       this.repopulateFormWithPreviousPayload(this.form, objectPayLoad, questionArrayCombiningNewAndOld);
       // console.log(this.form.getRawValue()[question.key]);
@@ -137,15 +140,19 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         console.log("got here 2");
         if(questionArray.findIndex(q => q.key === payLoadKeys[i])>-1){
           console.log("got here 3");
-          console.log("payLoadValues[i] is: " + payLoadValues[i]);
+          console.log("payLoadValues["+i+"] is: " + payLoadValues[i]);
           let correspondingQuestionIndex = questionArray.findIndex(q => q.key === payLoadKeys[i]);
           console.log("correspondingQuestionIndex is: " + correspondingQuestionIndex);
-          let populatedFormControl: FormControl = questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) :
+
+          //TODO the line below is the problem
+          let populatedFormControl: any = questionArray[correspondingQuestionIndex]&&questionArray[correspondingQuestionIndex].required ? new FormControl(payLoadValues[i] || '', Validators.required) : new FormControl(payLoadValues[i] || '');
+          // if(!populatedFormControl){
+          //   populatedFormControl = new FormControl(payLoadValues[i] || ''); //TODO what happens if I remove this?
+          // }
           console.log("populatedFormControl is: ");
           console.log(populatedFormControl);
-          new FormControl(payLoadValues[i] || ''); //TODO what happens if I remove this?
           console.log("got here 4");
-          console.log("questionArray[correspondingQuestionIndex].type is: " + questionArray[correspondingQuestionIndex].type);
+          console.log("questionArray["+correspondingQuestionIndex+"].type is: " + questionArray[correspondingQuestionIndex].type);
           if(questionArray[correspondingQuestionIndex].type === 'dropdown'){
             console.log("type is dropdown. Setting value of form control to: " + payLoadValues[i]);
             populatedFormControl.setValue(payLoadValues[i]);
