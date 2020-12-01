@@ -1629,7 +1629,7 @@ export class DatabaseService {
   }
 
   addCollectionToDatabase(collection: Collection, userId: string): Observable<boolean>{
-    // console.log("addCollectionToDatabase called");
+    console.log("addCollectionToDatabase called");
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.doesCollectionAlreadyExistInDb(collection).pipe(take(1)).subscribe(alreadyExists =>{

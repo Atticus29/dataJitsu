@@ -70,7 +70,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
     //when form is submitted --------------------
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
           console.log("isFormSubmitted in stepper two is: " + isFormSubmitted);
-          if(isFormSubmitted){
+          if(isFormSubmitted && this.stopCounter>0){
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
                   console.log("combinedResults in stepper two are: ");

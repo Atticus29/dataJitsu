@@ -22,6 +22,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
   private localCollectionConfigOptions: DynamicFormConfiguration;
   private localCollectionQuestions: FormQuestionBase<any>[];
   private localUser: any;
+  private formSubmissionCounter: number = 0;
   constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar, private trackerService: TrackerService) {
     super();
   }
@@ -80,7 +81,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                           if(currentFormQuestions !== "Stop"){
                             let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                             // console.log(newCollection);
-                            if(this.localUser && this.localUser.id){
+                            if(this.localUser && this.localUser.id && self.formSubmissionCounter<1){
                               this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
                                 // console.log("additionStatus is: " + additionStatus);
                                 if(additionStatus){
@@ -99,6 +100,8 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   //don't trigger next click
                                 }
                               });
+                              console.log("incrementing formSubmissionCounter");
+                              self.formSubmissionCounter ++;
                             }
                           }
                         }
