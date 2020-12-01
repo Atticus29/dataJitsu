@@ -16,11 +16,11 @@ describe ('Tests involving match creation', () =>{
   });
 
 
-  it.only('fills out simple collection form, does not see submit button enabled until all three filled out, and can see collection in user section, and deletes collection with confirmation that it disappears', function(){
+  it('fills out simple collection form, does not see submit button enabled until all three filled out, and can see collection in user section, and deletes collection with confirmation that it disappears', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
       // cy.contains('Submit').should('exist');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=new-collection-submit]').should('be.enabled');
       cy.contains('button','Next').click();
@@ -36,7 +36,7 @@ describe ('Tests involving match creation', () =>{
   it('can create collection form with 2 additional items', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=add-new-item-button]').click();
       cy.get('button[id=new-collection-submit]').should('be.enabled');
@@ -58,7 +58,7 @@ describe ('Tests involving match creation', () =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
       // cy.contains('Submit').should('exist');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=new-collection-submit]').should('be.enabled');
       cy.contains('button','Next').click();
@@ -67,7 +67,7 @@ describe ('Tests involving match creation', () =>{
       cy.url().should('match',/user/);
       cy.contains(cypressConstants.collectionName);
       cy.visit('http://localhost:4200/create-collection');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=new-collection-submit]').should('be.enabled');
       cy.contains('button','Next').click();
@@ -84,7 +84,7 @@ describe ('Tests involving match creation', () =>{
   it('can create collection form with 2 additional items and one additional category', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=add-new-item-button]').click();
       cy.get('button[id=new-collection-submit]').should('be.enabled');
@@ -109,7 +109,7 @@ describe ('Tests involving match creation', () =>{
   it('can create collection form with 2 additional items and two additional categories and a goes back to add 2 more items from second category group, leaving a third blank', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
-      cy.contains('button','Submit').should('not.be.enabled');
+      cy.contains('button','Next').should('not.be.enabled');
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=add-new-item-button]').click();
       cy.get('button[id=new-collection-submit]').should('be.enabled');
