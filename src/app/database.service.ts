@@ -16,6 +16,7 @@ import { constants } from './constants';
 import { Collection } from './collection.model';
 import { EventInVideo } from './eventInVideo.model';
 import { FeedbackItem } from './feedbackItem.model';
+import { OwnerQuestionSet } from './ownerQuestionSet.model';
 
 @Injectable()
 export class DatabaseService {
@@ -1628,13 +1629,13 @@ export class DatabaseService {
     return obsRet;
   }
 
-  addCollectionToDatabase(collection: Collection, userId: string): Observable<boolean>{
+  addCollectionToDatabase(collection: Collection, userId: string): Observable<any>{
     console.log("addCollectionToDatabase called");
     let self = this;
     let obsRet = Observable.create(function(observer){
       self.doesCollectionAlreadyExistInDb(collection).pipe(take(1)).subscribe(alreadyExists =>{
         if(alreadyExists){
-          observer.next(false);
+          observer.next({collectionId: null, status: false});
           return obsRet;
         }else{
           // console.log("looks like entry doesn't already exist from addCollectionToDatabase function call to doesCollectionAlreadyExistInDb. Adding entry...");
@@ -1647,10 +1648,25 @@ export class DatabaseService {
           updates['/collections/' + collectionId + '/id/'] = collectionId;
           firebase.database().ref().update(updates);
           // console.log("done writing to database");
-          observer.next(true);
+          observer.next({collectionId: collectionId, status: true});
           return obsRet;
         }
       });
+    });
+    return obsRet;
+  }
+
+  addOwnerQuestionSetToDatabase(ownerQuestionSet: OwnerQuestionSet, userId: string): Observable<boolean>{
+    console.log("addOwnerQuestionSetToDatabase called");
+    let self = this;
+    let obsRet = Observable.create(function(observer){
+          let collectionId = ownerQuestionSet.getCollectionId();
+          let updates = {};
+          updates['/users/' + userId + '/collections/' + collectionId + '/ownerQuestions/'] = ownerQuestionSet.getOwnerQuestions();
+          updates['/collections/' + collectionId + '/ownerQuestions/'] = ownerQuestionSet.getOwnerQuestions();
+          firebase.database().ref().update(updates);
+          observer.next(true);
+          return obsRet;
     });
     return obsRet;
   }

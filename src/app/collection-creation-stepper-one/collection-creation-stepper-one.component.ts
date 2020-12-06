@@ -82,7 +82,13 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                             let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                             // console.log(newCollection);
                             if(this.localUser && this.localUser.id && self.formSubmissionCounter<1){
-                              this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                              this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionResults =>{
+                                let additionStatus = false;
+                                let collectionId = null;
+                                if(additionResults){
+                                  additionStatus = additionResults.status;
+                                  collectionId = additionResults.collectionId;
+                                }
                                 // console.log("additionStatus is: " + additionStatus);
                                 if(additionStatus){
                                   self.openSnackBar(constants.collectionAddedNotification);
@@ -91,6 +97,9 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
 
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
+                                    if(collectionId){
+                                      self.formProcessingService.collectionId.next(collectionId);
+                                    }
                                     self.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionOwnerQuestions=>{
                                       self.formProcessingService.questionArrayOfForm.next(collectionOwnerQuestions);
                                     });

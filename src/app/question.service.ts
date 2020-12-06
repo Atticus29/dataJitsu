@@ -65,7 +65,7 @@ export class QuestionService{
     pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: false,
-    placeHolder: 'E.g., Video URL',
+    placeHolder: 'E.g., Video URL (note that this question is required and will be automatically generated)',
     type: 'text',
     order: 1,
     submitAfterThisQuestion: false
@@ -81,7 +81,7 @@ export class QuestionService{
     pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: false,
-    placeHolder: 'E.g., Video URL',
+    placeHolder: 'E.g., Video URL (note that this question is required and will be automatically generated)',
     type: 'text',
     order: 1,
     submitAfterThisQuestion: false
