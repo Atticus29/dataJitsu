@@ -154,9 +154,9 @@ describe ('Tests involving match creation', () =>{
       cy.fillOutSimpleCollection(cypressConstants.collectionName, cypressConstants.categoryName, cypressConstants.itemName);
       cy.get('button[id=new-collection-submit]').should('be.enabled');
       cy.contains('button','Next').click();
-      cy.fillOutSimpleOwnerQuestion(cypressConstants.questionForOwner, cypressConstants.dropDownChoice, cypressConstants.dropDownElementName);
+      cy.fillOutSimpleOwnerQuestion(cypressConstants.questionForOwner, cypressConstants.dropDownChoice, cypressConstants.dropDownElementId);
       cy.get('button[id=add-new-question-group-button]').last().click();
-      cy.fillOutOwnerQuestionGeneric(cypressConstants.genericQuestionForOwner, cypressConstants.genericQuestionForOwnerId, cypressConstants.nextDropDownElementName, cypressConstants.dropDownElementName);
+      cy.fillOutOwnerQuestionGeneric(cypressConstants.genericQuestionForOwner, cypressConstants.genericQuestionForOwnerId, cypressConstants.dropDownChoice, cypressConstants.nextDropDownElementId);
 
       // cy.get('button[id=new-collection-submit]').should('be.enabled');
       // cy.contains('button','Next').click();

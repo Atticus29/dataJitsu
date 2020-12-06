@@ -80,9 +80,9 @@
   "textSignalThatYouAreInTableView": "Annotation Rating",
   "versusTextInsideSingleVideo": "(left) vs.",
   "questionForOwner": "How long have you been a spy",
-  "dropDownElementName":"inputTypeQuestionName",
+  "dropDownElementId":"inputTypeQuestionName",
   "dropDownChoice": "Text",
-  "nextDropDownElementName":"inputTypeQuestionName1",
+  "nextDropDownElementId":"inputTypeQuestionName1",
   "genericQuestionForOwner": "Where is Dr.Evil hiding?",
   "genericQuestionForOwnerId":"genericLabelQuestionName1"
 }
