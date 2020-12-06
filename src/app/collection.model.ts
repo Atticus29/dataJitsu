@@ -1,10 +1,13 @@
 import { CategoryWithItems } from './categoryWithItems.model';
 import { FormQuestionBase } from './formQuestionBase.model';
 
+import { OwnerQuestion } from './ownerQuestion.model';
+
 export class Collection {
   private details: Object;
   private id: string = "temp";
   private categoriesWithItems: CategoryWithItems[] = new Array<CategoryWithItems>();
+  private ownerQuestions: OwnerQuestion[] = new Array<OwnerQuestion>();
   // constructor(public tournamentName: string, public location: string, public date: string, public athlete1Name: string, public athlete2Name: string, public weightClass: string, public rank: string, public videoUrl: string, public gender: string, public giStatus: boolean, public ageClass: string) {
   constructor(private name: string) {
    }
@@ -73,16 +76,25 @@ export class Collection {
      this.categoriesWithItems = this.categoriesWithItems.concat(newCategoriesWithItems);
    }
 
+   addOwnerQuestions(newOwnerQuestions: OwnerQuestion[]){
+     this.ownerQuestions = this.ownerQuestions.concat(newOwnerQuestions);
+   }
+
+
+
    addCategoryWithItems(newCategoryWithItems: CategoryWithItems){
      this.categoriesWithItems.push(newCategoryWithItems);
    }
 
    static fromDataBase (jsonObj: any): Collection{
+     console.log("jsonObj is: ");
+     console.log(jsonObj);
      let name = jsonObj.name;
      let newCollection = new Collection(name);
      newCollection.addDetails(jsonObj.details);
      newCollection.setId(jsonObj.id);
      newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
+     newCollection.addOwnerQuestions(jsonObj.ownerQuestions);
      return newCollection;
    }
 

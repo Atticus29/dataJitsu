@@ -1,3 +1,18 @@
-<h1>{{localCollection.name}}</h1>
-<h2>Details:</h2>
-<h3>{{localCollection.details}}</h3>
+<h1>Name: {{localCollection.name}}</h1>
+<div id="categories-with-items-display-section">
+  <ul *ngFor="let category of localCollection.categoriesWithItems">
+    <li>Category name: {{category.categoryName}}</li>
+    <div id="items-section">
+      <ul *ngFor="let item of category.items">
+        <li class="indent-me">Item: {{item}}</li>
+      </ul>
+    </div>
+  </ul>
+</div>
+<div id="owner-questions-section">
+  <h2>Questions that users will be asked when adding media:</h2>
+  <ul *ngFor="let questionSet of localCollection.ownerQuestions">
+    <li>Question: {{questionSet.question}}</li>
+    <li>Question type: {{questionSet.questionType}}</li>
+  </ul>
+</div>

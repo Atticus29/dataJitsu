@@ -22,6 +22,8 @@ export class CollectionDisplayComponent extends BaseComponent implements OnInit 
       console.log(params.collectionId);
       this.databaseService.getCollection(params.collectionId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionResult =>{
         this.localCollection = Collection.fromDataBase(collectionResult);
+        console.log("this.localCollection in collection-display component is: ");
+        console.log(this.localCollection);
       })
     });
   }
