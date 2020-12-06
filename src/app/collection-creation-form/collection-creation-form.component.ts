@@ -64,6 +64,9 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
       console.log("nextButtonClicked in collection-creation form is: " + nextButtonClicked);
       if(nextButtonClicked){
         this.stepper.next();
+      } else{
+        console.log("got here 1");
+        // this.stepper.reset();
       }
     });
     // console.log("ngOnInit in CollectionCreationFormComponent called");

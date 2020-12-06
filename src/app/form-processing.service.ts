@@ -45,8 +45,10 @@ export class FormProcessingService {
         console.log(newCollectionQuestions);
         this.questionArrayOfForm.next(newCollectionQuestions);
         this.formResults.next(null);
+        this.nextButtonClicked.next(false);
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+
       }
     });
   }
