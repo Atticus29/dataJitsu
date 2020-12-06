@@ -144,8 +144,8 @@ export class QuestionService{
 
   getNewEntryDetailQuestions(){
     let entryDetailQuestions: FormQuestionBase<string>[] = [];
-    entryDetailQuestions.push(this.labelQuestion);
-    entryDetailQuestions.push(this.inputTypeQuestion);
+    entryDetailQuestions.push(this.genericLabelQuestion);
+    entryDetailQuestions.push(this.genericInputTypeQuestion);
     return of(entryDetailQuestions);
   }
 

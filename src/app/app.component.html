@@ -21,7 +21,7 @@
       <app-user-status-report *ngIf="authenticationStatus && !paidStatus" class="move-left"></app-user-status-report>
       <button *ngIf="authenticationStatus" mat-icon-button [matMenuTriggerFor]="userMenu" id="settings-button"><mat-icon>settings_applications</mat-icon></button>
       <mat-menu #userMenu>
-        <button mat-menu-item *ngIf="authenticationStatus" routerLink="user/{{userObjFromDb.id}}"><mat-icon>info</mat-icon> User Info.</button>
+        <button id="user-info-button" mat-menu-item *ngIf="authenticationStatus" routerLink="user/{{userObjFromDb.id}}"><mat-icon>info</mat-icon> User Info.</button>
         <button mat-menu-item *ngIf="authenticationStatus && isAdmin" routerLink="admin"><mat-icon>list</mat-icon> Admin Tasks</button>
         <button mat-menu-item *ngIf="authenticationStatus" (click)="logout()" id="logOutLink">Log Out</button>
       </mat-menu>

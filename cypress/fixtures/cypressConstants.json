@@ -78,5 +78,11 @@
   "createAccountUrl": "http://localhost:4200/createaccount",
   "loginUrl": "http://localhost:4200/login",
   "textSignalThatYouAreInTableView": "Annotation Rating",
-  "versusTextInsideSingleVideo": "(left) vs."
+  "versusTextInsideSingleVideo": "(left) vs.",
+  "questionForOwner": "How long have you been a spy",
+  "dropDownElementName":"inputTypeQuestionName",
+  "dropDownChoice": "Text",
+  "nextDropDownElementName":"inputTypeQuestionName1",
+  "genericQuestionForOwner": "Where is Dr.Evil hiding?",
+  "genericQuestionForOwnerId":"genericLabelQuestionName1"
 }

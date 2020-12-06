@@ -11,6 +11,16 @@
 //
 // -- This is a parent command --
 
+Cypress.Commands.add('fillOutSimpleOwnerQuestion', (questionForOwnerName, typeOfQuestion, dropDownElementName) =>{
+  cy.get('input[id=labelQuestionName]').last().type(questionForOwnerName, {force:true}); //there seems to be a hidden input containing cypressConstants.questionForOwner before the actual form. Wth?
+  cy.selectDropDownAlt(dropDownElementName, typeOfQuestion);
+});
+
+Cypress.Commands.add('fillOutOwnerQuestionGeneric', (questionForOwnerName, labelQuestionElementId, typeOfQuestion, dropDownElementId) =>{
+  cy.get(`input[id="${labelQuestionElementId}"]`).last().type(questionForOwnerName, {force:true}); //there seems to be a hidden input containing cypressConstants.questionForOwner before the actual form. Wth?
+  cy.selectDropDownAlt(dropDownElementId, typeOfQuestion);
+});
+
 Cypress.Commands.add('deleteCollection', (collectionName) =>{
   cy.contains('li', collectionName).children('span[name=remove-collection]').click({force:true});
 });
@@ -287,6 +297,19 @@ Cypress.Commands.add("selectDropDown", (selectId, selectOption)=>{
       // After click, mat-select should contain the text of the selected option
       cy.wait(1000);
       cy.get(`mat-select[id="${selectId}"`).contains(selectOption);
+    });
+  });
+});
+
+Cypress.Commands.add("selectDropDownAlt", (selectId, selectOption)=>{ //TODO possiblyDelete
+  cy.get(`mat-select[id="${selectId}"`).last().click({timeout:5000}).then(() => {
+    cy.wait(1000);
+    cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('contain', selectOption);
+    cy.wait(1000);
+    cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text:contains("${selectOption}")`).first().click({timeout:5000}).then(() => {
+      // After click, mat-select should contain the text of the selected option
+      cy.wait(1000);
+      cy.get(`mat-select[id="${selectId}"`).last().contains(selectOption);
     });
   });
 });
