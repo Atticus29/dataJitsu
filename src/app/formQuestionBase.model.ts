@@ -18,7 +18,7 @@ export class FormQuestionBase<T> {
   controlType: string;
   submitAfterThisQuestion: boolean;
   type: string;
-  options: {key: string, value: string}[];
+  dropdownOptions: {key: string, value: string}[];
 
   constructor(options: {
       value?: T,
@@ -39,7 +39,8 @@ export class FormQuestionBase<T> {
       order?: number,
       controlType?: string,
       submitAfterThisQuestion?: boolean,
-      type?: string
+      type?: string,
+      dropdownOptions?: any[]
     } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -60,6 +61,7 @@ export class FormQuestionBase<T> {
     this.controlType = options.controlType || '';
     this.submitAfterThisQuestion = options.submitAfterThisQuestion === undefined? false: options.submitAfterThisQuestion;
     this.type = options.type || '';
+    this.dropdownOptions = options.dropdownOptions || [];
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
@@ -87,6 +89,7 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
+      dropdownOptions: oldQuestion.dropdownOptions
     });
   }
   static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
@@ -114,6 +117,7 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
+      dropdownOptions: oldQuestion.dropdownOptions
     });
   }
 
@@ -139,7 +143,8 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order + 1,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
-      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
+      dropdownOptions: oldQuestion.dropdownOptions
     });
   }
 
@@ -165,7 +170,8 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
-      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
+      dropdownOptions: oldQuestion.dropdownOptions
     });
   }
 
@@ -191,7 +197,8 @@ export class FormQuestionBase<T> {
       order: oldQuestion.order,
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
-      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion
+      submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
+      dropdownOptions: oldQuestion.dropdownOptions
     });
   }
 

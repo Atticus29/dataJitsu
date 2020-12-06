@@ -100,7 +100,7 @@ export class QuestionService{
     indentThisQuestion: false,
     type: 'dropdown',
     order: 2,
-    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
     submitAfterThisQuestion: true
   });
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
@@ -116,7 +116,7 @@ export class QuestionService{
     indentThisQuestion: true,
     type: 'dropdown',
     order: 2,
-    options: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
     submitAfterThisQuestion: true
   });
 
