@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-
+import { NgZone } from '@angular/core';
 import { Subject } from 'rxjs'; //combineLatest
+import { Router } from "@angular/router";
 // import { takeUntil, take, last } from 'rxjs/operators';
 // import { AngularFireAuth } from '@angular/fire/auth';
 //
@@ -18,7 +19,8 @@ export class BaseComponent implements OnDestroy {
   ngUnsubscribe = new Subject<void>();
   userObjFromDb: any = null;
 
-  constructor() { } //private authService: AuthorizationService, private dbService: DatabaseService, private trackerService: TrackerService, public afAuth: AngularFireAuth
+
+  constructor() { } //you can't access any of these services from here, so don't try it again lol
 
   ngOnInit() { //TODO implement this
     // combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{

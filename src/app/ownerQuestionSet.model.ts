@@ -25,7 +25,7 @@ export class OwnerQuestionSet {
       // console.log("indexOfJsonObjKeyMatchingCurrentQuestionKey is: " + indexOfJsonObjKeyMatchingCurrentQuestionKey);
       // let currentOwnerQuestion = new OwnerQuestion()
       if(baseKey === "labelQuestionName" || baseKey === "genericLabelQuestionName"){
-        let currentOwnerQuestion = new OwnerQuestion(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey], jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1]); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preced their question types
+        let currentOwnerQuestion = new OwnerQuestion(String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1])); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preced their question types
         ownerQuestions.push(currentOwnerQuestion);
       }
     }

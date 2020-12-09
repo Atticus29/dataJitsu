@@ -21,6 +21,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-new-video-form.component';
 import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
 import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AuthGuard } from './guards/auth.guard';
@@ -125,17 +126,22 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
-    path: 'create-collection',
+    path: constants.collectionCreationPathName,
     component: CollectionCreationFormComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
-    path: 'collections/:collectionId',
+    path: constants.collectionsPathName + '/:collectionId',
     component: CollectionDisplayComponent,
     canActivate: [AuthGuard],
     pathMatch: 'full'
   },{
-    path: 'error',
+    path: constants.collectionsPathName + '/:collectionId/'+ constants.newVideoPathName,
+    component: GenericNewVideoFormComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full'
+  },{
+    path: constants.newVideoPathName,
     component: NotfoundComponent,
     pathMatch: 'full'
   },{

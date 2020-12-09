@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { Collection } from '../collection.model';
+import { constants } from '../constants';
 
 @Component({
   selector: 'app-collection-display',
@@ -13,7 +14,7 @@ import { Collection } from '../collection.model';
 })
 export class CollectionDisplayComponent extends BaseComponent implements OnInit {
   private localCollection: Collection;
-  constructor(private databaseService: DatabaseService, private route: ActivatedRoute) {
+  constructor(private databaseService: DatabaseService, private route: ActivatedRoute, private ngZone: NgZone, private router:Router) {
     super();
   }
 
@@ -25,6 +26,13 @@ export class CollectionDisplayComponent extends BaseComponent implements OnInit 
         console.log("this.localCollection in collection-display component is: ");
         console.log(this.localCollection);
       })
+    });
+  }
+
+  navigateToNewVideo(){
+    console.log("navigateToNewVideo clicked");
+    this.ngZone.run(() =>{
+      this.router.navigate([constants.collectionsPathName + '/' + this.localCollection.getId() + '/'+ constants.newVideoPathName]);
     });
   }
 }

@@ -87,7 +87,11 @@ export var constants = {
     },
     alreadyExistsNotification: "Your entry already exists in dropdown menu!",
     allVideosPathName: 'all-videos',
+    collectionsPathName: 'collections',
     individualPathName: 'videos',
+    newVideoPathName: 'new-video',
+    errorPathName: 'error',
+    collectionCreationPathName: 'create-collection',
     annotationRecordedMessage: "Annotation Recorded",
     columnsToDisplay: ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl']
   };
