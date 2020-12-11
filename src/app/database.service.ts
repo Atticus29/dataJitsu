@@ -1675,8 +1675,8 @@ export class DatabaseService {
     let ref = firebase.database().ref('collections/' + collectionId);
     let obsRet = Observable.create(function(observer){
       ref.once("value").then(snapshot =>{
-        console.log("snapshot in getCollection:");
-        console.log(snapshot);
+        // console.log("snapshot in getCollection:");
+        // console.log(snapshot);
         observer.next(snapshot.val());
       });
     });

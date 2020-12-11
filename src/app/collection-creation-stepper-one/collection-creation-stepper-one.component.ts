@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import { takeUntil, withLatestFrom, take } from 'rxjs/operators';
 
-// import { constants } from '../constants';
+import { constants } from '../constants';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { QuestionService } from '../question.service';

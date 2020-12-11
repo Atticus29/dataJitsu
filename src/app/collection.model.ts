@@ -77,6 +77,8 @@ export class Collection {
    }
 
    addOwnerQuestions(newOwnerQuestions: OwnerQuestion[]){
+     // console.log("newOwnerQuestions are: ");
+     // console.log(newOwnerQuestions);
      this.ownerQuestions = this.ownerQuestions.concat(newOwnerQuestions);
    }
 
@@ -87,14 +89,14 @@ export class Collection {
    }
 
    static fromDataBase (jsonObj: any): Collection{
-     console.log("jsonObj is: ");
-     console.log(jsonObj);
+     // console.log("jsonObj is: ");
+     // console.log(jsonObj);
      let name = jsonObj.name;
      let newCollection = new Collection(name);
      newCollection.addDetails(jsonObj.details);
      newCollection.setId(jsonObj.id);
      newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
-     newCollection.addOwnerQuestions(jsonObj.ownerQuestions);
+     newCollection.addOwnerQuestions(jsonObj.ownerQuestions); //TODO do I need a OwnerQuestions.fromDb??
      return newCollection;
    }
 
@@ -138,6 +140,10 @@ export class Collection {
    }
    getId(){
      return this.id? this.id: null;
+   }
+
+   getOwnerQuestions(){
+     return this.ownerQuestions? this.ownerQuestions: null;
    }
 
 }

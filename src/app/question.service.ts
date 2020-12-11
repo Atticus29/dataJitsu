@@ -1,9 +1,13 @@
-import { Injectable }       from '@angular/core';
+import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
-import { of } from 'rxjs';
+import { Collection } from './collection.model';
+import { OwnerQuestion } from './ownerQuestion.model';
 
 @Injectable()
 export class QuestionService{
@@ -147,6 +151,48 @@ export class QuestionService{
     entryDetailQuestions.push(this.genericLabelQuestion);
     entryDetailQuestions.push(this.genericInputTypeQuestion);
     return of(entryDetailQuestions);
+  }
+
+  questionsFromDbCollection(collection: Collection): Observable<any>{
+    let collectionDbQuestions: FormQuestionBase<string>[] = [];
+    // console.log("collection from questionsFromDbCollection is:");
+    // console.log(collection);
+    let ownerQuestions: OwnerQuestion[] = collection.getOwnerQuestions();
+    if(ownerQuestions){
+      for(let i=0; i<ownerQuestions.length; i++){
+        let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
+        // console.log("currentOwnerQuestion is: ");
+        // console.log(currentOwnerQuestion.question);
+        let currentQuestion: FormQuestionBase = new FormQuestionBase({
+          value: '',
+          key: 'ownerQuestion' + i,
+          label: currentOwnerQuestion.question,
+          groupLabel: 'Questions about the video',
+          required: currentOwnerQuestion.question==="Video URL"? true:false,
+          giveOptionToAnswerThisQuestionMultipleTimes: false,
+          disableAddButtonIfCurrentValueIsBlank: false,
+          disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
+          smallSize: 12,
+          mediumSize: 6,
+          largeSize: 6,
+          pairThisQuestionWithPreviousQuestion: i>0? true:false,
+          isThisQuestionTheLastOfAQuestionGroup: i<ownerQuestions.length-1 ? false:true,
+          indentThisQuestion: false,
+          placeHolder: '',
+          order: i,
+          // controlType: oldQuestion.controlType, //TODO what is this again?
+          type: currentOwnerQuestion.questionType,
+          submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
+          dropdownOptions: []
+        });
+        if(currentQuestion){
+          collectionDbQuestions.push(currentQuestion);
+        }
+      }
+      return of(collectionDbQuestions);
+    } else{
+      return of(null);
+    }
   }
 
 }
