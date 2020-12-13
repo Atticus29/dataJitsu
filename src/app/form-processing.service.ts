@@ -20,6 +20,7 @@ export class FormProcessingService {
   public actualForm: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
   public collectionId: BehaviorSubject<string> = new BehaviorSubject(null);
   public ngUnsubscribe = new Subject<void>();
+  public buttonDisplayName: BehaviorSubject<string> = new BehaviorSubject(null);
 
   constructor(private questionService: QuestionService) { }
 
@@ -46,6 +47,7 @@ export class FormProcessingService {
         this.questionArrayOfForm.next(newCollectionQuestions);
         this.formResults.next(null);
         this.nextButtonClicked.next(false);
+        this.buttonDisplayName.next(null);
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
 

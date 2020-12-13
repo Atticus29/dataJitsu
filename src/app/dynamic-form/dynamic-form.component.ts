@@ -30,6 +30,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     ngOnInit() {
+      let self = this;
       this.form = this.qcs.toFormGroup(this.questions);
       if(this.questions){
         // console.log("got here 1");
@@ -54,6 +55,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           this.formProcessingService.actualForm.next(this.form);
           this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
           //TODO button should be emitted as well
+          self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
+            self.localButtonDisplayName = buttonDisplayName;
+          });
           // console.log("this.configOptions.getSubmitButtonDisplay() is: " + this.configOptions.getSubmitButtonDisplay());
           // this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
         }

@@ -26,6 +26,8 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
+    let self = this;
+    this.formProcessingService.restartFormAndQuestions();
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       // console.log(params.collectionId);
       this.databaseService.getCollection(params.collectionId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionResult =>{
@@ -33,9 +35,9 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
         // console.log("this.localCollection in generic-video-creation component is: ");
         // console.log(this.localCollection);
         this.questionService.questionsFromDbCollection(this.localCollection).pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-          console.log("questionResults are: ");
-          console.log(typeof questionResults);
-          this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, [], "Submit");
+          // console.log("questionResults are: ");
+          // this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, [], "Submit");
+          self.formProcessingService.buttonDisplayName.next("Submit");
           // console.log("localCollectionConfigOptions are: ");
           // console.log(this.localCollectionConfigOptions);
           // this.localCollectionQuestions = questionResults;
@@ -56,8 +58,8 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
       // console.log("newQuestions in generic new video form:");
       // console.log(newQuestions);
       if(newQuestions){
-        console.log("newQuestions are: ");
-        console.log(newQuestions);
+        // console.log("newQuestions are: ");
+        // console.log(newQuestions);
         this.localCollectionQuestions = newQuestions;
         //TODO do something here that captures new formControls?
       }

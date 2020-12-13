@@ -28,6 +28,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
   }
 
   ngOnInit() {
+    this.formProcessingService.restartFormAndQuestions();
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){

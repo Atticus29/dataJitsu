@@ -1,4 +1,5 @@
- import { Component, OnInit, OnDestroy } from '@angular/core';
+ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+ import { Router } from '@angular/router';
 
 import {MatSnackBar} from '@angular/material';
 import { takeUntil, withLatestFrom, take } from 'rxjs/operators';
@@ -26,7 +27,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
   private stopCounter: number = 0;
   private isLoading: boolean = true;
 
-  constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar, private trackerService: TrackerService) {
+  constructor(private databaseService: DatabaseService, private questionService: QuestionService, private formProcessingService:FormProcessingService, public snackBar: MatSnackBar, private trackerService: TrackerService, private ngZone: NgZone, private router:Router) {
     super();
   }
 
@@ -102,6 +103,9 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
                                       self.formProcessingService.collectionId.next(null);
                                       self.formProcessingService.restartFormAndQuestions();
                                       //TODO repopulate form and questions with original primary stepper after a clear
+                                      self.ngZone.run(() =>{
+                                        self.router.navigate([constants.collectionsPathName + '/' + collectionId]); // + '/'+ constants.newVideoPathName
+                                      });
                                     }else{
                                       self.openSnackBar(constants.collectionOwnerQuestionsErrorNotification);
                                     }
@@ -122,7 +126,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
 
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 1000, //TODO change to 3000 once testing is complete a feature is good to go
+      duration: 5000,
     });
   }
 

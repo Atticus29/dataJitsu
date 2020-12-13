@@ -167,6 +167,7 @@ export class QuestionService{
     // console.log(collection);
     let ownerQuestions: OwnerQuestion[] = collection.getOwnerQuestions();
     if(ownerQuestions){
+      console.log("ownerQuestions.length is " + ownerQuestions.length);
       for(let i=0; i<ownerQuestions.length; i++){
         let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
         // console.log("currentOwnerQuestion is: ");
@@ -180,10 +181,10 @@ export class QuestionService{
           disableAddButtonIfCurrentValueIsBlank: false,
           groupLabel: 'Questions about the video',
           disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
-          pairThisQuestionWithPreviousQuestion: i>0? true:false,
+          pairThisQuestionWithPreviousQuestion: currentOwnerQuestion.type === "Dropdown"? true:false,
           isThisQuestionTheLastOfAQuestionGroup: false, //i<ownerQuestions.length-1 ? false:true,
           indentThisQuestion: false,
-          placeHolder: 'test',
+          placeHolder: '',
           smallSize: 12,
           mediumSize: 6,
           largeSize: 6,
@@ -193,7 +194,7 @@ export class QuestionService{
           submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
           dropdownOptions: []
         };
-        let currentQuestion: FormQuestionBase<string> = null;
+        let currentQuestion: FormQuestionBase<string> = null; //TODO could this and the below branching benefit from abstract factory pattern? Once I grok that, revisit this
         if(questionContent.type === "Text"){
           currentQuestion = new TextQuestion(questionContent);
         }
