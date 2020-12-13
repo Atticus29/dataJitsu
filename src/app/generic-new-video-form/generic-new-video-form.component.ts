@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
@@ -8,6 +8,8 @@ import { Collection } from '../collection.model';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { QuestionService } from '../question.service';
+import { QuestionControlService } from '../question-control.service';
+import { FormProcessingService } from '../form-processing.service';
 
 @Component({
   selector: 'app-generic-new-video-form',
@@ -15,11 +17,11 @@ import { QuestionService } from '../question.service';
   styleUrls: ['./generic-new-video-form.component.scss']
 })
 export class GenericNewVideoFormComponent extends BaseComponent implements OnInit {
-  private localCollection: Collection;
-  private localCollectionConfigOptions: DynamicFormConfiguration;
-  private localCollectionQuestions: FormQuestionBase<any>[];
+  private localCollection: Collection = null;
+  private localCollectionQuestions: FormQuestionBase<any>[] = this.questionService.getShamCollectionQuestionsInstantly();
+  private localCollectionConfigOptions: DynamicFormConfiguration = new DynamicFormConfiguration(this.localCollectionQuestions, [], "Submit");
 
-  constructor(private databaseService: DatabaseService, private route: ActivatedRoute, private questionService: QuestionService) {
+  constructor(private databaseService: DatabaseService, private route: ActivatedRoute, private questionService: QuestionService, private qcs: QuestionControlService, private formProcessingService: FormProcessingService) {
     super();
   }
 
@@ -28,19 +30,37 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
       // console.log(params.collectionId);
       this.databaseService.getCollection(params.collectionId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionResult =>{
         this.localCollection = Collection.fromDataBase(collectionResult);
-        console.log("this.localCollection in generic-video-creation component is: ");
-        console.log(this.localCollection);
+        // console.log("this.localCollection in generic-video-creation component is: ");
+        // console.log(this.localCollection);
         this.questionService.questionsFromDbCollection(this.localCollection).pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
-          // console.log("questionResults are: ");
-          // console.log(questionResults);
+          console.log("questionResults are: ");
+          console.log(typeof questionResults);
           this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, [], "Submit");
-          console.log("localCollectionConfigOptions are: ");
-          console.log(this.localCollectionConfigOptions);
-          this.localCollectionQuestions = questionResults;
-          console.log("this.localCollectionQuestions are: ");
-          console.log(this.localCollectionQuestions);
+          // console.log("localCollectionConfigOptions are: ");
+          // console.log(this.localCollectionConfigOptions);
+          // this.localCollectionQuestions = questionResults;
+          // console.log("this.localCollectionQuestions are: ");
+          // console.log(this.localCollectionQuestions);
+          let form = this.qcs.toFormGroup(questionResults);
+          // console.log("form in dynamic form component is: ");
+          // console.log(form);
+          this.formProcessingService.actualForm.next(form);
+          this.formProcessingService.captureQuestionArrayOfCurrentForm(questionResults);
+          // console.log("this.configOptions.getSubmitButtonDisplay() is: " + this.configOptions.getSubmitButtonDisplay());
+          // this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
         });
       })
+    });
+
+    this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
+      // console.log("newQuestions in generic new video form:");
+      // console.log(newQuestions);
+      if(newQuestions){
+        console.log("newQuestions are: ");
+        console.log(newQuestions);
+        this.localCollectionQuestions = newQuestions;
+        //TODO do something here that captures new formControls?
+      }
     });
 
   }

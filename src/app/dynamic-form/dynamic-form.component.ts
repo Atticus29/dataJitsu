@@ -31,8 +31,14 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       this.form = this.qcs.toFormGroup(this.questions);
-      this.formProcessingService.actualForm.next(this.form);
-      this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
+      if(this.questions){
+        // console.log("got here 1");
+        console.log("this.form in dynamic form component is: ");
+        console.log(this.form);
+        this.formProcessingService.actualForm.next(this.form);
+        console.log("this.configOptions.getSubmitButtonDisplay() is: " + this.configOptions.getSubmitButtonDisplay());
+        this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
+      }
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // console.log("gridLengthsForButtons are: " + this.gridLengthsForButtons);
       // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
@@ -40,8 +46,17 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // console.log("questions upon entry into ngOnInit of DynamicFormComponent are");
       // console.log(this.questions);
       this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-        // console.log("questionArrayOfForm emitted in formProcessingService. questionArrayOfForm is: ");
-        // console.log(questionArrayOfForm);
+        console.log("questionArrayOfForm emitted in formProcessingService. questionArrayOfForm is: ");
+        console.log(questionArrayOfForm);
+        if(!this.form){
+          console.log("got here 2");
+          this.form = this.qcs.toFormGroup(this.questions);
+          this.formProcessingService.actualForm.next(this.form);
+          this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
+          //TODO button should be emitted as well
+          // console.log("this.configOptions.getSubmitButtonDisplay() is: " + this.configOptions.getSubmitButtonDisplay());
+          // this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
+        }
         if(questionArrayOfForm){
           if(questionArrayOfForm!== "Stop"){
             this.questions = questionArrayOfForm;

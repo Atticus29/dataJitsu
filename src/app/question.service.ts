@@ -132,6 +132,14 @@ export class QuestionService{
     return of(newCollectionQuestions);
   }
 
+  getShamCollectionQuestionsInstantly(){
+    let newCollectionQuestions: FormQuestionBase<string>[] = [];
+    newCollectionQuestions.push(this.collectionNameQuestion);
+    newCollectionQuestions.push(this.categoryNameQuestion);
+    newCollectionQuestions.push(this.collectionItemQuestion);
+    return newCollectionQuestions;
+  }
+
   getCollectionQuestionGroupQuestions(){
     let collectionQuestionGroupQuestions: FormQuestionBase<string>[] = [];
     collectionQuestionGroupQuestions.push(this.categoryNameQuestion);
@@ -163,28 +171,38 @@ export class QuestionService{
         let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
         // console.log("currentOwnerQuestion is: ");
         // console.log(currentOwnerQuestion.question);
-        let currentQuestion: FormQuestionBase = new FormQuestionBase({
-          value: '',
+        let questionContent: {} = {
           key: 'ownerQuestion' + i,
           label: currentOwnerQuestion.question,
-          groupLabel: 'Questions about the video',
+          value: '',
           required: currentOwnerQuestion.question==="Video URL"? true:false,
           giveOptionToAnswerThisQuestionMultipleTimes: false,
           disableAddButtonIfCurrentValueIsBlank: false,
+          groupLabel: 'Questions about the video',
           disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
+          pairThisQuestionWithPreviousQuestion: i>0? true:false,
+          isThisQuestionTheLastOfAQuestionGroup: false, //i<ownerQuestions.length-1 ? false:true,
+          indentThisQuestion: false,
+          placeHolder: 'test',
           smallSize: 12,
           mediumSize: 6,
           largeSize: 6,
-          pairThisQuestionWithPreviousQuestion: i>0? true:false,
-          isThisQuestionTheLastOfAQuestionGroup: i<ownerQuestions.length-1 ? false:true,
-          indentThisQuestion: false,
-          placeHolder: '',
-          order: i,
-          // controlType: oldQuestion.controlType, //TODO what is this again?
+          // order: 1,
+          controlType: currentOwnerQuestion.questionType,
           type: currentOwnerQuestion.questionType,
           submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
           dropdownOptions: []
-        });
+        };
+        let currentQuestion: FormQuestionBase<string> = null;
+        if(questionContent.type === "Text"){
+          currentQuestion = new TextQuestion(questionContent);
+        }
+        if(questionContent.type === "Dropdown"){
+          currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
+        }
+        if(questionContent.type === "datepicker"){
+          currentQuestion = new TextQuestion(questionContent); //TODO make datepicker question
+        }
         if(currentQuestion){
           collectionDbQuestions.push(currentQuestion);
         }
