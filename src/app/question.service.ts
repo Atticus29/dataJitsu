@@ -172,7 +172,7 @@ export class QuestionService{
         let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
         // console.log("currentOwnerQuestion is: ");
         // console.log(currentOwnerQuestion.question);
-        let questionContent: {} = {
+        let questionContent: any = {
           key: 'ownerQuestion' + i,
           label: currentOwnerQuestion.question,
           value: '',
@@ -195,13 +195,13 @@ export class QuestionService{
           dropdownOptions: []
         };
         let currentQuestion: FormQuestionBase<string> = null; //TODO could this and the below branching benefit from abstract factory pattern? Once I grok that, revisit this
-        if(questionContent.type === "Text"){
+        if(questionContent.type && questionContent.type === "Text"){
           currentQuestion = new TextQuestion(questionContent);
         }
-        if(questionContent.type === "Dropdown"){
+        if(questionContent.type && questionContent.type === "Dropdown"){
           currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
         }
-        if(questionContent.type === "datepicker"){
+        if(questionContent.type && questionContent.type === "datepicker"){
           currentQuestion = new TextQuestion(questionContent); //TODO make datepicker question
         }
         if(currentQuestion){

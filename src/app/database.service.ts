@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { takeUntil, take, first } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
@@ -499,6 +499,17 @@ export class DatabaseService {
     updates['/videos/' + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
     return videoId;
+  }
+
+  addVideoToDbWithPath(video: any, path: string): Observable<string>{
+    // console.log("addVideoToDb entered");
+    let ref = this.db.list<Video>(path);
+    let videoId = ref.push(video).key;
+    let updates = {};
+    updates[path + videoId + '/id'] = videoId;
+    updates[path + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
+    firebase.database().ref().update(updates);
+    return of(videoId);
   }
 
   addUserToDb(user: User): Observable<string>{

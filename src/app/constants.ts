@@ -19,6 +19,8 @@ export var constants = {
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     collectionOwnerQuestionsErrorNotification: "Unable to add questions to your collection",
     eventNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
+    videoAddedNotification: "Video has been added successfully",
+    videoAddFailureNotification: "Error: Video was not successfully added",
     numDaysBeforeNewAnnotationNeeded: 30,
     numberOfCurrentAnnotationsNeeded: 6,
     numberOfSecondsToleratedToBeCalledSameAnnotation: 3,

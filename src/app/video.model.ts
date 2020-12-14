@@ -17,7 +17,8 @@ export class Video {
   constructor(public videoDeets: VideoDetails, public originalPosterId: string, public eventsInVideo: Array<EventInVideo>) {
     this.updateAnnotationStatus(false);
    }
-   static fromJson (jsonObj: any): Video{
+
+   static fromJson (jsonObj: any): Video{ //TODO have to have a way to get cruft/other stuff and/or genericise this
      let originalPosterId = jsonObj.originalPosterId;
      let moves = null;
      let extractedEventsInVideo = null;

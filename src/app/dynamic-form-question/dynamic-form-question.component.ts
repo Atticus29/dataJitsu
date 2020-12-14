@@ -21,6 +21,9 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       if(this.question){
         if(this.question.key){
           if(this.form.controls[this.question.key]){
+            console.log("got here in dynamic-form-question component");
+            console.log("this.form.controls[this.question.key] is:");
+            console.log(this.form.controls[this.question.key]);
               returnVal = this.form.controls[this.question.key].valid? this.form.controls[this.question.key].valid: null;
               return returnVal;
           } else{
