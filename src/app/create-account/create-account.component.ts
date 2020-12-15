@@ -69,11 +69,15 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     })
 
     this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
+      console.log("noGiRanks are: ");
+      console.log(noGiRanks);
       this.noGiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
     this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
+      console.log("ageClasses are:");
+      console.log(ageClasses);
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });

@@ -11,6 +11,28 @@ import { OwnerQuestion } from './ownerQuestion.model';
 
 @Injectable()
 export class QuestionService{
+  private userNameQuestion: TextQuestion = new TextQuestion({
+    key: 'usernameQuestion' + i,
+    label: 'User Name',
+    value: '',
+    required: currentOwnerQuestion.question==="Video URL"? true:false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    groupLabel: 'Questions about the video',
+    disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: currentOwnerQuestion.type === "Dropdown"? true:false,
+    isThisQuestionTheLastOfAQuestionGroup: false, //i<ownerQuestions.length-1 ? false:true,
+    indentThisQuestion: false,
+    placeHolder: '',
+    smallSize: 12,
+    mediumSize: 6,
+    largeSize: 6,
+    // order: 1,
+    controlType: currentOwnerQuestion.questionType,
+    type: currentOwnerQuestion.questionType,
+    submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
+    dropdownOptions: []
+  });
   private collectionNameQuestion: TextQuestion = new TextQuestion({
     key: 'collectionName',
     label: 'Collection Name',
