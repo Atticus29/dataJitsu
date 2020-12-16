@@ -169,7 +169,7 @@ describe ('Tests involving match creation', () =>{
     });
   });
 
-  it.only('can successfully submit a owner question set', function(){
+  it('can successfully submit a owner question set', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit('http://localhost:4200/create-collection');
       cy.contains('button','Next').should('not.be.enabled');

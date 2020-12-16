@@ -11,28 +11,28 @@ import { OwnerQuestion } from './ownerQuestion.model';
 
 @Injectable()
 export class QuestionService{
-  private userNameQuestion: TextQuestion = new TextQuestion({
-    key: 'usernameQuestion' + i,
-    label: 'User Name',
-    value: '',
-    required: currentOwnerQuestion.question==="Video URL"? true:false,
-    giveOptionToAnswerThisQuestionMultipleTimes: false,
-    disableAddButtonIfCurrentValueIsBlank: false,
-    groupLabel: 'Questions about the video',
-    disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
-    pairThisQuestionWithPreviousQuestion: currentOwnerQuestion.type === "Dropdown"? true:false,
-    isThisQuestionTheLastOfAQuestionGroup: false, //i<ownerQuestions.length-1 ? false:true,
-    indentThisQuestion: false,
-    placeHolder: '',
-    smallSize: 12,
-    mediumSize: 6,
-    largeSize: 6,
-    // order: 1,
-    controlType: currentOwnerQuestion.questionType,
-    type: currentOwnerQuestion.questionType,
-    submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
-    dropdownOptions: []
-  });
+  // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here
+  //   key: 'usernameQuestion' + i,
+  //   label: 'User Name',
+  //   value: '',
+  //   required: currentOwnerQuestion.question==="Video URL"? true:false,
+  //   giveOptionToAnswerThisQuestionMultipleTimes: false,
+  //   disableAddButtonIfCurrentValueIsBlank: false,
+  //   groupLabel: 'Questions about the video',
+  //   disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: true,
+  //   pairThisQuestionWithPreviousQuestion: currentOwnerQuestion.type === "Dropdown"? true:false,
+  //   isThisQuestionTheLastOfAQuestionGroup: false, //i<ownerQuestions.length-1 ? false:true,
+  //   indentThisQuestion: false,
+  //   placeHolder: '',
+  //   smallSize: 12,
+  //   mediumSize: 6,
+  //   largeSize: 6,
+  //   // order: 1,
+  //   controlType: currentOwnerQuestion.questionType,
+  //   type: currentOwnerQuestion.questionType,
+  //   submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
+  //   dropdownOptions: []
+  // });
   private collectionNameQuestion: TextQuestion = new TextQuestion({
     key: 'collectionName',
     label: 'Collection Name',
@@ -189,7 +189,7 @@ export class QuestionService{
     // console.log(collection);
     let ownerQuestions: OwnerQuestion[] = collection.getOwnerQuestions();
     if(ownerQuestions){
-      console.log("ownerQuestions.length is " + ownerQuestions.length);
+      // console.log("ownerQuestions.length is " + ownerQuestions.length);
       for(let i=0; i<ownerQuestions.length; i++){
         let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
         // console.log("currentOwnerQuestion is: ");
@@ -230,6 +230,8 @@ export class QuestionService{
           collectionDbQuestions.push(currentQuestion);
         }
       }
+      console.log("collectionDbQuestions is: ");
+      console.log(collectionDbQuestions);
       return of(collectionDbQuestions);
     } else{
       return of(null);

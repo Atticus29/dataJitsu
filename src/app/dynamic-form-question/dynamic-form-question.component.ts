@@ -21,9 +21,9 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       if(this.question){
         if(this.question.key){
           if(this.form.controls[this.question.key]){
-            console.log("got here in dynamic-form-question component");
-            console.log("this.form.controls[this.question.key] is:");
-            console.log(this.form.controls[this.question.key]);
+            // console.log("got here in dynamic-form-question component");
+            // console.log("this.form.controls[this.question.key] is:");
+            // console.log(this.form.controls[this.question.key]);
               returnVal = this.form.controls[this.question.key].valid? this.form.controls[this.question.key].valid: null;
               return returnVal;
           } else{
@@ -53,7 +53,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       if(formResults){
         self.formProcessingService.nextButtonClicked.pipe(takeUntil(self.ngUnsubscribe)).subscribe(nextButtonClick =>{
           if(nextButtonClick){
-            console.log("nextButtonClick is: " + nextButtonClick + " in dynamic-form-question component");
+            // console.log("nextButtonClick is: " + nextButtonClick + " in dynamic-form-question component");
             this.form = formResults;
           }
         });

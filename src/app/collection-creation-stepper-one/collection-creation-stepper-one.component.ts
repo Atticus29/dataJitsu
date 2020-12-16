@@ -42,6 +42,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
         // console.log("questionResults are: ");
         // console.log(questionResults);
         this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Next");
+        this.formProcessingService.buttonDisplayName.next("Next");
         this.localCollectionQuestions = questionResults;
       });
     });

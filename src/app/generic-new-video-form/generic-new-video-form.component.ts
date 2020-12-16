@@ -57,8 +57,8 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
           // console.log("this.localCollectionQuestions are: ");
           // console.log(this.localCollectionQuestions);
           let form = this.qcs.toFormGroup(questionResults);
-          // console.log("form in dynamic form component is: ");
-          // console.log(form);
+          console.log("form in dynamic form component is: ");
+          console.log(form);
           this.formProcessingService.actualForm.next(form);
           this.formProcessingService.captureQuestionArrayOfCurrentForm(questionResults);
           // console.log("this.configOptions.getSubmitButtonDisplay() is: " + this.configOptions.getSubmitButtonDisplay());
@@ -68,12 +68,16 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-      // console.log("newQuestions in generic new video form:");
-      // console.log(newQuestions);
+      console.log("newQuestions in generic new video form:");
+      console.log(newQuestions);
       if(newQuestions){
         // console.log("newQuestions are: ");
         // console.log(newQuestions);
         this.localCollectionQuestions = newQuestions;
+        // let form = this.qcs.toFormGroup(questionResults);
+        // console.log("form in dynamic form component is: ");
+        // console.log(form);
+        // this.formProcessingService.actualForm.next(form);
         //TODO do something here that captures new formControls?
       }
     });
