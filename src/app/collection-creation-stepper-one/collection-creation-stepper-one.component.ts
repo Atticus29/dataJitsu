@@ -37,10 +37,6 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
     });
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
       self.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestionGroupResults =>{
-        console.log("newQuestionGroupResults are: ");
-        console.log(newQuestionGroupResults);
-        // console.log("questionResults are: ");
-        // console.log(questionResults);
         this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Next");
         this.formProcessingService.buttonDisplayName.next("Next");
         this.localCollectionQuestions = questionResults;
@@ -48,41 +44,25 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-      // console.log("newQuestions in stepper one:");
-      // console.log(newQuestions);
       if(newQuestions){
-        // console.log("newQuestions are: ");
-        // console.log(newQuestions);
         this.localCollectionQuestions = newQuestions;
-        //TODO do something here that captures new formControls?
+        //TODO do something here that captures new formControls? Still needed?
       }
     });
 
     //when form is submitted --------------------
-
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
-          // console.log("isFormSubmitted is: " + isFormSubmitted);
           if(isFormSubmitted){
-                // let formResultObservableWithLatestQuestions = formThread[stepNum].pipe(withLatestFrom(this.formProcessingService.questionThread[stepNum]));
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
-                // let formResultsWithLatestSubmissionConfirmation = this.formProcessingService.formSubmitted.pipe(withLatestFrom(formResultObservableWithLatestQuestions));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
-                  // console.log("combinedResults are: ");
-                  // console.log(combinedResults);
                   let formResults = combinedResults[0];
                   let currentFormQuestions = combinedResults[1];
-                  // console.log("currentFormQuestions are:");
-                  // console.log(currentFormQuestions);
                   if(formResults){ //formSubmitted &&
-                    // console.log("form has been submitted and there are form results");
                     if(formResults !== "Stop"){
-                      // console.log("formResults are: ");
-                      // console.log(formResults);
                       if(formResults.collectionName){
                         if(currentFormQuestions){
                           if(currentFormQuestions !== "Stop"){
                             let newCollection = Collection.fromForm(formResults, currentFormQuestions);
-                            // console.log(newCollection);
                             if(this.localUser && this.localUser.id && self.formSubmissionCounter<1){
                               this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionResults =>{
                                 let additionStatus = false;
@@ -91,12 +71,9 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   additionStatus = additionResults.status;
                                   collectionId = additionResults.collectionId;
                                 }
-                                // console.log("additionStatus is: " + additionStatus);
                                 if(additionStatus){
                                   self.openSnackBar(constants.collectionAddedNotification);
-                                  //TODO next stop for form and questions
                                   self.formProcessingService.stopFormAndQuestions();
-
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
                                     if(collectionId){
@@ -127,7 +104,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
 
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 1000, //TODO change to 3000 once testing is complete a feature is good to go
+      duration: 3000,
     });
   }
 

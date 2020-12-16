@@ -38,31 +38,22 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
         this.localUser = user;
       }
     });
-    // console.log("got here stepper two");
     this.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
       self.questionService.getNewEntryDetailQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestionGroupResults =>{
-        // console.log("questionResults from getNewEntryDetailQuestions from stepper two are: ");
-        // console.log(questionResults);
         this.localEntryDetailConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Submit");
         this.localEntryDetailQuestions = questionResults;
       });
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-      // console.log("newQuestions in stepper two:");
-      // console.log(newQuestions);
       if(newQuestions!="Stop" && this.stopCounter<1){
-        //TODO loading
         this.isLoading = true;
       }
       if(newQuestions==="Stop"){
-        // console.log("Stop has been hit! Adding to counter...");
         this.stopCounter ++;
         this.isLoading = true; //TODO ??
       }
       if(newQuestions!="Stop" && this.stopCounter>0){
-        // console.log("newQuestions are: ");
-        // console.log(newQuestions);
         this.localEntryDetailQuestions = newQuestions;
         this.isLoading = false;
         //TODO do something here that captures new formControls?
@@ -71,38 +62,25 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
 
     //when form is submitted --------------------
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
-          // console.log("isFormSubmitted in stepper two is: " + isFormSubmitted);
           if(isFormSubmitted && this.stopCounter>0){
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
-                  // console.log("combinedResults in stepper two are: ");
-                  // console.log(combinedResults);
                   let formResults = combinedResults[0];
-                  // console.log("formResults are:");
-                  // console.log(formResults);
                   let currentFormQuestions = combinedResults[1];
-                  // console.log("currentFormQuestions are:");
-                  // console.log(currentFormQuestions);
                   if(formResults){ //formSubmitted &&
-                    console.log("form has been submitted and there are form results");
                     if(formResults !== "Stop"){
-                      // console.log("got here a not stop");
                       if(formResults.labelQuestionName && formResults.inputTypeQuestionName){
                         if(currentFormQuestions){
                           if(currentFormQuestions !== "Stop"){
                             self.formProcessingService.collectionId.pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionId =>{
-                              // console.log("collectionId in stepper two is: " + collectionId);
                               if(collectionId){
                                 let newOwnerQuestionSet: OwnerQuestionSet = OwnerQuestionSet.fromForm(collectionId, formResults, currentFormQuestions);
-                                console.log("newOwnerQuestionSet is: ");
-                                console.log(newOwnerQuestionSet);
                                 if(this.localUser && this.localUser.id){
                                   this.databaseService.addOwnerQuestionSetToDatabase(newOwnerQuestionSet, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
                                     if(additionStatus){
                                       self.openSnackBar(constants.collectionOwnerQuestionsAddedNotification);
                                       self.formProcessingService.collectionId.next(null);
                                       self.formProcessingService.restartFormAndQuestions();
-                                      //TODO repopulate form and questions with original primary stepper after a clear
                                       self.ngZone.run(() =>{
                                         self.router.navigate([constants.collectionsPathName + '/' + collectionId]); // + '/'+ constants.newVideoPathName
                                       });
