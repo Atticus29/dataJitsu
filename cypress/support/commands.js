@@ -11,6 +11,12 @@
 //
 // -- This is a parent command --
 
+Cypress.Commands.add('fillOutOwnerQuestionSetAsUserOfCollection', (ownerQuestion0ElementId, ownerQuestion1ElementId, ownerQuestion2ElementId, ownerQuestion0Response, ownerQuestion1Response, ownerQuestion2Response) =>{
+  cy.get(`input[id="${ownerQuestion0ElementId}"]`).type(ownerQuestion0Response);
+  cy.get(`input[id="${ownerQuestion1ElementId}"]`).type(ownerQuestion1Response);
+  cy.get(`input[id="${ownerQuestion2ElementId}"]`).type(ownerQuestion2Response);
+});
+
 Cypress.Commands.add('fillOutSimpleOwnerQuestion', (questionForOwnerName, typeOfQuestion, dropDownElementName) =>{
   cy.get('input[id=labelQuestionName]').last().type(questionForOwnerName, {force:true}); //there seems to be a hidden input containing cypressConstants.questionForOwner before the actual form. Wth?
   cy.selectDropDownAlt(dropDownElementName, typeOfQuestion);

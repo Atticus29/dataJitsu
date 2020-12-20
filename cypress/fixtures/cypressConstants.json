@@ -84,5 +84,13 @@
   "dropDownChoice": "Text",
   "nextDropDownElementId":"inputTypeQuestionName1",
   "genericQuestionForOwner": "Where is Dr.Evil hiding?",
-  "genericQuestionForOwnerId":"genericLabelQuestionName1"
+  "genericQuestionForOwnerId":"genericLabelQuestionName1",
+  "newVideoButtonInCollection": "New Video",
+  "newVideoSubmitButton": "Submit",
+  "ownerQuestion0Response": "https://youtu.be/z-5iCygFd9M",
+  "ownerQuestion1Response": "Since I can remember",
+  "ownerQuestion2Response": "In his secret volcano lair",
+  "ownerQuestion0ElementId": "ownerQuestion0",
+  "ownerQuestion1ElementId": "ownerQuestion1",
+  "ownerQuestion2ElementId": "ownerQuestion2"
 }
