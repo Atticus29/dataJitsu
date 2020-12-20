@@ -7,6 +7,7 @@ describe ('Tests involving collection creation', () =>{
 
   after(() =>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
+      cy.login()
       cy.get('button[id=settings-button]').click({force:true});
       cy.contains("User Info.").should('exist');
       cy.get('button[id=user-info-button]').click({force:true});

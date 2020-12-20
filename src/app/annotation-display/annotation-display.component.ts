@@ -96,7 +96,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         this.localMatchDeets =  Array.of(videoDeets).map(VideoDetails.fromJson)[0];
         // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
-        let thePerformers: string[] = [this.localMatchDeets.athlete1Name, this.localMatchDeets.athlete2Name];
+        let thePerformers: string[] = [this.localMatchDeets.getAthlete1Name(), this.localMatchDeets.getAthlete2Name()];
         this.performers = thePerformers;
       });
     });

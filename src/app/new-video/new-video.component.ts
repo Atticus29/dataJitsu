@@ -270,9 +270,10 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
 
   createMatchObj(result: any){
     let self = this;
-    let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
-    this.rankBound = rankBound==undefined ? "" : rankBound;
-    let videoDeets = new VideoDetails(tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound);
+    // let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
+
+    this.rankBound = result.rankBound==undefined ? "" : result.rankBound;
+    let videoDeets = new VideoDetails(result.videoUrl? result.videoUrl:'', result); //tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound)
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){

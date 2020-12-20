@@ -18,7 +18,9 @@ export class Video {
     this.updateAnnotationStatus(false);
    }
 
-   static fromJson (jsonObj: any): Video{ //TODO have to have a way to get cruft/other stuff and/or genericise this
+   static fromJson (jsonObj: any): Video{
+     console.log("Video.fromJson entered. jsonObj is:");
+     console.log(jsonObj);
      let originalPosterId = jsonObj.originalPosterId;
      let moves = null;
      let extractedEventsInVideo = null;
@@ -31,11 +33,10 @@ export class Video {
      let videoRatings = jsonObj.videoRatings? jsonObj.videoRatings: null;
      let videoCreated = jsonObj.videoCreated? jsonObj.videoCreated: null;
      let annotationRatings = jsonObj.annotationRatings? jsonObj.annotationRatings: null;
-     let videoDeets = jsonObj.videoDeets? jsonObj.videoDeets: null; //Object.values(jsonObj.videoDeets);
+     // let videoDeets = jsonObj.videoDeets? jsonObj.videoDeets: null; //Object.values(jsonObj.videoDeets);
      let id = jsonObj.id? jsonObj.id: null;
-     if(videoDeets){
-      videoDeets =  VideoDetails.fromJson(videoDeets);
-     }
+     let videoDeets: VideoDetails =  VideoDetails.fromJson(jsonObj);
+
      if(extractedEventsInVideo && videoDeets && originalPosterId){
        let tmpMatch = new Video(videoDeets, originalPosterId, extractedEventsInVideo);
        tmpMatch.updateEvents(extractedEventsInVideo)

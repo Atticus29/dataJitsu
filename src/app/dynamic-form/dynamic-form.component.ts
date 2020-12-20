@@ -68,8 +68,16 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     processForm(questions: FormQuestionBase<string>[]){
       this.payLoad = JSON.stringify(this.form.getRawValue());
-      this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
+      console.log("this.payLoad in processForm or dynamic-form-component is:");
+      console.log(this.payLoad);
+      console.log("this.form.getRawValue() in the same call 1 is:");
+      console.log(this.form.getRawValue());
       this.formProcessingService.captureFormResults(this.form.getRawValue());
+      console.log("this.form.getRawValue() in the same call 2 is:");
+      console.log(this.form.getRawValue());
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
+      console.log("this.form.getRawValue() in the same call 3 is:");
+      console.log(this.form.getRawValue());
       this.formProcessingService.formSubmitted.next(true);
     }
 

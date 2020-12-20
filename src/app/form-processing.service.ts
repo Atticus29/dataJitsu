@@ -25,6 +25,8 @@ export class FormProcessingService {
   constructor(private questionService: QuestionService) { }
 
   captureFormResults(formResults: any){
+    console.log("captureFormResults emitted and formResults are:");
+    console.log(formResults);
     this.formResults.next(formResults);
   }
 
@@ -35,11 +37,13 @@ export class FormProcessingService {
   }
 
   stopFormAndQuestions(){
+    console.log("stopFormAndQuestions called");
     this.formResults.next("Stop");
     this.questionArrayOfForm.next("Stop");
   }
 
   restartFormAndQuestions(){
+    console.log("restartFormAndQuestions called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
       if(newCollectionQuestions){
         // console.log("newCollectionQuestions in restartFormAndQuestions in form processing service are: ");

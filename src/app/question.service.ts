@@ -230,8 +230,6 @@ export class QuestionService{
           collectionDbQuestions.push(currentQuestion);
         }
       }
-      console.log("collectionDbQuestions is: ");
-      console.log(collectionDbQuestions);
       return of(collectionDbQuestions);
     } else{
       return of(null);

@@ -66,19 +66,28 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
       if(isFormSubmitted){
         let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
         formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+          console.log("combinedResults are: ");
+          console.log(combinedResults);
           let formResults = combinedResults[0];
           let currentFormQuestions = combinedResults[1];
-          if(formResults){ //formSubmitted &&
-            if(formResults !== "Stop"){
-              if(formResults.collectionName){ //TODO edit
+          if(formResults){
+            if(formResults !== "Stop" && currentFormQuestions!== "Stop"){
+              console.log("formResults got here and are:");
+              console.log(formResults);
+              // if(formResults.collectionName){ //TODO edit
                 if(currentFormQuestions){
                   if(currentFormQuestions !== "Stop"){
                     if(this.localUser && this.localUser.id){
-                      formResults.originalPosterId = this.localUser.id;
+                      formResults['originalPosterId'] = this.localUser.id;
                       let newVideo: Video = Video.fromJson(formResults);
+
+                      console.log("newVideo is: ");
+                      console.log(newVideo);
+                      console.log("shouldn't get here yet");
                       //TODO create new video-generic
                       //TODO the below should be add video to collection
                       this.databaseService.addVideoToDbWithPath(newVideo, self.localCollection.getId()+'/videos/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(vidoeId =>{
+                        console.log("shouldn't get here yet");
                         let additionStatus = false;
                         let localVideoId = null;
                         if(vidoeId){
@@ -100,7 +109,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                     }
                   }
                 }
-              }
+              // }
             }
           }
         });
