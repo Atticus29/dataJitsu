@@ -1,4 +1,4 @@
-describe ('Tests involving match creation', () =>{
+describe ('Tests involving collection creation', () =>{
   beforeEach(()=>{
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);

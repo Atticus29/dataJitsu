@@ -23,7 +23,7 @@ describe ('Tests involving usage of a created collection', () =>{
     // cy.logout();
   });
 
-  it.only('can successfully submit an owner question set', function(){
+  it.only('can successfully submit an owner-created collection video', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.login(cypressConstants.usrnm,cypressConstants.passw);
       cy.visit('http://localhost:4200/create-collection');
