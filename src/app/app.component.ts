@@ -61,6 +61,14 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
       let authState = results[1];
       if(result && result.uid && authState){
         this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+          console.log("dbUser is: ");
+          console.log(dbUser);
+          if(dbUser.privileges.canViewAllMatches){
+            console.log("got here 1");
+            this.canViewAllMatches = dbUser.privileges.canViewAllMatches;
+          }else{
+            console.log("got here instead 2");
+          }
           this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
             this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
           });
