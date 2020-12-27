@@ -1,14 +1,14 @@
 # TODO highest priority
 - [ ] Expansion panel for FAQ
+- [ ] Collection owner can indicate which questions for their user they want to be displayed in the date (data table?); these labels and keys are saved
+- [ ] //TODO change to 3000 once testing is complete a feature is good to go
 - [ ] Autocomplete for lots of the dropdown menu item in create match
 - [ ] write test for navigating away from user-info after deleting collection and returning to collection form page and then going back, you should not see the collection re-appear
 - [ ] write "what kind of information about the videos do you want to collect from your users?" form
-  - [ ] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
+  - [] Meta-form? May have to attach an input box(es) to a dropdown menu with types (e.g., datepicker, input, etc. etc.) to populate form; maybe display the form that the user is creating in real time??
 - [ ] Add ability to delete and edit collections and categories
   - [ ] Delete collection
 - [ ] Admin has ability to constrict which collections can be shared for free, shared behind pay-wall, or not shared
-- [ ] Collection owner can indicate which questions for their user they want to be displayed in the date (data table?); these labels and keys are saved
-- [ ] //TODO change to 3000 once testing is complete a feature is good to go
 
 # TODO high priority
 - [ ] Users can submit feedback about the site (which automatically captures which page the feedback was sent from?)
@@ -165,6 +165,7 @@
 - [ ] Add more passes to moves.ts
 
 # Completed TODOs
+- [x] Expansion panel for FAQ
 - [x] Change 'newmatch' paths to 'newvideo' paths
 - [x] Have custom no gi rank option, and add unknown to it
     - [x] Passing tests

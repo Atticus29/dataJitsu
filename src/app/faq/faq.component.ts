@@ -20,12 +20,17 @@ export class FaqComponent extends BaseComponent implements OnInit {
   private localNumberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction: number = constants.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction;
   private localNumberOfPointsToDeductForBadAnnotation: number = constants.numberOfPointsToDeductForBadAnnotation;
   private localMinimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction: number = constants.minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction;
+  private faqQuestions: any[] = [];
 
   constructor(public ngZone: NgZone, private db: DatabaseService, private router: Router) {
     super();
   }
 
   ngOnInit() {
+    console.log(constants.faqQuestions);
+    this.faqQuestions=constants.faqQuestions;
+    console.log("faqQuestions is: ");
+    console.log(this.faqQuestions);
   }
 
   navigateToVideoInNeedOfAnnotation(){

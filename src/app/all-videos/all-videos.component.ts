@@ -89,8 +89,8 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
       // console.log(videoObjs);
       let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
       this.dataSource.data = videos;
-      // console.log("dataSource:");
-      // console.log(this.dataSource);
+      console.log("dataSource:");
+      console.log(this.dataSource);
       if(this.paginator == undefined || this.sort == undefined){
         console.log("Oh crud undefined!");
         this.ngZone.run(() =>{

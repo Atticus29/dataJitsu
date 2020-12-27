@@ -91,6 +91,16 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     combineLatest([this.trackerService.youtubePlayerLoadedStatus, this.trackerService.currentUserBehaviorSubject]).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([videoLoadedStatus, user]) =>{
       if(videoLoadedStatus && this.player){
         this.player.loadVideoById(this.ytId, 0);
+        if(this.player.getCurrentTime()==0 || this.player.getCurrentTime()==undefined){
+          this.stopVideo();
+        }
+      }
+      if(!videoLoadedStatus){
+        console.log("video not loaded");
+        console.log(videoLoadedStatus);
+      }
+      if(!this.player){
+        console.log("player dead");
       }
       if(user){
         user.id ? this.userInDbId = user.id: this.userInDbId = null;
@@ -125,8 +135,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.annotationFinishButtonDisabled = true;
       }
     });
-    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+    this.route.params.pipe(take(1)).subscribe(params => {
       console.log("params changed");
+      // debugger;
       this.trackerService.youtubePlayerLoadedStatus.next(false);
       this.videoId = params['videoId'];
       if(this.videoId === "undefined"){
@@ -142,7 +153,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.db.getMatchUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUrl =>{
           this.ytId = this.parseVideoUrl(matchUrl);
           if(this.player){
-            this.player.loadVideoById(this.ytId, 0);
+            // this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
           }
         });
       }
@@ -182,8 +193,6 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.moveAssembledStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-      console.log("this happens");
-      // debugger;
       if(status && this.moveCompletelyLegit()){
       try {
         this.processMatchEntryInDatabase();
@@ -207,8 +216,6 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   onRateVideo($event) { //:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
-    console.log("onRatingChanged entered");
-    console.log($event);
     let newRating = $event;
     if(this.userInDbId && newRating!=null){
       this.db.addMatchRatingToUser(this.userInDbId, this.videoId, newRating);
@@ -217,7 +224,6 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
         this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
           let userInDb: string = uzr.id;
-          console.log("userInDb is: " + userInDb);
           this.db.addMatchRatingToUser(userInDb, this.videoId, newRating);
           this.db.addMatchRatingToMatch(userInDb, this.videoId, newRating);
         });
@@ -226,10 +232,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   onRateAnnotation($event) {//:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
-
     let newRating = $event;
     if(this.userInDbId){
-      console.log("userInDb already");
       this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.videoId, newRating);
       this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.videoId, newRating);
       if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
@@ -293,18 +297,17 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
   asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
     console.log("asssembleCheck entered");
-    // debugger;
-    console.log(this.eventName);
-    console.log(this.eventCategory);
-    console.log(this.performer);
-    console.log(this.recipient);
-    console.log(this.startTime);
-    console.log(this.endTime);
-    console.log(this.points);
-    console.log(this.videoId);
-    console.log(this.submissionStatus);
-    console.log(this.attemptStatus);
-    console.log(this.userInDbId);
+    // console.log(this.eventName);
+    // console.log(this.eventCategory);
+    // console.log(this.performer);
+    // console.log(this.recipient);
+    // console.log(this.startTime);
+    // console.log(this.endTime);
+    // console.log(this.points);
+    // console.log(this.videoId);
+    // console.log(this.submissionStatus);
+    // console.log(this.attemptStatus);
+    // console.log(this.userInDbId);
     if(this.eventName && this.eventName !=="No Annotation Currently Selected" && this.eventCategory && this.eventCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.videoId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
       console.log("everything is true in asssembleCheck");
       return true;
@@ -376,10 +379,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   savePlayer(player) {
-    console.log("savePlayer entered");
     this.player = player;
     this.trackerService.youtubePlayerLoadedStatus.next(true);
-    this.player.loadVideoById(this.ytId, 0);
+    // this.player.loadVideoById(this.ytId, 0); //TODO possibly breaking broken maybe?
     this.loading = false;
   }
   onStateChange(event) {
@@ -431,6 +433,10 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
   playVideo(){
     this.player.playVideo();
+  }
+
+  stopVideo(){
+    this.player.stopVideo();
   }
 
   pauseVideo(){

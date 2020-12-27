@@ -19,14 +19,17 @@ export class Video {
    }
 
    static fromJson (jsonObj: any): Video{
-     console.log("Video.fromJson entered. jsonObj is:");
-     console.log(jsonObj);
+     // console.log("Video.fromJson entered. jsonObj is:");
+     // console.log(jsonObj);
      let originalPosterId = jsonObj.originalPosterId;
+     console.log("originalPosterId is: " + originalPosterId);
      let moves = null;
      let extractedEventsInVideo = null;
      if(jsonObj.events){
+       console.log("got here a");
       extractedEventsInVideo = Object.values(jsonObj.events);
      }else{
+      console.log("got here b");
       extractedEventsInVideo = new Array<EventInVideo>();
      }
      let isAnnotated = jsonObj.isAnnotated? jsonObj.isAnnotated: null;
@@ -36,8 +39,11 @@ export class Video {
      // let videoDeets = jsonObj.videoDeets? jsonObj.videoDeets: null; //Object.values(jsonObj.videoDeets);
      let id = jsonObj.id? jsonObj.id: null;
      let videoDeets: VideoDetails =  VideoDetails.fromJson(jsonObj);
+     console.log("videoDeets are:");
+     console.log(videoDeets);
 
      if(extractedEventsInVideo && videoDeets && originalPosterId){
+       console.log("got here");
        let tmpMatch = new Video(videoDeets, originalPosterId, extractedEventsInVideo);
        tmpMatch.updateEvents(extractedEventsInVideo)
        if(id){

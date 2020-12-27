@@ -2,21 +2,10 @@
 
 ## Highly Urgent
 <!-- - [ ] Collection creation sometimes doubles up on creation (find circumstances and fix) -->
-<!-- - [ ] Feedback button is janky (in collections branch) -->
-<!-- - [ ] I have to click on dropdown for "add another question for your users" button to "work" -->
-  <!-- - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections -->
 <!-- - [ ] Adding collection on first stepper makes that stepper appear when you click "next" -->
-<!-- - [ ] Deleting a collection seems to display "collection added" snackbar -->
-<!-- - [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database. -->
-<!-- - [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database -->
 
 ### Minorly Urgent
 
-<!-- - [ ] Rating the video starts the video -->
-<!-- - [ ] Video is full screen -->
-<!-- - [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db -->
-<!-- - [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related) -->
-<!-- - [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something -->
 <!-- - [ ] Feedback button -->
   <!-- - [ ] Submitting specific feedback in Safari sometimes freezes upon submission -->
   <!-- - [ ] Submitting general feedback pulls up a screenshot that has the top half of the screenshot in grey -->
@@ -30,7 +19,25 @@
   - [ ] Reproducible in cypress test; can't reproduce the effect manually -->
 <!-- - [ ] Matches being added to the db are incomplete (I erased from videoannotatortest db). Look into this after you resolve table issues. -->
   <!-- - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things) -->
-<!-- - [ ] Stripe is broken; also, write a test for this? Related:
+- [ ] Confirm password required warning in create account for name and email as well
+- [ ] Gender and gi rank overlap in create account; others are missing inputs
+- [ ] Clicking annotate a video from another video doesn't do anything
+- [ ] Video rating click doesn't fill the stars
+- [ ] Feedback button is janky (in collections branch)
+- [ ] I have to click on dropdown for "add another question for your users" button to "work"
+  - [ ] Adding a new collection owner question doesn't repopulate the dropdown selections
+- [ ] Deleting a collection seems to display "collection added" snackbar
+- [ ] sometimes a collection that's not a COMPLETE representation of the collection gets added to the database.
+- [ ] The snackbars for when a collection already exists fire off too many times (forever?). Probably especially noticeable when there are several collections in the database
+
+### Minorly Urgent
+- [ ] Upon load of video page, clicking on first annotation time simply starts the video, and it's not until the second click that it jumps to the time point
+- [ ] Upon ending an annotation, video sometimes pauses, sometimes starts, and sometimes starts when a previous annotation begins(?) or ends(?)
+- [ ] Video is full screen
+- [ ] Sometime call to addGenericCandidateNameToDb creates something and then it is immediately deleted from db
+- [ ] Sometimes sort and paginator are undefined (when and why - see spinner in '/all-videos' bug below; I suspect they are related)
+- [ ] Spinner in '/all-videos' seems to go on forever under certain as yet unclear circumstances *until* you click something
+- [ ] Stripe is broken; also, write a test for this? Related:
    - [ ] Brand new users are automatically appear subscribed, but don't have subscription or customer ids on firebase
 - [ ] Stripe webhooks don't work correctly? -->
 <!-- - [ ] Reputation Points displaying +10 to whatever firebase value has it at? (at least for brand new users?) -->
@@ -80,6 +87,7 @@
 - [x] //TODO createEventInVideo from form submission
 
 # Resolved issues
+<<<<<<< HEAD
 - [x] Video automatically starts upon page view
 - [x] FAQ looks terrible
 - [x] Tests pass in isolation but not together (need something to emit "Stop" whenever I leave the page)
@@ -98,6 +106,11 @@
 - [x] Pressing enter in any textfield in collection creation form adds another field to category name
 - [x] itemNames is hitting undefined not perfectly characterized conditions beyond x are replaced with same value
 - [x] With collection form, if you click add another foo, it clears the whole form
+=======
+- [x] Rating the video starts the video
+- [x] Video automatically starts upon page view
+- [x] FAQ looks terrible
+>>>>>>> master
 - [x] Clicking annotate from video submission takes you to URLs like 'http://localhost:4200/all-videos-MDfiNImRptr9Rf8v9bR'
 - [x] Last and first should be displayed on individual dialog box
 - [x] Match and annotation ratings don't work

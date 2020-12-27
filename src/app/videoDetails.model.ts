@@ -45,10 +45,14 @@ export class VideoDetails {
    }
 
    static fromJson (jsonObj:any): VideoDetails{
-     if(jsonObj.videoUrl){
-       return new VideoDetails(jsonObj.videoUrl, jsonObj);
+     console.log("jsonObj in videoDetails fromJson:");
+     console.log(jsonObj);
+     if(jsonObj.videoDeets.videoUrl){
+       console.log("got here c has videoUrl");
+       return new VideoDetails(jsonObj.videoDeets.videoUrl, jsonObj.videoDeets);
      }
      if(jsonObj.ownerQuestion0){
+       console.log("got here d has ownerQuestion0");
        let argWrapper = {};
        argWrapper['genericArgs'] = jsonObj;
        return new VideoDetails(jsonObj.ownerQuestion0,argWrapper);
