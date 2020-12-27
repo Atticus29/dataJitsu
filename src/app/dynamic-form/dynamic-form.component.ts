@@ -50,7 +50,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         }
         if(questionArrayOfForm){
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
-            if(questionArrayOfForm!== "Stop" && buttonDisplayName !== "Next"){
+            if(questionArrayOfForm[0]!== "Stop" && buttonDisplayName !== "Next"){
               this.questions = questionArrayOfForm;
               // console.log("this.questions is: ");
               // console.log(this.questions);
@@ -58,7 +58,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
               // this.formProcessingService.actualForm.next(this.form);
               // this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
             } else{
-              if(questionArrayOfForm!== "Stop"){
+              if(questionArrayOfForm[0]!== "Stop"){
                 this.questions = questionArrayOfForm;
                 // console.log("this.questions is: ");
                 // console.log(this.questions);

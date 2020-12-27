@@ -46,14 +46,14 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
     });
 
     this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestions =>{
-      if(newQuestions!="Stop" && this.stopCounter<1){
+      if(newQuestions[0]!="Stop" && this.stopCounter<1){
         this.isLoading = true;
       }
-      if(newQuestions==="Stop"){
+      if(newQuestions[0]==="Stop"){
         this.stopCounter ++;
         this.isLoading = true; //TODO ??
       }
-      if(newQuestions!="Stop" && this.stopCounter>0){
+      if(newQuestions[0]!="Stop" && this.stopCounter>0){
         this.localEntryDetailQuestions = newQuestions;
         this.isLoading = false;
         //TODO do something here that captures new formControls?
@@ -68,10 +68,10 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
                   let formResults = combinedResults[0];
                   let currentFormQuestions = combinedResults[1];
                   if(formResults){ //formSubmitted &&
-                    if(formResults !== "Stop"){
+                    if(formResults[0] !== "Stop"){
                       if(formResults.labelQuestionName && formResults.inputTypeQuestionName){
                         if(currentFormQuestions){
-                          if(currentFormQuestions !== "Stop"){
+                          if(currentFormQuestions[0] !== "Stop"){
                             self.formProcessingService.collectionId.pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionId =>{
                               if(collectionId){
                                 let newOwnerQuestionSet: OwnerQuestionSet = OwnerQuestionSet.fromForm(collectionId, formResults, currentFormQuestions);

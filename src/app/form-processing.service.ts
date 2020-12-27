@@ -38,8 +38,8 @@ export class FormProcessingService {
 
   stopFormAndQuestions(){
     console.log("stopFormAndQuestions called");
-    this.formResults.next("Stop");
-    this.questionArrayOfForm.next("Stop");
+    this.formResults.next(["Stop"]);
+    this.questionArrayOfForm.next(["Stop"]);
   }
 
   restartFormAndQuestions(){

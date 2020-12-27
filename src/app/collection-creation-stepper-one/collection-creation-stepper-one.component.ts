@@ -58,10 +58,10 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                   let formResults = combinedResults[0];
                   let currentFormQuestions = combinedResults[1];
                   if(formResults){ //formSubmitted &&
-                    if(formResults !== "Stop"){
+                    if(formResults[0] !== "Stop"){
                       if(formResults.collectionName){
                         if(currentFormQuestions){
-                          if(currentFormQuestions !== "Stop"){
+                          if(currentFormQuestions[0] !== "Stop"){
                             let newCollection = Collection.fromForm(formResults, currentFormQuestions);
                             if(this.localUser && this.localUser.id && self.formSubmissionCounter<1){
                               this.databaseService.addCollectionToDatabase(newCollection, this.localUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionResults =>{

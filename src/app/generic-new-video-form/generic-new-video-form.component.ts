@@ -73,12 +73,12 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
           let formResults = this.helperService.convertObjectValuesToStrings(combinedResults[0]);
           let currentFormQuestions = combinedResults[1];
           if(formResults){
-            if(formResults !== "Stop" && currentFormQuestions!== "Stop"){
+            if(formResults[0] !== "Stop" && currentFormQuestions!== "Stop"){
               console.log("formResults got here and are:");
               console.log(formResults);
               // if(formResults.collectionName){ //TODO edit
                 if(currentFormQuestions){
-                  if(currentFormQuestions !== "Stop"){
+                  if(currentFormQuestions[0] !== "Stop"){
                     if(this.localUser && this.localUser.id && this.localCounter <1){
                       formResults['originalPosterId'] = this.localUser.id;
                       let newVideo: Video = Video.fromJson(formResults);
