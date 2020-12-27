@@ -35,8 +35,8 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnDestroy(){
-    this.formProcessingService.captureFormResults("Stop");
-    this.formProcessingService.captureQuestionArrayOfCurrentForm("Stop");
+    this.formProcessingService.captureFormResults(["Stop"]);
+    this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
   }
   ngAfterViewInit(){
     let stepNum = this.stepper?this.stepper.selectedIndex:0;

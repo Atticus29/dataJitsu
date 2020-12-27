@@ -19,8 +19,8 @@ export class Video {
    }
 
    static fromJson (jsonObj: any): Video{
-     // console.log("Video.fromJson entered. jsonObj is:");
-     // console.log(jsonObj);
+     console.log("Video.fromJson entered. jsonObj is:");
+     console.log(jsonObj);
      let originalPosterId = jsonObj.originalPosterId;
      console.log("originalPosterId is: " + originalPosterId);
      let moves = null;
