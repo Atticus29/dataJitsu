@@ -64,7 +64,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     // console.log("disapprove clicked " + name);
     let confirmation = confirm("Are you sure you want to DISAPPROVE the name " + name + "?");
     if(confirmation){
-      this.db.getMatchUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+      this.db.getvideoUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         console.log(urlResult);
         this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
           this.db.updateAthleteNameInMatch(videoIdResult, name, "Un-named Athlete");

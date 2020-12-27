@@ -54,6 +54,7 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
             });
           }
           if(dbUser.privileges.isAdmin && !this.columnsToDisplay.includes('deleteMatch')){
+            // console.log("adding deleteMatch column...");
             this.columnsToDisplay.push('deleteMatch');
           }
         });
@@ -76,30 +77,30 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   ngAfterViewInit(){
-    console.log("ngAfterViewInit entered")
+    // console.log("ngAfterViewInit entered")
     this.dataSource.paginator = this.paginator;
-    console.log("got past paginator");
-    console.log(this.paginator);
+    // console.log("got past paginator");
+    // console.log(this.paginator);
     this.dataSource.sort = this.sort;
-    console.log("sort is: ");
-    console.log(this.sort);
-    console.log("got past sort ");
+    // console.log("sort is: ");
+    // console.log(this.sort);
+    // console.log("got past sort ");
     this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
       // console.log("videoObjs is: ");
       // console.log(videoObjs);
       let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
       this.dataSource.data = videos;
-      console.log("dataSource:");
-      console.log(this.dataSource);
+      // console.log("dataSource:");
+      // console.log(this.dataSource);
       if(this.paginator == undefined || this.sort == undefined){
-        console.log("Oh crud undefined!");
+        // console.log("Oh crud undefined!");
         this.ngZone.run(() =>{
           this.router.navigate([constants.allVideosPathName]);
           // location.reload();
         });
       }
       if (this.dataSource.data && this.dataSource.sort && this.dataSource.paginator) {
-        console.log("data and everything exists")
+        // console.log("data and everything exists")
         this.isLoadingResults = false;
       }
     });

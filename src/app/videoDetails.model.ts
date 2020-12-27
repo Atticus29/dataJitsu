@@ -44,15 +44,36 @@ export class VideoDetails {
     this.genericArgs = optionalArgs.genericArgs || null;
    }
 
+   static fromForm (deetObj: any): VideoDetails{
+     let {videoUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound, genericArgsBound} = deetObj;
+     let videoDeetReturnObj = {};
+     videoDeetReturnObj['tournamentName'] = tournamentNameBound?tournamentNameBound:'';
+     videoDeetReturnObj['location'] = locationBound?locationBound:'';
+     videoDeetReturnObj['date'] = tournamentDateBound?tournamentDateBound:'';
+     videoDeetReturnObj['athlete1Name'] = athlete1NameBound?athlete1NameBound:'';
+     videoDeetReturnObj['athlete2Name'] = athlete2NameBound?athlete2NameBound:'';
+     videoDeetReturnObj['weightClass'] = weightBound?weightBound:'';
+     videoDeetReturnObj['rank'] = rankBound?rankBound:'';
+     videoDeetReturnObj['gender'] = genderBound?genderBound:'';
+     videoDeetReturnObj['giStatus'] = giStatusBound?giStatusBound:'';
+     videoDeetReturnObj['ageClass'] = ageClassBound?ageClassBound:'';
+     videoDeetReturnObj['genericArgs'] = genericArgsBound? genericArgsBound: {};
+     if(videoUrlBound){
+       return new VideoDetails(videoUrlBound, videoDeetReturnObj);
+     }else{
+       return null;
+     }
+   }
+
    static fromJson (jsonObj:any): VideoDetails{
-     console.log("jsonObj in videoDetails fromJson:");
-     console.log(jsonObj);
+     // console.log("jsonObj in videoDetails fromJson:");
+     // console.log(jsonObj);
      if(jsonObj.videoDeets && jsonObj.videoDeets.videoUrl){
-       console.log("got here c has videoUrl");
+       // console.log("got here c has videoUrl");
        return new VideoDetails(jsonObj.videoDeets.videoUrl, jsonObj.videoDeets);
      }
      if(jsonObj.ownerQuestion0){
-       console.log("got here d has ownerQuestion0");
+       // console.log("got here d has ownerQuestion0");
        let argWrapper = {};
        argWrapper['genericArgs'] = jsonObj;
        return new VideoDetails(jsonObj.ownerQuestion0,argWrapper);

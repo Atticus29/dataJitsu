@@ -88,12 +88,12 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                       //TODO create new video-generic
                       //TODO the below should be add video to collection
                       this.localCounter ++;
-                      this.databaseService.addVideoToDbWithPath(newVideo, 'collections/' + self.localCollection.getId()+'/videos/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(vidoeId =>{
+                      this.databaseService.addVideoToDbWithPath(newVideo, 'collections/' + self.localCollection.getId()+'/videos/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{
                         console.log("shouldn't get here yet");
                         let additionStatus = false;
                         let localVideoId = null;
-                        if(vidoeId){
-                          localVideoId = vidoeId;
+                        if(videoId){
+                          localVideoId = videoId;
                         }
                         if(localVideoId){
                           self.openSnackBar(constants.videoAddedNotification);

@@ -39,7 +39,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   videoId : string;
   matchDetails: VideoDetails; //TODO rename
   match: Observable<Video>; //TODO rename
-  matchUrl: string; //TODO rename
+  videoUrl: string; //TODO rename
   currentTime: string;
   playCount: number = 0;
   private loading: boolean = true;
@@ -150,8 +150,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.db.getInappropriateFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleInappropriateFlagged(true) : this.handleInappropriateFlagged(false);
         });
-        this.db.getMatchUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(matchUrl =>{
-          this.ytId = this.parseVideoUrl(matchUrl);
+        this.db.getvideoUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoUrl =>{
+          this.ytId = this.parseVideoUrl(videoUrl);
           if(this.player){
             // this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
           }

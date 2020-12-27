@@ -491,7 +491,7 @@ export class DatabaseService {
   }
 
   addVideoToDb(video: any){
-    // console.log("addVideoToDb entered");
+    console.log("addVideoToDb entered");
     let ref = this.db.list<Video>('/videos');
     let videoId = ref.push(video).key;
     let updates = {};
@@ -1176,29 +1176,29 @@ export class DatabaseService {
   //   return resultObservable;
   // }
 
-  addCandidateNameToDb(name: string, associatedMatchUrl: string){
+  addCandidateNameToDb(name: string, associatedvideoUrl: string){
     // console.log("addCandidateNameToDb called");
     // console.log("name is " + name);
     let ref = firebase.database().ref('/candidateAthleteNames/');
-    let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    let keyId = ref.push({'name':name, 'associatedvideoUrl': associatedvideoUrl}); //.key;
   }
 
-  addCandidateTournamentNameToDb(name: string, associatedMatchUrl: string){
+  addCandidateTournamentNameToDb(name: string, associatedvideoUrl: string){
     // console.log("addCandidateTournamentNameToDb called");
     // console.log("name is " + name);
     // let ref = firebase.database().ref('/candidateTournamentNames/');
-    // let keyId = ref.push({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
-    this.addGenericCandidateNameToDb('/candidateTournamentNames/', name, associatedMatchUrl);
+    // let keyId = ref.push({'name':name, 'associatedvideoUrl': associatedvideoUrl}); //.key;
+    this.addGenericCandidateNameToDb('/candidateTournamentNames/', name, associatedvideoUrl);
   }
 
-  addGenericCandidateNameToDb(path: string, name: string, associatedMatchUrl: string){
+  addGenericCandidateNameToDb(path: string, name: string, associatedvideoUrl: string){
     console.log("addGenericCandidateNameToDb called");
     console.log("name is " + name);
     console.log("path is: " + path);
     let ref = firebase.database().ref(path);
-    ref.push().set({'name':name, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    ref.push().set({'name':name, 'associatedvideoUrl': associatedvideoUrl}); //.key;
     // ref.transaction(current_value =>{
-    //   return {'name':name, 'associatedMatchUrl': associatedMatchUrl};
+    //   return {'name':name, 'associatedvideoUrl': associatedvideoUrl};
     // });
     console.log("addGenericCandidateNameToDb done");
   }
@@ -1243,14 +1243,14 @@ export class DatabaseService {
     // return this.db.list('/candidateAthleteNames/').valueChanges();
   }
 
-  getMatchUrlFromCandidateAthleteName(name: string){
-    // console.log("getMatchUrlFromCandidateAthleteName called");
+  getvideoUrlFromCandidateAthleteName(name: string){
+    // console.log("getvideoUrlFromCandidateAthleteName called");
     let ref = firebase.database().ref('/candidateAthleteNames/');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('name').equalTo(name).on("child_added", snapshot =>{
-        // console.log("found entry in getMatchUrlFromCandidateAthleteName:");
-        // console.log(snapshot.val().associatedMatchUrl);
-        observer.next(snapshot.val().associatedMatchUrl);
+        // console.log("found entry in getvideoUrlFromCandidateAthleteName:");
+        // console.log(snapshot.val().associatedvideoUrl);
+        observer.next(snapshot.val().associatedvideoUrl);
       });
     });
     return obsRet;
@@ -1310,10 +1310,10 @@ export class DatabaseService {
     // ref.remove();
   }
 
-  addCandidateEventInVideoToDb(eventName: string, eventCategory: string,moveSubcategory: string, userSubmitting: string, associatedMatchUrl: string){ //TODO associatedMatchUrl
-    this.addGenericItemToDb('/candidateMoveNames/', {'eventName':eventName, 'eventCategory': eventCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl});
+  addCandidateEventInVideoToDb(eventName: string, eventCategory: string,moveSubcategory: string, userSubmitting: string, associatedvideoUrl: string){ //TODO associatedvideoUrl
+    this.addGenericItemToDb('/candidateMoveNames/', {'eventName':eventName, 'eventCategory': eventCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedvideoUrl': associatedvideoUrl});
     // let ref = firebase.database().ref('/candidateMoveNames/');
-    // let keyId = ref.push({'eventName':eventName, 'eventCategory': eventCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedMatchUrl': associatedMatchUrl}); //.key;
+    // let keyId = ref.push({'eventName':eventName, 'eventCategory': eventCategory,'moveSubcategory': moveSubcategory,'userSubmitting': userSubmitting, 'associatedvideoUrl': associatedvideoUrl}); //.key;
   }
 
   addMoveNameToDb(eventName: string, categoryName: string, subcategoryName: string){
@@ -1456,21 +1456,21 @@ export class DatabaseService {
     return obsRet;
   }
 
-  getMatchUrlFromCandidateMoveName(eventName: string){
+  getvideoUrlFromCandidateMoveName(eventName: string){
     let ref = firebase.database().ref('/candidateMoveNames/');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('eventName').equalTo(eventName).on("child_added", snapshot =>{
-        observer.next(snapshot.val().associatedMatchUrl);
+        observer.next(snapshot.val().associatedvideoUrl);
       });
     });
     return obsRet;
   }
 
-  getMatchUrlFromMatchId(videoId: string){
+  getvideoUrlFromMatchId(videoId: string){
     let ref = firebase.database().ref('/videos/' + videoId + '/videoDeets/videoUrl');
     let obsRet = Observable.create(function(observer){
       ref.orderByKey().on("value", snapshot =>{
-        // console.log("snapshot.val() from getMatchUrlFromMatchId is:");
+        // console.log("snapshot.val() from getvideoUrlFromMatchId is:");
         // console.log(snapshot.val());
         observer.next(snapshot.val());
       });
@@ -1478,22 +1478,22 @@ export class DatabaseService {
     return obsRet;
   }
 
-  getMatchUrlFromCandidateTournamentName(tournamentName: string){
+  getvideoUrlFromCandidateTournamentName(tournamentName: string){
     // let ref = firebase.database().ref('/candidateTournamentNames/');
     // let obsRet = Observable.create(function(observer){
     //   ref.orderByChild('name').equalTo(tournamentName).on("child_added", snapshot =>{
-    //     observer.next(snapshot.val().associatedMatchUrl);
+    //     observer.next(snapshot.val().associatedvideoUrl);
     //   });
     // });
     // return obsRet;
-    return this.getMatchUrlFromGenericCandidateName('/candidateTournamentNames/', 'name', tournamentName);
+    return this.getvideoUrlFromGenericCandidateName('/candidateTournamentNames/', 'name', tournamentName);
   }
 
-  getMatchUrlFromGenericCandidateName(candidatePath: string, orderByParameter:string, name: string){
+  getvideoUrlFromGenericCandidateName(candidatePath: string, orderByParameter:string, name: string){
     let ref = firebase.database().ref(candidatePath);
     let obsRet = Observable.create(function(observer){
       ref.orderByChild(orderByParameter).equalTo(name).on("child_added", snapshot =>{
-        observer.next(snapshot.val().associatedMatchUrl);
+        observer.next(snapshot.val().associatedvideoUrl);
       });
     });
     return obsRet;

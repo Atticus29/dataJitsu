@@ -7,10 +7,10 @@
   <div class="row">
     <form class="col s12" materialize [formGroup]="newMatchForm">
       <div class="row">
-        <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
-        <input matInput [formControl]="matchUrlBoundFc" type="url" placeholder="Match URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="matchURL" required>
-        <mat-error *ngIf="!vs.validateUrl(matchUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
-        <mat-error *ngIf="matchUrlBoundFc.invalid && vs.validateUrl(matchUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
+        <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
+        <input matInput [formControl]="videoUrlBoundFc" type="url" placeholder="Video URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="videoUrl" required>
+        <mat-error *ngIf="!vs.validateUrl(videoUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
+        <mat-error *ngIf="videoUrlBoundFc.invalid && vs.validateUrl(videoUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
         <mat-form-field class="col m6 s12">
           <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
             <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>

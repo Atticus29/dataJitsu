@@ -85,7 +85,7 @@ Cypress.Commands.add('removeNowRenamedAnnotation', () =>{
 
 Cypress.Commands.add("fillInMatchCreationDetails", (email, pass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl);
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl);
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
@@ -128,7 +128,7 @@ Cypress.Commands.add("selectAthlete", (number, athleteName) =>{
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (customTournamentName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectCustomTournament(customTournamentName);
@@ -143,7 +143,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomTournamentName", (cust
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomWeightClass", (customWeightClassName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
@@ -158,7 +158,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomWeightClass", (customW
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomNoGiRank", (customNoGiRankName) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
@@ -173,7 +173,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomNoGiRank", (customNoGi
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomAgeClass", (customAgeClass) => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
@@ -188,7 +188,7 @@ Cypress.Commands.add("fillInMatchCreationDetailsWithCustomAgeClass", (customAgeC
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithCustomLocation", () => {
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
     cy.selectAthlete(1, cypressConstants.defaultAthlete1Name);
     cy.selectAthlete(2, cypressConstants.defaultAthlete2Name);
     cy.selectTournament(cypressConstants.defaultTournamentName);
@@ -259,7 +259,7 @@ Cypress.Commands.add("selectCustomAthleteNamesHelper", (matSelectName, addNewBut
 
 Cypress.Commands.add("fillInMatchCreationDetailsWithWriteInAthleteNames", (athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast) => { //cypressConstants.athlete1LastName , cypressConstants.athlete1FirstName
   cy.fixture('cypressConstants.json').then((cypressConstants)=>{
-    cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2);
+    cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2);
     cy.selectCustomAthleteNames(athlete1NameFirst, athlete1NameLast, athlete2NameFirst, athlete2NameLast);
     cy.selectTournament("IBJJF Gi World Jiu-Jitsu Championship");
     cy.selectCustomLocation(cypressConstants.testLocation3);
