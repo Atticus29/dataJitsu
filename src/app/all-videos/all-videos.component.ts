@@ -33,7 +33,7 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   // @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   private isLoadingResults: boolean = true;
-  private constants: Object = constants;
+  // private constants: Object = constants;
   private columnsToDisplay = constants.columnsToDisplay; //TODO make this dynamic somehow
   user: any = null;
   constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: VideoDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {

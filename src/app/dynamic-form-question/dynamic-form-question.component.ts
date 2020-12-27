@@ -15,6 +15,7 @@ import { FormProcessingService } from '../form-processing.service';
 export class DynamicFormQuestionComponent extends BaseComponent implements OnInit {
   @Input() question: FormQuestionBase<string>;
   @Input() form: FormGroup;
+  private localDatePickerPrompt: string;
   get isValid() {
     let returnVal = null;
     if(this.form){
@@ -46,6 +47,8 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
+    this.localDatePickerPrompt = this.constants.datePickerPrompt;
+    console.log("this.localDatePickerPrompt is: " + this.localDatePickerPrompt);
     let self = this;
     this.formProcessingService.actualForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults=>{
       // console.log("formResults in dynamic-form-question.component are:");
@@ -55,6 +58,8 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
           if(nextButtonClick){
             // console.log("nextButtonClick is: " + nextButtonClick + " in dynamic-form-question component");
             this.form = formResults;
+            console.log("this.form is:");
+            console.log(this.form);
           }
         });
       }

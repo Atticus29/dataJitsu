@@ -14,6 +14,11 @@
     <div class="row col s12 m7 l7" *ngSwitchCase="'dropdown'">
       <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
     </div>
+    <div *ngSwitchCase="'datepicker'">
+      <input matInput [matDatepicker]="picker" [placeholder]="localDatePickerPrompt">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
   </div>
     <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required
     </div> -->

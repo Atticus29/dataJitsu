@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
+import { DatePickerQuestion } from './datePickerFormQuestion.model';
 import { Collection } from './collection.model';
 import { OwnerQuestion } from './ownerQuestion.model';
 
@@ -223,8 +224,11 @@ export class QuestionService{
         if(questionContent.type && questionContent.type === "Dropdown"){
           currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
         }
-        if(questionContent.type && questionContent.type === "datepicker"){
-          currentQuestion = new TextQuestion(questionContent); //TODO make datepicker question
+        if(questionContent.type && questionContent.type === "Date Picker"){
+          console.log("got to date picker in question service");
+          console.log("questionContent is: ");
+          console.log(questionContent);
+          currentQuestion = new DatePickerQuestion(questionContent); //TODO make datepicker question
         }
         if(currentQuestion){
           collectionDbQuestions.push(currentQuestion);

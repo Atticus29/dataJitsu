@@ -24,7 +24,7 @@ import { BaseComponent } from './base/base.component';
 })
 export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
-  private constants: Object = constants;
+  // private constants: Object = constants;
   private paidStatus: boolean = false;
   private isAdmin: boolean = false;
   user: any = null;
@@ -60,11 +60,10 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
       let result = results[0];
       let authState = results[1];
       if(result && result.uid && authState){
-        this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: User) =>{
+        this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: any) =>{
           console.log("dbUser is: ");
-          console.log(dbUser);
+          console.log(dbUser.privileges);
           if(dbUser.privileges.canViewAllMatches){
-            console.log("got here 1");
             this.canViewAllMatches = dbUser.privileges.canViewAllMatches;
           }else{
             console.log("got here instead 2");

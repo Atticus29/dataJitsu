@@ -98,6 +98,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                           self.formProcessingService.stopFormAndQuestions();
 
                           if(self.localCollectionConfigOptions.getSubmitButtonDisplay() && self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
+                            console.log("Ack should never get here");
                             self.formProcessingService.nextButtonClicked.next(true);
                             //TODO what else to do here?
                           }
@@ -120,6 +121,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
   }
 
   openSnackBar(message: string) {
+    console.log("openSnackBar in generic new video called");
     this.snackBar.open(message, '', {
       duration: 3000,
     });

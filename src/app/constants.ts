@@ -95,5 +95,6 @@ export var constants = {
     errorPathName: 'error',
     collectionCreationPathName: 'create-collection',
     annotationRecordedMessage: "Annotation Recorded",
-    columnsToDisplay: ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl']
+    columnsToDisplay: ['rank','weightClass', 'ageClass','athlete1Name', 'athlete2Name', 'gender','tournamentName','location', 'date', 'videoRating', 'annotationRating','annotationsInMatch','videoUrl'],
+    datePickerPrompt:"Choose a date using the date picker below"
   };

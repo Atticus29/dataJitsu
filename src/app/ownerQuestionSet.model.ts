@@ -14,7 +14,7 @@ export class OwnerQuestionSet {
     let jsonObjVals = Object.values(jsonObj);
     // console.log("jsonObjVals are");
     console.log(jsonObjVals);
-    let defaulOwnerQuestion = new OwnerQuestion("Video URL", "Text");
+    let defaulOwnerQuestion = new OwnerQuestion("Video URL", "Text", "text");
     let ownerQuestions: OwnerQuestion[] = new Array<OwnerQuestion>();
     ownerQuestions.push(defaulOwnerQuestion);
     for(let i = 0; i<questions.length; i++){
@@ -25,7 +25,7 @@ export class OwnerQuestionSet {
       // console.log("indexOfJsonObjKeyMatchingCurrentQuestionKey is: " + indexOfJsonObjKeyMatchingCurrentQuestionKey);
       // let currentOwnerQuestion = new OwnerQuestion()
       if(baseKey === "labelQuestionName" || baseKey === "genericLabelQuestionName"){
-        let currentOwnerQuestion = new OwnerQuestion(String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1])); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preced their question types
+        let currentOwnerQuestion = new OwnerQuestion(String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1]).replace(/\s/g, "").toLowerCase()); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preceed their question types
         ownerQuestions.push(currentOwnerQuestion);
       }
     }

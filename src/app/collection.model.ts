@@ -96,6 +96,8 @@ export class Collection {
      newCollection.addDetails(jsonObj.details);
      newCollection.setId(jsonObj.id);
      newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
+     // console.log("ownerQuestions in Collection.fromDataBase is: ");
+     // console.log(jsonObj.ownerQuestions);
      newCollection.addOwnerQuestions(jsonObj.ownerQuestions); //TODO do I need a OwnerQuestions.fromDb??
      return newCollection;
    }

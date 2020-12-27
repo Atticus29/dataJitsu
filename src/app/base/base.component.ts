@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Subject } from 'rxjs'; //combineLatest
 import { Router } from "@angular/router";
+import { constants } from '../constants';
 // import { takeUntil, take, last } from 'rxjs/operators';
 // import { AngularFireAuth } from '@angular/fire/auth';
 //
@@ -16,6 +17,7 @@ import { Router } from "@angular/router";
   styleUrls: ['./base.component.scss']
 })
 export class BaseComponent implements OnDestroy {
+  public constants: any = constants;
   ngUnsubscribe = new Subject<void>();
   userObjFromDb: any = null;
 

@@ -42,7 +42,6 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         if(!this.form){
           this.form = this.qcs.toFormGroup(this.questions);
           this.formProcessingService.actualForm.next(this.form);
-          console.log("got here 1");
           this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
           //TODO button should be emitted as well
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
@@ -53,12 +52,16 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
             if(questionArrayOfForm!== "Stop" && buttonDisplayName !== "Next"){
               this.questions = questionArrayOfForm;
+              // console.log("this.questions is: ");
+              // console.log(this.questions);
               this.form = this.qcs.toFormGroup(this.questions); //TODO if I add this in, the owned questions work, but the collection creation stepper 1 does not
               // this.formProcessingService.actualForm.next(this.form);
               // this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
             } else{
               if(questionArrayOfForm!== "Stop"){
                 this.questions = questionArrayOfForm;
+                // console.log("this.questions is: ");
+                // console.log(this.questions);
               }
             }
           });

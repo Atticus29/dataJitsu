@@ -26,7 +26,6 @@
         </button>
       </div>
     <div class="form-row">
-      <p>{{question.submitAfterThisQuestion}}</p>
       <button *ngIf="question.submitAfterThisQuestion" (click)="processForm(questions)" id="new-collection-submit" [disabled]="!form.valid"  class="btn waves-effect waves-light">{{localButtonDisplayName}}
         <i class="material-icons right">send</i>
       </button>
