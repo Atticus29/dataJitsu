@@ -47,7 +47,7 @@ export class VideoDetails {
    static fromJson (jsonObj:any): VideoDetails{
      console.log("jsonObj in videoDetails fromJson:");
      console.log(jsonObj);
-     if(jsonObj.videoDeets.videoUrl){
+     if(jsonObj.videoDeets && jsonObj.videoDeets.videoUrl){
        console.log("got here c has videoUrl");
        return new VideoDetails(jsonObj.videoDeets.videoUrl, jsonObj.videoDeets);
      }

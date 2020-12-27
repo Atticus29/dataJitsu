@@ -143,7 +143,7 @@ export class UserStatusReportComponent extends BaseComponent implements OnInit {
 navigateToVideoInNeedOfAnnotation(){
   this.dbService.getMatchInNeedOfAnnotation().pipe(take(1)).subscribe(match =>{
     this.ngZone.run(() =>{
-      this.router.navigate([constants.allVideosPathName + match.id]);
+      this.router.navigate([constants.individualPathName + '/' + match.id]);
     });
   });
 }
