@@ -72,7 +72,7 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
   disapproveName(name: string, metaDataName: string){
     let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
-      this.db.getMatchUrlFromGenericCandidateName(this.approvalConfig.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+      this.db.getvideoUrlFromGenericCandidateName(this.approvalConfig.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
           console.log("getVideoIdFromVideohUrl from disapproveName is " + videoIdResult);
           this.db.updateGenericNameIVideo(this.approvalConfig.localSubPathToMatchParameter,videoIdResult, this.approvalConfig.localReplacementText); //TODO rename

@@ -85,6 +85,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   }
                                 }else{
                                   self.openSnackBar(constants.collectionAlreadyExistsNotification);
+                                  self.formProcessingService.restartFormAndQuestions();
                                   //don't trigger next click
                                 }
                               });

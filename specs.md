@@ -295,7 +295,7 @@
 - [x] Get current tests to pass
 - [x] Add non-binary gender options
 - [x] Track categories as well as move names (//TODO get category from item)
-- [x] add matchUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be confirmed
+- [x] add videoUrl form validation that seems to look good but button enabling and disabling as well as database functionality need to be confirmed
 - [x] Bring annotations closer to video
 - [x] extend baseComponent in other components
 - [x] Add confirm password field

@@ -4,14 +4,14 @@
   <mat-dialog-content>
     <form materialize [formGroup]="form">
       <mat-form-field class="flex-item">
-        <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
+        <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
         <label for="lastFc">Last Name</label>
         <input matInput [formControl]="lastFc" placeholder="Last Name" id="lastFc" value="E.g., Mendes" required>
         <mat-error *ngIf="!vs.validateString(lastFc.value)">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="flex-item">
-        <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">First Name</label> -->
+        <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">First Name</label> -->
         <label for="firstFc">First Name</label>
         <input matInput [formControl]="firstFc" placeholder="First Name" value="E.g., Rafael" required id="firstFc">
         <mat-error *ngIf="!vs.validateString(firstFc.value)">{{getErrorMessage()}}</mat-error>

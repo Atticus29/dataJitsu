@@ -41,6 +41,7 @@ declare var $:any;
 export class NewVideoComponent extends BaseComponent implements OnInit {
     //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
   private sub: any;
+  private matchCreationCounter: number = 0;
   private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
@@ -69,7 +70,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
   private localUser: any = null;
 
-  // localMatchUrlBound: string = null;
+  // localvideoUrlBound: string = null;
   localAthlete1Name: string = null;
   localAthlete2Name: string = null;
   localTournamentName: string = null;
@@ -87,7 +88,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   // localWeightBound: string = null;
 
   newRankForm: FormGroup; //TODO what is this?
-  private matchUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
+  private videoUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
   private athlete1NameBoundFc: FormControl = new FormControl('', []);
   private athlete2NameBoundFc: FormControl = new FormControl('', []);
   private tournamentNameBoundFc: FormControl = new FormControl('', [Validators.required]);
@@ -110,11 +111,11 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
 
   getErrorMessage() {
     let errorMessage: string = "A form error has occurred";
-    if(this.matchUrlBoundFc.hasError('required')){
+    if(this.videoUrlBoundFc.hasError('required')){
       errorMessage = 'Match URL is required';
       return  errorMessage;
     }
-    if(!this.vs.validateUrl(this.matchUrlBoundFc.value)){
+    if(!this.vs.validateUrl(this.videoUrlBoundFc.value)){
       errorMessage = "Match URL must be a valid YouTube URL"; //TODO accommodate vimeo, etc?
       return  errorMessage;
     }
@@ -180,7 +181,7 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     });
 
     this.newMatchForm = this.fb.group({
-      matchUrlBound: ['', Validators.required],
+      videoUrlBound: ['', Validators.required],
       athlete1NameBound: [''],
       athlete2NameBound: [''],
       tournamentNameBound: [''],
@@ -205,18 +206,18 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   }
 
   getValues(){
-    let matchUrlBound = this.matchUrlBoundFc.value;
+    let videoUrlBound = this.videoUrlBoundFc.value;
     let athlete1NameBound = this.athlete1NameBoundFc.value;
     let athlete2NameBound = this.athlete2NameBoundFc.value;
     if(this.localAthlete1Name){
       console.log("localAthlete1Name exists");
       athlete1NameBound = this.localAthlete1Name;
-      this.db.addCandidateNameToDb(athlete1NameBound, matchUrlBound);
+      this.db.addCandidateNameToDb(athlete1NameBound, videoUrlBound);
     }
     if(this.localAthlete2Name){
       console.log("localAthlete2Name exists");
       athlete2NameBound = this.localAthlete2Name;
-      this.db.addCandidateNameToDb(athlete2NameBound, matchUrlBound);
+      this.db.addCandidateNameToDb(athlete2NameBound, videoUrlBound);
     }
     // console.log(athlete1NameBound);
     // console.log(athlete2NameBound);
@@ -224,20 +225,20 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     if(this.localTournamentName){
       console.log("localTournamentName exists");
       tournamentNameBound = this.localTournamentName;
-      this.db.addCandidateTournamentNameToDb(tournamentNameBound, matchUrlBound);
+      this.db.addCandidateTournamentNameToDb(tournamentNameBound, videoUrlBound);
     }
 
     let weightBound = this.weightBoundFc.value;
     if(this.localWeightClassName){
       console.log("localWeightClassName exists");
       weightBound = this.localWeightClassName;
-      this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, matchUrlBound);
+      this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, videoUrlBound);
     }
     let locationBound = this.locationBoundFc.value;
     if(this.localLocationName){
       console.log("localLocationName exists");
       locationBound = this.localLocationName;
-      this.db.addGenericCandidateNameToDb('candidateLocationNames', locationBound, matchUrlBound);
+      this.db.addGenericCandidateNameToDb('candidateLocationNames', locationBound, videoUrlBound);
     }
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
@@ -246,22 +247,22 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     if(this.localAgeClassName){
       console.log("localAgeClassName exists");
       ageClassBound = this.localAgeClassName;
-      this.db.addGenericCandidateNameToDb('candidateAgeClasses', ageClassBound, matchUrlBound);
+      this.db.addGenericCandidateNameToDb('candidateAgeClasses', ageClassBound, videoUrlBound);
     }
     let rankBound = this.rankBoundFc.value;
     if(this.localNoGiRankName){
       console.log("localNoGiRankName exists");
       rankBound = this.localNoGiRankName;
-      this.db.addGenericCandidateNameToDb('candidateNoGiRanks', rankBound, matchUrlBound);
+      this.db.addGenericCandidateNameToDb('candidateNoGiRanks', rankBound, videoUrlBound);
     }
 
     // let otherResults = this.newMatchForm.value;
-    return {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
+    return {videoUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
   }
 
   allValid(matchForm: FormGroup){
-    let matchUrlValidCheck = this.matchUrlBoundFc.value;
-    if(this.vs.validateUrl(matchUrlValidCheck)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
+    let videoUrlValidCheck = this.videoUrlBoundFc.value;
+    if(this.vs.validateUrl(videoUrlValidCheck)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
       return true;
     } else{
       return false;
@@ -269,11 +270,17 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   }
 
   createMatchObj(result: any){
+    console.log("result in createMatchObj is:");
+    console.log(result);
     let self = this;
-    // let {matchUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
-
+    //TODO genericize?
+    let {videoUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
     this.rankBound = result.rankBound==undefined ? "" : result.rankBound;
-    let videoDeets = new VideoDetails(result.videoUrl? result.videoUrl:'', result); //tournamentNameBound, locationBound, tournamentDateBound.toString(), athlete1NameBound, athlete2NameBound, weightBound, this.rankBound, matchUrlBound, genderBound, giStatusBound, ageClassBound)
+    let videoDeets:VideoDetails = VideoDetails.fromForm(result);
+    console.log("videoDeets is:");
+    console.log(videoDeets);
+
+
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
     let createMatchObservable = Observable.create(function(observer){
       if(self.localUser != null){
@@ -317,12 +324,15 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   }
 
   submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
+    console.log("submitFormAndAnnotate entered");
     let values = this.getValues();
-    this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    this.db.doesMatchExist(values.videoUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       // console.log(result);
-      if(!result){
+      if(!result && this.matchCreationCounter<1){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           // console.log(result)
+          this.matchCreationCounter ++; //Note that if you remove this, you might experience weird, multiple-submission bugs
+
           let videoId = this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.ngZone.run(() =>{
@@ -346,20 +356,21 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     console.log(values);
-    this.db.doesMatchExist(values.matchUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
+    this.db.doesMatchExist(values.videoUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
       console.log("does match exist result in submitFormAndReturnToMain");
       console.log(result);
-      if(!result){
+      if(!result && this.matchCreationCounter<1){
         let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
           console.log("got into result for submitFormAndReturnToMain call:");
           console.log(result);
+          this.matchCreationCounter ++;
           this.db.addVideoToDb(result);
           this.openSnackBar("Match Successfully Created!", null);
           this.ngZone.run(() =>{
             if(this.hasPaid || this.isAdmin){
               this.router.navigate([constants.allVideosPathName]);
             }else {
-              this.router.navigate(['landing']);
+              this.router.navigate(['/']);
             }
           });
         });

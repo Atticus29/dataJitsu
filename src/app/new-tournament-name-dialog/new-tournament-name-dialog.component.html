@@ -4,7 +4,7 @@
   <mat-dialog-content>
     <form materialize [formGroup]="form">
       <mat-form-field class="flex-item">
-        <!-- <label for="matchURL" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
+        <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
         <input matInput [formControl]="tournamentNameFc" placeholder="Tournament Name" id="tournamentNameFc" value="E.g., IBJJF World Jiu-Jitsu Championship" required>
         <mat-error *ngIf="tournamentNameFc.value? !vs.validateString(tournamentNameFc.value): false">{{getErrorMessage()}}</mat-error>
       </mat-form-field>

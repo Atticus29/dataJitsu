@@ -43,7 +43,7 @@ describe ('Match custom match tests: no gi rank', () =>{
   it('cannot create a custom thing that has already been created and approved, then deletes the thing from admin page and confirms that it is missing from dropdown list', function(){
     cy.fixture('cypressConstants.json').then((cypressConstants)=>{
       cy.visit(cypressConstants.newVideoUrl);
-      cy.get('input[id=matchURL]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+      cy.get('input[id=videoUrl]').clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
       cy.selectCustomNoGiRank(cypressConstants.customNoGiRankName);
       cy.contains(cypressConstants.alreadyExistsNotification).should('exist');
     });
@@ -54,7 +54,7 @@ describe ('Match custom match tests: no gi rank', () =>{
       cy.log("deletes the thing from admin page and confirms that it is missing from dropdown list");
       cy.deleteGeneric(cypressConstants.customNoGiRankName);
       cy.visit(cypressConstants.newVideoUrl);
-      cy.get('input[id=matchURL]', {timeout:5000}).clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
+      cy.get('input[id=videoUrl]', {timeout:5000}).clear().type(cypressConstants.testVideoUrl2, {timeout:5000});
       cy.get(`mat-select[id="${cypressConstants.noGiRankSelectName}"`).click({force:true}).then(() => {
         cy.get(`.cdk-overlay-container .mat-select-panel .mat-option-text`).should('not.contain', cypressConstants.customNoGiRankName);
       });
