@@ -15,7 +15,7 @@
       <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
     </div>
     <div *ngSwitchCase="'datepicker'">
-      <input matInput [matDatepicker]="picker" [placeholder]="localDatePickerPrompt">
+      <input matInput [matDatepicker]="picker" [placeholder]="localDatePickerPrompt" [formControlName]="question.key? question.key: null" [id]="question.key">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </div>

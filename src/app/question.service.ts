@@ -225,9 +225,6 @@ export class QuestionService{
           currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
         }
         if(questionContent.type && questionContent.type === "Date Picker"){
-          console.log("got to date picker in question service");
-          console.log("questionContent is: ");
-          console.log(questionContent);
           currentQuestion = new DatePickerQuestion(questionContent); //TODO make datepicker question
         }
         if(currentQuestion){

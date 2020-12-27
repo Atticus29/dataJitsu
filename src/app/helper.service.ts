@@ -61,4 +61,21 @@ export class HelperService {
     let returnVal = stringTracker>0? false: true;
     return returnVal;
   }
+
+  convertObjectValuesToStrings(obj: Object){
+    if(typeof obj === "string"){
+      return obj;
+    }
+    let objKeys = Object.keys(obj);
+    let objVals = Object.values(obj);
+    let returnObj = {};
+    for(let i=0; i<objKeys.length; i++){
+      if(typeof objVals[i] !== "string"){
+        returnObj[objKeys[i]] = objVals[i].toString();
+      }else{
+        returnObj[objKeys[i]] = objVals[i];
+      }
+    }
+    return returnObj;
+  }
 }

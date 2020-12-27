@@ -502,12 +502,22 @@ export class DatabaseService {
   }
 
   addVideoToDbWithPath(video: any, path: string): Observable<string>{
-    // console.log("addVideoToDb entered");
+    console.log("addVideoToDbWithPath entered");
+    console.log("path is: " + path);
     let ref = this.db.list<Video>(path);
     let videoId = ref.push(video).key;
     let updates = {};
     updates[path + videoId + '/id'] = videoId;
     updates[path + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
+    console.log("got here 1");
+    console.log("updates is:");
+    console.log(updates);
+    updates['users/'+ video.videoDeets.genericArgs.originalPosterId +'/'+ path + videoId + '/' ] = video;
+    console.log("got here 2");
+    console.log("updates is:");
+    console.log(updates);
+    // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/id'] = videoId;
+    // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
     return of(videoId);
   }

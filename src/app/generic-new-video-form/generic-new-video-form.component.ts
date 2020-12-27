@@ -17,6 +17,7 @@ import { TrackerService } from '../tracker.service';
 import { VideoDetails } from '../videoDetails.model';
 import { Video } from '../video.model';
 import { EventInVideo } from '../eventInVideo.model';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-generic-new-video-form',
@@ -28,8 +29,9 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
   private localCollectionQuestions: FormQuestionBase<any>[] = this.questionService.getShamCollectionQuestionsInstantly();
   private localCollectionConfigOptions: DynamicFormConfiguration = new DynamicFormConfiguration(this.localCollectionQuestions, [], "Submit");
   private localUser: any;
+  private localCounter = 0;
 
-  constructor(public snackBar: MatSnackBar, private databaseService: DatabaseService, private route: ActivatedRoute, private questionService: QuestionService, private qcs: QuestionControlService, private formProcessingService: FormProcessingService, private trackerService: TrackerService) {
+  constructor(public snackBar: MatSnackBar, private databaseService: DatabaseService, private route: ActivatedRoute, private questionService: QuestionService, private qcs: QuestionControlService, private formProcessingService: FormProcessingService, private trackerService: TrackerService, private helperService: HelperService) {
     super();
   }
 
@@ -68,7 +70,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
         formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
           console.log("combinedResults are: ");
           console.log(combinedResults);
-          let formResults = combinedResults[0];
+          let formResults = this.helperService.convertObjectValuesToStrings(combinedResults[0]);
           let currentFormQuestions = combinedResults[1];
           if(formResults){
             if(formResults !== "Stop" && currentFormQuestions!== "Stop"){
@@ -77,16 +79,16 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
               // if(formResults.collectionName){ //TODO edit
                 if(currentFormQuestions){
                   if(currentFormQuestions !== "Stop"){
-                    if(this.localUser && this.localUser.id){
+                    if(this.localUser && this.localUser.id && this.localCounter <1){
                       formResults['originalPosterId'] = this.localUser.id;
                       let newVideo: Video = Video.fromJson(formResults);
-
                       console.log("newVideo is: ");
                       console.log(newVideo);
                       console.log("shouldn't get here yet");
                       //TODO create new video-generic
                       //TODO the below should be add video to collection
-                      this.databaseService.addVideoToDbWithPath(newVideo, self.localCollection.getId()+'/videos/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(vidoeId =>{
+                      this.localCounter ++;
+                      this.databaseService.addVideoToDbWithPath(newVideo, 'collections/' + self.localCollection.getId()+'/videos/').pipe(takeUntil(this.ngUnsubscribe)).subscribe(vidoeId =>{
                         console.log("shouldn't get here yet");
                         let additionStatus = false;
                         let localVideoId = null;

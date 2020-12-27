@@ -42,7 +42,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    console.log("ngOnInit entered");
+    // console.log("ngOnInit entered");
     let self = this;
     this.feedbackService.listenForFeedbacks().subscribe(async(data: FeedbackData) => {
       // console.log("listenForFeedbacks called");
@@ -61,12 +61,12 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
       let authState = results[1];
       if(result && result.uid && authState){
         this.dbService.getUserByUid(result.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUser: any) =>{
-          console.log("dbUser is: ");
-          console.log(dbUser.privileges);
+          // console.log("dbUser is: ");
+          // console.log(dbUser.privileges);
           if(dbUser.privileges.canViewAllMatches){
             this.canViewAllMatches = dbUser.privileges.canViewAllMatches;
           }else{
-            console.log("got here instead 2");
+            // console.log("got here instead 2");
           }
           this.dbService.getUserReputationPoints(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(repPoints =>{
             this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
