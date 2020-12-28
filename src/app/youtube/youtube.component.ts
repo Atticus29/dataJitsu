@@ -25,7 +25,14 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
     var player;
 
     window['onYouTubeIframeAPIReady'] = function() {
+      console.log("onYouTubeIframeAPIReady entered");
       player = new window['YT'].Player('video', {
+        height: '195',
+        width: '320',
+        playerVars: {
+         playsinline: '1',
+         controls: '0'
+        },
         events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -51,7 +58,7 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
 
     if (!window['YT']){
       var tag = document.createElement('script');
-      tag.src = "httsp://www.youtube.com/player_api";
+      tag.src = "httsp://www.youtube.com/player_api?controls=0";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }

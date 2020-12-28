@@ -7,10 +7,8 @@
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>
           </div>
-          <div class="video-container">
-            <youtube-player [videoId]="ytId" (ready)="savePlayer($event)" (change)="onStateChange($event)" id="youTubeFrame">
-            </youtube-player>
-          </div>
+          <youtube-player [videoId]="ytId" (ready)="savePlayer($event)" (change)="onStateChange($event)" id="youTubeFrame">
+          </youtube-player>
           <div id="video-buttons-container" *ngIf="!loading">
             <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match" (click)="playVideo()">
               <i class="material-icons">play_arrow</i>

@@ -128,8 +128,13 @@
   border-style: solid;
 }
 .video-container{
-  width: 500px !important;
-  height: auto !important;
+  // width: 45% !important;
+  // height: 45% !important;
+}
+
+iframe{
+  width: 50% !important!important;
+  height: 400px !important!important;
 }
 
 .attention{

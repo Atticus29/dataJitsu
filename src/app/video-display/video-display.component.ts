@@ -90,7 +90,10 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     combineLatest([this.trackerService.youtubePlayerLoadedStatus, this.trackerService.currentUserBehaviorSubject]).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([videoLoadedStatus, user]) =>{
       if(videoLoadedStatus && this.player){
-        this.player.loadVideoById(this.ytId, 0);
+        this.player.loadVideoById({
+          'videoId':this.ytId,
+          'startSeconds': 0,
+        });
         if(this.player.getCurrentTime()==0 || this.player.getCurrentTime()==undefined){
           this.stopVideo();
         }
@@ -283,7 +286,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     var result = re.exec(url);
     console.log("results from parseVideoUrl:");
     console.log(result);
-    return result[1];
+    return result[1]; //+"?controls=0";
   }
 
   onMoveSelected(moveSelected: EventInVideo){
