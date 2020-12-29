@@ -383,6 +383,17 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
   savePlayer(player) {
     this.player = player;
+    console.log("player is:");
+    console.log(player);
+    // console.log("got here 1");
+    // this.player = new window['YT'].Player('video', {
+    //   height: '195',
+    //   width: '320',
+    //   playerVars: {
+    //    playsinline: '1',
+    //    controls: '0'
+    //   }
+    // });
     this.trackerService.youtubePlayerLoadedStatus.next(true);
     // this.player.loadVideoById(this.ytId, 0); //TODO possibly breaking broken maybe?
     this.loading = false;
