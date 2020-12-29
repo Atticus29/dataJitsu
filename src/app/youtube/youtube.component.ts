@@ -23,14 +23,34 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     var player;
+    // console.log("got here 1");
+    // player = new window['YT'].Player('video', {
+    //   height: '195',
+    //   width: '320',
+    //   playerVars: {
+    //    playsinline: '1',
+    //    controls: '0'
+    //   },
+    //   events: {
+    //     'onReady': onPlayerReady,
+    //     'onStateChange': onPlayerStateChange
+    //   }
+    // });
 
     window['onYouTubeIframeAPIReady'] = function() {
-      player = new window['YT'].Player('video', {
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
+      console.log("onYouTubeIframeAPIReady entered");
+      // player = new window['YT'].Player('video', {
+      //   height: '195',
+      //   width: '320',
+      //   playerVars: {
+      //    playsinline: '1',
+      //    controls: '0'
+      //   },
+      //   events: {
+      //     'onReady': onPlayerReady,
+      //     'onStateChange': onPlayerStateChange
+      //   }
+      // });
     }
 
     function onPlayerStateChange(event){
@@ -50,8 +70,9 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
     }
 
     if (!window['YT']){
+      console.log("nothing is here!");
       var tag = document.createElement('script');
-      tag.src = "httsp://www.youtube.com/player_api";
+      tag.src = "httsp://www.youtube.com/player_api?controls=0";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }

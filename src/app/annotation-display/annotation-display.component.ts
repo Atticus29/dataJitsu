@@ -94,7 +94,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         console.log("videoDeets in current match tracker service subscribe in annotation-display.component: ");
         console.log(Array.of(videoDeets));
         this.localMatchDeets =  Array.of(videoDeets).map(VideoDetails.fromJson)[0];
-        // console.log(this.localMatchDeets);
+        console.log("this.localMatchDeets are");
+        console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [this.localMatchDeets.getAthlete1Name(), this.localMatchDeets.getAthlete2Name()];
         this.performers = thePerformers;
