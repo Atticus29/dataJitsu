@@ -138,7 +138,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.annotationFinishButtonDisabled = true;
       }
     });
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => { //this.route.params.pipe(take(1)).subscribe(params => {
       console.log("params changed");
       // debugger;
       this.trackerService.youtubePlayerLoadedStatus.next(false);
@@ -147,6 +147,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.router.navigate(['error']);
       }
       if(this.videoId){
+        console.log("videoId is: " + this.videoId);
         this.db.getVideoRemovedFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleFlaggedAsRemoved(true) : this.handleFlaggedAsRemoved(false);
         });
@@ -156,7 +157,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.db.getvideoUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoUrl =>{
           this.ytId = this.parseVideoUrl(videoUrl);
           if(this.player){
-            // this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
+            this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
           }
         });
       }

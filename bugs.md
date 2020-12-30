@@ -21,7 +21,7 @@
   <!-- - [ ] There is no id (when... not when I make from scratch, even when I disapprove all custom things) -->
 - [ ] Confirm password required warning in create account for name and email as well
 - [ ] Gender and gi rank overlap in create account; others are missing inputs
-- [ ] Clicking annotate a video from another video doesn't do anything
+<!-- - [ ] Clicking annotate a video from another video doesn't do anything -->
 - [ ] Video rating click doesn't fill the stars
 - [ ] Feedback button is janky (in collections branch)
 - [ ] I have to click on dropdown for "add another question for your users" button to "work"

@@ -10,7 +10,7 @@ export class WinDrawDirective {
 
   ngOnInit(){
     if (this.isWinOrDraw) {
-      this.el.nativeElement.style.backgroundColor = "blue";
+      this.el.nativeElement.style.backgroundColor = "#4A7CCE";
       //TODO fleshout styling change
     }
   }
