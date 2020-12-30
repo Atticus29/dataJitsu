@@ -110,6 +110,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     });
     this.trackerService.eventName.pipe(takeUntil(this.ngUnsubscribe)).subscribe(eventName =>{
       this.selectedAnnotation = eventName;
+      this.treeControl.collapseAll();
+      //TODO collapse tree
     });
   }
 
@@ -221,7 +223,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           // console.log("YOOOOOO");
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
-          this.db.addCandidateEventInVideoToDb(val.move, val.eventCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl); //TODO rename
+          this.db.addCandidateEventInVideoToDb(val.move, val.eventCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }
       //TODO add to an admin component

@@ -22,6 +22,7 @@
       </mat-tree-node>
     </mat-tree>
   </div>
+  <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
   <div id="action-performer-form-div">
 
     <div class="row">
@@ -57,7 +58,6 @@
     </div>
 
     <div id="buttons-div">
-      <p>Annotation Selected: <span><mat-chip color="primary" selected>{{selectedAnnotation}}</mat-chip></span></p>
       <div class="row">
           <button type="submit" [disabled]="!points.valid || !performerFg.valid || !moveValidStatus" class="btn waves-effect waves-light modal-action modal-close" (click)="processFormInputs()" id="done-button-performers">Done
           <i class="material-icons right">send</i>
