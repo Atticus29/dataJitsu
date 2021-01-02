@@ -1,29 +1,5 @@
 <div class="flexbox-container">
-  <div class="flexbox-item">
-    <h4>Reputation Log</h4>
-    <hr>
-    <ol>
-      <li *ngFor="let entry of (logEntries ? logEntries : [])">
-        <ul>
-          <li>
-            <span>
-              Date: {{textTransformationService.simplifyDateString(entry.date)}}
-            </span>
-          </li>
-          <li>
-            <span>
-              Points Awarded/Deducted: {{entry.points}}
-            </span>
-          </li>
-          <li>
-            <span>
-              Reason: {{entry.reason}}
-            </span>
-          </li>
-        </ul>
-      </li>
-    </ol>
-  </div>
+  <app-reputation-log></app-reputation-log>
   <div class="flexbox-item">
     <h4>Your Subscription Status</h4>
     <hr>

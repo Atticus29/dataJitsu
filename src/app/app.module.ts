@@ -131,6 +131,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
 import { CollectionCreationStepperOneComponent } from './collection-creation-stepper-one/collection-creation-stepper-one.component';
 import { CollectionCreationStepperTwoComponent } from './collection-creation-stepper-two/collection-creation-stepper-two.component';
 import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-new-video-form.component';
+import { ReputationLogComponent } from './reputation-log/reputation-log.component';
 
 
 export const firebaseConfig = {
@@ -204,7 +205,8 @@ export const firebaseConfig = {
     FeedbackViewComponent,
     CollectionCreationStepperOneComponent,
     CollectionCreationStepperTwoComponent,
-    GenericNewVideoFormComponent
+    GenericNewVideoFormComponent,
+    ReputationLogComponent
   ],
   imports: [
     BrowserModule,
