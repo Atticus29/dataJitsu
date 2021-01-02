@@ -1,11 +1,16 @@
-<div>
+<div *ngIf="collections">
   <ul *ngFor="let collection of collections">
     <li>
       <a routerLink="/collections/{{collection.id}}" name="collectionClick">{{collection.name}}
       </a>
       <span (click)="removeCollection(collection,localUser)" name="remove-collection" class="remove-collection">
-        <i class="material-icons right cancel">cancel</i>
+        <i class="material-icons cancel">cancel</i>
       </span>
     </li>
   </ul>
 </div>
+<div *ngIf="!collections">
+  <br>
+  <p>{{constants.noCollectionsYet}}</p>
+</div>
+<button mat-flat-button color="accent" routerLink="/create-collection"><mat-icon>add_circle</mat-icon> New Collection</button>

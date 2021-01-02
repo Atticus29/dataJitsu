@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 
@@ -8,11 +10,15 @@ import { BaseComponent } from '../base/base.component';
   styleUrls: ['./user-info.component.scss']
 })
 export class UserInfoComponent extends BaseComponent implements OnInit {
-  constructor() {
+  private userDbId: string = null;
+  constructor(private route: ActivatedRoute) {
     super();
   }
 
   ngOnInit() {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+      this.userDbId = params['userId'];
+    });
   }
 
 }

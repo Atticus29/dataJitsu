@@ -1,18 +1,28 @@
-<div class="flexbox-container">
-  <app-reputation-log></app-reputation-log>
-  <div class="flexbox-item">
-    <h4>Your Subscription Status</h4>
-    <hr>
-    <app-stripe></app-stripe>
-  </div>
-  <div class="flexbox-item">
-    <h4>Your Collections</h4>
-    <hr>
-    <app-user-collections-display></app-user-collections-display>
-  </div>
-  <div class="flexbox-item">
-    <h4>Your User UID</h4>
-    <hr>
-    <p>{{userDbId}}</p>
-  </div>
+<div class="container">
+  <mat-tab-group>
+    <mat-tab label="{{constants.subscriptManageLabel}}">
+      <div class="container">
+        <br>
+        <h4>{{constants.subscriptionStatusLabel}}</h4>
+        <hr>
+        <app-stripe></app-stripe>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{constants.collectionLabel}}">
+      <div class="container">
+        <app-user-collections-display></app-user-collections-display>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{constants.reputationLogLable}}">
+      <div class="container">
+        <app-reputation-log></app-reputation-log>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{constants.userIdLabel}}">
+      <div class="container">
+        <br>
+        <p>{{userDbId}}</p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
