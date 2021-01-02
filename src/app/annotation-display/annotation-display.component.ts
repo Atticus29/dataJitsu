@@ -59,6 +59,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   private pointsEntered: number = -1;
   private localMoveName: string = null;
   private localUser: any = null;
+  private missingIndividualCounter: number = 0;
 
   constructor(private vs: ValidationService, private fb: FormBuilder, private db: DatabaseService, private textTransformationService: TextTransformationService, private database: DynamicDatabase, private trackerService:TrackerService, private _snackBar: MatSnackBar, public dialog: MatDialog) {
     super();
@@ -97,7 +98,13 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         console.log("this.localMatchDeets are");
         console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
-        let thePerformers: string[] = [this.localMatchDeets.getAthlete1Name(), this.localMatchDeets.getAthlete2Name()];
+        let thePerformers: string[] = [];
+        if(this.localMatchDeets.getAthlete1Name()||this.localMatchDeets.getAthlete2Name()){
+          thePerformers = [this.localMatchDeets.getAthlete1Name()?this.localMatchDeets.getAthlete1Name(): constants.noneEntered, this.localMatchDeets.getAthlete2Name()?this.localMatchDeets.getAthlete2Name():constants.noneEntered];
+        } else{
+          //if both are mising, give them different names at least to distinguish
+          thePerformers = [constants.noneEntered, constants.noneEntered2];
+        }
         this.performers = thePerformers;
       });
     });
@@ -146,7 +153,11 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
   }
 
   getValues(){
-    let performerValue = this.performerFg.value;
+    if(!this.performerFg.value){
+      //no performer, so noneEntered will be used for performer. Need to track in case recipient is also missing
+      this.missingIndividualCounter ++;
+    }
+    let performerValue = this.performerFg.value?this.performerFg.value: constants.noneEntered;
     let pointValue = this.points.value;
     let theSubmissionStatus = this.submissionStatus;
     let theAttemptStatus = this.attemptStatus;
@@ -165,7 +176,12 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
     // console.log(result.theAttemptStatus);
     this.trackerService.attemptStatus.next(result.theAttemptStatus);
     let remainder = this.performers.filter( function(item){return (item !== result.performerValue);} );
-    this.trackerService.recipient.next(remainder[0]);
+    console.log("remainder before doing anything about it is: " + remainder);
+    if(remainder && remainder[0]){
+      this.trackerService.recipient.next(remainder[0]);
+    }else{
+      this.trackerService.recipient.next(this.missingIndividualCounter<1?constants.noneEntered:constants.noneEntered2);
+    }
     this.trackerService.videoResumeStatus.next(true);
     this.trackerService.annotationBegun.next(true);
     this.performerFg.reset();
