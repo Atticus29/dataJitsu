@@ -105,7 +105,8 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                             //TODO what else to do here?
                           }
                         }else{
-                          self.openSnackBar(constants.collectionAlreadyExistsNotification);
+                          console.log("failure here deleteMe and don't freak out");
+                          // self.openSnackBar(constants.collectionAlreadyExistsNotification); //this happens in the stepper components now?
                           //don't trigger next click
                         }
                       });

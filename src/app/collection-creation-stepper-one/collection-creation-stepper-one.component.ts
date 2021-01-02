@@ -72,6 +72,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   collectionId = additionResults.collectionId;
                                 }
                                 if(additionStatus){
+                                  console.log("collection added notification is firing");
                                   self.openSnackBar(constants.collectionAddedNotification);
                                   self.formProcessingService.stopFormAndQuestions();
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
@@ -84,6 +85,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                     });
                                   }
                                 }else{
+                                  console.log("collection added failure notification is firing");
                                   self.openSnackBar(constants.collectionAlreadyExistsNotification);
                                   self.formProcessingService.restartFormAndQuestions();
                                   //don't trigger next click
