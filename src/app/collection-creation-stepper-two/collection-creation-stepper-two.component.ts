@@ -63,7 +63,9 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
 
     //when form is submitted --------------------
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
+          console.log("form submitted monitoring in collection stepper two component firing off");
           if(isFormSubmitted && this.stopCounter>0){
+                console.log("form is submitted and stop counter is greater than one");
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
                   let formResults = combinedResults[0];
@@ -81,7 +83,13 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
                                     if(additionStatus){
                                       self.openSnackBar(constants.collectionOwnerQuestionsAddedNotification);
                                       self.formProcessingService.collectionId.next(null);
+                                      self.formProcessingService.stopFormAndQuestions();
+                                      self.formProcessingService.finalSubmitButtonClicked.next(true);
                                       self.formProcessingService.restartFormAndQuestions();
+                                      // self.questionService.getNewCollectionQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
+                                      //   self.formProcessingService.questionArrayOfForm.next(newCollectionQuestions);
+                                      // });
+                                      self.stopCounter = 0;
                                       self.ngZone.run(() =>{
                                         self.router.navigate([constants.collectionsPathName + '/' + collectionId]); // + '/'+ constants.newVideoPathName
                                       });

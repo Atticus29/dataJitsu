@@ -40,6 +40,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
       this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
         if(!this.form){
+          console.log("getting new questionArray and no form currently exists");
+          console.log(questionArrayOfForm);
           this.form = this.qcs.toFormGroup(this.questions);
           this.formProcessingService.actualForm.next(this.form);
           this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
@@ -50,6 +52,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         }
         if(questionArrayOfForm){
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
+            console.log("getting new questionArray and form currently exists and button display name is: " + buttonDisplayName);
+            console.log(questionArrayOfForm);
             if(questionArrayOfForm[0]!== "Stop" && buttonDisplayName !== "Next"){
               this.questions = questionArrayOfForm;
               // console.log("this.questions is: ");
@@ -78,6 +82,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.formProcessingService.captureFormResults(this.form.getRawValue());
       console.log("this.form.getRawValue() in the same call 2 is:");
       console.log(this.form.getRawValue());
+      console.log("got here 2");
+      console.log("questions about to be captured are");
+      console.log(questions);
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
       console.log("this.form.getRawValue() in the same call 3 is:");
       console.log(this.form.getRawValue());

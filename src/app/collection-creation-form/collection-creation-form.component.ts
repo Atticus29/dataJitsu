@@ -35,19 +35,28 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   }
 
   ngOnDestroy(){
-    this.formProcessingService.captureFormResults(["Stop"]);
-    this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
+    console.log("ng on destroy entered in collection-creation-form component");
+    // this.formProcessingService.captureFormResults(["Stop"]);
+    // this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
+    this.formProcessingService.restartFormAndQuestions();
   }
   ngAfterViewInit(){
+    console.log("ngAfterViewInit called in collection creation form");
     let stepNum = this.stepper?this.stepper.selectedIndex:0;
   }
 
   ngOnInit() {
+    console.log("ngOnInit in collection-creation form component entered");
     this.formProcessingService.nextButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(nextButtonClicked=>{
       if(nextButtonClicked){
+        console.log("next button clicked registered in collection creation form component");
         this.stepper.next();
-      } else{
-        // this.stepper.reset();
+      }
+    });
+    this.formProcessingService.finalSubmitButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(finalSubmitButtonClicked=>{
+      if(finalSubmitButtonClicked){
+        console.log("final submit button clicked registered in collection creation form component");
+        this.stepper.reset();
       }
     });
   }

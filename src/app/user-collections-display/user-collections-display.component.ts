@@ -50,6 +50,7 @@ export class UserCollectionsDisplayComponent extends BaseComponent implements On
           // this.formProcessingService.setAllFormThreadsTo(["Stop"]);
           // this.formProcessingService.setAllQuestionThreadsTo(["Stop"]);
           this.formProcessingService.captureFormResults(["Stop"]);
+          console.log("got here 3");
           this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
         }
       });
