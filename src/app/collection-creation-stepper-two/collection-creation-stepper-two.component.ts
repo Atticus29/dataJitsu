@@ -32,6 +32,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
   }
 
   ngOnInit() {
+    console.log("ngOnInit of stepper-two entered");
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){

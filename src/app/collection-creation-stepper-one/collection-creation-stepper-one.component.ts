@@ -28,6 +28,8 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
   }
 
   ngOnInit() {
+    this.formSubmissionCounter = 0;
+    console.log("ngOnInit of stepper one entered");
     this.formProcessingService.restartFormAndQuestions();
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
@@ -75,6 +77,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   console.log("collection added notification is firing");
                                   self.openSnackBar(constants.collectionAddedNotification);
                                   self.formProcessingService.stopFormAndQuestions();
+                                  // self.formProcessingService.restartFormAndQuestions();
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
                                     if(collectionId){

@@ -45,6 +45,8 @@ export class FormProcessingService {
   restartFormAndQuestions(){
     console.log("restartFormAndQuestions called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
+      // console.log("newCollectionQuestions in restartFormAndQuestions returns:");
+      // console.log(newCollectionQuestions);
       if(newCollectionQuestions){
         // console.log("newCollectionQuestions in restartFormAndQuestions in form processing service are: ");
         // console.log(newCollectionQuestions);
