@@ -15,6 +15,7 @@ export class FormProcessingService {
   public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
   public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public finalSubmitButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   // public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public actualForm: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
@@ -45,15 +46,18 @@ export class FormProcessingService {
   restartFormAndQuestions(){
     console.log("restartFormAndQuestions called");
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
+      // console.log("newCollectionQuestions in restartFormAndQuestions returns:");
+      // console.log(newCollectionQuestions);
       if(newCollectionQuestions){
         // console.log("newCollectionQuestions in restartFormAndQuestions in form processing service are: ");
         // console.log(newCollectionQuestions);
         this.questionArrayOfForm.next(newCollectionQuestions);
         this.formResults.next(null);
         this.nextButtonClicked.next(false);
-        this.buttonDisplayName.next(null);
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
+        this.finalSubmitButtonClicked.next(false);
+        this.buttonDisplayName.next("Next");
+        // this.ngUnsubscribe.next();
+        // this.ngUnsubscribe.complete();
 
       }
     });

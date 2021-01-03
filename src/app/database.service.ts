@@ -513,7 +513,7 @@ export class DatabaseService {
     console.log("updates is:");
     console.log(updates);
     updates['users/'+ video.videoDeets.genericArgs.originalPosterId +'/'+ path + videoId + '/' ] = video;
-    console.log("got here 2");
+    // console.log("got here 2");
     console.log("updates is:");
     console.log(updates);
     // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/id'] = videoId;

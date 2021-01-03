@@ -28,6 +28,8 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
   }
 
   ngOnInit() {
+    this.formSubmissionCounter = 0;
+    console.log("ngOnInit of stepper one entered");
     this.formProcessingService.restartFormAndQuestions();
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
@@ -37,6 +39,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
     });
     this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionResults =>{
       self.questionService.getCollectionQuestionGroupQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newQuestionGroupResults =>{
+        console.log("populating with new collection questions in stepper one");
         this.localCollectionConfigOptions = new DynamicFormConfiguration(questionResults, newQuestionGroupResults, "Next");
         this.formProcessingService.buttonDisplayName.next("Next");
         this.localCollectionQuestions = questionResults;
@@ -53,6 +56,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
     //when form is submitted --------------------
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
           if(isFormSubmitted){
+              console.log("form submitted monitoring in collection stepper one component firing off");
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
                   let formResults = combinedResults[0];
@@ -75,13 +79,19 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   console.log("collection added notification is firing");
                                   self.openSnackBar(constants.collectionAddedNotification);
                                   self.formProcessingService.stopFormAndQuestions();
+                                  // self.formProcessingService.restartFormAndQuestions();
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
                                     if(collectionId){
                                       self.formProcessingService.collectionId.next(collectionId);
                                     }
-                                    self.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionOwnerQuestions=>{
-                                      self.formProcessingService.questionArrayOfForm.next(collectionOwnerQuestions);
+                                    self.formProcessingService.formSubmitted.pipe(takeUntil(self.ngUnsubscribe)).subscribe(formSubmitted =>{
+                                      if(formSubmitted){
+                                        self.questionService.getOriginalCollectionOwnerQuestionGroupQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(collectionOwnerQuestions=>{
+                                          console.log("got here 1");
+                                          self.formProcessingService.captureQuestionArrayOfCurrentForm(collectionOwnerQuestions);
+                                        });
+                                      }
                                     });
                                   }
                                 }else{
@@ -91,7 +101,7 @@ export class CollectionCreationStepperOneComponent  extends BaseComponent implem
                                   //don't trigger next click
                                 }
                               });
-                              console.log("incrementing formSubmissionCounter");
+                              console.log("incrementing formSubmissionCounter from " + self.formSubmissionCounter + " to " + (self.formSubmissionCounter+1));
                               self.formSubmissionCounter ++;
                             }
                           }

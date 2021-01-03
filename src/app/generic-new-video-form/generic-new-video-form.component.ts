@@ -36,6 +36,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
+    console.log("ngOnInit on generic new video form component entered");
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){
@@ -97,7 +98,10 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                         }
                         if(localVideoId){
                           self.openSnackBar(constants.videoAddedNotification);
-                          self.formProcessingService.stopFormAndQuestions();
+                          console.log("got here 111");
+                          // self.formProcessingService.stopFormAndQuestions();
+                          //TODO maybe:
+                          self.formProcessingService.restartFormAndQuestions();
 
                           if(self.localCollectionConfigOptions.getSubmitButtonDisplay() && self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                             console.log("Ack should never get here");

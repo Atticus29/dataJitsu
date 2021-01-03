@@ -55,7 +55,9 @@
   "locationSelectName": "location-select",
   "locationNameRemovedMessage": "Location_name_has_been_removed",
   "collectionName": "My bug videos",
+  "collectionName2": "My puppy videos",
   "categoryName": "Mating",
+  "categoryName2": "Playing",
   "secondCategoryName": "Competing",
   "secondItemName": "Head Butting",
   "fourthItemName": "Leg Biting",
@@ -63,6 +65,7 @@
   "thirdCategoryName": "Spinning Little Webbies",
   "thirdItemName": "Prey Web Construction",
   "itemName": "Arm Waving",
+  "itemName2": "Licking",
   "itemName2": "Abdominal Vibration",
   "itemName3": "Chelicerae Drumming",
   "collectionAlreadyExistsIndication": "Collection already exists",
@@ -92,5 +95,6 @@
   "ownerQuestion2Response": "In his secret volcano lair",
   "ownerQuestion0ElementId": "ownerQuestion0",
   "ownerQuestion1ElementId": "ownerQuestion1",
-  "ownerQuestion2ElementId": "ownerQuestion2"
+  "ownerQuestion2ElementId": "ownerQuestion2",
+  "collectionLabel": "Your Collections"
 }
