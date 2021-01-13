@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
+import { SlideToggleQuestion } from './slideToggleFormQuestion.model';
 import { DatePickerQuestion } from './datePickerFormQuestion.model';
 import { Collection } from './collection.model';
 import { OwnerQuestion } from './ownerQuestion.model';
@@ -34,6 +35,23 @@ export class QuestionService{
   //   submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
   //   dropdownOptions: []
   // });
+  private testSlideToggleQuestion: SlideToggleQuestion = new SlideToggleQuestion({
+    key: 'testSlideToggle',
+    label: 'Gay',
+    secondLabel: 'Straight',
+    value: 'Straight', //must always match second label
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'N/A, right?',
+    type: 'toggle',
+    order: 1,
+    submitAfterThisQuestion: true
+  });
+
   private collectionNameQuestion: TextQuestion = new TextQuestion({
     key: 'collectionName',
     label: 'Collection Name',
@@ -127,7 +145,7 @@ export class QuestionService{
     indentThisQuestion: false,
     type: 'dropdown',
     order: 2,
-    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}],
     submitAfterThisQuestion: true
   });
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
@@ -146,6 +164,12 @@ export class QuestionService{
     dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
     submitAfterThisQuestion: true
   });
+
+  getTestQuestions(){
+    let testQuestions: FormQuestionBase<string>[] = [];
+    testQuestions.push(this.testSlideToggleQuestion);
+    return of(testQuestions);
+  }
 
   getNewCollectionQuestions(){
     let newCollectionQuestions: FormQuestionBase<string>[] = [];

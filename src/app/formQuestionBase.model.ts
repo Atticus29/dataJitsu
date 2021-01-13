@@ -2,6 +2,7 @@ export class FormQuestionBase<T> {
   value: T;
   key: string;
   label: string;
+  secondLabel: string;
   groupLabel: string;
   required: boolean;
   giveOptionToAnswerThisQuestionMultipleTimes: boolean;
@@ -24,6 +25,7 @@ export class FormQuestionBase<T> {
       value?: T,
       key?: string,
       label?: string,
+      secondLabel?: string,
       groupLabel?: string,
       required?: boolean,
       giveOptionToAnswerThisQuestionMultipleTimes?: boolean,
@@ -45,6 +47,7 @@ export class FormQuestionBase<T> {
     this.value = options.value;
     this.key = options.key || '';
     this.label = options.label || '';
+    this.secondLabel = options.secondLabel || '';
     this.groupLabel = options.groupLabel || '';
     this.required = !!options.required;
     this.giveOptionToAnswerThisQuestionMultipleTimes = !!options.giveOptionToAnswerThisQuestionMultipleTimes;
@@ -73,6 +76,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key, //.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      secondLabel: oldQuestion.secondLabel,
       groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
@@ -101,6 +105,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key,
       label: oldQuestion.label,
+      secondLabel: oldQuestion.secondLabel,
       groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
@@ -128,6 +133,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: newKey,
       label: oldQuestion.label,
+      secondLabel: oldQuestion.secondLabel,
       groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: oldQuestion.giveOptionToAnswerThisQuestionMultipleTimes,
@@ -155,6 +161,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      secondLabel: oldQuestion.secondLabel,
       groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,
@@ -182,6 +189,7 @@ export class FormQuestionBase<T> {
       value: oldQuestion.value,
       key: oldQuestion.key.split(/\d+/)[0] + index,
       label: oldQuestion.label,
+      secondLabel: oldQuestion.secondLabel,
       groupLabel: oldQuestion.groupLabel,
       required: oldQuestion.required,
       giveOptionToAnswerThisQuestionMultipleTimes: newStatus,

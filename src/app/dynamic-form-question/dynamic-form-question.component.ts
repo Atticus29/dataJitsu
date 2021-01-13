@@ -16,6 +16,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   @Input() question: FormQuestionBase<string>;
   @Input() form: FormGroup;
   private localDatePickerPrompt: string;
+  private checked: boolean = true;
   get isValid() {
     let returnVal = null;
     if(this.form){
@@ -47,6 +48,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
+    console.log("this.checked is: " + this.checked);
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
     let self = this;
     this.formProcessingService.actualForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults=>{
@@ -63,6 +65,21 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
         });
       }
     });
+  }
+
+  changed(){
+    console.log("toggle button change clicked");
+    this.checked = !this.checked;
+    console.log("this.checked is: " + this.checked);
+    if(this.checked){
+      this.question.value = this.question.secondLabel;
+    } else{
+      this.question.value = this.question.label;
+    }
+    console.log("value is: " + this.question.value);
+    // this.checked = !this.checked;
+    let questionKey = this.question.key;
+    this.form.patchValue({questionKey: this.question.value});
   }
 
 }

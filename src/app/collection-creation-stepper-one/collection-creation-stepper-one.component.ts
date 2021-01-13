@@ -18,7 +18,7 @@ import { Collection } from '../collection.model';
   templateUrl: './collection-creation-stepper-one.component.html',
   styleUrls: ['./collection-creation-stepper-one.component.scss']
 })
-export class CollectionCreationStepperOneComponent  extends BaseComponent implements OnInit, OnDestroy {
+export class CollectionCreationStepperOneComponent extends BaseComponent implements OnInit, OnDestroy {
   private localCollectionConfigOptions: DynamicFormConfiguration;
   private localCollectionQuestions: FormQuestionBase<any>[];
   private localUser: any;

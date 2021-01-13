@@ -22,6 +22,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     form: FormGroup;
     payLoad: string = '';
     private localButtonDisplayName: String;
+    checked: boolean = false;
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 

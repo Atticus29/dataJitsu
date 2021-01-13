@@ -27,6 +27,7 @@ import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
 import { constants } from './constants';
+import { SandboxComponent } from './sandbox/sandbox.component'
 
 // const adminOnly = hasCustomClaim('admin');
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
@@ -143,6 +144,10 @@ const routes: Routes = [
   },{
     path: constants.newVideoPathName,
     component: NotfoundComponent,
+    pathMatch: 'full'
+  },{
+    path: 'test',
+    component: SandboxComponent,
     pathMatch: 'full'
   },{
     path: '**',

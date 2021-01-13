@@ -132,6 +132,7 @@ import { CollectionCreationStepperOneComponent } from './collection-creation-ste
 import { CollectionCreationStepperTwoComponent } from './collection-creation-stepper-two/collection-creation-stepper-two.component';
 import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-new-video-form.component';
 import { ReputationLogComponent } from './reputation-log/reputation-log.component';
+import { SandboxComponent } from './sandbox/sandbox.component';
 
 
 export const firebaseConfig = {
@@ -206,7 +207,8 @@ export const firebaseConfig = {
     CollectionCreationStepperOneComponent,
     CollectionCreationStepperTwoComponent,
     GenericNewVideoFormComponent,
-    ReputationLogComponent
+    ReputationLogComponent,
+    SandboxComponent
   ],
   imports: [
     BrowserModule,

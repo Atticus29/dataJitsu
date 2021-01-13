@@ -19,6 +19,18 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </div>
+    <div *ngSwitchCase="'toggle'">
+      {{question.label}}
+      <mat-slide-toggle
+      [formControlName]="question.key? question.key: null"
+      [id]="question.key"
+      [color]="$primary-color"
+      [checked]="checked"
+      (change)="changed()"
+      >
+      {{question.secondLabel}}
+    </mat-slide-toggle>
+    </div>
   </div>
     <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required
     </div> -->
