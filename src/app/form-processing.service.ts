@@ -26,8 +26,8 @@ export class FormProcessingService {
   constructor(private questionService: QuestionService) { }
 
   captureFormResults(formResults: any){
-    console.log("captureFormResults emitted and formResults are:");
-    console.log(formResults);
+    // console.log("captureFormResults emitted and formResults are:");
+    // console.log(formResults);
     this.formResults.next(formResults);
   }
 

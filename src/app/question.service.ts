@@ -35,11 +35,11 @@ export class QuestionService{
   //   submitAfterThisQuestion: i<ownerQuestions.length-1 ? false:true,
   //   dropdownOptions: []
   // });
-  private testSlideToggleQuestion: SlideToggleQuestion = new SlideToggleQuestion({
-    key: 'testSlideToggle',
-    label: 'Gay',
-    secondLabel: 'Straight',
-    value: 'Straight', //must always match second label
+  private secondTestSlideToggle: SlideToggleQuestion = new SlideToggleQuestion({
+    key: 'secondTestSlideToggle',
+    label: 'Fun',
+    secondLabel: 'No Fun',
+    value: 'No Fun', //must always match second label
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
@@ -50,6 +50,22 @@ export class QuestionService{
     type: 'toggle',
     order: 1,
     submitAfterThisQuestion: true
+  });
+  private testSlideToggleQuestion: SlideToggleQuestion = new SlideToggleQuestion({
+    key: 'testSlideToggle',
+    label: 'Gay',
+    secondLabel: 'Straight',
+    value: 'Straight', //must always match second label
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'N/A, right?',
+    type: 'toggle',
+    order: 1,
+    submitAfterThisQuestion: false
   });
 
   private collectionNameQuestion: TextQuestion = new TextQuestion({
@@ -167,7 +183,9 @@ export class QuestionService{
 
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
+    testQuestions.push(this.collectionNameQuestion);
     testQuestions.push(this.testSlideToggleQuestion);
+    testQuestions.push(this.secondTestSlideToggle);
     return of(testQuestions);
   }
 

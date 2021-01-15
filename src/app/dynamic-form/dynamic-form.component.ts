@@ -75,21 +75,24 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     processForm(questions: FormQuestionBase<string>[]){
+      console.log("processForm called");
       this.payLoad = JSON.stringify(this.form.getRawValue());
-      console.log("this.payLoad in processForm or dynamic-form-component is:");
-      console.log(this.payLoad);
-      console.log("this.form.getRawValue() in the same call 1 is:");
-      console.log(this.form.getRawValue());
+      // console.log("this.payLoad in processForm or dynamic-form-component is:");
+      // console.log(this.payLoad);
+      // console.log("this.form.getRawValue() in the same call 1 is:");
+      // console.log(this.form.getRawValue());
       this.formProcessingService.captureFormResults(this.form.getRawValue());
-      console.log("this.form.getRawValue() in the same call 2 is:");
-      console.log(this.form.getRawValue());
-      console.log("got here 2");
-      console.log("questions about to be captured are");
-      console.log(questions);
+      // console.log("this.form.getRawValue() in the same call 2 is:");
+      // console.log(this.form.getRawValue());
+      // console.log("got here 2");
+      // console.log("questions about to be captured are");
+      // console.log(questions);
       this.formProcessingService.captureQuestionArrayOfCurrentForm(questions);
-      console.log("this.form.getRawValue() in the same call 3 is:");
-      console.log(this.form.getRawValue());
+      // console.log("this.form.getRawValue() in the same call 3 is:");
+      // console.log(this.form.getRawValue());
       this.formProcessingService.formSubmitted.next(true);
+
+      //NOTE THAT IT IS WHATEVER IS MONITORING THE FORM PROCESSING SERVICE'S JOB TO RUN restartFormAndQuestions AFTER IT'S DONE WITH WHAT IT'S DONE WITH. THIS DOESN'T HAPPEN AUTOMATICALLY HERE FOR GOOD REASON
     }
 
     addAnotherQuestion(question: FormQuestionBase<string>, questionArray: FormQuestionBase<string>[], index: number, submitAfterThisQuestion: boolean){
@@ -143,15 +146,14 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     processItemFromQuestion(itemFromFormQuestion: any){
       console.log("processItemFromQuestion entered");
-      // console.log("itemFromFormQuestion in processItemFromQuestion is: ");
-      // console.log(itemFromFormQuestion);
-      console.log("this.form before:");
-      console.log(this.form);
-      // this.form.controls[itemFromFormQuestion.key] = itemFromFormQuestion.value;
+
+      // console.log("this.form before:");
+      // console.log(this.form);
+
       this.form.patchValue(itemFromFormQuestion);
-      // this.form.setValue(itemFromFormQuestion);
-      console.log("this.form after:");
-      console.log(this.form);
-      //this.formProcessingService.captureFormResults(this.form);
+
+      // console.log("this.form after:");
+      // console.log(this.form);
+      this.formProcessingService.captureFormResults(this.form);
     }
 }

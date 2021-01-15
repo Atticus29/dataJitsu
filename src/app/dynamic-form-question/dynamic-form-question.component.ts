@@ -50,8 +50,6 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
 
   ngOnInit() {
     if(this.question.controlType==='toggle'){
-      console.log("we have a toggle question");
-      console.log("this.checked is: " + this.checked);
       let questionKey = this.question.key;
       if(this.checked){
         this.question.value = this.question.secondLabel;
@@ -60,8 +58,6 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       }
       let objToEmit = {};
       objToEmit[questionKey]=this.question.value;
-      console.log("objToEmit is: ");
-      console.log(objToEmit);
       this.itemFromFormQuestion.emit(objToEmit);
     }
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
@@ -83,22 +79,17 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   changed(){
+    console.log("changed called");
     //Currently only for toggle switch
     if(this.question.controlType==='toggle'){
-      // console.log("toggle button change clicked");
       this.checked = !this.checked;
-      // console.log("this.checked is: " + this.checked);
       if(this.checked){
         this.question.value = this.question.secondLabel;
       } else{
         this.question.value = this.question.label;
       }
-      // console.log("value is: " + this.question.value);
-      // this.checked = !this.checked;
       let questionKey = this.question.key;
 
-      // this.form.patchValue({questionKey: this.question.value});
-      console.log("got here 1");
       let objToEmit = {};
       objToEmit[questionKey]=this.question.value;
       console.log("objToEmit is: ");
