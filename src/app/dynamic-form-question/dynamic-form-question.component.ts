@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { takeUntil } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { FormProcessingService } from '../form-processing.service';
 export class DynamicFormQuestionComponent extends BaseComponent implements OnInit {
   @Input() question: FormQuestionBase<string>;
   @Input() form: FormGroup;
+  @Output() itemFromFormQuestion = new EventEmitter<any>();
   private localDatePickerPrompt: string;
   private checked: boolean = true;
   get isValid() {
@@ -48,7 +49,21 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
-    console.log("this.checked is: " + this.checked);
+    if(this.question.controlType==='toggle'){
+      console.log("we have a toggle question");
+      console.log("this.checked is: " + this.checked);
+      let questionKey = this.question.key;
+      if(this.checked){
+        this.question.value = this.question.secondLabel;
+      } else{
+        this.question.value = this.question.label;
+      }
+      let objToEmit = {};
+      objToEmit[questionKey]=this.question.value;
+      console.log("objToEmit is: ");
+      console.log(objToEmit);
+      this.itemFromFormQuestion.emit(objToEmit);
+    }
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
     let self = this;
     this.formProcessingService.actualForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults=>{
@@ -68,18 +83,28 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   changed(){
-    console.log("toggle button change clicked");
-    this.checked = !this.checked;
-    console.log("this.checked is: " + this.checked);
-    if(this.checked){
-      this.question.value = this.question.secondLabel;
-    } else{
-      this.question.value = this.question.label;
+    //Currently only for toggle switch
+    if(this.question.controlType==='toggle'){
+      // console.log("toggle button change clicked");
+      this.checked = !this.checked;
+      // console.log("this.checked is: " + this.checked);
+      if(this.checked){
+        this.question.value = this.question.secondLabel;
+      } else{
+        this.question.value = this.question.label;
+      }
+      // console.log("value is: " + this.question.value);
+      // this.checked = !this.checked;
+      let questionKey = this.question.key;
+
+      // this.form.patchValue({questionKey: this.question.value});
+      console.log("got here 1");
+      let objToEmit = {};
+      objToEmit[questionKey]=this.question.value;
+      console.log("objToEmit is: ");
+      console.log(objToEmit);
+      this.itemFromFormQuestion.emit(objToEmit);
     }
-    console.log("value is: " + this.question.value);
-    // this.checked = !this.checked;
-    let questionKey = this.question.key;
-    this.form.patchValue({questionKey: this.question.value});
   }
 
 }
