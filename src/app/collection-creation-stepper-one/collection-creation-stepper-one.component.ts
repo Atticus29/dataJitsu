@@ -98,6 +98,7 @@ export class CollectionCreationStepperOneComponent extends BaseComponent impleme
                                   console.log("collection added failure notification is firing");
                                   self.openSnackBar(constants.collectionAlreadyExistsNotification);
                                   self.formProcessingService.restartFormAndQuestions();
+                                  self.formSubmissionCounter --;
                                   //don't trigger next click
                                 }
                               });

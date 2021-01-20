@@ -68,7 +68,7 @@
   "itemName2": "Licking",
   "itemName2": "Abdominal Vibration",
   "itemName3": "Chelicerae Drumming",
-  "collectionAlreadyExistsIndication": "Collection already exists",
+  "collectionAlreadyExistsIndication": "Collection already exists in the database. Please choose a new name or category-item combination.",
   "testIndividualName": "Garry",
   "unfilteredExpectationText": "1 – 10 ",
   "filterCriteria": "Mark",
