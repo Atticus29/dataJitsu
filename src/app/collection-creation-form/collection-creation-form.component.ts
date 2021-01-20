@@ -8,6 +8,7 @@ import {MatStepper} from '@angular/material/stepper';
 // import { constants } from '../constants';
 
 import { TrackerService } from '../tracker.service';
+import { QuestionService } from '../question.service';
 import { FormProcessingService } from '../form-processing.service';
 import { BaseComponent } from '../base/base.component';
 import { Collection } from '../collection.model';
@@ -30,7 +31,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
   private currentStepInStepper: Observable<number>;
   private localValid: boolean = false;
 
-  constructor(private formProcessingService:FormProcessingService, private trackerService: TrackerService) {
+  constructor(private formProcessingService:FormProcessingService, private trackerService: TrackerService, private questionService: QuestionService) {
     super();
   }
 
@@ -38,7 +39,7 @@ export class CollectionCreationFormComponent extends BaseComponent implements On
     console.log("ng on destroy entered in collection-creation-form component");
     // this.formProcessingService.captureFormResults(["Stop"]);
     // this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
-    this.formProcessingService.restartFormAndQuestions();
+    this.formProcessingService.restartFormAndQuestions(this.questionService.getNewCollectionQuestionsAsObj());
   }
   ngAfterViewInit(){
     console.log("ngAfterViewInit called in collection creation form");

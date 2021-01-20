@@ -30,7 +30,7 @@ export class CollectionCreationStepperOneComponent extends BaseComponent impleme
   ngOnInit() {
     this.formSubmissionCounter = 0;
     console.log("ngOnInit of stepper one entered");
-    this.formProcessingService.restartFormAndQuestions();
+    this.formProcessingService.restartFormAndQuestions(this.questionService.getNewCollectionQuestionsAsObj());
     let self = this;
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){
@@ -79,7 +79,7 @@ export class CollectionCreationStepperOneComponent extends BaseComponent impleme
                                   console.log("collection added notification is firing");
                                   self.openSnackBar(constants.collectionAddedNotification);
                                   self.formProcessingService.stopFormAndQuestions();
-                                  // self.formProcessingService.restartFormAndQuestions();
+                                  // self.formProcessingService.restartFormAndQuestions(self.questionService.getNewCollectionQuestionsAsObj());
                                   if(self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                                     self.formProcessingService.nextButtonClicked.next(true);
                                     if(collectionId){
@@ -97,7 +97,7 @@ export class CollectionCreationStepperOneComponent extends BaseComponent impleme
                                 }else{
                                   console.log("collection added failure notification is firing");
                                   self.openSnackBar(constants.collectionAlreadyExistsNotification);
-                                  self.formProcessingService.restartFormAndQuestions();
+                                  self.formProcessingService.restartFormAndQuestions(self.questionService.getNewCollectionQuestionsAsObj());
                                   self.formSubmissionCounter --;
                                   //don't trigger next click
                                 }

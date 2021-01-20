@@ -85,7 +85,7 @@ export class CollectionCreationStepperTwoComponent  extends BaseComponent implem
                                       self.formProcessingService.collectionId.next(null);
                                       self.formProcessingService.stopFormAndQuestions();
                                       self.formProcessingService.finalSubmitButtonClicked.next(true);
-                                      self.formProcessingService.restartFormAndQuestions();
+                                      self.formProcessingService.restartFormAndQuestions(self.questionService.getNewCollectionQuestionsAsObj());
                                       // self.questionService.getNewCollectionQuestions().pipe(takeUntil(self.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
                                       //   self.formProcessingService.questionArrayOfForm.next(newCollectionQuestions);
                                       // });

@@ -197,6 +197,14 @@ export class QuestionService{
     return of(newCollectionQuestions);
   }
 
+  getNewCollectionQuestionsAsObj(){
+    let newCollectionQuestions: FormQuestionBase<string>[] = [];
+    newCollectionQuestions.push(this.collectionNameQuestion);
+    newCollectionQuestions.push(this.categoryNameQuestion);
+    newCollectionQuestions.push(this.collectionItemQuestion);
+    return newCollectionQuestions;
+  }
+
   getShamCollectionQuestionsInstantly(){
     let newCollectionQuestions: FormQuestionBase<string>[] = [];
     newCollectionQuestions.push(this.collectionNameQuestion);

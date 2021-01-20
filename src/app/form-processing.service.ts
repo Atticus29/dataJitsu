@@ -43,23 +43,36 @@ export class FormProcessingService {
     this.questionArrayOfForm.next(["Stop"]);
   }
 
-  restartFormAndQuestions(){
+  restartFormAndQuestions(questions){
     console.log("restartFormAndQuestions called");
-    this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
-      // console.log("newCollectionQuestions in restartFormAndQuestions returns:");
-      // console.log(newCollectionQuestions);
-      if(newCollectionQuestions){
-        // console.log("newCollectionQuestions in restartFormAndQuestions in form processing service are: ");
-        // console.log(newCollectionQuestions);
-        this.questionArrayOfForm.next(newCollectionQuestions);
-        this.formResults.next(null);
-        this.nextButtonClicked.next(false);
-        this.finalSubmitButtonClicked.next(false);
-        this.buttonDisplayName.next("Next");
-        // this.ngUnsubscribe.next();
-        // this.ngUnsubscribe.complete();
-
-      }
-    });
+    if(questions){
+      this.questionArrayOfForm.next(questions);
+      this.formResults.next(null);
+      this.nextButtonClicked.next(false);
+      this.finalSubmitButtonClicked.next(false);
+      this.buttonDisplayName.next("Next");
+    }else{
+      this.questionArrayOfForm.next(null);
+      this.formResults.next(null);
+      this.nextButtonClicked.next(false);
+      this.finalSubmitButtonClicked.next(false);
+      this.buttonDisplayName.next("Next");
+    }
+    // this.questionService.getNewCollectionQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe(newCollectionQuestions=>{
+    //   // console.log("newCollectionQuestions in restartFormAndQuestions returns:");
+    //   // console.log(newCollectionQuestions);
+    //   if(newCollectionQuestions){
+    //     // console.log("newCollectionQuestions in restartFormAndQuestions in form processing service are: ");
+    //     // console.log(newCollectionQuestions);
+    //     this.questionArrayOfForm.next(newCollectionQuestions);
+    //     this.formResults.next(null);
+    //     this.nextButtonClicked.next(false);
+    //     this.finalSubmitButtonClicked.next(false);
+    //     this.buttonDisplayName.next("Next");
+    //     // this.ngUnsubscribe.next();
+    //     // this.ngUnsubscribe.complete();
+    //
+    //   }
+    // });
   }
 }

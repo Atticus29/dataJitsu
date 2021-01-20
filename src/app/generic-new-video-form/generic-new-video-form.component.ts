@@ -26,6 +26,7 @@ import { HelperService } from '../helper.service';
 })
 export class GenericNewVideoFormComponent extends BaseComponent implements OnInit {
   private localCollection: Collection = null;
+  private localCollectionBackupCopy: Collection = null;
   private localCollectionQuestions: FormQuestionBase<any>[] = this.questionService.getShamCollectionQuestionsInstantly();
   private localCollectionConfigOptions: DynamicFormConfiguration = new DynamicFormConfiguration(this.localCollectionQuestions, [], "Submit");
   private localUser: any;
@@ -43,7 +44,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
         this.localUser = user;
       }
     });
-    this.formProcessingService.restartFormAndQuestions();
+    this.formProcessingService.restartFormAndQuestions(this.questionService.getNewCollectionQuestionsAsObj());
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.databaseService.getCollection(params.collectionId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(collectionResult =>{
         this.localCollection = Collection.fromDataBase(collectionResult);
@@ -52,6 +53,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
           let form = this.qcs.toFormGroup(questionResults);
           this.formProcessingService.actualForm.next(form);
           this.formProcessingService.captureQuestionArrayOfCurrentForm(questionResults);
+          this.localCollectionBackupCopy = questionResults;
         });
       })
     });
@@ -79,7 +81,11 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
               console.log(formResults);
               // if(formResults.collectionName){ //TODO edit
                 if(currentFormQuestions){
+                  console.log("got here mark");
+                  console.log("currentFormQuestions are: ");
+                  console.log(currentFormQuestions);
                   if(currentFormQuestions[0] !== "Stop"){
+
                     if(this.localUser && this.localUser.id && this.localCounter <1){
                       formResults['originalPosterId'] = this.localUser.id;
                       let newVideo: Video = Video.fromJson(formResults);
@@ -101,7 +107,9 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
                           console.log("got here 111");
                           // self.formProcessingService.stopFormAndQuestions();
                           //TODO maybe:
-                          self.formProcessingService.restartFormAndQuestions();
+
+                          self.formProcessingService.restartFormAndQuestions(self.localCollectionBackupCopy);
+                          this.localCounter --; //hopefully does not cause a forever loop
 
                           if(self.localCollectionConfigOptions.getSubmitButtonDisplay() && self.localCollectionConfigOptions.getSubmitButtonDisplay()==="Next"){
                             console.log("Ack should never get here");
