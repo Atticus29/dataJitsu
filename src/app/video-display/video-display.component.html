@@ -2,7 +2,23 @@
   <div class="row">
     <div class="">
       <div class="card title-buffer">
-        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left) vs. {{match?.videoDeets?.athlete2Name}} (right)</h5></span>
+        <span class="card-title" id="match-display-name">
+          <div *ngIf="displayModeInd1">
+            <h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left)
+              <span *ngIf="isAdmin || canEditVideo">
+                <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editInd1Btn" id="editInd1Btn" (click)="toggleEditInd1()">
+                  <i class="material-icons">edit</i>
+                </button>
+              </span>
+            </h5>
+          </div>
+          <div *ngIf="!displayModeInd1">
+            <span *ngIf="isAdmin || canEditVideo">
+              <app-dynamic-form [configOptions]="localConfigOptions" [questions]="localIndividualOneQuestion"></app-dynamic-form>
+            </span>
+          </div>
+          <h5 class="centered match-title"> vs. {{match?.videoDeets?.athlete2Name}} (right)</h5>
+        </span>
         <div class="card-image">
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>

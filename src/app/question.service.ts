@@ -13,6 +13,21 @@ import { OwnerQuestion } from './ownerQuestion.model';
 
 @Injectable()
 export class QuestionService{
+  private individualOneEditQuestion: TextQuestion = new TextQuestion({
+    key: 'individualOneUpdate',
+    label: 'Individual 1 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true
+  });
   // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here
   //   key: 'usernameQuestion' + i,
   //   label: 'User Name',
@@ -225,6 +240,18 @@ export class QuestionService{
     entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
     return of(entryDetailQuestions);
+  }
+
+  getIndividualOneEditQuestion(){
+    let individualOneQuestionArray: FormQuestionBase<string>[] = [];
+    individualOneQuestionArray.push(this.individualOneEditQuestion);
+    return of(individualOneQuestionArray);
+  }
+
+  getIndividualOneEditQuestionAsObj(){
+    let individualOneQuestionArray: FormQuestionBase<string>[] = [];
+    individualOneQuestionArray.push(this.individualOneEditQuestion);
+    return individualOneQuestionArray;
   }
 
   getNewEntryDetailQuestions(){

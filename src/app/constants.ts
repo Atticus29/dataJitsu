@@ -16,6 +16,8 @@ export var constants = {
     locationRemovedMessage: "Location_name_has_been_removed",
     collectionAddedNotification: "Your collection has been added",
     collectionOwnerQuestionsAddedNotification: "Your questions have been added to your collection. Users who use your collection will be prompted with those questions when adding videos",
+    videoDeetUpdatedNotification: "Your video detail has been updated successfully",
+    videoDeetUpdateFailureNotification: "Your video detail did not update successfully",
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     collectionOwnerQuestionsErrorNotification: "Unable to add questions to your collection",
     eventNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",

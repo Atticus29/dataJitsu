@@ -1692,6 +1692,19 @@ export class DatabaseService {
     return obsRet;
   }
 
+  updateVideoDeet(path: string, updateVal: string, videoId: string, userId: string): Observable<boolean>{
+    console.log("updateVideoDeet called");
+    let self = this;
+    let obsRet = Observable.create(function(observer){
+          let updates = {};
+          updates['/videos/' + videoId + path] = updateVal;
+          firebase.database().ref().update(updates);
+          observer.next(true);
+          return obsRet;
+    });
+    return obsRet;
+  }
+
   getCollection(collectionId: string){
     let ref = firebase.database().ref('collections/' + collectionId);
     let obsRet = Observable.create(function(observer){

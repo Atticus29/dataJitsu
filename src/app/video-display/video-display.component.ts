@@ -4,15 +4,18 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { FlatTreeControl } from '@angular/cdk/tree';
 
 import { Subject, Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { takeUntil, take, last } from 'rxjs/operators';
+import { takeUntil, take, last, withLatestFrom } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
+import { FormQuestionBase } from '../formQuestionBase.model';
 import { DatabaseService } from '../database.service';
 import { TrackerService } from '../tracker.service';
+import { FormProcessingService } from '../form-processing.service';
 import { AuthorizationService } from '../authorization.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { StarRatingColor } from '../star-rating/star-rating.component';
-
+import { QuestionService } from '../question.service';
+import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { DynamicDataSource } from '../dynamicDataSource.model';
 import { DynamicDatabase } from '../dynamicDatabase.model';
 import { VideoDetails } from '../videoDetails.model';
@@ -63,6 +66,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private showInappropriateFlagChip = false;
   private showRemovedFlagChip = false;
   private isAdmin: boolean = false;
+  private canEditVideo: boolean = false;
+  private displayModeInd1: boolean = true;
   private player: any;
   private ytId: string = constants.defaultVideoUrlCode;
   private displayAnnotationRating: boolean = true;
@@ -74,20 +79,25 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private flaggedInappropriateStatus: string = "Fetching...";
   private showFlagChips: boolean = false;
   private giStatus: string = "Fetching...";
+  private localIndividualOneQuestion: FormQuestionBase<any>[] =  null;
+  private localConfigOptions: DynamicFormConfiguration;
+  private stopCounter: number = 0;
 
   // private originalPosterId: string = null;
   // private defaultUrl: string = "https://www.youtube.com/embed/"+constants.defaultVideoUrlCode +"?enablejsapi=1&html5=1&";
   // private shouldVideoResume: boolean = false;
   // private database: DynamicDatabase;
 
-  constructor(private router: Router, private db: DatabaseService, private route: ActivatedRoute, public snackBar: MatSnackBar, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService) {
+  constructor(private router: Router, private databaseService: DatabaseService, private route: ActivatedRoute, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService, private questionService: QuestionService, public snackBar: MatSnackBar, private formProcessingService:FormProcessingService) {
     super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database, this.db);
+    this.dataSource = new DynamicDataSource(this.treeControl, database, this.databaseService);
     this.dataSource.data = database.initialData();
   }
 
   ngOnInit() {
+    this.handleFormUpdates();
+
     combineLatest([this.trackerService.youtubePlayerLoadedStatus, this.trackerService.currentUserBehaviorSubject]).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([videoLoadedStatus, user]) =>{
       if(videoLoadedStatus && this.player){
         this.player.loadVideoById({
@@ -108,6 +118,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
       if(user){
         user.id ? this.userInDbId = user.id: this.userInDbId = null;
         user.privileges.isAdmin ? this.isAdmin = true : this.isAdmin = false;
+        user.privileges.canEditVideo ? this.canEditVideo = true: this.canEditVideo = false;
       }
     });
 
@@ -148,36 +159,39 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
       }
       if(this.videoId){
         console.log("videoId is: " + this.videoId);
-        this.db.getVideoRemovedFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+        this.databaseService.getVideoRemovedFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleFlaggedAsRemoved(true) : this.handleFlaggedAsRemoved(false);
         });
-        this.db.getInappropriateFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
+        this.databaseService.getInappropriateFlagStatus(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
           status ? this.handleInappropriateFlagged(true) : this.handleInappropriateFlagged(false);
         });
-        this.db.getvideoUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoUrl =>{
+        this.databaseService.getvideoUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoUrl =>{
           this.ytId = this.parseVideoUrl(videoUrl);
           if(this.player){
             this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
           }
         });
       }
-      this.db.getAverageVideoRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
+      this.databaseService.getAverageVideoRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
         this.videoAverageRating = average;
       });
-      this.db.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
+      this.databaseService.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
         console.log("got into getAverageAnnotationRating in match-display component. Average is:");
         console.log (average);
         this.annotationAverageRating = average;
       });
       this.trackerService.currentMatch.next(this.videoId);
-      this.db.getMainAnnotatorOfMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(mainAnnotator =>{
+      this.databaseService.getMainAnnotatorOfMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(mainAnnotator =>{
         if(mainAnnotator.annotatorUserId === this.userInDbId && !this.isAdmin){
           this.displayAnnotationRating = false;
         } else{
           this.displayAnnotationRating = true;
         }
       });
-      this.db.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+      this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+        console.log("got here 0");
+        console.log("match is: ");
+        console.log(match);
         if(match){
           this.match = match;
           match.videoDeets.giStatus ? this.giStatus = "Gi" : this.giStatus = "Nogi";
@@ -191,6 +205,17 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
             if(videoResumeStatus){
               this.player.playVideo();
             }
+          });
+
+          this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
+            if(individualOneQuestion && match.videoDeets){
+              if(match.videoDeets.athlete1Name){
+                individualOneQuestion[0].value = match.videoDeets.athlete1Name;
+              }
+              this.localIndividualOneQuestion = individualOneQuestion;
+              this.localConfigOptions = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
+            }
+
           });
         }
       });
@@ -222,14 +247,14 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   onRateVideo($event) { //:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
     let newRating = $event;
     if(this.userInDbId && newRating!=null){
-      this.db.addMatchRatingToUser(this.userInDbId, this.videoId, newRating);
-      this.db.addMatchRatingToMatch(this.userInDbId, this.videoId, newRating);
+      this.databaseService.addMatchRatingToUser(this.userInDbId, this.videoId, newRating);
+      this.databaseService.addMatchRatingToMatch(this.userInDbId, this.videoId, newRating);
     }else{
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(usr =>{
-        this.db.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
+        this.databaseService.getUserByUid(usr.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(uzr => {
           let userInDb: string = uzr.id;
-          this.db.addMatchRatingToUser(userInDb, this.videoId, newRating);
-          this.db.addMatchRatingToMatch(userInDb, this.videoId, newRating);
+          this.databaseService.addMatchRatingToUser(userInDb, this.videoId, newRating);
+          this.databaseService.addMatchRatingToMatch(userInDb, this.videoId, newRating);
         });
       });
     }
@@ -238,12 +263,12 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   onRateAnnotation($event) {//:{oldValue:number, newValue:number, starRating:VideoDisplayComponent}
     let newRating = $event;
     if(this.userInDbId){
-      this.db.addMatchAnnotationRatingToUser(this.userInDbId, this.videoId, newRating);
-      this.db.addMatchAnnotationRatingToMatch(this.userInDbId, this.videoId, newRating);
+      this.databaseService.addMatchAnnotationRatingToUser(this.userInDbId, this.videoId, newRating);
+      this.databaseService.addMatchAnnotationRatingToMatch(this.userInDbId, this.videoId, newRating);
       if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
-        this.db.getMainAnnotatorOfMatch(this.videoId).pipe(take(1)).subscribe(majorityAnnotator =>{
+        this.databaseService.getMainAnnotatorOfMatch(this.videoId).pipe(take(1)).subscribe(majorityAnnotator =>{
           if(majorityAnnotator.annotatorUserId !== this.userInDbId){
-            this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.videoId +".");
+            this.databaseService.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.videoId +".");
           }
           if(majorityAnnotator.annotatorUserId === this.userInDbId){
             console.log("bish just upvoted their own shit");
@@ -253,14 +278,14 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     }else{
       this.trackerService.currentUserBehaviorSubject.pipe(take(1)).subscribe(usr =>{
         console.log(usr);
-        this.db.getUserByUid(usr.uid).pipe(take(1)).subscribe(result => {
+        this.databaseService.getUserByUid(usr.uid).pipe(take(1)).subscribe(result => {
           let userDbId: string = result.id;
-          this.db.addMatchAnnotationRatingToUser(userDbId, this.videoId, newRating);
-          this.db.addMatchAnnotationRatingToMatch(userDbId, this.videoId, newRating);
+          this.databaseService.addMatchAnnotationRatingToUser(userDbId, this.videoId, newRating);
+          this.databaseService.addMatchAnnotationRatingToMatch(userDbId, this.videoId, newRating);
           if($event.newValue > constants.numberOfStarsForAnAnnotationRatingToBeConsideredStrong){
-            this.db.getMainAnnotatorOfMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
+            this.databaseService.getMainAnnotatorOfMatch(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(majorityAnnotator =>{
               if(majorityAnnotator.annotatorUserId !== userDbId){
-                this.db.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.videoId +".");
+                this.databaseService.updateUserReputationPoints(majorityAnnotator.annotatorUserId, constants.numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating, "You annotated the majority of the moves in match " + this.videoId +".");
               }
               if(majorityAnnotator.annotatorUserId === userDbId){
                 console.log("bish just upvoted their own shit");
@@ -327,8 +352,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
   flagVideo(){
     if(this.videoId){
-      this.db.getVideoRemovedFlagStatus(this.videoId).pipe(take(1)).subscribe(status =>{
-        status ? this.db.flagVideoRemovedInMatch(this.videoId, false): this.db.flagVideoRemovedInMatch(this.videoId, true);
+      this.databaseService.getVideoRemovedFlagStatus(this.videoId).pipe(take(1)).subscribe(status =>{
+        status ? this.databaseService.flagVideoRemovedInMatch(this.videoId, false): this.databaseService.flagVideoRemovedInMatch(this.videoId, true);
       });
     } else{
       // console.log("video has been flagged as removed, but videoId could not be found");
@@ -338,9 +363,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   flagVideoInappropriate(){
     if(this.videoId){
       console.log("flagVideoInappropriate entered and videoId exists");
-      this.db.getInappropriateFlagStatus(this.videoId).pipe(take(1)).subscribe(status =>{
+      this.databaseService.getInappropriateFlagStatus(this.videoId).pipe(take(1)).subscribe(status =>{
         console.log("status inside getInappropriateFlagStatus called and is " + status);
-        status ? this.db.flagVideoInappropriateInMatch(this.videoId, false): this.db.flagVideoInappropriateInMatch(this.videoId, true);
+        status ? this.databaseService.flagVideoInappropriateInMatch(this.videoId, false): this.databaseService.flagVideoInappropriateInMatch(this.videoId, true);
       });
     } else{
       // console.log("video has been flagged as removed, but videoId could not be found");
@@ -350,7 +375,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   processMatchEntryInDatabase(){
     console.log("processMatchEntryInDatabase entered");
     let annotationMadeCounter: number = 0;
-    this.db.addEventInVideoToVideoIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
+    this.databaseService.addEventInVideoToVideoIfUniqueEnough(this.tempMove).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnough =>{
       console.log("addEventInVideoToVideoIfUniqueEnough entered");
       if(!moveUniqueEnough){
         if(annotationMadeCounter < 1){
@@ -369,7 +394,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.trackerService.resetAllExceptCurrentMatch();
         this.moveAssembledStatus.next(false);
       } else{
-        this.db.addEventInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
+        this.databaseService.addEventInVideoToUserIfUniqueEnough(this.tempMove, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveUniqueEnoughInUser =>{
           if(moveUniqueEnoughInUser){
             this.openSnackBar(constants.annotationRecordedMessage);
             annotationMadeCounter ++;
@@ -532,4 +557,59 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     this.moveAssembledStatus.next(false);
     this.triggerNewAnnotationFetch();
   }
+
+  toggleEditInd1(){
+    this.displayModeInd1 = !this.displayModeInd1;
+  }
+
+  handleFormUpdates(){
+    //when form is submitted --------------------
+    let self = this;
+        this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
+          console.log("form submitted monitoring in video-display firing off");
+          console.log("isFormSubmitted is: " + isFormSubmitted);
+          if(isFormSubmitted && this.stopCounter<1){
+                this.stopCounter ++;
+                console.log("form is submitted and stop counter less than one");
+                let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
+                formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+                  let formResults = combinedResults[0];
+                  let currentFormQuestions = combinedResults[1];
+                  if(formResults){ //formSubmitted &&
+                    if(formResults[0] !== "Stop"){
+                      //begin custom stuff
+                      console.log("formResults are: ");
+                      console.log(formResults);
+                      if(formResults.individualOneUpdate){
+                        if(currentFormQuestions){
+                          if(currentFormQuestions[0] !== "Stop"){
+                                if(this.userInDbId && this.videoId){
+                                  let path = '/videoDeets/athlete1Name';
+                                  let updateVal = formResults.individualOneUpdate;
+                                  this.databaseService.updateVideoDeet(path, updateVal, this.videoId, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                                    if(additionStatus){
+                                      self.openSnackBar(constants.videoDeetUpdatedNotification);
+                                      // self.formProcessingService.collectionId.next(null);
+                                      self.formProcessingService.stopFormAndQuestions();
+                                      self.formProcessingService.finalSubmitButtonClicked.next(true);
+                                      self.formProcessingService.restartFormAndQuestions(self.questionService.getIndividualOneEditQuestionAsObj());
+                                      self.stopCounter = 0;
+                                      self.displayModeInd1 = !self.displayModeInd1;
+                                    }else{
+                                      self.openSnackBar(constants.videoDeetUpdateFailureNotification);
+                                      self.displayModeInd1 = !self.displayModeInd1;
+                                    }
+                                  });
+                                }
+                          }
+                        }
+                      }
+                    }
+                  }
+                });
+              }
+        });
+        //----end form submission doing things
+  }
+
 }
