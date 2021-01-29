@@ -1,6 +1,16 @@
 <div [formGroup]="form">
   <div [appIndent]="question.indentThisQuestion">
     <div [ngSwitch]="question.controlType">
+      <div *ngSwitchCase="'autocomplete'">
+        <!-- <mat-form-field class="example-full-width"> -->
+          <input matInput [type]="question.type" [placeholder]="question.placeHolder" [formControlName]="question.key? question.key: null" [matAutocomplete]="auto">
+        <!-- </mat-form-field> -->
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions|async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
       <label [attr.for]="question.key" *ngSwitchCase="'textbox'">{{question.label}}</label>
       <input *ngSwitchCase="'textbox'" [formControlName]="question.key? question.key: null" [id]="question.key" [type]="question.type" [placeholder]="question.placeHolder">
       <mat-label *ngSwitchCase="'dropdown'" class="col s12 m7 l7">{{question.label}}</mat-label>

@@ -6,14 +6,18 @@ import { of } from 'rxjs';
 import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
+import { AutocompleteQuestion } from './autocompleteQuestion.model';
 import { SlideToggleQuestion } from './slideToggleFormQuestion.model';
 import { DatePickerQuestion } from './datePickerFormQuestion.model';
 import { Collection } from './collection.model';
 import { OwnerQuestion } from './ownerQuestion.model';
+import { DatabaseService } from './database.service';
 
 @Injectable()
 export class QuestionService{
-  private individualOneEditQuestion: TextQuestion = new TextQuestion({
+  constructor(private databaseService: DatabaseService){}
+
+  private individualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
     key: 'individualOneUpdate',
     label: 'Individual 1 Name',
     value: '',
@@ -26,8 +30,61 @@ export class QuestionService{
     placeHolder: '',
     type: 'text',
     order: 1,
-    submitAfterThisQuestion: true
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getIndividualNames()
   });
+
+  private individualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualTwoUpdate',
+    label: 'Individual 2 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getIndividualNames()
+  });
+
+  private testIndividualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualOneUpdate',
+    label: 'Individual 1 Name',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'Individual 1',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getIndividualNames()
+  });
+
+  private testIndividualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualTwoUpdate',
+    label: 'Individual 2 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'Individual 2',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getGiRanks()
+  });
+
   // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here
   //   key: 'usernameQuestion' + i,
   //   label: 'User Name',
@@ -198,7 +255,9 @@ export class QuestionService{
 
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
-    testQuestions.push(this.collectionNameQuestion);
+    // testQuestions.push(this.collectionNameQuestion);
+    testQuestions.push(this.testIndividualOneEditQuestion);
+    testQuestions.push(this.testIndividualTwoEditQuestion);
     testQuestions.push(this.testSlideToggleQuestion);
     testQuestions.push(this.secondTestSlideToggle);
     return of(testQuestions);

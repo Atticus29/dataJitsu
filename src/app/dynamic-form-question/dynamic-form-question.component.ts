@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {map, startWith, takeUntil} from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { FormQuestionBase } from '../formQuestionBase.model';
@@ -18,6 +19,8 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   @Output() itemFromFormQuestion = new EventEmitter<any>();
   private localDatePickerPrompt: string;
   private checked: boolean = true;
+  private localAutocompleteOptions: any[] = null;
+  private filteredOptions: Observable<string[]>;
   get isValid() {
     let returnVal = null;
     if(this.form){
@@ -60,6 +63,12 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       objToEmit[questionKey]=this.question.value;
       this.itemFromFormQuestion.emit(objToEmit);
     }
+    this.question.autocompleteOptions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(autocompleteArray =>{
+      console.log("autocompleteArray is: ");
+      console.log(autocompleteArray);
+      this.localAutocompleteOptions = autocompleteArray;
+      this.filteredOptions = this.form.get(this.question.key).valueChanges.pipe(startWith(''), map(value=> this._filter(value)));
+    });
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
     let self = this;
     this.formProcessingService.actualForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults=>{
@@ -77,6 +86,11 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       }
     });
   }
+
+  private _filter(value: string): string[] {
+   const filterValue = value.toLowerCase();
+   return this.localAutocompleteOptions.filter(option => option.toLowerCase().includes(filterValue));
+ }
 
   changed(){
     console.log("changed called");

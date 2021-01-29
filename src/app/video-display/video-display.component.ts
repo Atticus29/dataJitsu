@@ -586,6 +586,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                 if(this.userInDbId && this.videoId){
                                   let path = '/videoDeets/athlete1Name';
                                   let updateVal = formResults.individualOneUpdate;
+                                  //TODO check if entry already exists in any lists!!
                                   this.databaseService.updateVideoDeet(path, updateVal, this.videoId, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
                                     if(additionStatus){
                                       self.openSnackBar(constants.videoDeetUpdatedNotification);
