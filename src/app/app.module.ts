@@ -133,7 +133,7 @@ import { CollectionCreationStepperTwoComponent } from './collection-creation-ste
 import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-new-video-form.component';
 import { ReputationLogComponent } from './reputation-log/reputation-log.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
-
+import { NewItemNameDialogComponent } from './new-item-name-dialog/new-item-name-dialog.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -208,7 +208,8 @@ export const firebaseConfig = {
     CollectionCreationStepperTwoComponent,
     GenericNewVideoFormComponent,
     ReputationLogComponent,
-    SandboxComponent
+    SandboxComponent,
+    NewItemNameDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -261,7 +262,7 @@ export const firebaseConfig = {
     NgxFeedbackModule
   ],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent],
+  entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent, NewItemNameDialogComponent],
   providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, LoggedInGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,QuestionControlService, QuestionService, FormProcessingService,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ],

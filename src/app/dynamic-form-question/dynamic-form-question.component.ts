@@ -1,12 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import { Observable } from 'rxjs';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {map, startWith, takeUntil, first} from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { FormProcessingService } from '../form-processing.service';
+import { TextTransformationService } from '../text-transformation.service';
+import { DatabaseService } from '../database.service';
+import { NewItemNameDialogComponent } from '../new-item-name-dialog/new-item-name-dialog.component';
+import { constants } from '../constants';
 
 @Component({
   selector: 'app-question',
@@ -21,6 +27,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   private checked: boolean = true;
   private localAutocompleteOptions: any[] = null;
   private filteredOptions: Observable<string[]>;
+  private localItemName: string = null;
   get isValid() {
     let returnVal = null;
     if(this.form){
@@ -47,11 +54,13 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
 
   }
 
-  constructor(private formProcessingService: FormProcessingService) {
+  constructor(private databaseService: DatabaseService, private formProcessingService: FormProcessingService, public dialog: MatDialog, private textTransformationService: TextTransformationService, private _snackBar: MatSnackBar) {
     super();
   }
 
   ngOnInit() {
+    console.log("this.question is: ");
+    console.log(this.question);
     if(this.question.controlType==='toggle'){
       let questionKey = this.question.key;
       if(this.checked){
@@ -110,6 +119,50 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       console.log(objToEmit);
       this.itemFromFormQuestion.emit(objToEmit);
     }
+  }
+
+  async openItemNameDialog(){
+    let dialogConfig = this.getGenericDialogConfig();
+    const dialogRef = this.dialog.open(NewItemNameDialogComponent, dialogConfig);
+    this.localItemName = await this.processGenericDialog(dialogRef, 'items', 'itemName');
+  }
+
+  getGenericDialogConfig(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {};
+    return dialogConfig;
+  }
+
+  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any>
+    console.log("entered processGenericDialog")
+    console.log("parameterFromForm is: ");
+    console.log(parameterFromForm);
+    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.databaseService.getGenericStringNames(path).pipe(first()).toPromise()]);
+      if(val){
+        console.log("val[parameterFromForm]");
+        console.log(val[parameterFromForm]);
+        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
+        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+        if(genericStringNames.includes(candidateNameCapitalized)){
+          // debugger;
+          this.openSnackBar(constants.alreadyExistsNotification, null);
+          return null;
+        }else{
+          console.log("got here");
+          this.question.value = candidateNameCapitalized;
+          return candidateNameCapitalized;
+        }
+      }else{
+        return null;
+      }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }

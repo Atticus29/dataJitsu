@@ -31,7 +31,8 @@ export class QuestionService{
     type: 'text',
     order: 1,
     submitAfterThisQuestion: true,
-    autocompleteOptions: this.databaseService.getIndividualNames()
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: false
   });
 
   private individualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -48,7 +49,8 @@ export class QuestionService{
     type: 'text',
     order: 1,
     submitAfterThisQuestion: true,
-    autocompleteOptions: this.databaseService.getIndividualNames()
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: true
   });
 
   private testIndividualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -65,7 +67,8 @@ export class QuestionService{
     type: 'text',
     order: 1,
     submitAfterThisQuestion: false,
-    autocompleteOptions: this.databaseService.getIndividualNames()
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: false
   });
 
   private testIndividualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -82,7 +85,9 @@ export class QuestionService{
     type: 'text',
     order: 1,
     submitAfterThisQuestion: false,
-    autocompleteOptions: this.databaseService.getGiRanks()
+    autocompleteOptions: this.databaseService.getGiRanks(),
+    enableAddNew: true
+
   });
 
   // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here

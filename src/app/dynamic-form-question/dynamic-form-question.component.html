@@ -6,8 +6,16 @@
           <input matInput [type]="question.type" [placeholder]="question.placeHolder" [formControlName]="question.key? question.key: null" [matAutocomplete]="auto">
         <!-- </mat-form-field> -->
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions|async" [value]="option">
+          <mat-option *ngFor="let option of filteredOptions|async" [(value)]="option">
             {{ option }}
+          </mat-option>
+          <mat-option *ngIf="question.enableAddNew" [(value)]="localItemName" (click)="openItemNameDialog()" color="accent" id="item-write-in">
+            <button mat-flat-button color="accent" id="custom-item-button">
+              <span>
+                <i class="material-icons align-middle-things">add_circle</i>
+                Add a new item
+              </span>
+            </button>
           </mat-option>
         </mat-autocomplete>
       </div>

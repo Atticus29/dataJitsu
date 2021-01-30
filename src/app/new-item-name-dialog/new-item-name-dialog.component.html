@@ -1,0 +1,21 @@
+<div class="flexbox-vertical">
+  <h2 mat-dialog-title class="flex-item">Enter new item name</h2>
+  <mat-dialog-content>
+    <form materialize [formGroup]="form">
+      <mat-form-field class="flex-item">
+        <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
+        <input matInput [formControl]="itemNameFc" placeholder="Item Name" id="itemNameFc" value="Format should be similar to other items in the dropdown" required>
+        <mat-error *ngIf="!vs.validateString(itemNameFc.value)">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <br>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex-item">
+    <button class="btn waves-effect waves-light button-space" (click)="close(dialogRef)">
+      Close
+    </button>
+    <button id="dialog-submit-button" class="btn waves-effect waves-light" (click)="processDialogData(getValues(), dialogRef)" [disabled]="!allValid()">
+      Submit
+    </button>
+  </mat-dialog-actions>
+</div>
