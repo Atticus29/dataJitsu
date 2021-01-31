@@ -22,6 +22,7 @@ import { constants } from '../constants';
 export class DynamicFormQuestionComponent extends BaseComponent implements OnInit {
   @Input() question: FormQuestionBase<string>;
   @Input() form: FormGroup;
+  @Input() isFormOwner: boolean;
   @Output() itemFromFormQuestion = new EventEmitter<any>();
   private localDatePickerPrompt: string;
   private checked: boolean = true;

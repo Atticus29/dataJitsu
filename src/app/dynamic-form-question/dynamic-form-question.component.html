@@ -9,7 +9,7 @@
           <mat-option *ngFor="let option of filteredOptions|async" [(value)]="option">
             {{ option }}
           </mat-option>
-          <mat-option *ngIf="question.enableAddNew" [(value)]="localItemName" (click)="openItemNameDialog()" color="accent" id="item-write-in">
+          <mat-option *ngIf="question.enableAddNew || isFormOwner" [(value)]="localItemName" (click)="openItemNameDialog()" color="accent" id="item-write-in">
             <button mat-flat-button color="accent" id="custom-item-button">
               <span>
                 <i class="material-icons align-middle-things">add_circle</i>

@@ -18,6 +18,7 @@ import { Collection } from '../collection.model';
 
 export class DynamicFormComponent extends BaseComponent implements OnInit, OnDestroy{
   @Input() questions: FormQuestionBase<string>[] = [];
+  @Input() isFormOwner: boolean;
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';

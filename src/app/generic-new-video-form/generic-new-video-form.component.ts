@@ -31,6 +31,7 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
   private localCollectionConfigOptions: DynamicFormConfiguration = new DynamicFormConfiguration(this.localCollectionQuestions, [], "Submit");
   private localUser: any;
   private localCounter = 0;
+  private isCurrentCollectionOwnedByCurrentUser: boolean;
 
   constructor(public snackBar: MatSnackBar, private databaseService: DatabaseService, private route: ActivatedRoute, private questionService: QuestionService, private qcs: QuestionControlService, private formProcessingService: FormProcessingService, private trackerService: TrackerService, private helperService: HelperService) {
     super();
@@ -42,6 +43,24 @@ export class GenericNewVideoFormComponent extends BaseComponent implements OnIni
     this.trackerService.currentUserBehaviorSubject.pipe(take(2)).subscribe(user =>{
       if(user){
         this.localUser = user;
+        if(Object.keys(this.localUser.collections)){
+          let currentUserCollectionIds = Object.keys(this.localUser.collections);
+          console.log("currentUserCollectionIds are: ");
+          console.log(currentUserCollectionIds);
+          this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+            if(params.collectionId){
+              console.log("current collection params.collectionId is: " + params.collectionId);
+              if(currentUserCollectionIds.includes(params.collectionId)){
+                console.log("setting to true...");
+                this.isCurrentCollectionOwnedByCurrentUser = true;
+              } else{
+                this.isCurrentCollectionOwnedByCurrentUser = false;
+              }
+            }
+          });
+        }
+        console.log("this.localUser in generic-new-video form is ");
+        console.log(this.localUser);
       }
     });
     this.formProcessingService.restartFormAndQuestions(this.questionService.getNewCollectionQuestionsAsObj());
