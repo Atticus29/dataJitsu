@@ -128,43 +128,43 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
     }
   }
 
-  async openItemNameDialog(){
-    let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewItemNameDialogComponent, dialogConfig);
-    this.localItemName = await this.processGenericDialog(dialogRef, 'items', 'itemName');
-  }
-
-  getGenericDialogConfig(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {};
-    return dialogConfig;
-  }
-
-  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any>
-    console.log("entered processGenericDialog")
-    console.log("parameterFromForm is: ");
-    console.log(parameterFromForm);
-    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.databaseService.getGenericStringNames(path).pipe(first()).toPromise()]);
-      if(val){
-        console.log("val[parameterFromForm]");
-        console.log(val[parameterFromForm]);
-        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
-        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
-        if(genericStringNames.includes(candidateNameCapitalized)){
-          // debugger;
-          this.openSnackBar(constants.alreadyExistsNotification, null);
-          return null;
-        }else{
-          console.log("got here");
-          this.question.value = candidateNameCapitalized;
-          return candidateNameCapitalized;
-        }
-      }else{
-        return null;
-      }
-  }
+  // async openItemNameDialog(){ //Deprecated
+  //   let dialogConfig = this.getGenericDialogConfig();
+  //   const dialogRef = this.dialog.open(NewItemNameDialogComponent, dialogConfig);
+  //   this.localItemName = await this.processGenericDialog(dialogRef, 'items', 'itemName');
+  // }
+  //
+  // getGenericDialogConfig(){ //Deprecated
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.disableClose = true;
+  //   dialogConfig.autoFocus = true;
+  //   dialogConfig.data = {};
+  //   return dialogConfig;
+  // }
+  //
+  // async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any> //Deprecated
+  //   console.log("entered processGenericDialog")
+  //   console.log("parameterFromForm is: ");
+  //   console.log(parameterFromForm);
+  //   let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.databaseService.getGenericStringNames(path).pipe(first()).toPromise()]);
+  //     if(val){
+  //       console.log("val[parameterFromForm]");
+  //       console.log(val[parameterFromForm]);
+  //       let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
+  //       console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+  //       if(genericStringNames.includes(candidateNameCapitalized)){
+  //         // debugger;
+  //         this.openSnackBar(constants.alreadyExistsNotification, null);
+  //         return null;
+  //       }else{
+  //         console.log("got here");
+  //         this.question.value = candidateNameCapitalized;
+  //         return candidateNameCapitalized;
+  //       }
+  //     }else{
+  //       return null;
+  //     }
+  // }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {

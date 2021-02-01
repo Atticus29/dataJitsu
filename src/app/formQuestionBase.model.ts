@@ -23,6 +23,9 @@ export class FormQuestionBase<T> {
   type: string;
   dropdownOptions: {key: string, value: string}[];
   autocompleteOptions: Observable<any[]>;
+  pathToCandidateValues: string;
+  pathToConfirmedValues: string;
+
 
   constructor(options: {
       value?: T,
@@ -46,7 +49,9 @@ export class FormQuestionBase<T> {
       submitAfterThisQuestion?: boolean,
       type?: string,
       dropdownOptions?: any[],
-      autocompleteOptions?: Observable<any[]>
+      autocompleteOptions?: Observable<any[]>,
+      pathToCandidateValues?: string,
+      pathToConfirmedValues?: string
     } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -70,6 +75,8 @@ export class FormQuestionBase<T> {
     this.type = options.type || '';
     this.dropdownOptions = options.dropdownOptions || [];
     this.autocompleteOptions = options.autocompleteOptions || of([]);
+    this.pathToCandidateValues = options.pathToCandidateValues || '';
+    this.pathToConfirmedValues = options.pathToConfirmedValues || '';
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
@@ -99,7 +106,9 @@ export class FormQuestionBase<T> {
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
       dropdownOptions: oldQuestion.dropdownOptions,
-      autocompleteOptions: oldQuestion.autocompleteOptions
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
   static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
@@ -129,7 +138,9 @@ export class FormQuestionBase<T> {
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
       dropdownOptions: oldQuestion.dropdownOptions,
-      autocompleteOptions: oldQuestion.autocompleteOptions
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -158,7 +169,9 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
       dropdownOptions: oldQuestion.dropdownOptions,
-      autocompleteOptions: oldQuestion.autocompleteOptions
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -187,7 +200,9 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
       dropdownOptions: oldQuestion.dropdownOptions,
-      autocompleteOptions: oldQuestion.autocompleteOptions
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -216,7 +231,9 @@ export class FormQuestionBase<T> {
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
       dropdownOptions: oldQuestion.dropdownOptions,
-      autocompleteOptions: oldQuestion.autocompleteOptions
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 

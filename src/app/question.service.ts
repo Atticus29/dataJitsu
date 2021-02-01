@@ -32,7 +32,9 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: true,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: true
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
   });
 
   private individualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -50,7 +52,9 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: true,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: true
+    enableAddNew: false,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
   });
 
   private testIndividualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -68,7 +72,9 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: false,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: false
+    enableAddNew: false,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
   });
 
   private testIndividualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -86,8 +92,9 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: false,
     autocompleteOptions: this.databaseService.getGiRanks(),
-    enableAddNew: true
-
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
   });
 
   // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here

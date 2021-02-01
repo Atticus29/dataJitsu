@@ -170,6 +170,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
           status ? this.handleInappropriateFlagged(true) : this.handleInappropriateFlagged(false);
         });
         this.databaseService.getvideoUrlFromMatchId(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoUrl =>{
+          this.videoUrl = videoUrl;
           this.ytId = this.parseVideoUrl(videoUrl);
           if(this.player){
             this.player.loadVideoById(this.ytId, 0); //TODO this must have broken something.... right?
@@ -661,7 +662,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                   }
                                   //TODO check if entry already exists in any lists!!
                                   if(path && updateVal){
-                                    this.databaseService.updateVideoDeet(path, updateVal, this.videoId, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                                    this.databaseService.updateVideoDeet(currentFormQuestions[0], '/videos/'+this.videoId+path, updateVal, this.videoId, this.videoUrl, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{ //currentFormQuestions[0] assumes all of the update content on this page are single-question arrays
                                       console.log("additionStatus is: " + additionStatus);
                                       if(additionStatus){
                                         self.openSnackBar(constants.videoDeetUpdatedNotification);
