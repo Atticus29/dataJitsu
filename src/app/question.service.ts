@@ -26,13 +26,13 @@ export class QuestionService{
     disableAddButtonIfCurrentValueIsBlank: false,
     pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
-    indentThisQuestion: false,
+    indentThisQuestion: true,
     placeHolder: '',
     type: 'text',
     order: 1,
     submitAfterThisQuestion: true,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: false
+    enableAddNew: true
   });
 
   private individualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
@@ -44,7 +44,7 @@ export class QuestionService{
     disableAddButtonIfCurrentValueIsBlank: false,
     pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
-    indentThisQuestion: false,
+    indentThisQuestion: true,
     placeHolder: '',
     type: 'text',
     order: 1,
@@ -238,7 +238,7 @@ export class QuestionService{
     indentThisQuestion: false,
     type: 'dropdown',
     order: 2,
-    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
@@ -254,7 +254,7 @@ export class QuestionService{
     indentThisQuestion: true,
     type: 'dropdown',
     order: 2,
-    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
 
@@ -307,8 +307,10 @@ export class QuestionService{
   }
 
   getIndividualOneEditQuestion(){
+    // console.log("getIndividualOneEditQuestion entered");
     let individualOneQuestionArray: FormQuestionBase<string>[] = [];
     individualOneQuestionArray.push(this.individualOneEditQuestion);
+    // console.log("getIndividualOneEditQuestion exiting...");
     return of(individualOneQuestionArray);
   }
 
@@ -316,6 +318,20 @@ export class QuestionService{
     let individualOneQuestionArray: FormQuestionBase<string>[] = [];
     individualOneQuestionArray.push(this.individualOneEditQuestion);
     return individualOneQuestionArray;
+  }
+
+  getIndividualTwoEditQuestion(){
+    // console.log("getIndividualTwoEditQuestion entered");
+    let individualTwoQuestionArray: FormQuestionBase<string>[] = [];
+    individualTwoQuestionArray.push(this.individualTwoEditQuestion);
+    // console.log("getIndividualTwoEditQuestion exiting...");
+    return of(individualTwoQuestionArray);
+  }
+
+  getIndividualTwoEditQuestionAsObj(){
+    let individualTwoQuestionArray: FormQuestionBase<string>[] = [];
+    individualTwoQuestionArray.push(this.individualTwoEditQuestion);
+    return individualTwoQuestionArray;
   }
 
   getNewEntryDetailQuestions(){
@@ -366,7 +382,10 @@ export class QuestionService{
           currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
         }
         if(questionContent.type && questionContent.type === "Date Picker"){
-          currentQuestion = new DatePickerQuestion(questionContent); //TODO make datepicker question
+          currentQuestion = new DatePickerQuestion(questionContent);
+        }
+        if(questionContent.type && questionContent.type === "Date Picker"){
+          currentQuestion = new AutocompleteQuestion(questionContent);
         }
         if(currentQuestion){
           collectionDbQuestions.push(currentQuestion);

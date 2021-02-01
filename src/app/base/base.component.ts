@@ -10,6 +10,7 @@ import { constants } from '../constants';
 // import { AuthorizationService } from '../authorization.service';
 // import { DatabaseService } from '../database.service';
 // import { TrackerService } from '../tracker.service';
+import { FormProcessingService } from '../form-processing.service';
 
 @Component({
   selector: 'app-base',
@@ -22,7 +23,7 @@ export class BaseComponent implements OnDestroy {
   userObjFromDb: any = null;
 
 
-  constructor() { } //you can't access any of these services from here, so don't try it again lol
+  constructor() { } //you can't access any of these services from here, so don't try it again lol //private formProcessingService: FormProcessingService
 
   ngOnInit() { //TODO implement this
     // combineLatest(this.authService.currentUserObservable, this.afAuth.authState).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
@@ -42,6 +43,7 @@ export class BaseComponent implements OnDestroy {
   }
 
   ngOnDestroy(){
+    console.log("ngOnDestroy in BaseComponent reached");
     // this.ngUnsubscribe.subscribe(result =>{
     //   console.log("got into ngOnDestroy:");
     //   console.log(result); //result is undefined

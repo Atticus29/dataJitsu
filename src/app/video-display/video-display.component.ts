@@ -9,6 +9,7 @@ import { takeUntil, take, last, withLatestFrom } from 'rxjs/operators';
 import { BaseComponent } from '../base/base.component';
 import { FormQuestionBase } from '../formQuestionBase.model';
 import { DatabaseService } from '../database.service';
+import { QuestionControlService } from '../question-control.service';
 import { TrackerService } from '../tracker.service';
 import { FormProcessingService } from '../form-processing.service';
 import { AuthorizationService } from '../authorization.service';
@@ -68,6 +69,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private isAdmin: boolean = false;
   private canEditVideo: boolean = false;
   private displayModeInd1: boolean = true;
+  private displayModeInd2: boolean = true;
   private player: any;
   private ytId: string = constants.defaultVideoUrlCode;
   private displayAnnotationRating: boolean = true;
@@ -80,7 +82,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private showFlagChips: boolean = false;
   private giStatus: string = "Fetching...";
   private localIndividualOneQuestion: FormQuestionBase<any>[] =  null;
-  private localConfigOptions: DynamicFormConfiguration;
+  private localIndividualTwoQuestion: FormQuestionBase<any>[] = null;
+  private localConfigOptionsInd1: DynamicFormConfiguration;
+  private localConfigOptionsInd2: DynamicFormConfiguration;
   private stopCounter: number = 0;
 
   // private originalPosterId: string = null;
@@ -88,7 +92,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   // private shouldVideoResume: boolean = false;
   // private database: DynamicDatabase;
 
-  constructor(private router: Router, private databaseService: DatabaseService, private route: ActivatedRoute, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService, private questionService: QuestionService, public snackBar: MatSnackBar, private formProcessingService:FormProcessingService) {
+  constructor(private router: Router, private databaseService: DatabaseService, private route: ActivatedRoute, private trackerService:TrackerService, private authService: AuthorizationService, private database: DynamicDatabase, private textTransformationService: TextTransformationService, private questionService: QuestionService, public snackBar: MatSnackBar, private formProcessingService:FormProcessingService, private qcs:QuestionControlService) {
     super();
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database, this.databaseService);
@@ -176,8 +180,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         this.videoAverageRating = average;
       });
       this.databaseService.getAverageAnnotationRating(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(average =>{ //TODO place inside videoId params LEFT OFF HERE
-        console.log("got into getAverageAnnotationRating in match-display component. Average is:");
-        console.log (average);
+        // console.log("got into getAverageAnnotationRating in match-display component. Average is:");
+        // console.log (average);
         this.annotationAverageRating = average;
       });
       this.trackerService.currentMatch.next(this.videoId);
@@ -189,9 +193,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         }
       });
       this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        console.log("got here 0");
-        console.log("match is: ");
-        console.log(match);
+        // console.log("got here 0");
+        // console.log("match is: ");
+        // console.log(match);
         if(match){
           this.match = match;
           match.videoDeets.giStatus ? this.giStatus = "Gi" : this.giStatus = "Nogi";
@@ -212,8 +216,21 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
               if(match.videoDeets.athlete1Name){
                 individualOneQuestion[0].value = match.videoDeets.athlete1Name;
               }
-              this.localIndividualOneQuestion = individualOneQuestion;
-              this.localConfigOptions = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
+              // this.localIndividualOneQuestion = individualOneQuestion;
+              this.localConfigOptionsInd1 = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
+              // this.formProcessingService.restartFormAndQuestions(individualOneQuestion);
+            }
+
+          });
+
+          this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
+            if(individualTwoQuestion && match.videoDeets){
+              if(match.videoDeets.athlete2Name){
+                individualTwoQuestion[0].value = match.videoDeets.athlete2Name;
+              }
+              // this.localIndividualOneQuestion = individualTwoQuestion;
+              this.localConfigOptionsInd2 = new DynamicFormConfiguration(individualTwoQuestion, [], "Save");
+              // this.formProcessingService.restartFormAndQuestions(individualTwoQuestion);
             }
 
           });
@@ -310,8 +327,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   parseVideoUrl(url: string){ //@TODO seems hacky
     var re = /.*youtu.+?be\/(.+)/ig;
     var result = re.exec(url);
-    console.log("results from parseVideoUrl:");
-    console.log(result);
+    // console.log("results from parseVideoUrl:");
+    // console.log(result);
     return result[1]; //+"?controls=0";
   }
 
@@ -559,7 +576,52 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   toggleEditInd1(){
-    this.displayModeInd1 = !this.displayModeInd1;
+    console.log("toggleEditInd1 entered");
+    this.stopCounter = 0;
+    // this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
+    //   this.formProcessingService.captureQuestionArrayOfCurrentForm(individualOneQuestion);
+    //   this.formProcessingService.actualForm.next(this.qcs.toFormGroup(individualOneQuestion));
+    //   this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+    //     if(individualOneQuestion && match.videoDeets){
+    //       if(match.videoDeets.athlete1Name){
+    //         individualOneQuestion[0].value = match.videoDeets.athlete1Name;
+    //       }
+    //       this.localIndividualOneQuestion = individualOneQuestion;
+    //       this.localConfigOptions = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
+    //     }
+    //   });
+    //
+    // });
+    this.displayModeInd1 = false;
+  }
+
+  toggleEditInd2(){
+    this.stopCounter = 0;
+    // console.log("toggleEditInd2 entered");
+    // this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
+    //   console.log("got here 1 and this.videoId is: " + this.videoId);
+    //   this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+    //     console.log("got here 2");
+    //     if(individualTwoQuestion && match.videoDeets){
+    //       this.localConfigOptions = new DynamicFormConfiguration(individualTwoQuestion, [], "Save");
+    //       console.log("got here 3");
+    //       if(match.videoDeets.athlete2Name){
+    //         console.log("got here 4");
+    //         individualTwoQuestion[0].value = match.videoDeets.athlete2Name;
+    //         console.log("got here 5");
+    //         // this.formProcessingService.restartFormAndQuestions(individualTwoQuestion);
+    //       }
+    //       this.localIndividualTwoQuestion = individualTwoQuestion;
+    //       console.log("got here 6");
+    //       this.localConfigOptions = new DynamicFormConfiguration(individualTwoQuestion, [], "Save");
+    //       console.log("got here 7");
+    //       // this.formProcessingService.restartFormAndQuestions(individualOneQuestion);
+    //       console.log("got here 8");
+    //     }
+    //   });
+
+    // });
+    this.displayModeInd2 = false;
   }
 
   handleFormUpdates(){
@@ -574,43 +636,68 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                 let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
                 formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
                   let formResults = combinedResults[0];
+                  console.log("formResults are:");
+                  console.log(formResults);
                   let currentFormQuestions = combinedResults[1];
                   if(formResults){ //formSubmitted &&
                     if(formResults[0] !== "Stop"){
                       //begin custom stuff
                       console.log("formResults are: ");
                       console.log(formResults);
-                      if(formResults.individualOneUpdate){
                         if(currentFormQuestions){
                           if(currentFormQuestions[0] !== "Stop"){
                                 if(this.userInDbId && this.videoId){
-                                  let path = '/videoDeets/athlete1Name';
-                                  let updateVal = formResults.individualOneUpdate;
+                                  let path = null;
+                                  let updateVal = null;
+                                  if(formResults.individualOneUpdate){
+                                    console.log("formResults.individualOneUpdate exists...");
+                                    path = '/videoDeets/athlete1Name';
+                                    updateVal = formResults.individualOneUpdate;
+                                  }
+                                  if(formResults.individualTwoUpdate){
+                                    console.log("formResults.individualTwoUpdate exists...");
+                                    path = '/videoDeets/athlete2Name';
+                                    updateVal = formResults.individualTwoUpdate;
+                                  }
                                   //TODO check if entry already exists in any lists!!
-                                  this.databaseService.updateVideoDeet(path, updateVal, this.videoId, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
-                                    if(additionStatus){
-                                      self.openSnackBar(constants.videoDeetUpdatedNotification);
-                                      // self.formProcessingService.collectionId.next(null);
-                                      self.formProcessingService.stopFormAndQuestions();
-                                      self.formProcessingService.finalSubmitButtonClicked.next(true);
-                                      self.formProcessingService.restartFormAndQuestions(self.questionService.getIndividualOneEditQuestionAsObj());
-                                      self.stopCounter = 0;
-                                      self.displayModeInd1 = !self.displayModeInd1;
-                                    }else{
-                                      self.openSnackBar(constants.videoDeetUpdateFailureNotification);
-                                      self.displayModeInd1 = !self.displayModeInd1;
-                                    }
-                                  });
+                                  if(path && updateVal){
+                                    this.databaseService.updateVideoDeet(path, updateVal, this.videoId, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{
+                                      console.log("additionStatus is: " + additionStatus);
+                                      if(additionStatus){
+                                        self.openSnackBar(constants.videoDeetUpdatedNotification);
+                                        // self.formProcessingService.collectionId.next(null);
+                                        self.formProcessingService.stopFormAndQuestions();
+                                        self.formProcessingService.finalSubmitButtonClicked.next(true);
+                                        self.formProcessingService.restartFormAndQuestions(self.questionService.getIndividualOneEditQuestionAsObj());
+                                        self.stopCounter = 0;
+                                        this.hideEditAndShowNewValue(formResults);
+                                        // self.displayModeInd1 = !self.displayModeInd1;
+                                      }else{
+                                        self.openSnackBar(constants.videoDeetUpdateFailureNotification);
+                                        this.hideEditAndShowNewValue(formResults);
+                                        // self.displayModeInd1 = !self.displayModeInd1;
+                                      }
+                                    });
+                                  }
                                 }
                           }
                         }
-                      }
                     }
                   }
                 });
               }
         });
         //----end form submission doing things
+  }
+
+  hideEditAndShowNewValue(formResults:any){
+    if(formResults && formResults.individualOneUpdate){
+      this.displayModeInd1 = true;
+    }
+    if(formResults && formResults.individualTwoUpdate){
+      this.displayModeInd2 = true;
+    }
+
   }
 
 }

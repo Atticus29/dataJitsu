@@ -17,14 +17,14 @@ export class StarRatingComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit in star-rating entered"+this.starCount)
+    // console.log("ngOnInit in star-rating entered"+this.starCount)
     for (let index = 0; index < this.starCount; index++) {
       this.ratingArr.push(index);
     }
   }
 
   onClick(rating:number) {
-    console.log(rating)
+    // console.log(rating)
     this.ratingUpdated.emit(rating);
     return false;
   }

@@ -11,6 +11,7 @@ import { FormQuestionBase } from '../formQuestionBase.model';
 import { FormProcessingService } from '../form-processing.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { DatabaseService } from '../database.service';
+import { QuestionControlService } from '../question-control.service';
 import { NewItemNameDialogComponent } from '../new-item-name-dialog/new-item-name-dialog.component';
 import { constants } from '../constants';
 
@@ -55,12 +56,12 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
 
   }
 
-  constructor(private databaseService: DatabaseService, private formProcessingService: FormProcessingService, public dialog: MatDialog, private textTransformationService: TextTransformationService, private _snackBar: MatSnackBar) {
+  constructor(private databaseService: DatabaseService, private formProcessingService: FormProcessingService, public dialog: MatDialog, private textTransformationService: TextTransformationService, private _snackBar: MatSnackBar, private qcs: QuestionControlService) {
     super();
   }
 
   ngOnInit() {
-    console.log("this.question is: ");
+    console.log("this.question in dynamic-form-question is: ");
     console.log(this.question);
     if(this.question.controlType==='toggle'){
       let questionKey = this.question.key;
@@ -74,10 +75,15 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       this.itemFromFormQuestion.emit(objToEmit);
     }
     this.question.autocompleteOptions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(autocompleteArray =>{
-      console.log("autocompleteArray is: ");
-      console.log(autocompleteArray);
+      // console.log("autocompleteArray is: ");
+      // console.log(autocompleteArray);
       this.localAutocompleteOptions = autocompleteArray;
-      this.filteredOptions = this.form.get(this.question.key).valueChanges.pipe(startWith(''), map(value=> this._filter(value)));
+      if(this.form){
+        this.filteredOptions = this.form.get(this.question.key).valueChanges.pipe(startWith(''), map(value=> this._filter(value)));
+      }else{
+        this.form = this.qcs.toFormGroup([this.question]);
+        this.filteredOptions = this.form.get(this.question.key).valueChanges.pipe(startWith(''), map(value=> this._filter(value)));
+      }
     });
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
     let self = this;

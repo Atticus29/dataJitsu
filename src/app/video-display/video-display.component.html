@@ -14,10 +14,23 @@
           </div>
           <div *ngIf="!displayModeInd1">
             <span *ngIf="isAdmin || canEditVideo">
-              <app-dynamic-form [configOptions]="localConfigOptions" [questions]="localIndividualOneQuestion"></app-dynamic-form>
+              <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsInd1" [questions]="questionService.getIndividualOneEditQuestion()|async"></app-dynamic-form>
             </span>
           </div>
-          <h5 class="centered match-title"> vs. {{match?.videoDeets?.athlete2Name}} (right)</h5>
+          <div *ngIf="displayModeInd2">
+              <h5 class="centered match-title"> vs. {{match?.videoDeets?.athlete2Name}} (right)
+              <span *ngIf="isAdmin || canEditVideo">
+                <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editInd2Btn" id="editInd2Btn" (click)="toggleEditInd2()">
+                  <i class="material-icons">edit</i>
+                </button>
+              </span>
+            </h5>
+          </div>
+          <div *ngIf="!displayModeInd2">
+            <span *ngIf="isAdmin || canEditVideo">
+              <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsInd2" [questions]="questionService.getIndividualTwoEditQuestion()|async"></app-dynamic-form>
+            </span>
+          </div>
         </span>
         <div class="card-image">
           <div class="flexbox-container-alt" *ngIf="loading">

@@ -937,8 +937,8 @@ export class DatabaseService {
         let results = snapshot.val();
         if(results){
           let arrayOfRatings = Object.values(results);
-          console.log("arrayOfRatings is ");
-          console.log(arrayOfRatings);
+          // console.log("arrayOfRatings is ");
+          // console.log(arrayOfRatings);
           let annotationAverage = this.average(arrayOfRatings);
           this.updateAnnotationRating(videoId, annotationAverage);
           observer.next(annotationAverage);
