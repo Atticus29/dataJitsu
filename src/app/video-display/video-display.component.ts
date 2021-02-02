@@ -70,6 +70,13 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private canEditVideo: boolean = false;
   private displayModeInd1: boolean = true;
   private displayModeInd2: boolean = true;
+  private displayModeAgeClass: boolean = true;
+  private displayModeWeightClass: boolean = true;
+  private displayModeGiNogi: boolean = true;
+  private displayModeTournamentName: boolean = true;
+  private displayModeADate: boolean = true;
+  private displayModeLocation: boolean = true;
+  private displayModeRank: boolean = true;
   private player: any;
   private ytId: string = constants.defaultVideoUrlCode;
   private displayAnnotationRating: boolean = true;
@@ -85,6 +92,13 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private localIndividualTwoQuestion: FormQuestionBase<any>[] = null;
   private localConfigOptionsInd1: DynamicFormConfiguration;
   private localConfigOptionsInd2: DynamicFormConfiguration;
+  private localConfigOptionsAgeClass: DynamicFormConfiguration;
+  private localConfigOptionsWeightClass: DynamicFormConfiguration;
+  private localConfigOptionsGiNogi: DynamicFormConfiguration;
+  private localConfigOptionsTournamentName: DynamicFormConfiguration;
+  private localConfigOptionsDate: DynamicFormConfiguration;
+  private localConfigOptionsLocation: DynamicFormConfiguration;
+  private localConfigOptionsRank: DynamicFormConfiguration;
   private stopCounter: number = 0;
 
   // private originalPosterId: string = null;
@@ -235,6 +249,74 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
             }
 
           });
+
+          this.questionService.getEditAgeClassQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((ageClassQuestion) =>{
+            if(ageClassQuestion && match.videoDeets){
+              if(match.videoDeets.ageClass){
+                ageClassQuestion[0].value = match.videoDeets.ageClass;
+              }
+              this.localConfigOptionsAgeClass = new DynamicFormConfiguration(ageClassQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditWeightQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((weightClassQuestion) =>{
+            if(weightClassQuestion && match.videoDeets){
+              if(match.videoDeets.weightClass){
+                weightClassQuestion[0].value = match.videoDeets.weightClass;
+              }
+              this.localConfigOptionsWeightClass = new DynamicFormConfiguration(weightClassQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditGiNogiQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((giNogiQuestion) =>{
+            if(giNogiQuestion && match.videoDeets){
+              console.log("typeof match.videoDeets.giStatus is: " + typeof match.videoDeets.giStatus);
+              if(typeof match.videoDeets.giStatus === "boolean" && match.videoDeets.giStatus){
+                giNogiQuestion[0].value = "Gi";
+              }
+              if(typeof match.videoDeets.giStatus === "boolean" && !match.videoDeets.giStatus){
+                giNogiQuestion[0].value = "No Gi";
+              }
+              this.localConfigOptionsGiNogi = new DynamicFormConfiguration(giNogiQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditTournamentNameQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((tournamentNameQuestion) =>{
+            if(tournamentNameQuestion && match.videoDeets){
+              if(match.videoDeets.tournamentName){
+                tournamentNameQuestion[0].value = match.videoDeets.tournamentName;
+              }
+              this.localConfigOptionsTournamentName = new DynamicFormConfiguration(tournamentNameQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditDateQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((dateQuestion) =>{
+            if(dateQuestion && match.videoDeets){
+              if(match.videoDeets.date){
+                dateQuestion[0].value = match.videoDeets.date;
+              }
+              this.localConfigOptionsDate = new DynamicFormConfiguration(dateQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditLocationQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((locationQuestion) =>{
+            if(locationQuestion && match.videoDeets){
+              if(match.videoDeets.location){
+                locationQuestion[0].value = match.videoDeets.location;
+              }
+              this.localConfigOptionsLocation = new DynamicFormConfiguration(locationQuestion, [], "Save");
+            }
+          });
+
+          this.questionService.getEditRankQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((rankQuestion) =>{
+            if(rankQuestion && match.videoDeets){
+              if(match.videoDeets.rank){
+                rankQuestion[0].value = match.videoDeets.rank;
+              }
+              this.localConfigOptionsRank = new DynamicFormConfiguration(rankQuestion, [], "Save");
+            }
+          });
+
         }
       });
     });
@@ -579,27 +661,28 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   toggleEditInd1(){
     console.log("toggleEditInd1 entered");
     this.stopCounter = 0;
-    // this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
-    //   this.formProcessingService.captureQuestionArrayOfCurrentForm(individualOneQuestion);
-    //   this.formProcessingService.actualForm.next(this.qcs.toFormGroup(individualOneQuestion));
-    //   this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-    //     if(individualOneQuestion && match.videoDeets){
-    //       if(match.videoDeets.athlete1Name){
-    //         individualOneQuestion[0].value = match.videoDeets.athlete1Name;
-    //       }
-    //       this.localIndividualOneQuestion = individualOneQuestion;
-    //       this.localConfigOptions = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
-    //     }
-    //   });
-    //
-    // });
+    this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(individualOneQuestion);
+      // this.formProcessingService.actualForm.next(this.qcs.toFormGroup(individualOneQuestion));
+      // this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
+      //   if(individualOneQuestion && match.videoDeets){
+      //     if(match.videoDeets.athlete1Name){
+      //       individualOneQuestion[0].value = match.videoDeets.athlete1Name;
+      //     }
+      //     this.localIndividualOneQuestion = individualOneQuestion;
+      //     this.localConfigOptions = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
+      //   }
+      // });
+
+    });
     this.displayModeInd1 = false;
   }
 
   toggleEditInd2(){
     this.stopCounter = 0;
     // console.log("toggleEditInd2 entered");
-    // this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
+    this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(individualTwoQuestion);
     //   console.log("got here 1 and this.videoId is: " + this.videoId);
     //   this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
     //     console.log("got here 2");
@@ -621,8 +704,64 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     //     }
     //   });
 
-    // });
+    });
     this.displayModeInd2 = false;
+  }
+
+  toggleEditAgeClass(){
+    this.stopCounter = 0;
+    this.questionService.getEditAgeClassQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((ageClassQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(ageClassQuestion);
+    });
+    this.displayModeAgeClass = false;
+  }
+
+  toggleEditWeightClass(){
+    this.stopCounter = 0;
+    this.questionService.getEditWeightQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((weightClassQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(weightClassQuestion);
+    });
+    this.displayModeWeightClass = false;
+  }
+
+  toggleEditGiNogi(){
+    this.stopCounter = 0;
+    this.questionService.getEditGiNogiQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((giNogiQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(giNogiQuestion);
+    });
+    this.displayModeGiNogi = false;
+  }
+
+  toggleEditTournamentName(){
+    this.stopCounter = 0;
+    this.questionService.getEditTournamentNameQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((tournamentNameQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(tournamentNameQuestion);
+    });
+    this.displayModeTournamentName = false;
+  }
+
+  toggleEditDate(){
+    this.stopCounter = 0;
+    this.questionService.getEditDateQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((dateQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(dateQuestion);
+    });
+    this.displayModeADate = false;
+  }
+
+  toggleEditLocation(){
+    this.stopCounter = 0;
+    this.questionService.getEditLocationQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((locationQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(locationQuestion);
+    });
+    this.displayModeLocation = false;
+  }
+
+  toggleEditRank(){
+    this.stopCounter = 0;
+    this.questionService.getEditRankQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((rankQuestion) =>{
+      this.formProcessingService.captureQuestionArrayOfCurrentForm(rankQuestion);
+    });
+    this.displayModeRank = false;
   }
 
   handleFormUpdates(){
@@ -662,6 +801,8 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                   }
                                   //TODO check if entry already exists in any lists!!
                                   if(path && updateVal){
+                                    console.log("currentFormQuestions right before entering updateVideoDeet is:");
+                                    console.log(currentFormQuestions);
                                     this.databaseService.updateVideoDeet(currentFormQuestions[0], '/videos/'+this.videoId+path, updateVal, this.videoId, this.videoUrl, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{ //currentFormQuestions[0] assumes all of the update content on this page are single-question arrays
                                       console.log("additionStatus is: " + additionStatus);
                                       if(additionStatus){

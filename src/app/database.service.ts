@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { takeUntil, take, first } from 'rxjs/operators';
+import { takeUntil, take, first, merge } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -863,6 +863,10 @@ export class DatabaseService {
     return this.noGiRanks;
   }
 
+  getAllRanks(){
+    return this.giRanks.pipe(merge(this.noGiRanks));
+  }
+
   addGiRankToDb(rank: string){
     let ref = this.db.list<String>('/giRanks');
     ref.push(rank);
@@ -1607,29 +1611,19 @@ export class DatabaseService {
   }
 
   doesGenricCandidateAlreadyExistInDb(path: string, name: string): Observable<boolean>{
-    console.log("doesGenricCandidateAlreadyExistInDb entered");
-    console.log("looking for: " + name + " in path: " +path);
+    // console.log("doesGenricCandidateAlreadyExistInDb entered");
+    // console.log("looking for: " + name + " in path: " +path);
     let counter: number = 0;
     let ref = firebase.database().ref(path);
     let obsRet = Observable.create(function(observer){
-      console.log("got here 1");
       if(name){
-        console.log("got here 2");
         ref.orderByKey().on("value", snapshot =>{
-          console.log("got here 3");
-          console.log("snapshot.val() is ");
-          console.log(snapshot.val());
           if(snapshot.val()){
             let items: any = Object.values(snapshot.val());
             items.forEach(item =>{
               console.log("item is: ");
               console.log(item);
-              // let currentDbCollection: Collection = Collection.fromDataBase(item);
-              // console.log("collection checked: ")
-              // let itemName = item.name;
-              // console.log(currentDbCollection);
               if(item === name){
-                // console.log("equal collection detected!");
                 observer.next(true);
                 counter += 1;
                 return obsRet;
@@ -1748,11 +1742,13 @@ export class DatabaseService {
     let obsRet = Observable.create(function(observer){
           let updates = {};
           updates[path] = updateVal; //'/videos/' + videoId +
+          console.log("questionAssociatedWithUpdateVal.enableAddNew is: " + questionAssociatedWithUpdateVal.enableAddNew);
+          // console.log(questionAssociatedWithUpdateVal.enableAddNew);
           if(questionAssociatedWithUpdateVal.enableAddNew){
             self.doesGenricCandidateAlreadyExistInDb(questionAssociatedWithUpdateVal.pathToConfirmedValues, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
-              console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
+              // console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
               if(!alreadyExists){
-                self.addGenericCandidateNameToDb(questionAssociatedWithUpdateVal.pathToCandidateValues, updateVal, videoUrl);
+                self.addGenericCandidateNameToDb(questionAssociatedWithUpdateVal.pathToCandidateValues, self.textTransformationService.capitalizeFirstLetter(updateVal), videoUrl);
               }
             });
           }
