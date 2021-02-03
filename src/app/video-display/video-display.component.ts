@@ -74,7 +74,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   private displayModeWeightClass: boolean = true;
   private displayModeGiNogi: boolean = true;
   private displayModeTournamentName: boolean = true;
-  private displayModeADate: boolean = true;
+  private displayModeDate: boolean = true;
   private displayModeLocation: boolean = true;
   private displayModeRank: boolean = true;
   private player: any;
@@ -114,7 +114,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.handleFormUpdates();
+    this.handleFormSubmission();
 
     combineLatest([this.trackerService.youtubePlayerLoadedStatus, this.trackerService.currentUserBehaviorSubject]).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([videoLoadedStatus, user]) =>{
       if(videoLoadedStatus && this.player){
@@ -228,9 +228,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
           this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
             if(individualOneQuestion && match.videoDeets){
-              if(match.videoDeets.athlete1Name){
+              // if(match.videoDeets.athlete1Name){
                 individualOneQuestion[0].value = match.videoDeets.athlete1Name;
-              }
+              // }
               // this.localIndividualOneQuestion = individualOneQuestion;
               this.localConfigOptionsInd1 = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
               // this.formProcessingService.restartFormAndQuestions(individualOneQuestion);
@@ -240,9 +240,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
           this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
             if(individualTwoQuestion && match.videoDeets){
-              if(match.videoDeets.athlete2Name){
+              // if(match.videoDeets.athlete2Name){
                 individualTwoQuestion[0].value = match.videoDeets.athlete2Name;
-              }
+              // }
               // this.localIndividualOneQuestion = individualTwoQuestion;
               this.localConfigOptionsInd2 = new DynamicFormConfiguration(individualTwoQuestion, [], "Save");
               // this.formProcessingService.restartFormAndQuestions(individualTwoQuestion);
@@ -251,19 +251,22 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
           });
 
           this.questionService.getEditAgeClassQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((ageClassQuestion) =>{
+            console.log("got here 1");
             if(ageClassQuestion && match.videoDeets){
-              if(match.videoDeets.ageClass){
-                ageClassQuestion[0].value = match.videoDeets.ageClass;
-              }
+              console.log("got here 2");
+              console.log("got here 3");
+              ageClassQuestion[0].value = match.videoDeets.ageClass;
+              console.log("got here 4");
               this.localConfigOptionsAgeClass = new DynamicFormConfiguration(ageClassQuestion, [], "Save");
+              console.log("got here 5");
             }
           });
 
           this.questionService.getEditWeightQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((weightClassQuestion) =>{
             if(weightClassQuestion && match.videoDeets){
-              if(match.videoDeets.weightClass){
+              // if(match.videoDeets.weightClass){
                 weightClassQuestion[0].value = match.videoDeets.weightClass;
-              }
+              // }
               this.localConfigOptionsWeightClass = new DynamicFormConfiguration(weightClassQuestion, [], "Save");
             }
           });
@@ -283,9 +286,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
           this.questionService.getEditTournamentNameQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((tournamentNameQuestion) =>{
             if(tournamentNameQuestion && match.videoDeets){
-              if(match.videoDeets.tournamentName){
+              // if(match.videoDeets.tournamentName){
                 tournamentNameQuestion[0].value = match.videoDeets.tournamentName;
-              }
+              // }
               this.localConfigOptionsTournamentName = new DynamicFormConfiguration(tournamentNameQuestion, [], "Save");
             }
           });
@@ -745,7 +748,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     this.questionService.getEditDateQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((dateQuestion) =>{
       this.formProcessingService.captureQuestionArrayOfCurrentForm(dateQuestion);
     });
-    this.displayModeADate = false;
+    this.displayModeDate = false;
   }
 
   toggleEditLocation(){
@@ -764,7 +767,7 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     this.displayModeRank = false;
   }
 
-  handleFormUpdates(){
+  handleFormSubmission(){
     //when form is submitted --------------------
     let self = this;
         this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
@@ -799,6 +802,47 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                     path = '/videoDeets/athlete2Name';
                                     updateVal = formResults.individualTwoUpdate;
                                   }
+                                  if(formResults.ageClassUpdate){
+                                    console.log("formResults.ageClassUpdate exists...");
+                                    path = '/videoDeets/ageClass';
+                                    updateVal = formResults.ageClassUpdate;
+                                  }
+                                  if(formResults.weightClassUpdate){
+                                    console.log("formResults.weightClassUpdate exists...");
+                                    path = '/videoDeets/weightClass';
+                                    updateVal = formResults.weightClassUpdate;
+                                  }
+                                  if(formResults.giNogiUpdate){
+                                    console.log("formResults.giNogiUpdate exists...");
+                                    path = '/videoDeets/giStatus';
+                                    if(formResults.giNogiUpdate === "Gi"){
+                                      updateVal = true;
+                                    }
+                                    if(formResults.giNogiUpdate === "No Gi"){
+                                      updateVal = false;
+                                    }
+                                  }
+                                  if(formResults.tournamentNameUpdate){
+                                    console.log("formResults.tournamentNameUpdate exists...");
+                                    path = '/videoDeets/tournamentName';
+                                    updateVal = formResults.tournamentNameUpdate;
+                                  }
+                                  if(formResults.dateUpdate){
+                                    console.log("formResults.dateUpdate exists...");
+                                    path = '/videoDeets/date';
+                                    updateVal = formResults.dateUpdate;
+                                  }
+                                  if(formResults.locationUpdate){
+                                    console.log("formResults.locationUpdate exists...");
+                                    path = '/videoDeets/location';
+                                    updateVal = formResults.locationUpdate;
+                                  }
+                                  if(formResults.rankUpdate){
+                                    console.log("formResults.rankUpdate exists...");
+                                    path = '/videoDeets/rank';
+                                    updateVal = formResults.rankUpdate;
+                                  }
+
                                   //TODO check if entry already exists in any lists!!
                                   if(path && updateVal){
                                     console.log("currentFormQuestions right before entering updateVideoDeet is:");
@@ -839,6 +883,28 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     if(formResults && formResults.individualTwoUpdate){
       this.displayModeInd2 = true;
     }
+    if(formResults && formResults.ageClassUpdate){
+      this.displayModeAgeClass = true;
+    }
+    if(formResults && formResults.weightClassUpdate){
+      this.displayModeWeightClass = true;
+    }
+    if(formResults && formResults.giNogiUpdate){
+      this.displayModeGiNogi = true;
+    }
+    if(formResults && formResults.tournamentNameUpdate){
+      this.displayModeTournamentName = true;
+    }
+    if(formResults && formResults.dateUpdate){
+      this.displayModeDate = true;
+    }
+    if(formResults && formResults.locationUpdate){
+      this.displayModeLocation = true;
+    }
+    if(formResults && formResults.rankUpdate){
+      this.displayModeRank = true;
+    }
+
 
   }
 
