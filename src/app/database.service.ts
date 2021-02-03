@@ -1621,8 +1621,6 @@ export class DatabaseService {
           if(snapshot.val()){
             let items: any = Object.values(snapshot.val());
             items.forEach(item =>{
-              console.log("item is: ");
-              console.log(item);
               if(item === name){
                 observer.next(true);
                 counter += 1;
@@ -1654,28 +1652,20 @@ export class DatabaseService {
     let counter: number = 0;
     let ref = firebase.database().ref('/collections/');
     let obsRet = Observable.create(function(observer){
-      // console.log("got here should happen early!");
-      // observer.next(true); //TODO eliminate?
       if(collection){
-        // console.log("got here 1");
         ref.orderByKey().on("value", snapshot =>{
-          // console.log("got here 2");
-          // console.log(snapshot);
           if(snapshot.val()){
             let collections = Object.values(snapshot.val());
             collections.forEach(dbCollection =>{
               let currentDbCollection: Collection = Collection.fromDataBase(dbCollection);
-              // console.log("collection checked: ")
-              // console.log(currentDbCollection);
               if(Collection.isEqual(collection, currentDbCollection)){
-                // console.log("equal collection detected!");
                 observer.next(true);
                 counter += 1;
                 return obsRet;
               }
             });
             if(counter<1){
-              // console.log("seems like we went through the whole collection of collections and found no match. Returning false...");
+              // went through the whole collection of collections and found no match. Returning false..."
               observer.next(false);
               return obsRet;
             }
@@ -1686,7 +1676,7 @@ export class DatabaseService {
           }
         });
       } else{
-        // console.log("collection DNE");
+        // collection DNE
         observer.next(false);
         return obsRet;
       }
@@ -1736,11 +1726,39 @@ export class DatabaseService {
     return obsRet;
   }
 
-  updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string): Observable<boolean>{
+  updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string, oldVal: string): Observable<boolean>{
     console.log("updateVideoDeet called");
     let self = this;
     let obsRet = Observable.create(function(observer){
           let updates = {};
+          if(path.indexOf(constants.nameOfIndividual1InDb)>-1 || path.indexOf(constants.nameOfIndividual2InDb)>-1){
+            let subpath = path.substring(0,path.indexOf(constants.nameOfVideoDetailsInDb));
+            // console.log("subpath is: " + subpath);
+            let eventsPath = subpath + constants.nameOfEventsInDb;
+            // console.log("eventsPath is " + eventsPath);
+            let events = firebase.database().ref(eventsPath);
+            events.once('value', (snapshot) =>{
+              snapshot.forEach((childSnapshot) =>{
+                let childKey = childSnapshot.key;
+                let childData = childSnapshot.val();
+                // console.log("childKey is: " + childKey);
+                // console.log("childData is: ");
+                // console.log(childData);
+                let actorOrRecipient = null;
+                if(childData.actor===oldVal){
+                  actorOrRecipient = "actor";
+                }
+                if(childData.recipient===oldVal){
+                  actorOrRecipient = "recipient";
+                }
+                console.log("update path is: " + eventsPath+'/'+childKey+'/'+ actorOrRecipient);
+                updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+              });
+            });
+            //TODO loop through and change all athlete 1s where there was an old athelete 1 value
+          } else{
+            console.log("path is not for an individual");
+          }
           updates[path] = updateVal; //'/videos/' + videoId +
           console.log("questionAssociatedWithUpdateVal.enableAddNew is: " + questionAssociatedWithUpdateVal.enableAddNew);
           // console.log(questionAssociatedWithUpdateVal.enableAddNew);

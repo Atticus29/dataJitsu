@@ -208,9 +208,6 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
         }
       });
       this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{
-        // console.log("got here 0");
-        // console.log("match is: ");
-        // console.log(match);
         if(match){
           this.match = match;
           match.videoDeets.giStatus ? this.giStatus = "Gi" : this.giStatus = "Nogi";
@@ -228,45 +225,30 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
 
           this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
             if(individualOneQuestion && match.videoDeets){
-              // if(match.videoDeets.athlete1Name){
-                individualOneQuestion[0].value = match.videoDeets.athlete1Name;
-              // }
-              // this.localIndividualOneQuestion = individualOneQuestion;
+              individualOneQuestion[0].value = match.videoDeets.athlete1Name;
               this.localConfigOptionsInd1 = new DynamicFormConfiguration(individualOneQuestion, [], "Save");
-              // this.formProcessingService.restartFormAndQuestions(individualOneQuestion);
             }
 
           });
 
           this.questionService.getIndividualTwoEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualTwoQuestion) =>{
             if(individualTwoQuestion && match.videoDeets){
-              // if(match.videoDeets.athlete2Name){
-                individualTwoQuestion[0].value = match.videoDeets.athlete2Name;
-              // }
-              // this.localIndividualOneQuestion = individualTwoQuestion;
+              individualTwoQuestion[0].value = match.videoDeets.athlete2Name;
               this.localConfigOptionsInd2 = new DynamicFormConfiguration(individualTwoQuestion, [], "Save");
-              // this.formProcessingService.restartFormAndQuestions(individualTwoQuestion);
             }
 
           });
 
           this.questionService.getEditAgeClassQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((ageClassQuestion) =>{
-            console.log("got here 1");
             if(ageClassQuestion && match.videoDeets){
-              console.log("got here 2");
-              console.log("got here 3");
               ageClassQuestion[0].value = match.videoDeets.ageClass;
-              console.log("got here 4");
               this.localConfigOptionsAgeClass = new DynamicFormConfiguration(ageClassQuestion, [], "Save");
-              console.log("got here 5");
             }
           });
 
           this.questionService.getEditWeightQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((weightClassQuestion) =>{
             if(weightClassQuestion && match.videoDeets){
-              // if(match.videoDeets.weightClass){
-                weightClassQuestion[0].value = match.videoDeets.weightClass;
-              // }
+              weightClassQuestion[0].value = match.videoDeets.weightClass;
               this.localConfigOptionsWeightClass = new DynamicFormConfiguration(weightClassQuestion, [], "Save");
             }
           });
@@ -792,25 +774,30 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                 if(this.userInDbId && this.videoId){
                                   let path = null;
                                   let updateVal = null;
+                                  let oldVal = null;
                                   if(formResults.individualOneUpdate){
                                     console.log("formResults.individualOneUpdate exists...");
                                     path = '/videoDeets/athlete1Name';
                                     updateVal = formResults.individualOneUpdate;
+                                    oldVal = this.match.videoDeets.athlete1Name;
                                   }
                                   if(formResults.individualTwoUpdate){
                                     console.log("formResults.individualTwoUpdate exists...");
                                     path = '/videoDeets/athlete2Name';
                                     updateVal = formResults.individualTwoUpdate;
+                                    oldVal = this.match.videoDeets.athlete2Name;
                                   }
                                   if(formResults.ageClassUpdate){
                                     console.log("formResults.ageClassUpdate exists...");
                                     path = '/videoDeets/ageClass';
                                     updateVal = formResults.ageClassUpdate;
+                                    oldVal = this.match.videoDeets.ageClass;
                                   }
                                   if(formResults.weightClassUpdate){
                                     console.log("formResults.weightClassUpdate exists...");
                                     path = '/videoDeets/weightClass';
                                     updateVal = formResults.weightClassUpdate;
+                                    oldVal = this.match.videoDeets.weightClass;
                                   }
                                   if(formResults.giNogiUpdate){
                                     console.log("formResults.giNogiUpdate exists...");
@@ -821,33 +808,38 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
                                     if(formResults.giNogiUpdate === "No Gi"){
                                       updateVal = false;
                                     }
+                                    oldVal = this.match.videoDeets.giStatus;
                                   }
                                   if(formResults.tournamentNameUpdate){
                                     console.log("formResults.tournamentNameUpdate exists...");
                                     path = '/videoDeets/tournamentName';
                                     updateVal = formResults.tournamentNameUpdate;
+                                    oldVal = this.match.videoDeets.tournamentName;
                                   }
                                   if(formResults.dateUpdate){
                                     console.log("formResults.dateUpdate exists...");
                                     path = '/videoDeets/date';
                                     updateVal = formResults.dateUpdate;
+                                    oldVal = this.match.videoDeets.date;
                                   }
                                   if(formResults.locationUpdate){
                                     console.log("formResults.locationUpdate exists...");
                                     path = '/videoDeets/location';
                                     updateVal = formResults.locationUpdate;
+                                    oldVal = this.match.videoDeets.location;
                                   }
                                   if(formResults.rankUpdate){
                                     console.log("formResults.rankUpdate exists...");
                                     path = '/videoDeets/rank';
                                     updateVal = formResults.rankUpdate;
+                                    oldVal = this.match.videoDeets.rank;
                                   }
 
                                   //TODO check if entry already exists in any lists!!
                                   if(path && updateVal){
                                     console.log("currentFormQuestions right before entering updateVideoDeet is:");
                                     console.log(currentFormQuestions);
-                                    this.databaseService.updateVideoDeet(currentFormQuestions[0], '/videos/'+this.videoId+path, updateVal, this.videoId, this.videoUrl, this.userInDbId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{ //currentFormQuestions[0] assumes all of the update content on this page are single-question arrays
+                                    this.databaseService.updateVideoDeet(currentFormQuestions[0], '/videos/'+this.videoId+path, updateVal, this.videoId, this.videoUrl, this.userInDbId, oldVal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(additionStatus =>{ //currentFormQuestions[0] assumes all of the update content on this page are single-question arrays
                                       console.log("additionStatus is: " + additionStatus);
                                       if(additionStatus){
                                         self.openSnackBar(constants.videoDeetUpdatedNotification);

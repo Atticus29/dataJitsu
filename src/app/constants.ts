@@ -110,5 +110,9 @@ export var constants = {
     subscriptionStatusLabel :"Your subscription status",
     collectionLabel: "Your Collections",
     userIdLabel: "Your User UID",
-    noCollectionsYet: "You currently have no collections"
+    noCollectionsYet: "You currently have no collections",
+    nameOfIndividual1InDb: "athlete1Name",
+    nameOfIndividual2InDb: "athlete2Name",
+    nameOfVideoDetailsInDb: "videoDeets",
+    nameOfEventsInDb: "events"
   };
