@@ -1728,6 +1728,8 @@ export class DatabaseService {
 
   updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string, oldVal: string): Observable<boolean>{
     console.log("updateVideoDeet called");
+    console.log("questionAssociatedWithUpdateVal is: ");
+    console.log(questionAssociatedWithUpdateVal);
     let self = this;
     let obsRet = Observable.create(function(observer){
           let updates = {};

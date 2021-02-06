@@ -17,6 +17,22 @@ import { DatabaseService } from './database.service';
 export class QuestionService{
   constructor(private databaseService: DatabaseService){}
 
+  private shamQuestion: TextQuestion = new TextQuestion({
+    key: '',
+    label: '',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true
+  });
+
   private ageClassEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
     key: 'ageClassUpdate',
     label: 'Age Class',
@@ -395,6 +411,13 @@ export class QuestionService{
     dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
+
+  getShamQuestionAsObj(){
+    let shameQuestion: FormQuestionBase<string>[] = [];
+    // shameQuestion.push(this.collectionNameQuestion);
+    shameQuestion.push(this.shamQuestion);
+    return shameQuestion;
+  }
 
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
