@@ -1727,6 +1727,7 @@ export class DatabaseService {
   }
 
   updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string, oldVal: string): Observable<boolean>{
+    console.log("oldVal is: " + oldVal);
     console.log("updateVideoDeet called");
     console.log("questionAssociatedWithUpdateVal is: ");
     console.log(questionAssociatedWithUpdateVal);
@@ -1744,17 +1745,41 @@ export class DatabaseService {
                 let childKey = childSnapshot.key;
                 let childData = childSnapshot.val();
                 // console.log("childKey is: " + childKey);
-                // console.log("childData is: ");
-                // console.log(childData);
+                console.log("childData is: ");
+                console.log(childData);
                 let actorOrRecipient = null;
                 if(childData.actor===oldVal){
+                  console.log("got here 1");
                   actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.actor===constants.noneEntered && path.indexOf(constants.nameOfIndividual1InDb)>-1){
+                  console.log("got here 2");
+                  actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.actor===constants.noneEntered2 && path.indexOf(constants.nameOfIndividual2InDb)>-1){
+                  console.log("got here 3");
+                  actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
                 }
                 if(childData.recipient===oldVal){
+                  console.log("got here 4");
                   actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
                 }
-                console.log("update path is: " + eventsPath+'/'+childKey+'/'+ actorOrRecipient);
-                updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                if(childData.recipient===constants.noneEntered && path.indexOf(constants.nameOfIndividual1InDb)>-1){
+                  console.log("got here 5");
+                  actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.recipient===constants.noneEntered2 && path.indexOf(constants.nameOfIndividual2InDb)>-1){
+                  console.log("got here 6");
+                  actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+
+                // can't do updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal here, because the more than one update path may need to be updated from the above logic
               });
             });
             //TODO loop through and change all athlete 1s where there was an old athelete 1 value
