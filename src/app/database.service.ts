@@ -1766,7 +1766,7 @@ export class DatabaseService {
           // console.log(questionAssociatedWithUpdateVal.enableAddNew);
           if(questionAssociatedWithUpdateVal.enableAddNew){
             self.doesGenricCandidateAlreadyExistInDb(questionAssociatedWithUpdateVal.pathToConfirmedValues, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
-              // console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
+              console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
               if(!alreadyExists){
                 self.addGenericCandidateNameToDb(questionAssociatedWithUpdateVal.pathToCandidateValues, self.textTransformationService.capitalizeFirstLetter(updateVal), videoUrl);
               }

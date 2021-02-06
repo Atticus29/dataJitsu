@@ -143,7 +143,7 @@ export class QuestionService{
     autocompleteOptions: this.databaseService.getLocations(),
     enableAddNew: true,
     pathToCandidateValues: '/candidateLocationNames/',
-    pathToConfirmedValues: '/locationNames/'
+    pathToConfirmedValues: '/locations/'
   });
 
   private rankEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
