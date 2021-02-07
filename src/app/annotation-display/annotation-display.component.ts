@@ -90,13 +90,13 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
           }
     });
     this.trackerService.currentMatch.pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoId =>{
-      console.log("videoId in current match tracker " + videoId);
+      // console.log("videoId in current match tracker " + videoId);
       this.db.getVideoDetails(videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoDeets =>{
-        console.log("videoDeets in current match tracker service subscribe in annotation-display.component: ");
-        console.log(Array.of(videoDeets));
+        // console.log("videoDeets in current match tracker service subscribe in annotation-display.component: ");
+        // console.log(Array.of(videoDeets));
         this.localMatchDeets =  Array.of(videoDeets).map(VideoDetails.fromJson)[0];
-        console.log("this.localMatchDeets are");
-        console.log(this.localMatchDeets);
+        // console.log("this.localMatchDeets are");
+        // console.log(this.localMatchDeets);
         //TODO maybe a try catch here?
         let thePerformers: string[] = [];
         if(this.localMatchDeets.getAthlete1Name()||this.localMatchDeets.getAthlete2Name()){

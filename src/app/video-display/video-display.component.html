@@ -2,7 +2,36 @@
   <div class="row">
     <div class="">
       <div class="card title-buffer">
-        <span class="card-title" id="match-display-name"><h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left) vs. {{match?.videoDeets?.athlete2Name}} (right)</h5></span>
+        <span class="card-title" id="match-display-name">
+          <div *ngIf="displayModeInd1">
+            <h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left)
+              <span *ngIf="isAdmin || canEditVideo">
+                <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editInd1Btn" id="editInd1Btn" (click)="toggleEditInd1()">
+                  <i class="material-icons">edit</i>
+                </button>
+              </span>
+            </h5>
+          </div>
+          <div *ngIf="!displayModeInd1">
+            <span *ngIf="isAdmin || canEditVideo">
+              <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsInd1" [questions]="questionService.getIndividualOneEditQuestion()|async"></app-dynamic-form>
+            </span>
+          </div>
+          <div *ngIf="displayModeInd2">
+            <h5 class="centered match-title"> vs. {{match?.videoDeets?.athlete2Name}} (right)
+              <span *ngIf="isAdmin || canEditVideo">
+                <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editInd2Btn" id="editInd2Btn" (click)="toggleEditInd2()">
+                  <i class="material-icons">edit</i>
+                </button>
+              </span>
+            </h5>
+          </div>
+          <div *ngIf="!displayModeInd2">
+            <span *ngIf="isAdmin || canEditVideo">
+              <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsInd2" [questions]="questionService.getIndividualTwoEditQuestion()|async"></app-dynamic-form>
+            </span>
+          </div>
+        </span>
         <div class="card-image">
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>
@@ -82,27 +111,133 @@
           </div>
         </div>
         <div class="card-content">
-          <span><span class="match-label">Age Class: </span>{{match?.videoDeets?.ageClass}}</span>
-          <br>
-          <span class="match-label">Weight Class: </span>{{match?.videoDeets?.weightClass}}
-          <br>
-          <span class="match-label">Gi/Nogi: </span>{{giStatus}}
-          <br>
-          <span class="match-label">Tournament: </span>{{match?.videoDeets?.tournamentName}}
-          <br>
-          <span class="match-label">Date: </span>{{textTransformationService.simplifyDateString(match?.videoDeets?.date)}}
-          <br>
-          <span class="match-label">Location: </span>{{match?.videoDeets?.location}}
-          <br>
-          <span class="match-label">Rank: </span>{{match?.videoDeets?.rank}}
 
+          <span>
+            <div *ngIf="displayModeAgeClass">
+              <span class="match-label">Age Class:</span>
+              {{match?.videoDeets?.ageClass}}
+              <span *ngIf="isAdmin || canEditVideo">
+                <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editAgeClassBtn" id="editAgeClassBtn" (click)="toggleEditAgeClass()">
+                  <i class="material-icons">edit</i>
+                </button>
+              </span>
+            </div>
+            <div *ngIf="!displayModeAgeClass">
+              <span *ngIf="isAdmin || canEditVideo">
+                <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsAgeClass" [questions]="questionService.getEditAgeClassQuestion()|async"></app-dynamic-form>
+              </span>
+            </div>
+          </span>
+
+          <br>
+          <span>
+            <div *ngIf="displayModeWeightClass">
+              <span class="match-label">Weight Class:</span>
+                {{match?.videoDeets?.weightClass}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editWeightClassBtn" id="editWeightClassBtn" (click)="toggleEditWeightClass()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeWeightClass">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsWeightClass" [questions]="questionService.getEditWeightQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+            <br>
+            <span>
+              <div *ngIf="displayModeGiNogi">
+                <span class="match-label">Gi/Nogi:</span>
+                {{giStatus}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editGiNoBtn" id="editGiNoBtn" (click)="toggleEditGiNogi()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeGiNogi">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsGiNogi" [questions]="questionService.getEditGiNogiQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+            <br>
+            <span>
+              <div *ngIf="displayModeTournamentName">
+                <span class="match-label">Tournament: </span>
+                {{match?.videoDeets?.tournamentName}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editTournamentNameBtn" id="editTournamentNameBtn" (click)="toggleEditTournamentName()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeTournamentName">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsTournamentName" [questions]="questionService.getEditTournamentNameQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+            <br>
+            <span>
+              <div *ngIf="displayModeDate">
+                <span class="match-label">Date:</span>
+                {{textTransformationService.simplifyDateString(match?.videoDeets?.date)}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editDateBtn" id="editDateBtn" (click)="toggleEditDate()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeDate">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsDate" [questions]="questionService.getEditDateQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+            <br>
+            <span>
+              <div *ngIf="displayModeLocation">
+                <span class="match-label">Location: </span>
+                {{match?.videoDeets?.location}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editLocationBtn" id="editLocationBtn" (click)="toggleEditLocation()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeLocation">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsLocation" [questions]="questionService.getEditLocationQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+            <br>
+            <span>
+              <div *ngIf="displayModeRank">
+                <span class="match-label">Rank: </span>
+                {{match?.videoDeets?.rank}}
+                <span *ngIf="isAdmin || canEditVideo">
+                  <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editRankBtn" id="editRankBtn" (click)="toggleEditRank()">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="!displayModeRank">
+                <span *ngIf="isAdmin || canEditVideo">
+                  <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptionsRank" [questions]="questionService.getEditRankQuestion()|async"></app-dynamic-form>
+                </span>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="" id="annotation-display">
+          <app-annotation-display (moveSelected)="onMoveSelected($event)"></app-annotation-display>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="" id="annotation-display">
-        <app-annotation-display (moveSelected)="onMoveSelected($event)"></app-annotation-display>
-      </div>
-    </div>
   </div>
-</div>

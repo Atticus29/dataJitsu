@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { takeUntil, take, first } from 'rxjs/operators';
+import { takeUntil, take, first, merge } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { Collection } from './collection.model';
 import { EventInVideo } from './eventInVideo.model';
 import { FeedbackItem } from './feedbackItem.model';
 import { OwnerQuestionSet } from './ownerQuestionSet.model';
+import { FormQuestionBase } from './formQuestionBase.model';
 
 @Injectable()
 export class DatabaseService {
@@ -862,6 +863,10 @@ export class DatabaseService {
     return this.noGiRanks;
   }
 
+  getAllRanks(){
+    return this.giRanks.pipe(merge(this.noGiRanks));
+  }
+
   addGiRankToDb(rank: string){
     let ref = this.db.list<String>('/giRanks');
     ref.push(rank);
@@ -937,8 +942,8 @@ export class DatabaseService {
         let results = snapshot.val();
         if(results){
           let arrayOfRatings = Object.values(results);
-          console.log("arrayOfRatings is ");
-          console.log(arrayOfRatings);
+          // console.log("arrayOfRatings is ");
+          // console.log(arrayOfRatings);
           let annotationAverage = this.average(arrayOfRatings);
           this.updateAnnotationRating(videoId, annotationAverage);
           observer.next(annotationAverage);
@@ -1195,6 +1200,7 @@ export class DatabaseService {
     console.log("addGenericCandidateNameToDb called");
     console.log("name is " + name);
     console.log("path is: " + path);
+    console.log("associatedvideoUrl is: " + associatedvideoUrl);
     let ref = firebase.database().ref(path);
     ref.push().set({'name':name, 'associatedvideoUrl': associatedvideoUrl}); //.key;
     // ref.transaction(current_value =>{
@@ -1604,34 +1610,25 @@ export class DatabaseService {
     return obsRet;
   }
 
-  doesCollectionAlreadyExistInDb(collection: Collection): Observable<boolean>{
-    // console.log("doesCollectionAlreadyExistInDb entered");
-    // console.log(collection);
+  doesGenricCandidateAlreadyExistInDb(path: string, name: string): Observable<boolean>{
+    // console.log("doesGenricCandidateAlreadyExistInDb entered");
+    // console.log("looking for: " + name + " in path: " +path);
     let counter: number = 0;
-    let ref = firebase.database().ref('/collections/');
+    let ref = firebase.database().ref(path);
     let obsRet = Observable.create(function(observer){
-      // console.log("got here should happen early!");
-      // observer.next(true); //TODO eliminate?
-      if(collection){
-        // console.log("got here 1");
+      if(name){
         ref.orderByKey().on("value", snapshot =>{
-          // console.log("got here 2");
-          // console.log(snapshot);
           if(snapshot.val()){
-            let collections = Object.values(snapshot.val());
-            collections.forEach(dbCollection =>{
-              let currentDbCollection: Collection = Collection.fromDataBase(dbCollection);
-              // console.log("collection checked: ")
-              // console.log(currentDbCollection);
-              if(Collection.isEqual(collection, currentDbCollection)){
-                // console.log("equal collection detected!");
+            let items: any = Object.values(snapshot.val());
+            items.forEach(item =>{
+              if(item === name){
                 observer.next(true);
                 counter += 1;
                 return obsRet;
               }
             });
             if(counter<1){
-              // console.log("seems like we went through the whole collection of collections and found no match. Returning false...");
+              // console.log("seems like we went through the whole collection of items and found no match. Returning false...");
               observer.next(false);
               return obsRet;
             }
@@ -1642,7 +1639,44 @@ export class DatabaseService {
           }
         });
       } else{
-        // console.log("collection DNE");
+        observer.next(false);
+        return obsRet;
+      }
+    });
+    return obsRet;
+  }
+
+  doesCollectionAlreadyExistInDb(collection: Collection): Observable<boolean>{
+    // console.log("doesCollectionAlreadyExistInDb entered");
+    // console.log(collection);
+    let counter: number = 0;
+    let ref = firebase.database().ref('/collections/');
+    let obsRet = Observable.create(function(observer){
+      if(collection){
+        ref.orderByKey().on("value", snapshot =>{
+          if(snapshot.val()){
+            let collections = Object.values(snapshot.val());
+            collections.forEach(dbCollection =>{
+              let currentDbCollection: Collection = Collection.fromDataBase(dbCollection);
+              if(Collection.isEqual(collection, currentDbCollection)){
+                observer.next(true);
+                counter += 1;
+                return obsRet;
+              }
+            });
+            if(counter<1){
+              // went through the whole collection of collections and found no match. Returning false..."
+              observer.next(false);
+              return obsRet;
+            }
+          }else{
+            //snapshot doesn't exist
+            observer.next(false);
+            return obsRet;
+          }
+        });
+      } else{
+        // collection DNE
         observer.next(false);
         return obsRet;
       }
@@ -1685,6 +1719,84 @@ export class DatabaseService {
           let updates = {};
           updates['/users/' + userId + '/collections/' + collectionId + '/ownerQuestions/'] = ownerQuestionSet.getOwnerQuestions();
           updates['/collections/' + collectionId + '/ownerQuestions/'] = ownerQuestionSet.getOwnerQuestions();
+          firebase.database().ref().update(updates);
+          observer.next(true);
+          return obsRet;
+    });
+    return obsRet;
+  }
+
+  updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string, oldVal: string): Observable<boolean>{
+    console.log("oldVal is: " + oldVal);
+    console.log("updateVideoDeet called");
+    console.log("questionAssociatedWithUpdateVal is: ");
+    console.log(questionAssociatedWithUpdateVal);
+    let self = this;
+    let obsRet = Observable.create(function(observer){
+          let updates = {};
+          if(path.indexOf(constants.nameOfIndividual1InDb)>-1 || path.indexOf(constants.nameOfIndividual2InDb)>-1){
+            let subpath = path.substring(0,path.indexOf(constants.nameOfVideoDetailsInDb));
+            // console.log("subpath is: " + subpath);
+            let eventsPath = subpath + constants.nameOfEventsInDb;
+            // console.log("eventsPath is " + eventsPath);
+            let events = firebase.database().ref(eventsPath);
+            events.once('value', (snapshot) =>{
+              snapshot.forEach((childSnapshot) =>{
+                let childKey = childSnapshot.key;
+                let childData = childSnapshot.val();
+                // console.log("childKey is: " + childKey);
+                console.log("childData is: ");
+                console.log(childData);
+                let actorOrRecipient = null;
+                if(childData.actor===oldVal){
+                  console.log("got here 1");
+                  actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.actor===constants.noneEntered && path.indexOf(constants.nameOfIndividual1InDb)>-1){
+                  console.log("got here 2");
+                  actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.actor===constants.noneEntered2 && path.indexOf(constants.nameOfIndividual2InDb)>-1){
+                  console.log("got here 3");
+                  actorOrRecipient = "actor";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.recipient===oldVal){
+                  console.log("got here 4");
+                  actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.recipient===constants.noneEntered && path.indexOf(constants.nameOfIndividual1InDb)>-1){
+                  console.log("got here 5");
+                  actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+                if(childData.recipient===constants.noneEntered2 && path.indexOf(constants.nameOfIndividual2InDb)>-1){
+                  console.log("got here 6");
+                  actorOrRecipient = "recipient";
+                  updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
+                }
+
+                // can't do updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal here, because the more than one update path may need to be updated from the above logic
+              });
+            });
+            //TODO loop through and change all athlete 1s where there was an old athelete 1 value
+          } else{
+            console.log("path is not for an individual");
+          }
+          updates[path] = updateVal; //'/videos/' + videoId +
+          console.log("questionAssociatedWithUpdateVal.enableAddNew is: " + questionAssociatedWithUpdateVal.enableAddNew);
+          // console.log(questionAssociatedWithUpdateVal.enableAddNew);
+          if(questionAssociatedWithUpdateVal.enableAddNew){
+            self.doesGenricCandidateAlreadyExistInDb(questionAssociatedWithUpdateVal.pathToConfirmedValues, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+              console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
+              if(!alreadyExists){
+                self.addGenericCandidateNameToDb(questionAssociatedWithUpdateVal.pathToCandidateValues, self.textTransformationService.capitalizeFirstLetter(updateVal), videoUrl);
+              }
+            });
+          }
           firebase.database().ref().update(updates);
           observer.next(true);
           return obsRet;

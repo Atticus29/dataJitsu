@@ -16,6 +16,8 @@ export var constants = {
     locationRemovedMessage: "Location_name_has_been_removed",
     collectionAddedNotification: "Your collection has been added",
     collectionOwnerQuestionsAddedNotification: "Your questions have been added to your collection. Users who use your collection will be prompted with those questions when adding videos",
+    videoDeetUpdatedNotification: "Your video detail has been updated successfully",
+    videoDeetUpdateFailureNotification: "Your video detail did not update successfully",
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     collectionOwnerQuestionsErrorNotification: "Unable to add questions to your collection",
     eventNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
@@ -101,12 +103,16 @@ export var constants = {
     get faqQuestions(){
       return [{question:"What is "+ this.title + "?", answer:this.title + " is a tool to crowd-curate and perform data analysis on " + this.activityName + " videos. Users are able to submit videos for annotation and annotate videos themselves. Both videos and analytics will be sortable and filterable by various criteria, including annotations (i.e., by which moves are present in the video)."},{question:"Why can't I see all of the matches or  statistics?",answer:"It may be possible that you have either not earned enough reputation points or have recently had reputation points deducted for past actions"},{question:"How do I earn reputation points?", answer:"Users can make "+ this.numberOfCurrentAnnotationsNeeded + " annotations on a video. All annotations earn a user " + this.numberOfPointsToAwardForAnnotation + " points. Reputation points expire on a monthly basis. Alternatively, users can purchase reputations points with a monthly subscription costing "+ this.monthlyCost+ "."}, {question:"Can I lose reputation points? How?", answer:"Yes, you can. Reputation points are lost in the following ways: \n 1. Annotations made by a user are flagged as incorrect by "+ this.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction + " or more users. Such an event results in a loss of "+ this.numberOfPointsToDeductForBadAnnotation+ " reputation points \n 2. User creates a " + this.collectionSpecificEventPhrase +" name that is flagged by " + this.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction + " other users as inappropriate. \n 3. User posts a video that is flagged by " + this.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction + " other users as inappropriate. \n 4. User posts a video that is flagged as removed by " + this.numberOfFlagsAnAnnotationNeedsBeforeReptuationDeduction + " other users before being rated with a " + this.minimumAnnotationRatingAVideoFlaggedAsRemovedNeedsToPreventUserDeduction + " or higher"}];
     },
-    noneEntered: "None entered",
-    noneEntered2: "None entered 2",
+    noneEntered: "Individual starting on the left",
+    noneEntered2: "Individual starting on the right",
     reputationLogLable: "Reputation Log",
     subscriptManageLabel: "Manage Subscription",
     subscriptionStatusLabel :"Your subscription status",
     collectionLabel: "Your Collections",
     userIdLabel: "Your User UID",
-    noCollectionsYet: "You currently have no collections"
+    noCollectionsYet: "You currently have no collections",
+    nameOfIndividual1InDb: "athlete1Name",
+    nameOfIndividual2InDb: "athlete2Name",
+    nameOfVideoDetailsInDb: "videoDeets",
+    nameOfEventsInDb: "events"
   };

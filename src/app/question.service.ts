@@ -6,13 +6,244 @@ import { of } from 'rxjs';
 import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
+import { AutocompleteQuestion } from './autocompleteQuestion.model';
 import { SlideToggleQuestion } from './slideToggleFormQuestion.model';
 import { DatePickerQuestion } from './datePickerFormQuestion.model';
 import { Collection } from './collection.model';
 import { OwnerQuestion } from './ownerQuestion.model';
+import { DatabaseService } from './database.service';
 
 @Injectable()
 export class QuestionService{
+  constructor(private databaseService: DatabaseService){}
+
+  private shamQuestion: TextQuestion = new TextQuestion({
+    key: '',
+    label: '',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true
+  });
+
+  private ageClassEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'ageClassUpdate',
+    label: 'Age Class',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getAgeClasses(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateAgeClasses/',
+    pathToConfirmedValues: '/ageClasses/'
+  });
+
+  private weightClassEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'weightClassUpdate',
+    label: 'Weight Class',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getWeightClasses(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateWeightClasses/',
+    pathToConfirmedValues: '/weightClasses/'
+  });
+
+  private giNogiEditQuestion: SlideToggleQuestion = new SlideToggleQuestion({
+    key: 'giNogiUpdate',
+    label: 'Gi',
+    secondLabel: 'No Gi',
+    value: 'No Gi', //must always match second label
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+  });
+
+  private tournamentNameEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'tournamentNameUpdate',
+    label: 'Tournament Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getTournamentNames(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateTournamentNames/',
+    pathToConfirmedValues: '/tournamentNames/'
+  });
+
+  private dateEditQuestion: DatePickerQuestion = new DatePickerQuestion({
+    key: 'dateUpdate',
+    label: 'Date',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+  });
+
+  private locationEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'locationUpdate',
+    label: 'Location',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getLocations(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateLocationNames/',
+    pathToConfirmedValues: '/locations/'
+  });
+
+  private rankEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'rankUpdate',
+    label: 'Rank',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getAllRanks(),
+    enableAddNew: false,
+  });
+
+  private individualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualOneUpdate',
+    label: 'Individual 1 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames/'
+  });
+
+  private individualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualTwoUpdate',
+    label: 'Individual 2 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: false,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames/'
+  });
+
+  private testIndividualOneEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualOneUpdate',
+    label: 'Individual 1 Name',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'Individual 1',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getIndividualNames(),
+    enableAddNew: false,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
+  });
+
+  private testIndividualTwoEditQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'individualTwoUpdate',
+    label: 'Individual 2 Name',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'Individual 2',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getGiRanks(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateAthleteNames/',
+    pathToConfirmedValues: '/individualNames'
+  });
+
   // private userNameQuestion: TextQuestion = new TextQuestion({ //TODO create user questions here
   //   key: 'usernameQuestion' + i,
   //   label: 'User Name',
@@ -161,7 +392,7 @@ export class QuestionService{
     indentThisQuestion: false,
     type: 'dropdown',
     order: 2,
-    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
   private genericInputTypeQuestion: DropdownQuestion = new DropdownQuestion({
@@ -177,13 +408,22 @@ export class QuestionService{
     indentThisQuestion: true,
     type: 'dropdown',
     order: 2,
-    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}],
+    dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
 
+  getShamQuestionAsObj(){
+    let shameQuestion: FormQuestionBase<string>[] = [];
+    // shameQuestion.push(this.collectionNameQuestion);
+    shameQuestion.push(this.shamQuestion);
+    return shameQuestion;
+  }
+
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
-    testQuestions.push(this.collectionNameQuestion);
+    // testQuestions.push(this.collectionNameQuestion);
+    testQuestions.push(this.testIndividualOneEditQuestion);
+    testQuestions.push(this.testIndividualTwoEditQuestion);
     testQuestions.push(this.testSlideToggleQuestion);
     testQuestions.push(this.secondTestSlideToggle);
     return of(testQuestions);
@@ -225,6 +465,76 @@ export class QuestionService{
     entryDetailQuestions.push(this.labelQuestion);
     entryDetailQuestions.push(this.inputTypeQuestion);
     return of(entryDetailQuestions);
+  }
+
+  getIndividualOneEditQuestion(){
+    // console.log("getIndividualOneEditQuestion entered");
+    let individualOneQuestionArray: FormQuestionBase<string>[] = [];
+    individualOneQuestionArray.push(this.individualOneEditQuestion);
+    // console.log("getIndividualOneEditQuestion exiting...");
+    return of(individualOneQuestionArray);
+  }
+
+  getIndividualOneEditQuestionAsObj(){
+    let individualOneQuestionArray: FormQuestionBase<string>[] = [];
+    individualOneQuestionArray.push(this.individualOneEditQuestion);
+    return individualOneQuestionArray;
+  }
+
+  getIndividualTwoEditQuestion(){
+    // console.log("getIndividualTwoEditQuestion entered");
+    let individualTwoQuestionArray: FormQuestionBase<string>[] = [];
+    individualTwoQuestionArray.push(this.individualTwoEditQuestion);
+    // console.log("getIndividualTwoEditQuestion exiting...");
+    return of(individualTwoQuestionArray);
+  }
+
+  getIndividualTwoEditQuestionAsObj(){
+    let individualTwoQuestionArray: FormQuestionBase<string>[] = [];
+    individualTwoQuestionArray.push(this.individualTwoEditQuestion);
+    return individualTwoQuestionArray;
+  }
+
+  getEditAgeClassQuestion(){
+    let ageClassQuestionArray: FormQuestionBase<string>[] = [];
+    ageClassQuestionArray.push(this.ageClassEditQuestion);
+    return of(ageClassQuestionArray);
+  }
+
+  getEditWeightQuestion(){
+    let weightClassQuestionArray: FormQuestionBase<string>[] = [];
+    weightClassQuestionArray.push(this.weightClassEditQuestion);
+    return of(weightClassQuestionArray);
+  }
+
+  getEditGiNogiQuestion(){
+    let giNogiQuestionArray: FormQuestionBase<string>[] = [];
+    giNogiQuestionArray.push(this.giNogiEditQuestion);
+    return of(giNogiQuestionArray);
+  }
+
+  getEditTournamentNameQuestion(){
+    let tournamentNameQuestionArray: FormQuestionBase<string>[] = [];
+    tournamentNameQuestionArray.push(this.tournamentNameEditQuestion);
+    return of(tournamentNameQuestionArray);
+  }
+
+  getEditDateQuestion(){
+    let dateQuestionArray: FormQuestionBase<string>[] = [];
+    dateQuestionArray.push(this.dateEditQuestion);
+    return of(dateQuestionArray);
+  }
+
+  getEditLocationQuestion(){
+    let locationQuestionArray: FormQuestionBase<string>[] = [];
+    locationQuestionArray.push(this.locationEditQuestion);
+    return of(locationQuestionArray);
+  }
+
+  getEditRankQuestion(){
+    let rankQuestionArray: FormQuestionBase<string>[] = [];
+    rankQuestionArray.push(this.rankEditQuestion);
+    return of(rankQuestionArray);
   }
 
   getNewEntryDetailQuestions(){
@@ -275,7 +585,10 @@ export class QuestionService{
           currentQuestion = new DropdownQuestion(questionContent); //TODO dropdown question needs a "enableOptionToAddNewOptions" and then a name for the node on firebase to add candidates to
         }
         if(questionContent.type && questionContent.type === "Date Picker"){
-          currentQuestion = new DatePickerQuestion(questionContent); //TODO make datepicker question
+          currentQuestion = new DatePickerQuestion(questionContent);
+        }
+        if(questionContent.type && questionContent.type === "Date Picker"){
+          currentQuestion = new AutocompleteQuestion(questionContent);
         }
         if(currentQuestion){
           collectionDbQuestions.push(currentQuestion);

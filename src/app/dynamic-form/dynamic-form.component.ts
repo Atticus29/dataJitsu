@@ -18,6 +18,7 @@ import { Collection } from '../collection.model';
 
 export class DynamicFormComponent extends BaseComponent implements OnInit, OnDestroy{
   @Input() questions: FormQuestionBase<string>[] = [];
+  @Input() isFormOwner: boolean;
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
     payLoad: string = '';
@@ -32,8 +33,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
 
     ngOnInit() {
       let self = this;
-      this.form = this.qcs.toFormGroup(this.questions);
       if(this.questions){
+        this.form = this.qcs.toFormGroup(this.questions);
         this.formProcessingService.actualForm.next(this.form);
         this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
       }
@@ -43,7 +44,8 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         if(!this.form){
           console.log("getting new questionArray and no form currently exists");
           console.log(questionArrayOfForm);
-          this.form = this.qcs.toFormGroup(this.questions);
+          // this.form = this.qcs.toFormGroup(this.questions);
+          this.form = this.qcs.toFormGroup(questionArrayOfForm);
           this.formProcessingService.actualForm.next(this.form);
           this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
           //TODO button should be emitted as well

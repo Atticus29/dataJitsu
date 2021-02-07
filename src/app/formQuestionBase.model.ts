@@ -1,3 +1,5 @@
+import { Observable, of } from 'rxjs';
+
 export class FormQuestionBase<T> {
   value: T;
   key: string;
@@ -20,6 +22,10 @@ export class FormQuestionBase<T> {
   submitAfterThisQuestion: boolean;
   type: string;
   dropdownOptions: {key: string, value: string}[];
+  autocompleteOptions: Observable<any[]>;
+  pathToCandidateValues: string;
+  pathToConfirmedValues: string;
+
 
   constructor(options: {
       value?: T,
@@ -42,7 +48,10 @@ export class FormQuestionBase<T> {
       controlType?: string,
       submitAfterThisQuestion?: boolean,
       type?: string,
-      dropdownOptions?: any[]
+      dropdownOptions?: any[],
+      autocompleteOptions?: Observable<any[]>,
+      pathToCandidateValues?: string,
+      pathToConfirmedValues?: string
     } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -65,6 +74,9 @@ export class FormQuestionBase<T> {
     this.submitAfterThisQuestion = options.submitAfterThisQuestion === undefined? false: options.submitAfterThisQuestion;
     this.type = options.type || '';
     this.dropdownOptions = options.dropdownOptions || [];
+    this.autocompleteOptions = options.autocompleteOptions || of([]);
+    this.pathToCandidateValues = options.pathToCandidateValues || '';
+    this.pathToConfirmedValues = options.pathToConfirmedValues || '';
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
@@ -93,7 +105,10 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
-      dropdownOptions: oldQuestion.dropdownOptions
+      dropdownOptions: oldQuestion.dropdownOptions,
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
   static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
@@ -122,7 +137,10 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       submitAfterThisQuestion: submitAfterThisQuestion,
       type: oldQuestion.type,
-      dropdownOptions: oldQuestion.dropdownOptions
+      dropdownOptions: oldQuestion.dropdownOptions,
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -150,7 +168,10 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
-      dropdownOptions: oldQuestion.dropdownOptions
+      dropdownOptions: oldQuestion.dropdownOptions,
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -178,7 +199,10 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
-      dropdownOptions: oldQuestion.dropdownOptions
+      dropdownOptions: oldQuestion.dropdownOptions,
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 
@@ -206,7 +230,10 @@ export class FormQuestionBase<T> {
       controlType: oldQuestion.controlType,
       type: oldQuestion.type,
       submitAfterThisQuestion: oldQuestion.submitAfterThisQuestion,
-      dropdownOptions: oldQuestion.dropdownOptions
+      dropdownOptions: oldQuestion.dropdownOptions,
+      autocompleteOptions: oldQuestion.autocompleteOptions,
+      pathToCandidateValues: oldQuestion.pathToCandidateValues,
+      pathToConfirmedValues: oldQuestion.pathToConfirmedValues
     });
   }
 

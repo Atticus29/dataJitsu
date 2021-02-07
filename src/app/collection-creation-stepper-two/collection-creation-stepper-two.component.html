@@ -2,5 +2,5 @@
       <mat-spinner id="spinner"></mat-spinner>
 </div>
 <div *ngIf="!isLoading">
-  <app-dynamic-form [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
+  <app-dynamic-form [isFormOwner]="false" [configOptions]="localEntryDetailConfigOptions" [questions]="localEntryDetailQuestions"></app-dynamic-form>
 </div>
