@@ -12,6 +12,7 @@ describe ('Tests involving usage of a created collection', () =>{
       cy.get('button[id=user-info-button]').click({force:true});
       // cy.contains('button','User Info.').click({force:true});
       cy.url().should('match',/user/);
+      cy.contains(cypressConstants.collectionLabel).click({force:true});
       cy.contains(cypressConstants.collectionName);
       cy.deleteCollection(cypressConstants.collectionName);
       cy.contains(cypressConstants.collectionName).should('not.exist');
@@ -39,6 +40,7 @@ describe ('Tests involving usage of a created collection', () =>{
       cy.get('button[id=settings-button]').click();
       cy.contains('button','User Info.').click();
       cy.url().should('match',/user/);
+      cy.contains(cypressConstants.collectionLabel).click({force:true});
       cy.contains(cypressConstants.collectionName).click({force:true});
       cy.contains(cypressConstants.genericQuestionForOwner).should('exist');
       cy.contains(cypressConstants.newVideoButtonInCollection).click();
