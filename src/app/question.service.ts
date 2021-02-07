@@ -7,15 +7,211 @@ import { DropdownQuestion } from './dropdownQuestion.model';
 import { FormQuestionBase }     from './formQuestionBase.model';
 import { TextQuestion }  from './textFormQuestion.model';
 import { AutocompleteQuestion } from './autocompleteQuestion.model';
+import { PasswordTextQuestion } from './passwordTextFormQuestion.model';
 import { SlideToggleQuestion } from './slideToggleFormQuestion.model';
 import { DatePickerQuestion } from './datePickerFormQuestion.model';
 import { Collection } from './collection.model';
 import { OwnerQuestion } from './ownerQuestion.model';
 import { DatabaseService } from './database.service';
+import { constants } from './constants';
 
 @Injectable()
 export class QuestionService{
   constructor(private databaseService: DatabaseService){}
+
+  private userNameQuestion: TextQuestion = new TextQuestion({
+    key: 'userName',
+    label: 'User Name',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Ben Benson',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+  });
+
+  private emailAddressQuestion: TextQuestion = new TextQuestion({
+    key: 'emailAddress',
+    label: 'Email Address',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Ben.Benson@gmail.com',
+    type: 'email',
+    order: 1,
+    submitAfterThisQuestion: false,
+  });
+
+  private passwordQuestion: PasswordTextQuestion = new PasswordTextQuestion({
+    key: 'password',
+    label: 'Password',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'password',
+    order: 1,
+    submitAfterThisQuestion: false,
+    minLength: 7
+  });
+
+  private confirmPasswordQuestion: PasswordTextQuestion = new PasswordTextQuestion({
+    key: 'confirmPassword',
+    label: 'Confirm Password',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'password',
+    order: 1,
+    submitAfterThisQuestion: false,
+    minLength: 7,
+    valueMustMatch: this.passwordQuestion
+  });
+
+  private gymAffiliationQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'gymAffiliation',
+    label: 'Gym Affiliation',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Straight Blast Gym',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getGymAffiliations(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateGymAffiliations/',
+    pathToConfirmedValues: '/gymAffiliations/'
+  });
+
+  private genderQuestion: DropdownQuestion = new DropdownQuestion({
+    key: 'gender',
+    label: 'Choose Gender',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: false,
+    indentThisQuestion: true,
+    type: 'dropdown',
+    order: 2,
+    dropdownOptions: constants.genderDropdownOptions,
+    submitAfterThisQuestion: false
+  });
+
+  private giRankQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'giRank',
+    label: 'Gi Rank',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Black Belt',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getGiRanks(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateGiRanks/',
+    pathToConfirmedValues: '/giRanks/'
+  });
+
+  private noGiRankQuestion: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'noGiRank',
+    label: 'No Gi Rank',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., Advanced',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: false,
+    autocompleteOptions: this.databaseService.getNoGiRanks(),
+    enableAddNew: true,
+    pathToCandidateValues: '/candidateNoGiRanks/',
+    pathToConfirmedValues: '/noGiRanks/'
+  });
+
+  private weightQuestion: TextQuestion = new TextQuestion({
+    key: 'weight',
+    label: 'Weight in kg',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., 70.3',
+    type: 'number',
+    order: 1,
+    submitAfterThisQuestion: false,
+  });
+
+  private ageQuestion: TextQuestion = new TextQuestion({
+    key: 'age',
+    label: 'Age',
+    value: '',
+    required: false,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: 'E.g., 46',
+    type: 'number',
+    order: 1,
+    submitAfterThisQuestion: true,
+  });
+
+
+  private passwordTextTestQuestion: PasswordTextQuestion = new PasswordTextQuestion({
+    key: 'passwordUpdate',
+    label: 'Password',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: false,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: true,
+    placeHolder: '',
+    type: 'password',
+    order: 1,
+    submitAfterThisQuestion: false,
+    minLength: 7
+  });
 
   private shamQuestion: TextQuestion = new TextQuestion({
     key: '',
@@ -412,16 +608,51 @@ export class QuestionService{
     submitAfterThisQuestion: true
   });
 
+  getAccountCreationQuestions(){
+    let accountCreationQuestions: FormQuestionBase<string>[] = [];
+    accountCreationQuestions.push(this.userNameQuestion);
+    accountCreationQuestions.push(this.emailAddressQuestion);
+    accountCreationQuestions.push(this.passwordQuestion);
+    accountCreationQuestions.push(this.confirmPasswordQuestion);
+    accountCreationQuestions.push(this.gymAffiliationQuestion);
+    accountCreationQuestions.push(this.genderQuestion);
+    accountCreationQuestions.push(this.giRankQuestion);
+    accountCreationQuestions.push(this.noGiRankQuestion);
+    accountCreationQuestions.push(this.weightQuestion);
+    accountCreationQuestions.push(this.ageQuestion);
+    return of(accountCreationQuestions);
+  }
+
+  getAccountCreationQuestionsAsObj(){
+    let accountCreationQuestions: FormQuestionBase<string>[] = [];
+    accountCreationQuestions.push(this.userNameQuestion);
+    accountCreationQuestions.push(this.emailAddressQuestion);
+    accountCreationQuestions.push(this.passwordQuestion);
+    accountCreationQuestions.push(this.confirmPasswordQuestion);
+    accountCreationQuestions.push(this.gymAffiliationQuestion);
+    accountCreationQuestions.push(this.genderQuestion);
+    accountCreationQuestions.push(this.giRankQuestion);
+    accountCreationQuestions.push(this.noGiRankQuestion);
+    accountCreationQuestions.push(this.weightQuestion);
+    accountCreationQuestions.push(this.ageQuestion);
+    return accountCreationQuestions;
+  }
+
+  getPasswordQuestionAsObj(){
+    let passwordQuestion: FormQuestionBase<string>[] = [];
+    passwordQuestion.push(this.passwordTextTestQuestion);
+    return passwordQuestion;
+  }
+
   getShamQuestionAsObj(){
     let shameQuestion: FormQuestionBase<string>[] = [];
-    // shameQuestion.push(this.collectionNameQuestion);
     shameQuestion.push(this.shamQuestion);
     return shameQuestion;
   }
 
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
-    // testQuestions.push(this.collectionNameQuestion);
+    testQuestions.push(this.passwordTextTestQuestion);
     testQuestions.push(this.testIndividualOneEditQuestion);
     testQuestions.push(this.testIndividualTwoEditQuestion);
     testQuestions.push(this.testSlideToggleQuestion);

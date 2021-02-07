@@ -19,8 +19,19 @@ export class QuestionControlService {
     if(questions){
       let group: any = {};
       questions.forEach(question =>{
-        group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) :
-        new FormControl(question.value || '');
+        if(question.required && question.minLength){
+            group[question.key] = new FormControl(question.value || '', [Validators.required, Validators.minLength(question.minLength)]);
+        }
+        if(!question.required && question.minLength){
+            group[question.key] = new FormControl(question.value || '', Validators.minLength(question.minLength));
+        }
+        if(question.required && !question.minLength){
+          group[question.key] = new FormControl(question.value || '', Validators.required);
+        } else{
+          group[question.key] = new FormControl(question.value || '');
+        }
+        // group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) :
+        // new FormControl(question.value || '');
       });
       return new FormGroup(group);
     }

@@ -3,6 +3,7 @@ import { ApprovalConfig } from './approvalConfig.model';
 export var constants = {
     eventNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
+    genderDropdownOptions: [{key:'Female', value:'Female'},{key:'Male', value:'Male'},{key:'Non-binary', value:'Non-binary'},{key:'Trans Female', value:'Trans Female'},{key:'Trans Male', value:'Trans Male'},{key:'Other', value:'Other'}],
     title: "Video Annotator",
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
@@ -18,6 +19,8 @@ export var constants = {
     collectionOwnerQuestionsAddedNotification: "Your questions have been added to your collection. Users who use your collection will be prompted with those questions when adding videos",
     videoDeetUpdatedNotification: "Your video detail has been updated successfully",
     videoDeetUpdateFailureNotification: "Your video detail did not update successfully",
+    userAddedToDbNotification: "User successfully created!",
+    userAddedToDbFailureNotification: "User NOT successfully created",
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     collectionOwnerQuestionsErrorNotification: "Unable to add questions to your collection",
     eventNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",

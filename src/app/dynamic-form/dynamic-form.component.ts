@@ -147,15 +147,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     processItemFromQuestion(itemFromFormQuestion: any){
-      console.log("processItemFromQuestion entered");
-
-      // console.log("this.form before:");
-      // console.log(this.form);
-
       this.form.patchValue(itemFromFormQuestion);
-
-      // console.log("this.form after:");
-      // console.log(this.form);
       this.formProcessingService.captureFormResults(this.form);
+    }
+
+    proccessIsFormQuestionValid(isValidFormQuestion: any){
+      console.log("proccessIsFormQuestionValid entered");
+      console.log("isValidFormQuestion in dynamic-form.component is: ");
+      console.log(isValidFormQuestion);
     }
 }

@@ -840,6 +840,10 @@ export class DatabaseService {
     return this.getGenericApprovedList('/locations');
   }
 
+  getGymAffiliations(){
+    return this.getGenericApprovedList('/gymAffiliations');
+  }
+
   getGenericApprovedList(path: string){
     return this.db.list<String>(path).valueChanges();
   }
@@ -850,11 +854,11 @@ export class DatabaseService {
 
   getGiRanks(){
     // console.log("got into getGiRanks in database service");
-    this.giRanks.subscribe(results =>{
+    // this.giRanks.subscribe(results =>{
       // console.log("got up in here");
       // console.log('results in getGiRanks subscription');
       // console.log(results);
-    })
+    // })
     // console.log(this.giRanks);
     return this.giRanks;
   }

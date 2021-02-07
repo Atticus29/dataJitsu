@@ -1,7 +1,7 @@
 <div>
   <form [formGroup]="form">
     <div id="wrapper-div-for-questions" *ngFor="let question of questions; let i = index" class="form-row">
-      <app-question (itemFromFormQuestion)="processItemFromQuestion($event)" [isFormOwner]="isFormOwner" [question]="question" [form]="form" class="col m{{question.mediumSize}} s{{question.smallSize}} l{{question.largeSize}}"></app-question>
+      <app-question (isValidFormQuestion)="proccessIsFormQuestionValid($event)" (itemFromFormQuestion)="processItemFromQuestion($event)" [isFormOwner]="isFormOwner" [question]="question" [form]="form" class="col m{{question.mediumSize}} s{{question.smallSize}} l{{question.largeSize}}"></app-question>
       <div [appIndent]=question.indentThisQuestion>
         <div *ngIf="question.disableAddButtonIfCurrentValueIsBlank">
           <button (click)="addAnotherQuestion(question, questions, i, question.submitAfterThisQuestion)" *ngIf="question.giveOptionToAnswerThisQuestionMultipleTimes" id="add-new-item-button"  class="btn waves-effect waves-light" type="button" color="accent" [disabled]="!form.getRawValue()[question.key]">Add Another {{question.label}}

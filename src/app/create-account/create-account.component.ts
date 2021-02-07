@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take, last, withLatestFrom } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { constants } from '../constants';
@@ -11,8 +12,12 @@ import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
 import { User } from '../user.model';
 import { TrackerService } from '../tracker.service';
+import { TextTransformationService } from '../text-transformation.service';
 import { ValidationService } from '../validation.service';
 import { AuthorizationService } from '../authorization.service';
+import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
+import { QuestionService } from '../question.service';
+import { FormProcessingService } from '../form-processing.service';
 
 @Component({
   selector: 'app-create-account',
@@ -42,12 +47,20 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   private hide: boolean = true;
   private hideConfirm: boolean = true;
   private passwordsNotEqual: boolean = false;
+  private localConfigOptions: DynamicFormConfiguration;
+  private stopCounter: number = 0;
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher) {
+  constructor(private fb: FormBuilder, private router: Router, private vs: ValidationService, private as: AuthorizationService, private trackerService: TrackerService, private defaultErrorStateMatcher: ErrorStateMatcher, private questionService: QuestionService, private formProcessingService:FormProcessingService, private databaseService: DatabaseService, private textTransformationService: TextTransformationService, public snackBar: MatSnackBar) {
     super();
   }
 
   ngOnInit() {
+    this.handleFormSubmission();
+    this.questionService.getAccountCreationQuestions().pipe(takeUntil(this.ngUnsubscribe)).subscribe((accountCreationQuestions) =>{
+      if(accountCreationQuestions){
+        this.localConfigOptions = new DynamicFormConfiguration(accountCreationQuestions, [], "CREATE");
+      }
+    });
     for (var i = 3; i <= 110; i++) {
       this.ages.push(i);
     }
@@ -61,23 +74,23 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
       ageBound: ['', Validators.required]
     });
 
-    this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
-      console.log("giRanks: ");
-      console.log(giRanks);
+    this.databaseService.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
+      // console.log("giRanks: ");
+      // console.log(giRanks);
       this.giRanks = giRanks;
       this.disabledGiRank = true;
     })
 
-    this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
-      console.log("noGiRanks are: ");
-      console.log(noGiRanks);
+    this.databaseService.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
+      // console.log("noGiRanks are: ");
+      // console.log(noGiRanks);
       this.noGiRanks = noGiRanks;
       this.disabledNoGiRank = true;
     })
 
-    this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
-      console.log("ageClasses are:");
-      console.log(ageClasses);
+    this.databaseService.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
+      // console.log("ageClasses are:");
+      // console.log(ageClasses);
       this.ageClasses = ageClasses;
       this.disabledAgeClass = true;
     });
@@ -138,7 +151,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
-    this.db.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
+    this.databaseService.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
       // console.log("dbUserId in create-account component");
       // console.log(dbUserId);
       this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
@@ -147,7 +160,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
             // console.log("user uid in trackerService.currentUserBehaviorSubject in create-account component");
             // console.log(user.uid);
             // console.log(newUser.getId());
-            this.db.addUidToUser(user.uid, dbUserId);
+            this.databaseService.addUidToUser(user.uid, dbUserId);
             // console.log("Oh hey! There's a uid, too!: " + user.uid);
           }
           this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
@@ -176,5 +189,126 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
       return false;
     }
   }
+
+  handleFormSubmission(){
+    //when form is submitted --------------------
+    let self = this;
+    this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted =>{
+        // console.log("form submitted monitoring in new account creation firing off");
+        // console.log("isFormSubmitted is: " + isFormSubmitted);
+      if(isFormSubmitted && this.stopCounter<1){
+        this.stopCounter ++;
+        let formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(withLatestFrom(this.formProcessingService.questionArrayOfForm));
+        formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults =>{
+          let formResults = combinedResults[0];
+          let currentFormQuestions = combinedResults[1];
+          if(formResults){ //formSubmitted &&
+            if(formResults[0] !== "Stop"){
+              //begin custom stuff
+              // console.log("formResults are: ");
+              // console.log(formResults);
+              if(currentFormQuestions){
+                if(currentFormQuestions[0] !== "Stop"){
+                  let newUser: User = this.createUserObjFromDynamicForm(formResults);
+                    let path: string = null;
+                    let candidatePath: string = null;
+                    let updateVal: any = null;
+                    if(formResults.gymAffiliation){
+                      console.log("formResults.gymAffiliation exists...");
+                      path = '/gymAffiliations/';
+                      candidatePath = '/candidateGymAffiliations/';
+                      updateVal = formResults.gymAffiliation;
+                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+                        console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
+                        if(!alreadyExists){
+                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
+                        }
+                      });
+                    }
+                    if(formResults.giRank){
+                      console.log("formResults.giRank exists...");
+                      path = '/giRanks/';
+                      candidatePath = '/candidateGymAffiliations/';
+                      updateVal = formResults.giRank;
+                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+                        console.log("alreadyExists in giRank is: " + alreadyExists);
+                        if(!alreadyExists){
+                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
+                        }
+                      });
+                    }
+                    if(formResults.noGiRank){
+                      console.log("formResults.noGiRank exists...");
+                      path = '/noGiRanks/';
+                      candidatePath = '/candidateNoGiRanks/';
+                      updateVal = formResults.noGiRank;
+                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+                        console.log("alreadyExists in noGiRank is: " + alreadyExists);
+                        if(!alreadyExists){
+                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
+                        }
+                      });
+                    }
+                    this.addUserToDbHelper(newUser);
+                  }
+              }
+            }
+          }
+        });
+      }
+    });
+    //----end form submission doing things
+  }
+
+  createUserObjFromDynamicForm(formResults: any){
+    let {userName, emailAddress, password, confirmPassword, gymAffiliation, gender, giRank, noGiRank, weight, age} = formResults;
+    let newUser = new User(userName, emailAddress, password, giRank, noGiRank, gymAffiliation, Number(age), Number(weight), 100, "", gender, new Date().toJSON());
+    return newUser;
+  }
+
+  addUserToDbHelper(newUser: User){
+    console.log("addUserToDbHelper entered");
+    let result = this.getValues();
+    console.log(result);
+    let self = this;
+
+    //The signup and db add HAVE to happen before the subscription. You've made this mistake before
+    this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
+    this.databaseService.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
+      if(dbUserId){
+        //can assume success TODO
+        self.openSnackBar(constants.userAddedToDbNotification);
+        // self.formProcessingService.collectionId.next(null);
+        self.formProcessingService.stopFormAndQuestions();
+        self.formProcessingService.finalSubmitButtonClicked.next(true);
+        self.formProcessingService.restartFormAndQuestions(self.questionService.getAccountCreationQuestionsAsObj()); //self.questionService.getIndividualOneEditQuestionAsObj()
+        self.stopCounter = 0;
+        // console.log("dbUserId in create-account component");
+        // console.log(dbUserId);
+        this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
+          if(user){
+            if(user.uid){
+              // console.log("user uid in trackerService.currentUserBehaviorSubject in create-account component");
+              // console.log(user.uid);
+              // console.log(newUser.getId());
+              this.databaseService.addUidToUser(user.uid, dbUserId);
+              // console.log("Oh hey! There's a uid, too!: " + user.uid);
+            }
+            this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
+          }
+        });
+      } else{
+        self.openSnackBar(constants.userAddedToDbFailureNotification);
+      }
+    });
+
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 3000,
+    });
+  }
+
 
 }

@@ -25,11 +25,13 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   @Input() form: FormGroup;
   @Input() isFormOwner: boolean;
   @Output() itemFromFormQuestion = new EventEmitter<any>();
+  @Output() isValidFormQuestion = new EventEmitter<any>();
   private localDatePickerPrompt: string;
   private checked: boolean = true;
   private localAutocompleteOptions: any[] = null;
   private filteredOptions: Observable<string[]>;
   private localItemName: string = null;
+  private hide: boolean = true;
   get isValid() {
     let returnVal = null;
     if(this.form){
@@ -51,6 +53,7 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
         return returnVal;
       }
     } else{
+      this.isValidFormQuestion.emit(returnVal);
       return returnVal;
     }
 
@@ -61,8 +64,8 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   ngOnInit() {
-    console.log("this.question in dynamic-form-question is: ");
-    console.log(this.question);
+    // console.log("this.question in dynamic-form-question is: ");
+    // console.log(this.question);
     if(this.question.controlType==='toggle'){
       let questionKey = this.question.key;
       if(this.checked){
