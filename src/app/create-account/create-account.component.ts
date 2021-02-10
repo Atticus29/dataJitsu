@@ -210,46 +210,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
               if(currentFormQuestions){
                 if(currentFormQuestions[0] !== "Stop"){
                   let newUser: User = this.createUserObjFromDynamicForm(formResults);
-                    let path: string = null;
-                    let candidatePath: string = null;
-                    let updateVal: any = null;
-                    if(formResults.gymAffiliation){
-                      console.log("formResults.gymAffiliation exists...");
-                      path = '/gymAffiliations/';
-                      candidatePath = '/candidateGymAffiliations/';
-                      updateVal = formResults.gymAffiliation;
-                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
-                        console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
-                        if(!alreadyExists){
-                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
-                        }
-                      });
-                    }
-                    if(formResults.giRank){
-                      console.log("formResults.giRank exists...");
-                      path = '/giRanks/';
-                      candidatePath = '/candidateGymAffiliations/';
-                      updateVal = formResults.giRank;
-                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
-                        console.log("alreadyExists in giRank is: " + alreadyExists);
-                        if(!alreadyExists){
-                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
-                        }
-                      });
-                    }
-                    if(formResults.noGiRank){
-                      console.log("formResults.noGiRank exists...");
-                      path = '/noGiRanks/';
-                      candidatePath = '/candidateNoGiRanks/';
-                      updateVal = formResults.noGiRank;
-                      self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
-                        console.log("alreadyExists in noGiRank is: " + alreadyExists);
-                        if(!alreadyExists){
-                          self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), '');
-                        }
-                      });
-                    }
-                    this.addUserToDbHelper(newUser);
+                    this.addUserToDbHelper(newUser, formResults);
                   }
               }
             }
@@ -266,7 +227,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     return newUser;
   }
 
-  addUserToDbHelper(newUser: User){
+  addUserToDbHelper(newUser: User, formResults: any){
     console.log("addUserToDbHelper entered");
     let result = this.getValues();
     console.log(result);
@@ -277,6 +238,46 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     this.databaseService.addUserToDb(newUser).pipe(takeUntil(this.ngUnsubscribe)).subscribe((dbUserId: string) =>{
       if(dbUserId){
         //can assume success TODO
+        let path: string = null;
+        let candidatePath: string = null;
+        let updateVal: any = null;
+        if(formResults.gymAffiliation){
+          console.log("formResults.gymAffiliation exists...");
+          path = '/gymAffiliations/';
+          candidatePath = '/candidateGymAffiliations/';
+          updateVal = formResults.gymAffiliation;
+          self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+            console.log("alreadyExists in updateVideoDeet is: " + alreadyExists);
+            if(!alreadyExists){
+              self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), dbUserId);
+            }
+          });
+        }
+        if(formResults.giRank){
+          console.log("formResults.giRank exists...");
+          path = '/giRanks/';
+          candidatePath = '/candidateGymAffiliations/';
+          updateVal = formResults.giRank;
+          self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+            console.log("alreadyExists in giRank is: " + alreadyExists);
+            if(!alreadyExists){
+              self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), dbUserId);
+            }
+          });
+        }
+        if(formResults.noGiRank){
+          console.log("formResults.noGiRank exists...");
+          path = '/noGiRanks/';
+          candidatePath = '/candidateNoGiRanks/';
+          updateVal = formResults.noGiRank;
+          self.databaseService.doesGenricCandidateAlreadyExistInDb(path, updateVal).pipe(take(1)).subscribe(alreadyExists =>{
+            console.log("alreadyExists in noGiRank is: " + alreadyExists);
+            if(!alreadyExists){
+              self.databaseService.addGenericCandidateNameToDb(candidatePath, self.textTransformationService.capitalizeFirstLetter(updateVal), dbUserId);
+            }
+          });
+        }
+
         self.openSnackBar(constants.userAddedToDbNotification);
         // self.formProcessingService.collectionId.next(null);
         self.formProcessingService.stopFormAndQuestions();

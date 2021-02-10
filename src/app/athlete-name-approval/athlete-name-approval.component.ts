@@ -66,7 +66,7 @@ export class AthleteNameApprovalComponent extends BaseComponent implements OnIni
     if(confirmation){
       this.db.getvideoUrlFromCandidateAthleteName(name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
         console.log(urlResult);
-        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+        this.db.getVideoIdFromVideoUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
           this.db.updateAthleteNameInMatch(videoIdResult, name, "Un-named Athlete");
         });
       })

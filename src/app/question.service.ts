@@ -138,7 +138,7 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: false,
     autocompleteOptions: this.databaseService.getGiRanks(),
-    enableAddNew: true,
+    enableAddNew: false,
     pathToCandidateValues: '/candidateGiRanks/',
     pathToConfirmedValues: '/giRanks/'
   });
@@ -158,7 +158,7 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: false,
     autocompleteOptions: this.databaseService.getNoGiRanks(),
-    enableAddNew: true,
+    enableAddNew: false,
     pathToCandidateValues: '/candidateNoGiRanks/',
     pathToConfirmedValues: '/noGiRanks/'
   });
