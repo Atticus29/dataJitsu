@@ -71,10 +71,10 @@ export class WeightClassNameApprovalComponent extends BaseComponent implements O
   disapproveName(name: string, metaDataName: string){
     let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
-      this.db.getvideoUrlFromGenericCandidateName(this.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
-          console.log("getVideoIdFromVideohUrl from disapproveName is " + videoIdResult);
-          this.db.updateGenericNameIVideo(this.localSubPathToMatchParameter,videoIdResult, this.localReplacementText);
+      this.db.getIdentifyingInformationFromGenericCandidateName(this.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
+        this.db.getVideoIdFromVideoUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+          console.log("getVideoIdFromVideoUrl from disapproveName is " + videoIdResult);
+          this.db.updateGenericNameInVideo(this.localSubPathToMatchParameter,videoIdResult, this.localReplacementText);
         });
       })
       this.db.removeGenericStringWithOrderByFromDb(this.candidatePath, 'name', name);

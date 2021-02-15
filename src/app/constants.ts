@@ -3,6 +3,7 @@ import { ApprovalConfig } from './approvalConfig.model';
 export var constants = {
     eventNamesThatAreDelimiters: ["Match Start", "Match End"],
     genders: ["Female", "Male", "Mixed", "Non-binary", "Trans Female", "Trans Male", "Other"],
+    genderDropdownOptions: [{key:'Female', value:'Female'},{key:'Male', value:'Male'},{key:'Non-binary', value:'Non-binary'},{key:'Trans Female', value:'Trans Female'},{key:'Trans Male', value:'Trans Male'},{key:'Other', value:'Other'}],
     title: "Video Annotator",
     activityName: "Brazilian jiu jitsu",
     minPwLength: 7,
@@ -13,11 +14,14 @@ export var constants = {
     noGiRankNameRemovedMessage: "No gi rank name has been removed; flag me",
     ageClassRemovedMessage: "Age class has been removed",
     weightClassRemovedMessage: "Weight class name has been removed",
-    locationRemovedMessage: "Location_name_has_been_removed",
+    locationRemovedMessage: "Location_name_has_been_removed", //must remain camel case for current tests to pass
+    affiliationRemovedMessage: "Gym affiliation has been removed",
     collectionAddedNotification: "Your collection has been added",
     collectionOwnerQuestionsAddedNotification: "Your questions have been added to your collection. Users who use your collection will be prompted with those questions when adding videos",
     videoDeetUpdatedNotification: "Your video detail has been updated successfully",
     videoDeetUpdateFailureNotification: "Your video detail did not update successfully",
+    userAddedToDbNotification: "User successfully created!",
+    userAddedToDbFailureNotification: "User NOT successfully created",
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
     collectionOwnerQuestionsErrorNotification: "Unable to add questions to your collection",
     eventNameAlreadyExistsNotification: "Move already exists in the database. Please find it in the dropdown menu",
@@ -69,6 +73,7 @@ export var constants = {
     numberOfPointsToAwardForApprovingNoGiRankName: 5,
     numberOfPointsToAwardForApprovingAgeClass: 5,
     numberOfPointsToAwardForApprovingLocation: 5,
+    numberOfPointsToAwardForApprovingGymAffiliation: 5,
     minimumAnnotationRatingThatAVideoFlaggedAsRemovedNeedsToPreventMajorityAnnotatorDeduction: 3.5,
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
@@ -89,8 +94,16 @@ export var constants = {
     get locationNameApprovalConfig(){
       return new ApprovalConfig(null, null, "Location name", "location", this.locationRemovedMessage, this.numberOfPointsToAwardForApprovingLocation, 'videoDeets/location', '/locations', '/candidateLocationNames')
     },
+    get gymAffiliationApprovalConfig(){
+      return new ApprovalConfig(null, null, "Gym affiliation", "gym affiliation", this.affiliationRemovedMessage, this.numberOfPointsToAwardForApprovingGymAffiliation, 'affiliation', '/gymAffiliations', '/candidateGymAffiliations')
+    },
+    videoDetails: "videoDeets",
+    affiliation: "affiliation",
     alreadyExistsNotification: "Your entry already exists in dropdown menu!",
     allVideosPathName: 'all-videos',
+    homePath: '',
+    landingPath: 'landing',
+    userInfoPath: 'user',
     collectionsPathName: 'collections',
     individualPathName: 'videos',
     newVideoPathName: 'new-video',

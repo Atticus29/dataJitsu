@@ -185,7 +185,7 @@ export class AuthorizationService {
   async sendVerificationEmail(){
     return await this.afAuth.currentUser.then(u=>u.sendEmailVerification())
     .then(() => {
-      this.router.navigate(['verify-email-address']);
+      // this.router.navigate(['verify-email-address']); //TODO comment back in
     });
   }
 

@@ -65,6 +65,7 @@ const routes: Routes = [
   },{
     path: 'createaccount',
     component: CreateAccountComponent,
+    canActivate: [LoggedInGuard],
     pathMatch: 'full'
   },{
     path: 'populatedb',

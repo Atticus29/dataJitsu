@@ -77,7 +77,7 @@ export class TournamentNameApprovalComponent extends BaseComponent implements On
     let confirmation = confirm("Are you sure you want to DISAPPROVE the tournament name " + tournamentName + "?");
     if(confirmation){
       this.db.getvideoUrlFromCandidateTournamentName(tournamentName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+        this.db.getVideoIdFromVideoUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
             this.db.updateTournamentNameInMatch(videoIdResult, constants.tournamentNameRemovedMessage);
         });
       })

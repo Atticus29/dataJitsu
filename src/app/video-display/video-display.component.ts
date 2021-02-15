@@ -149,8 +149,9 @@ export class VideoDisplayComponent extends BaseComponent implements OnInit {
     });
 
     this.trigger.pipe(takeUntil(this.ngUnsubscribe)).subscribe(triggerCheck => {
-      // debugger;
+    //   // debugger;
       if(this.asssembleCheck()){
+        console.log("this.asssembleCheck() is finally: " + this.asssembleCheck());
         self.tempMove = new EventInVideo(this.eventName, this.eventCategory, this.performer, this.recipient, this.startTime, this.endTime, this.points, this.videoId, this.submissionStatus, this.attemptStatus, this.userInDbId);
         this.handleSettingMoveNameStatuses(self.tempMove, this.eventName);
         self.moveAssembledStatus.next(true);
@@ -408,18 +409,48 @@ openSnackBar(message: string) {
 
 asssembleCheck(): Boolean{ //TODO necessary in addition to moveCompletelyLegit ??
   console.log("asssembleCheck entered");
+  if(!this.eventName) console.log("eventName missing in asssembleCheck");
+  if(!this.eventCategory) console.log("eventCategory missing in asssembleCheck");
+  if(!this.performer) console.log("performer missing in asssembleCheck");
+  if(!this.recipient) console.log("recipient missing in asssembleCheck");
+  if(!this.startTime) console.log("startTime missing in asssembleCheck");
+  if(!this.endTime) console.log("endTime missing in asssembleCheck");
+  if(!this.points) console.log("points missing in asssembleCheck");
+  if(!this.videoId) console.log("videoId missing in asssembleCheck");
+  if(this.submissionStatus==null) console.log("submissionStatus missing in asssembleCheck");
+  if(this.attemptStatus==null) console.log("attemptStatus missing in asssembleCheck");
+  if(!this.userInDbId) console.log("userInDbId missing in asssembleCheck");
+  // console.log("this.eventName");
   // console.log(this.eventName);
+  // console.log("this.eventCategory");
   // console.log(this.eventCategory);
+  // console.log("this.performer");
   // console.log(this.performer);
+  // console.log("this.recipient");
   // console.log(this.recipient);
-  // console.log(this.startTime);
-  // console.log(this.endTime);
+  console.log("this.startTime");
+  console.log(this.startTime);
+  console.log("this.endTime");
+  console.log(this.endTime);
   // console.log(this.points);
   // console.log(this.videoId);
   // console.log(this.submissionStatus);
   // console.log(this.attemptStatus);
   // console.log(this.userInDbId);
-  if(this.eventName && this.eventName !=="No Annotation Currently Selected" && this.eventCategory && this.eventCategory !== "No Category Currently Selected" && this.performer && this.recipient && (this.startTime > -1) && (this.startTime != null) && (this.endTime > -1) && (this.endTime != null) && (this.points != null) && this.videoId && (this.submissionStatus != null) && (this.attemptStatus != null) && this.userInDbId){
+  if(this.eventName && this.eventName !=="No Annotation Currently Selected"
+  && this.eventCategory
+  && this.eventCategory !== "No Category Currently Selected"
+  && this.performer
+  && this.recipient
+  && (this.startTime > -1)
+  && (this.startTime != null)
+  && (this.endTime > -1)
+  && (this.endTime != null)
+  && (this.points != null)
+  && this.videoId
+  && (this.submissionStatus != null)
+  && (this.attemptStatus != null)
+  && this.userInDbId){
     console.log("everything is true in asssembleCheck");
     return true;
   } else{

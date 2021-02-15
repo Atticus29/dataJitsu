@@ -72,11 +72,18 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
   disapproveName(name: string, metaDataName: string){
     let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
-      this.db.getvideoUrlFromGenericCandidateName(this.approvalConfig.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
-          console.log("getVideoIdFromVideohUrl from disapproveName is " + videoIdResult);
-          this.db.updateGenericNameIVideo(this.approvalConfig.localSubPathToMatchParameter,videoIdResult, this.approvalConfig.localReplacementText); //TODO rename
-        });
+      this.db.getIdentifyingInformationFromGenericCandidateName(this.approvalConfig.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(identifyingInfoResult =>{
+        if(identifyingInfoResult){
+          if(this.approvalConfig.localSubPathToMatchParameter.includes(constants.videoDetails)){
+            this.db.getVideoIdFromVideoUrl(identifyingInfoResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+              console.log("getVideoIdFromVideoUrl from disapproveName is " + videoIdResult);
+              this.db.updateGenericNameInVideo(this.approvalConfig.localSubPathToMatchParameter,videoIdResult, this.approvalConfig.localReplacementText);
+            });
+          }
+          if(this.approvalConfig.localSubPathToMatchParameter.includes(constants.affiliation)){
+            this.db.updateGenericNameInUser(this.approvalConfig.localSubPathToMatchParameter, identifyingInfoResult, this.approvalConfig.localReplacementText);
+          }
+        }
       })
       this.db.removeGenericStringWithOrderByFromDb(this.approvalConfig.candidatePath, 'name', name);
       if(this.localUser){
@@ -88,7 +95,7 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
   deleteName(name: string, metaDataName: string){
     let confirmation = confirm("Are you sure you want to delete "+ metaDataName + " " + name + " from the database?");
     if(confirmation){
-        this.db.deleteGenericString(this.approvalConfig.localApprovedListPath, name);
+      this.db.deleteGenericString(this.approvalConfig.localApprovedListPath, name);
     }
   }
 

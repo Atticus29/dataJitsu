@@ -83,7 +83,7 @@ export class MoveNameApprovalComponent extends BaseComponent implements OnInit {
       let confirmation = confirm("Are you sure you want to DISAPPROVE the move " + eventName + "?");
       if(confirmation){
         this.db.getvideoUrlFromCandidateMoveName(eventName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-          this.db.getVideoIdFromVideohUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
+          this.db.getVideoIdFromVideoUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
             this.db.getMoveIdFromMatchId(videoIdResult, eventName).pipe(takeUntil(this.ngUnsubscribe)).subscribe(moveIdResult =>{
               this.db.updateMoveNameInMatch(videoIdResult, moveIdResult, eventName, constants.eventNameRemovedMessage);
             });
