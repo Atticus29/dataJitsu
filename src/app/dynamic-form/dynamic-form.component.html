@@ -26,10 +26,13 @@
         </button>
       </div>
     <div class="form-row">
-      <button *ngIf="question.submitAfterThisQuestion" (click)="processForm(questions)" id="new-collection-submit" [disabled]="!form.valid || nonRequiredIsInvalid"  class="btn waves-effect waves-light">{{localButtonDisplayName}}
+      <button *ngIf="question.submitAfterThisQuestion" (click)="processForm(questions)" id="new-collection-submit" [disabled]="!form.valid || nonRequiredIsInvalid || !confirmMatchesOtherQuestionVal"  class="btn waves-effect waves-light">{{localButtonDisplayName}}
         <i class="material-icons right">send</i>
       </button>
     </div>
+  </div>
+  <div *ngIf="!confirmMatchesOtherQuestionVal">
+    <mat-error>Passwords do not match</mat-error>
   </div>
   </form>
 </div>

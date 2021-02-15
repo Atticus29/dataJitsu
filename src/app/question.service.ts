@@ -84,7 +84,8 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: false,
     minLength: 7,
-    valueMustMatch: this.passwordQuestion
+    valueMustMatch: this.passwordQuestion,
+    keyOfOtherQuestionWhereMatchIsDesired: 'password'
   });
 
   private gymAffiliationQuestion: AutocompleteQuestion = new AutocompleteQuestion({

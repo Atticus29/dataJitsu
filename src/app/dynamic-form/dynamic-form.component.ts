@@ -27,6 +27,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     private nonRequiredIsInvalid: boolean = true;
     private totalNumberOfQuestions: number = 0;
     private uniqueQuestionKeys: string[] = [];
+    private confirmMatchesOtherQuestionVal: boolean = true;
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 
@@ -39,7 +40,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       if(this.questions){
         this.form = this.qcs.toFormGroup(this.questions);
         if(this.questions.length>-1){
-          let requireds = this.questions.map(question => question.required).reduce((a,b)=>a+b,0);
+          let requireds = this.questions.map(question => question.required).reduce((a,b)=>Number(a)+Number(b),0);
           this.totalNumberOfQuestions = requireds;
         }
         this.formProcessingService.actualForm.next(this.form);
@@ -164,6 +165,20 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       if(this.questions){
         let questionKeys = this.questions.map(currentQuestion => currentQuestion.key);
         let focalQuestionIndex = questionKeys.indexOf(isValidFormEmittedData.questionKey);
+
+        // check confirm question
+        let focalQuestion = this.questions[focalQuestionIndex];
+        if(focalQuestion.keyOfOtherQuestionWhereMatchIsDesired){
+          let focalQuestionVal = this.form.controls[isValidFormEmittedData.questionKey].value;
+          let referencedQuestion = this.form.controls[focalQuestion.keyOfOtherQuestionWhereMatchIsDesired];
+          let referencedQuestionVal = referencedQuestion.value;
+          if(focalQuestionVal===referencedQuestionVal){
+            this.confirmMatchesOtherQuestionVal = true;
+          } else{
+            this.confirmMatchesOtherQuestionVal = false;
+          }
+        }
+
         let isRequired = this.questions[focalQuestionIndex].required? this.questions[focalQuestionIndex].required: false;
         if(this.questions && isRequired && !this.uniqueQuestionKeys.includes(isValidFormEmittedData.questionKey) && isValidFormEmittedData.isValid){
           this.uniqueQuestionKeys.push(isValidFormEmittedData.questionKey);
@@ -171,7 +186,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
         if(this.uniqueQuestionKeys.length == this.totalNumberOfQuestions){
           this.nonRequiredIsInvalid = false; //everything valid
         }
-        if(this.questions && isRequired && !isValidFormEmittedData.isValid){ //not valid
+        if(this.questions && isRequired && (!isValidFormEmittedData.isValid)){ //not valid
           let uniqueQuestionKeysIndex = this.uniqueQuestionKeys.indexOf(isValidFormEmittedData.questionKey);
           if(uniqueQuestionKeysIndex >-1){ //removing a question from the validated list
             this.uniqueQuestionKeys.splice(uniqueQuestionKeysIndex,1);

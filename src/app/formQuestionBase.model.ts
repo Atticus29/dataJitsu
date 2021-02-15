@@ -27,6 +27,7 @@ export class FormQuestionBase<T> {
   pathToConfirmedValues: string;
   minLength: number;
   isEmailAddress: boolean;
+  keyOfOtherQuestionWhereMatchIsDesired: string;
 
 
   constructor(options: {
@@ -55,7 +56,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues?: string,
       pathToConfirmedValues?: string,
       minLength?: number,
-      isEmailAddress?: boolean
+      isEmailAddress?: boolean,
+      keyOfOtherQuestionWhereMatchIsDesired?: string
     } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -83,6 +85,7 @@ export class FormQuestionBase<T> {
     this.pathToConfirmedValues = options.pathToConfirmedValues || '';
     this.minLength = options.minLength || 0;
     this.isEmailAddress = options.isEmailAddress || false;
+    this.keyOfOtherQuestionWhereMatchIsDesired = options.keyOfOtherQuestionWhereMatchIsDesired|| '';
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
@@ -116,7 +119,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
       minLength: oldQuestion.minLength,
-      isEmailAddress: oldQuestion.isEmailAddress
+      isEmailAddress: oldQuestion.isEmailAddress,
+      keyOfOtherQuestionWhereMatchIsDesired: oldQuestion.keyOfOtherQuestionWhereMatchIsDesired
     });
   }
   static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
@@ -150,7 +154,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
       minLength: oldQuestion.minLength,
-      isEmailAddress: oldQuestion.isEmailAddress
+      isEmailAddress: oldQuestion.isEmailAddress,
+      keyOfOtherQuestionWhereMatchIsDesired: oldQuestion.keyOfOtherQuestionWhereMatchIsDesired
     });
   }
 
@@ -183,7 +188,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
       minLength: oldQuestion.minLength,
-      isEmailAddress: oldQuestion.isEmailAddress
+      isEmailAddress: oldQuestion.isEmailAddress,
+      keyOfOtherQuestionWhereMatchIsDesired: oldQuestion.keyOfOtherQuestionWhereMatchIsDesired
     });
   }
 
@@ -216,7 +222,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
       minLength: oldQuestion.minLength,
-      isEmailAddress: oldQuestion.isEmailAddress
+      isEmailAddress: oldQuestion.isEmailAddress,
+      keyOfOtherQuestionWhereMatchIsDesired: oldQuestion.keyOfOtherQuestionWhereMatchIsDesired
     });
   }
 
@@ -249,7 +256,8 @@ export class FormQuestionBase<T> {
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
       minLength: oldQuestion.minLength,
-      isEmailAddress: oldQuestion.isEmailAddress
+      isEmailAddress: oldQuestion.isEmailAddress,
+      keyOfOtherQuestionWhereMatchIsDesired: oldQuestion.keyOfOtherQuestionWhereMatchIsDesired
     });
   }
 
