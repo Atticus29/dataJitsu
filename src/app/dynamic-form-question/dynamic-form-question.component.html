@@ -13,33 +13,39 @@
       <div *ngSwitchCase="'textbox'">
         <label [attr.for]="question.key">{{question.label}}</label>
         <input  [formControlName]="question.key? question.key: null" [id]="question.key" [type]="question.type" [placeholder]="question.placeHolder">
-        <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
+        <div *ngIf="question.isEmailAddress && question.required">
+            <mat-error *ngIf="!isEmailValid">{{question.label}} is not a valid email address</mat-error>
+        </div>
+        <div *ngIf="!question.isEmailAddress">
+          <mat-error *ngIf="!isValidText && question.required">{{question.label}} is required</mat-error>
+        </div>
       </div>
       <div *ngSwitchCase="'passwordtext'">
         <input #pwInput [formControlName]="question.key? question.key: null" [id]="question.key" type="question.type" [placeholder]="question.placeHolder" [type]="hide ? 'password' : 'text'">
         <mat-icon matSuffix (click)="hide = !hide">
           {{hide ? 'visibility' : 'visibility_off'}}
         </mat-icon>
-        <mat-hint align="end">{{pwInput.value?.length || 0}}/7</mat-hint>
-        <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
+        <mat-hint align="end">{{pwInput.value?.length || 0}}/{{question.minLength}}</mat-hint>
+        <br>
+        <mat-error id="password-required-error" *ngIf="!isPasswordValidText && question.required">{{question.label}} is required</mat-error>
+        <br>
+        <mat-error *ngIf="!isLongEnough">{{question.label}} must be {{question.minLength}} characters long</mat-error>
       </div>
-      <mat-label *ngSwitchCase="'dropdown'" class="col s12 m7 l7">{{question.label}}</mat-label>
-      <!-- <p>{{question.options}}</p> -->
-      <mat-select class="col s12 m6 l6" [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key? question.key: null">
-        <mat-option *ngFor="let opt of question.dropdownOptions" [value]="opt.value">{{opt.value}}</mat-option>
-      </mat-select>
+      <div *ngSwitchCase="'dropdown'">
+        <mat-label class="col s12 m7 l7">{{question.label}}</mat-label>
+        <mat-select class="col s12 m6 l6" [id]="question.key" [formControlName]="question.key? question.key: null">
+          <mat-option *ngFor="let opt of question.dropdownOptions" [value]="opt.value">{{opt.value}}</mat-option>
+        </mat-select>
+        <br>
+        <mat-error *ngIf="question.required && !isValidDropdown">{{question.label}} is required</mat-error>
+      </div>
 
-      <div *ngSwitchCase="'passwordtext'">
-        <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
-      </div>
-      <div class="row col s12 m7 l7" *ngSwitchCase="'dropdown'">
-        <mat-error *ngIf="!isValid">{{question.label}} is required</mat-error>
-      </div>
       <div *ngSwitchCase="'datepicker'">
         <input matInput [matDatepicker]="picker" [placeholder]="localDatePickerPrompt" [formControlName]="question.key? question.key: null" [id]="question.key">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </div>
+
       <div *ngSwitchCase="'toggle'">
         {{question.label}}
         <mat-slide-toggle
@@ -52,6 +58,7 @@
         {{question.secondLabel}}
       </mat-slide-toggle>
     </div>
+
   </div>
   <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required
 </div> -->

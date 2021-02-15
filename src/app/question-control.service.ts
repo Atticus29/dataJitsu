@@ -11,27 +11,34 @@ export class QuestionControlService {
 
   constructor() { }
 
-  toFormGroup (questions: FormQuestionBase<string>[]){ //TODO maybe a toFormGroup with payLoad should be added to replace the repopulateFormWithPreviousPayload method in dynamic-form.component?
-    //TODO add configurationDetails here? Eventually?
-    // console.log("toFormGroup entered");
-    // console.log("questions in question-control-service");
-    // console.log(questions);
+  toFormGroup (questions: FormQuestionBase<string>[]){
     if(questions){
       let group: any = {};
       questions.forEach(question =>{
-        if(question.required && question.minLength){
-            group[question.key] = new FormControl(question.value || '', [Validators.required, Validators.minLength(question.minLength)]);
+        if(question.required && question.minLength && question.isEmailAddress){
+            group[question.key] = new FormControl(question.value || '', [Validators.required, Validators.minLength(question.minLength), Validators.email]); //these are broken, but covered by other logic in the codebase. See github issue #98
         }
-        if(!question.required && question.minLength){
+        if(!question.required && question.minLength && question.isEmailAddress){
+            group[question.key] = new FormControl(question.value || '', [Validators.minLength(question.minLength), Validators.email]); //these are broken, but covered by other logic in the codebase. See github issue #98
+        }
+        if(question.required && !question.minLength && question.isEmailAddress){
+          group[question.key] = new FormControl(question.value || '', [Validators.required, Validators.email]); //these are broken, but covered by other logic in the codebase. See github issue #98
+        }
+        if(question.required && question.minLength && !question.isEmailAddress){
+            group[question.key] = new FormControl(question.value || '', [Validators.required, Validators.minLength(question.minLength), Validators.email]); //these are broken, but covered by other logic in the codebase. See github issue #98
+        }
+        if(!question.required && question.minLength && !question.isEmailAddress){
             group[question.key] = new FormControl(question.value || '', Validators.minLength(question.minLength));
         }
-        if(question.required && !question.minLength){
+        if(question.required && !question.minLength && !question.isEmailAddress){
           group[question.key] = new FormControl(question.value || '', Validators.required);
-        } else{
+        }
+         else{
           group[question.key] = new FormControl(question.value || '');
         }
-        // group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) :
-        // new FormControl(question.value || '');
+        if(question.required){ // part of the fix for the above brokenness
+          group[question.key] = new FormControl(question.value || '', Validators.required);
+        }
       });
       return new FormGroup(group);
     }

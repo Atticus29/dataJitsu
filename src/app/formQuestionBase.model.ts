@@ -26,6 +26,7 @@ export class FormQuestionBase<T> {
   pathToCandidateValues: string;
   pathToConfirmedValues: string;
   minLength: number;
+  isEmailAddress: boolean;
 
 
   constructor(options: {
@@ -53,7 +54,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions?: Observable<any[]>,
       pathToCandidateValues?: string,
       pathToConfirmedValues?: string,
-      minLength?: number
+      minLength?: number,
+      isEmailAddress?: boolean
     } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -80,6 +82,7 @@ export class FormQuestionBase<T> {
     this.pathToCandidateValues = options.pathToCandidateValues || '';
     this.pathToConfirmedValues = options.pathToConfirmedValues || '';
     this.minLength = options.minLength || 0;
+    this.isEmailAddress = options.isEmailAddress || false;
   }
 
   static makeNewQuestionWithGiveOptionToAnswerThisQuestionMultipleTimesAs(oldQuestion: FormQuestionBase<string>, newStatus:boolean, disableAddButtonWhenBlank:boolean, submitAfterThisQuestion: boolean): FormQuestionBase<string>{
@@ -112,7 +115,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions: oldQuestion.autocompleteOptions,
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
-      minLength: oldQuestion.minLength
+      minLength: oldQuestion.minLength,
+      isEmailAddress: oldQuestion.isEmailAddress
     });
   }
   static createNewQuestionByModifyingExistingQuestion(oldQuestion: FormQuestionBase<string>, isThisQuestionTheLastOfAQuestionGroup:boolean, submitAfterThisQuestion:boolean): FormQuestionBase<string>{
@@ -145,7 +149,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions: oldQuestion.autocompleteOptions,
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
-      minLength: oldQuestion.minLength
+      minLength: oldQuestion.minLength,
+      isEmailAddress: oldQuestion.isEmailAddress
     });
   }
 
@@ -177,7 +182,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions: oldQuestion.autocompleteOptions,
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
-      minLength: oldQuestion.minLength
+      minLength: oldQuestion.minLength,
+      isEmailAddress: oldQuestion.isEmailAddress
     });
   }
 
@@ -209,7 +215,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions: oldQuestion.autocompleteOptions,
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
-      minLength: oldQuestion.minLength
+      minLength: oldQuestion.minLength,
+      isEmailAddress: oldQuestion.isEmailAddress
     });
   }
 
@@ -241,7 +248,8 @@ export class FormQuestionBase<T> {
       autocompleteOptions: oldQuestion.autocompleteOptions,
       pathToCandidateValues: oldQuestion.pathToCandidateValues,
       pathToConfirmedValues: oldQuestion.pathToConfirmedValues,
-      minLength: oldQuestion.minLength
+      minLength: oldQuestion.minLength,
+      isEmailAddress: oldQuestion.isEmailAddress
     });
   }
 

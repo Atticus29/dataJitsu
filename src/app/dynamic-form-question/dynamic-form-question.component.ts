@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-import { Observable } from 'rxjs';
-import {map, startWith, takeUntil, first} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import {map, startWith, takeUntil, first } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { FormQuestionBase } from '../formQuestionBase.model';
@@ -12,6 +12,7 @@ import { FormProcessingService } from '../form-processing.service';
 import { TextTransformationService } from '../text-transformation.service';
 import { DatabaseService } from '../database.service';
 import { QuestionControlService } from '../question-control.service';
+import { ValidationService } from '../validation.service';
 import { NewItemNameDialogComponent } from '../new-item-name-dialog/new-item-name-dialog.component';
 import { constants } from '../constants';
 
@@ -32,40 +33,22 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   private filteredOptions: Observable<string[]>;
   private localItemName: string = null;
   private hide: boolean = true;
-  get isValid() {
-    let returnVal = null;
-    if(this.form){
-      if(this.question){
-        if(this.question.key){
-          if(this.form.controls[this.question.key]){
-            // console.log("got here in dynamic-form-question component");
-            // console.log("this.form.controls[this.question.key] is:");
-            // console.log(this.form.controls[this.question.key]);
-              returnVal = this.form.controls[this.question.key].valid? this.form.controls[this.question.key].valid: null;
-              return returnVal;
-          } else{
-            return returnVal;
-          }
-        }else{
-          return returnVal;
-        }
-      }else{
-        return returnVal;
-      }
-    } else{
-      this.isValidFormQuestion.emit(returnVal);
-      return returnVal;
-    }
+  private isValidText: boolean = false;
+  private isEmailValid: boolean = false;
+  private isPasswordValidText: boolean = false;
+  private isLongEnough: boolean = false;
+  private isValidEmailText: boolean = false;
+  private isValidDropdown: boolean = false;
 
-  }
-
-  constructor(private databaseService: DatabaseService, private formProcessingService: FormProcessingService, public dialog: MatDialog, private textTransformationService: TextTransformationService, private _snackBar: MatSnackBar, private qcs: QuestionControlService) {
+  constructor(private databaseService: DatabaseService, private formProcessingService: FormProcessingService, public dialog: MatDialog, private textTransformationService: TextTransformationService, private _snackBar: MatSnackBar, private qcs: QuestionControlService, private validationService:ValidationService ) {
     super();
   }
 
   ngOnInit() {
-    // console.log("this.question in dynamic-form-question is: ");
-    // console.log(this.question);
+    this.handleFormValidation(null);
+    this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults =>{
+      this.handleFormValidation(formResults);
+    });
     if(this.question.controlType==='toggle'){
       let questionKey = this.question.key;
       if(this.checked){
@@ -78,8 +61,6 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
       this.itemFromFormQuestion.emit(objToEmit);
     }
     this.question.autocompleteOptions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(autocompleteArray =>{
-      // console.log("autocompleteArray is: ");
-      // console.log(autocompleteArray);
       this.localAutocompleteOptions = autocompleteArray;
       if(this.form){
         this.filteredOptions = this.form.get(this.question.key).valueChanges.pipe(startWith(''), map(value=> this._filter(value)));
@@ -91,15 +72,10 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
     this.localDatePickerPrompt = this.constants.datePickerPrompt;
     let self = this;
     this.formProcessingService.actualForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(formResults=>{
-      // console.log("formResults in dynamic-form-question.component are:");
-      // console.log(formResults);
       if(formResults){
         self.formProcessingService.nextButtonClicked.pipe(takeUntil(self.ngUnsubscribe)).subscribe(nextButtonClick =>{
           if(nextButtonClick){
-            // console.log("nextButtonClick is: " + nextButtonClick + " in dynamic-form-question component");
             this.form = formResults;
-            // console.log("this.form is:");
-            // console.log(this.form);
           }
         });
       }
@@ -107,12 +83,11 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
   }
 
   private _filter(value: string): string[] {
-   const filterValue = value.toLowerCase();
-   return this.localAutocompleteOptions.filter(option => option.toLowerCase().includes(filterValue));
- }
+    const filterValue = value.toLowerCase();
+    return this.localAutocompleteOptions.filter(option => option.toLowerCase().includes(filterValue));
+  }
 
   changed(){
-    console.log("changed called");
     //Currently only for toggle switch
     if(this.question.controlType==='toggle'){
       this.checked = !this.checked;
@@ -122,12 +97,88 @@ export class DynamicFormQuestionComponent extends BaseComponent implements OnIni
         this.question.value = this.question.label;
       }
       let questionKey = this.question.key;
-
       let objToEmit = {};
       objToEmit[questionKey]=this.question.value;
-      console.log("objToEmit is: ");
-      console.log(objToEmit);
       this.itemFromFormQuestion.emit(objToEmit);
+    }
+  }
+
+  handleFormValidation(formResults: any){
+    let returnVal = false;
+    if(this.form){
+      if(this.question){
+        if(this.question.key){
+          if(this.form.controls[this.question.key] && formResults){
+
+            //textbox
+            if(this.question.controlType==="textbox" && this.question.required){
+              if(!this.question.isEmailAddress){
+                if(!formResults[this.question.key]){
+                  this.isValidText = false;
+                  returnVal = false; //for isValidFormQuestion emission at the end
+                }else{
+                  this.isValidText = true;
+                  returnVal = true; //for isValidFormQuestion emission at the end
+                }
+              } else{
+                this.isValidText = false; //because isValidEmail text or password text will supercede
+                returnVal = false; //for isValidFormQuestion emission at the end
+              }
+              //special case where textbox is an email address
+              if(this.question.isEmailAddress){
+                if(!formResults[this.question.key]){
+                  this.isValidEmailText = false;
+                  returnVal = false; //for isValidFormQuestion emission at the end
+                }else{
+                  this.isValidEmailText = true;
+                  returnVal = true; //for isValidFormQuestion emission at the end
+                }
+                if(!this.validationService.validateEmail(formResults[this.question.key])){
+                  this.isEmailValid = false;
+                  returnVal = false; //for isValidFormQuestion emission at the end
+                } else{
+                  this.isEmailValid = true;
+                  returnVal = true; //for isValidFormQuestion emission at the end
+                }
+              }
+            }
+
+            //password text
+            if(this.question.controlType==="passwordtext" && this.question.required){
+              if(!formResults[this.question.key]){
+                this.isPasswordValidText = false;
+                returnVal = false; //for isValidFormQuestion emission at the end
+              }else{
+                this.isPasswordValidText = true;
+                returnVal = true; //for isValidFormQuestion emission at the end
+              }
+              // console.log("passwordtext");
+              if(formResults[this.question.key].length < this.question.minLength){
+                this.isLongEnough = false;
+                returnVal = false; //for isValidFormQuestion emission at the end
+              }
+              if(formResults[this.question.key].length >= this.question.minLength){
+                this.isLongEnough = true;
+                returnVal = true; //for isValidFormQuestion emission at the end
+              }
+            }
+
+            //dropdown
+            if(this.question.controlType==="dropdown" && this.question.required){
+              if(!formResults[this.question.key]){
+                this.isValidDropdown = false;
+                returnVal = false; //for isValidFormQuestion emission at the end
+              }else{
+                this.isValidDropdown = true;
+                returnVal = true; //for isValidFormQuestion emission at the end
+              }
+            }
+          }
+        }
+      }
+      this.isValidFormQuestion.emit({questionKey: this.question.key, isValid: returnVal});
+    } else{
+      this.isValidFormQuestion.emit({questionKey: this.question.key, isValid: false});
     }
   }
 

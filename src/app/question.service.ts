@@ -42,13 +42,14 @@ export class QuestionService{
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., Ben.Benson@gmail.com',
     type: 'email',
     order: 1,
     submitAfterThisQuestion: false,
+    isEmailAddress: true
   });
 
   private passwordQuestion: PasswordTextQuestion = new PasswordTextQuestion({
@@ -58,7 +59,7 @@ export class QuestionService{
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: '',
@@ -75,7 +76,7 @@ export class QuestionService{
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: '',
@@ -93,7 +94,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., Straight Blast Gym',
@@ -113,7 +114,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     disableAddNewQuestionGroupButtonIfCurrentValueIsBlank: false,
     indentThisQuestion: true,
@@ -130,7 +131,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., Black Belt',
@@ -150,7 +151,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., Advanced',
@@ -170,7 +171,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., 70.3',
@@ -186,7 +187,7 @@ export class QuestionService{
     required: false,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: false,
-    pairThisQuestionWithPreviousQuestion: true,
+    pairThisQuestionWithPreviousQuestion: false,
     isThisQuestionTheLastOfAQuestionGroup: false,
     indentThisQuestion: true,
     placeHolder: 'E.g., 46',
@@ -652,11 +653,12 @@ export class QuestionService{
 
   getTestQuestions(){
     let testQuestions: FormQuestionBase<string>[] = [];
-    testQuestions.push(this.passwordTextTestQuestion);
-    testQuestions.push(this.testIndividualOneEditQuestion);
-    testQuestions.push(this.testIndividualTwoEditQuestion);
-    testQuestions.push(this.testSlideToggleQuestion);
-    testQuestions.push(this.secondTestSlideToggle);
+    testQuestions.push(this.genderQuestion);
+    // testQuestions.push(this.passwordTextTestQuestion);
+    // testQuestions.push(this.testIndividualOneEditQuestion);
+    // testQuestions.push(this.testIndividualTwoEditQuestion);
+    // testQuestions.push(this.testSlideToggleQuestion);
+    // testQuestions.push(this.secondTestSlideToggle);
     return of(testQuestions);
   }
 

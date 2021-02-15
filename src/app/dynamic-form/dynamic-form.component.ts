@@ -24,6 +24,9 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     payLoad: string = '';
     private localButtonDisplayName: String;
     checked: boolean = false;
+    private nonRequiredIsInvalid: boolean = true;
+    private totalNumberOfQuestions: number = 0;
+    private uniqueQuestionKeys: string[] = [];
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 
@@ -35,6 +38,10 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       let self = this;
       if(this.questions){
         this.form = this.qcs.toFormGroup(this.questions);
+        if(this.questions.length>-1){
+          let requireds = this.questions.map(question => question.required).reduce((a,b)=>a+b,0);
+          this.totalNumberOfQuestions = requireds;
+        }
         this.formProcessingService.actualForm.next(this.form);
         this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
       }
@@ -54,6 +61,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           });
         }
         if(questionArrayOfForm){
+
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
             console.log("getting new questionArray and form currently exists and button display name is: " + buttonDisplayName);
             console.log(questionArrayOfForm);
@@ -77,7 +85,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     processForm(questions: FormQuestionBase<string>[]){
-      console.log("processForm called");
+
       this.payLoad = JSON.stringify(this.form.getRawValue());
       // console.log("this.payLoad in processForm or dynamic-form-component is:");
       // console.log(this.payLoad);
@@ -129,6 +137,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     repopulateFormWithPreviousPayload(form: FormGroup, payLoad: Object, questionArray: FormQuestionBase<string>[]){
+      console.log("repopulateFormWithPreviousPayload entered");
       let payLoadKeys: string[] = Object.keys(payLoad);
       let payLoadValues: string[] = Object.values(payLoad);
       for(let i=0; i<payLoadKeys.length; i++){
@@ -151,9 +160,24 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       this.formProcessingService.captureFormResults(this.form);
     }
 
-    proccessIsFormQuestionValid(isValidFormQuestion: any){
-      console.log("proccessIsFormQuestionValid entered");
-      console.log("isValidFormQuestion in dynamic-form.component is: ");
-      console.log(isValidFormQuestion);
+    proccessIsFormQuestionValid(isValidFormEmittedData: any){
+      if(this.questions){
+        let questionKeys = this.questions.map(currentQuestion => currentQuestion.key);
+        let focalQuestionIndex = questionKeys.indexOf(isValidFormEmittedData.questionKey);
+        let isRequired = this.questions[focalQuestionIndex].required? this.questions[focalQuestionIndex].required: false;
+        if(this.questions && isRequired && !this.uniqueQuestionKeys.includes(isValidFormEmittedData.questionKey) && isValidFormEmittedData.isValid){
+          this.uniqueQuestionKeys.push(isValidFormEmittedData.questionKey);
+        }
+        if(this.uniqueQuestionKeys.length == this.totalNumberOfQuestions){
+          this.nonRequiredIsInvalid = false; //everything valid
+        }
+        if(this.questions && isRequired && !isValidFormEmittedData.isValid){ //not valid
+          let uniqueQuestionKeysIndex = this.uniqueQuestionKeys.indexOf(isValidFormEmittedData.questionKey);
+          if(uniqueQuestionKeysIndex >-1){ //removing a question from the validated list
+            this.uniqueQuestionKeys.splice(uniqueQuestionKeysIndex,1);
+          }
+          this.nonRequiredIsInvalid = true;
+        }
+      }
     }
 }
