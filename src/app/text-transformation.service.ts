@@ -32,7 +32,7 @@ export class TextTransformationService {
       let tmpDate = Date.parse(dateString);
       let tmpString = moment(tmpDate).format('LL');
       // console.log("return tmpString: " + tmpString);
-      return tmpString;
+      return tmpString === "Invalid date"? dateString: tmpString;
     }
     if(date){
       // console.log("formatted as date");

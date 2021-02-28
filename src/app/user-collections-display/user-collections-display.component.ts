@@ -32,8 +32,6 @@ export class UserCollectionsDisplayComponent extends BaseComponent implements On
         // this.localUser = user;
         if(user.id){
           this.databaseService.getCollections(user.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-            console.log("result:");
-            console.log(result);
             this.collections = result;
           });
         }

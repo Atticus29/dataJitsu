@@ -1757,28 +1757,39 @@ export class DatabaseService {
     });
     return obsRet;
   }
+  updateUser(questionAssociatedWithUpdateVal: any, path: string, updateVal: string): Observable<boolean> {
+    let self = this;
+    let obsRet = Observable.create(function (observer) {
+      let updates: any = {};
+      updates[path] = updateVal;
+      if (questionAssociatedWithUpdateVal.pathToConfirmedValues){
+        self.doesGenricCandidateAlreadyExistInDb(questionAssociatedWithUpdateVal.pathToConfirmedValues, updateVal).pipe(take(1)).subscribe(alreadyExists => {
+          console.log("alreadyExists in updateUser is: " + alreadyExists);
+          if (!alreadyExists) {
+            self.addGenericCandidateNameToDb(questionAssociatedWithUpdateVal.pathToCandidateValues, self.textTransformationService.capitalizeFirstLetter(updateVal), path);
+          }
+        });
+      }
+      firebase.database().ref().update(updates);
+      observer.next(true);
+      return obsRet;
+    });
+    return obsRet;
+  }
+
 
   updateVideoDeet(questionAssociatedWithUpdateVal:any, path: string, updateVal: string, videoId: string, videoUrl: string, userId: string, oldVal: string): Observable<boolean>{
-    console.log("oldVal is: " + oldVal);
-    console.log("updateVideoDeet called");
-    console.log("questionAssociatedWithUpdateVal is: ");
-    console.log(questionAssociatedWithUpdateVal);
     let self = this;
     let obsRet = Observable.create(function(observer){
           let updates = {};
           if(path.indexOf(constants.nameOfIndividual1InDb)>-1 || path.indexOf(constants.nameOfIndividual2InDb)>-1){
             let subpath = path.substring(0,path.indexOf(constants.nameOfVideoDetailsInDb));
-            // console.log("subpath is: " + subpath);
             let eventsPath = subpath + constants.nameOfEventsInDb;
-            // console.log("eventsPath is " + eventsPath);
             let events = firebase.database().ref(eventsPath);
             events.once('value', (snapshot) =>{
               snapshot.forEach((childSnapshot) =>{
                 let childKey = childSnapshot.key;
                 let childData = childSnapshot.val();
-                // console.log("childKey is: " + childKey);
-                console.log("childData is: ");
-                console.log(childData);
                 let actorOrRecipient = null;
                 if(childData.actor===oldVal){
                   console.log("got here 1");
@@ -1810,7 +1821,6 @@ export class DatabaseService {
                   actorOrRecipient = "recipient";
                   updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal;
                 }
-
                 // can't do updates[eventsPath+'/'+childKey+'/'+ actorOrRecipient] = updateVal here, because the more than one update path may need to be updated from the above logic
               });
             });
@@ -1852,8 +1862,8 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/' + userId + '/collections');
     let obsRet = Observable.create(function(observer){
       ref.once("value").then(snapshot =>{
-        console.log("snapshot.val() in getCollections:");
-        console.log(snapshot.val());
+        // console.log("snapshot.val() in getCollections:");
+        // console.log(snapshot.val());
         if(snapshot.val()){
           let collectionObjArray = Object.values(snapshot.val());
           let collectionArray = collectionObjArray.map(Collection.fromDataBase)
