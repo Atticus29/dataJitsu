@@ -36,11 +36,6 @@ import { SandboxComponent } from './sandbox/sandbox.component'
 
 const routes: Routes = [
   {
-    path: '',
-    component: AllVideosComponent,
-    canActivate: [AuthGuard],
-    pathMatch: 'full'
-  },{
     path: 'login',
     component: LoginComponent,
     canActivate: [LoggedInGuard],

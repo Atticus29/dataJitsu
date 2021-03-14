@@ -674,7 +674,7 @@ handleNullingAndResettingLocalAndTrackedVariables(){
 toggleEditInd1(){
   console.log("toggleEditInd1 entered");
   this.stopCounter = 0;
-  this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{
+  this.questionService.getIndividualOneEditQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((individualOneQuestion) =>{ 
     this.formProcessingService.captureQuestionArrayOfCurrentForm(individualOneQuestion);
     // this.formProcessingService.actualForm.next(this.qcs.toFormGroup(individualOneQuestion));
     // this.databaseService.getMatchFromNodeKey(this.videoId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(match =>{

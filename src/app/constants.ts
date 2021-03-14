@@ -19,7 +19,9 @@ export var constants = {
     collectionAddedNotification: "Your collection has been added",
     collectionOwnerQuestionsAddedNotification: "Your questions have been added to your collection. Users who use your collection will be prompted with those questions when adding videos",
     videoDeetUpdatedNotification: "Your video detail has been updated successfully",
+    userDetailUpdatedNotification: "Your user detail has been updated successfully",
     videoDeetUpdateFailureNotification: "Your video detail did not update successfully",
+    userDetailUpdateFailureNotification: "Your user detail did not update successfully",
     userAddedToDbNotification: "User successfully created!",
     userAddedToDbFailureNotification: "User NOT successfully created",
     collectionAlreadyExistsNotification: "Collection already exists in the database. Please choose a new name or category-item combination.",
@@ -122,10 +124,15 @@ export var constants = {
     subscriptManageLabel: "Manage Subscription",
     subscriptionStatusLabel :"Your subscription status",
     collectionLabel: "Your Collections",
-    userIdLabel: "Your User UID",
+    userIdLabel: "You",
     noCollectionsYet: "You currently have no collections",
     nameOfIndividual1InDb: "athlete1Name",
     nameOfIndividual2InDb: "athlete2Name",
     nameOfVideoDetailsInDb: "videoDeets",
-    nameOfEventsInDb: "events"
+    nameOfEventsInDb: "events",
+    editableUserInfoList: ["affiliation", "age", "gender", "giRank", "noGiRank", "weight", "name"],
+    displayableUserInfoObj: { "name":"Name", "dateCreated": "Date Created", "dateLastAnnotated": "Date of Last Annotation", "privileges": "Privileges", "reputationPoints": "Reputation Points", "affiliation": "Affiliation", "age": "Age", "email": "Email Address", "gender": "Gender", "giRank": "Gi Rank", "noGiRank": "No Gi Rank", "weight": "Weight (Kg)"},
+    stringSharedByAllDateParams: "date",
+    privilegesParamName: "privileges",
+    displayablePrivilegesInfoObj: {"canAnnotateVideos": "Can Annotate Videos", "canEditMatches": "Can Edit Video Details", "canFlagAnnotations": "Can Flag Annotations", "canFlagUsers": "Can Flag Users", "canRateAnnotations": "Can Rate Annotations", "canRateMatches": "Can Rate Videos", "isAdmin": "Is An Administrator"}
   };

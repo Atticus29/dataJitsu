@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TrackerService } from 'app/tracker.service';
 import { takeUntil } from 'rxjs/operators';
+import { constants } from '../constants';
 
 import { BaseComponent } from '../base/base.component';
 
@@ -11,7 +13,7 @@ import { BaseComponent } from '../base/base.component';
 })
 export class UserInfoComponent extends BaseComponent implements OnInit {
   private userDbId: string = null;
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private trackerService: TrackerService) {
     super();
   }
 
@@ -19,6 +21,7 @@ export class UserInfoComponent extends BaseComponent implements OnInit {
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.userDbId = params['userId'];
     });
+
   }
 
 }

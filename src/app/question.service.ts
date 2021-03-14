@@ -20,7 +20,7 @@ export class QuestionService{
   constructor(private databaseService: DatabaseService){}
 
   private userNameQuestion: TextQuestion = new TextQuestion({
-    key: 'userName',
+    key: 'name',
     label: 'User Name',
     value: '',
     required: true,
@@ -36,7 +36,7 @@ export class QuestionService{
   });
 
   private emailAddressQuestion: TextQuestion = new TextQuestion({
-    key: 'emailAddress',
+    key: 'email',
     label: 'Email Address',
     value: '',
     required: true,
@@ -89,7 +89,7 @@ export class QuestionService{
   });
 
   private gymAffiliationQuestion: AutocompleteQuestion = new AutocompleteQuestion({
-    key: 'gymAffiliation',
+    key: 'affiliation',
     label: 'Gym Affiliation',
     value: '',
     required: false,
@@ -609,6 +609,19 @@ export class QuestionService{
     dropdownOptions: [{key:'text', value:'Text'}, {key:'dropdown', value:'Dropdown'}, {key:'datepicker', value:'Date Picker'}, {key:'toggle', value:'Slide Toggle'}, {key:'autocomplete', value:'Autocomplete'}],
     submitAfterThisQuestion: true
   });
+
+  getUserEditQuestions() {
+    let accountEditQuestions: {} = {};
+    accountEditQuestions["name"]=(this.userNameQuestion);
+    accountEditQuestions["email"]=(this.emailAddressQuestion);
+    accountEditQuestions["affiliation"]=(this.gymAffiliationQuestion);
+    accountEditQuestions["gender"]=(this.genderQuestion);
+    accountEditQuestions["giRank"]=(this.giRankQuestion);
+    accountEditQuestions["noGiRank"]=(this.noGiRankQuestion);
+    accountEditQuestions["weight"]=(this.weightQuestion);
+    accountEditQuestions["age"]=(this.ageQuestion);
+    return of(accountEditQuestions);
+  }
 
   getAccountCreationQuestions(){
     let accountCreationQuestions: FormQuestionBase<string>[] = [];

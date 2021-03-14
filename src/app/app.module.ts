@@ -134,6 +134,7 @@ import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-n
 import { ReputationLogComponent } from './reputation-log/reputation-log.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { NewItemNameDialogComponent } from './new-item-name-dialog/new-item-name-dialog.component';
+import { UserInfoEditComponent } from './user-info-edit/user-info-edit.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -209,7 +210,8 @@ export const firebaseConfig = {
     GenericNewVideoFormComponent,
     ReputationLogComponent,
     SandboxComponent,
-    NewItemNameDialogComponent
+    NewItemNameDialogComponent,
+    UserInfoEditComponent
   ],
   imports: [
     BrowserModule,

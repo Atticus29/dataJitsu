@@ -1,0 +1,46 @@
+<div class="flexbox-item">
+    <h4>Your User Information</h4>
+    <hr>
+    <ul>
+        <li *ngFor="let displayItem of (displayItems ? displayItems : []); index as i">
+            <ul>
+                <li>
+                    <span class="bold">{{displayItem.displayWords}}: </span>
+                    <span class="featured-text">
+                        <div *ngIf="displayMode">
+                            <div *ngIf="!displayItem.isPrivileges">
+                                <span>{{displayItem.param}}</span>
+                                <span *ngIf="constants.editableUserInfoList.includes(displayItem.originalKey)">
+                                    <button class="btn-floating halfwary-fab waves-effect waves-light tooltipped" name="editInd1Btn" id="editInd1Btn"
+                                        (click)="toggleEdit(displayItem)">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div *ngIf="displayItem.isPrivileges">
+                                <ul *ngFor="let privilege of localPrivileges">
+                                    <li class="indent-me">
+                                        <span class="italic">{{privilege.displayName}}: </span><span>{{privilege.val}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                            <div *ngIf="!displayMode && currentQuestion.key===displayItem.originalKey">
+                                <span>{{displayItem.param}}</span>
+                                <span *ngIf="constants.editableUserInfoList.includes(displayItem.originalKey)">
+                                    <app-dynamic-form [isFormOwner]="false" [configOptions]="localConfigOptions"
+                                        [questions]="formProcessingService.questionArrayOfForm|async">
+                                    </app-dynamic-form>
+                                    <button (click)="cancelForm()" id="cancel-submit"
+                                        class="btn waves-effect waves-light">Cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                    
+                                </span>
+                            </div>
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
