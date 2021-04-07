@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "module": "es6",
+    "module": "esnext",
     "target": "es6",
     "typeRoots": [
       "node_modules/@types"
