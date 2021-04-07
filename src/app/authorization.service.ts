@@ -1,9 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database'; //removed FirebaseListObservable
 import { AngularFireAuth } from '@angular/fire/auth';
+import * as admin from 'firebase-admin';
 import { auth } from 'firebase/app';
 import { Router } from "@angular/router";
-// import * as firebase from 'firebase';
 
 import { takeUntil, take, first } from 'rxjs/operators';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
@@ -16,6 +16,8 @@ import { constants } from './constants';
   providedIn: 'root'
 })
 export class AuthorizationService {
+  private admin = require("firebase-admin");
+
 
   private authError: BehaviorSubject<any> = new BehaviorSubject(null);
   private authState: any = null;
@@ -148,6 +150,9 @@ export class AuthorizationService {
   //// Email/Password Auth ////
 
   emailSignUp(email:string, password:string) {
+    console.log("entering emailSignUp");
+    console.log("email is: " + email);
+    console.log("password is: " + password);
     let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     let self = this;
     return this.afAuth.createUserWithEmailAndPassword(email, password)
@@ -258,6 +263,18 @@ export class AuthorizationService {
         this.router.navigate(['login']);
       }
     })
+  }
+
+  deleteuser(uid: string): void{
+    admin
+      .auth()
+      .deleteUser(uid)
+      .then(() => {
+        console.log('Successfully deleted user');
+      })
+      .catch((error) => {
+        console.log('Error deleting user:', error);
+      });
   }
   //// Helpers ////
 
