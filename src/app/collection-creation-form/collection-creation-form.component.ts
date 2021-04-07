@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
 import { Observable, combineLatest, of } from 'rxjs';
 import { takeUntil, takeLast, takeWhile, take, withLatestFrom } from 'rxjs/operators';
-// import {MatSnackBar} from '@angular/material';
 import {MatStepper} from '@angular/material/stepper';
 
 // import { constants } from '../constants';
