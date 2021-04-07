@@ -1,7 +1,7 @@
 {
   "name": "functions",
   "scripts": {
-    "lint": "tslint --project tsconfig.json",
+    "lint": "eslint --project tsconfig.json",
     "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/stripe": "^7.13.17",
     "firebase-functions-test": "^0.1.6",
-    "tslint": "^5.12.0",
+    "eslint": "^5.12.0",
     "typescript": "^3.2.2"
   },
   "private": true
