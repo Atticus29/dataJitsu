@@ -25,6 +25,14 @@
       "firebase",
       "node",
       "cypress"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "util":[
+        "src/empty.ts"
+      ],
+      "zlib":[
+        "src/empty.ts"
+      ]
+    }
   }
 }
