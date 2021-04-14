@@ -2,7 +2,7 @@
 <div class="flexbox-vertical">
   <h2 mat-dialog-title class="flex-item">Enter new tournament name</h2>
   <mat-dialog-content>
-    <form materialize [formGroup]="form">
+    <form [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
         <input matInput [formControl]="tournamentNameFc" placeholder="Tournament Name" id="tournamentNameFc" value="E.g., IBJJF World Jiu-Jitsu Championship" required>

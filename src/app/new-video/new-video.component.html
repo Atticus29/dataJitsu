@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="row">
-    <form class="col s12" materialize [formGroup]="newMatchForm">
+    <form class="col s12" [formGroup]="newMatchForm">
       <div class="row">
         <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
         <input matInput [formControl]="videoUrlBoundFc" type="url" placeholder="Video URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="videoUrl" required>

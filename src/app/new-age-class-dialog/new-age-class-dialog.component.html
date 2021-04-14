@@ -1,7 +1,7 @@
 <div class="flexbox-vertical">
   <h2 mat-dialog-title class="flex-item">Enter new age class name</h2>
   <mat-dialog-content>
-    <form materialize [formGroup]="form">
+    <form [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
         <input matInput [formControl]="ageClassNameFc" placeholder="Age Class Name" id="ageClassNameFc" value="E.g., Masters 2" required>

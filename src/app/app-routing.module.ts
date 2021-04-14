@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleWithProviders }  from '@angular/core';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { NewVideoComponent } from './new-video/new-video.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
@@ -22,8 +21,6 @@ import { NewsComponent } from './news/news.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { GenericNewVideoFormComponent } from './generic-new-video-form/generic-new-video-form.component';
-import { redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard'; //AngularFireAuthGuard, hasCustomClaim,
-import { canActivate, AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
 import { constants } from './constants';

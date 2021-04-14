@@ -2,7 +2,7 @@
 <div class="flexbox-vertical" id="new-move-dialog">
   <h2 mat-dialog-title class="flex-item">Enter new move name</h2>
   <mat-dialog-content>
-    <form materialize [formGroup]="form">
+    <form [formGroup]="form">
       <mat-form-field class="flex-item">
         <!-- <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Last Name</label> -->
         <input matInput [formControl]="eventNameFc" placeholder="Move Name" id="eventNameFc" value="E.g., Triangle" required>

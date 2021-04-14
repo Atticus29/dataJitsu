@@ -23,13 +23,13 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss",
-              "node_modules/materialize-css/dist/css/materialize.min.css"
+              // "node_modules/materialize-css/dist/css/materialize.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/hammerjs/hammer.js",
               "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
-              "node_modules/materialize-css/dist/js/materialize.min.js"
+              // "node_modules/materialize-css/dist/js/materialize.min.js"
             ],
             "aot": true
           },
@@ -86,12 +86,12 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/hammerjs/hammer.js",
               "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
-              "node_modules/materialize-css/dist/js/materialize.min.js"
+              // "node_modules/materialize-css/dist/js/materialize.min.js"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss",
-              "node_modules/materialize-css/dist/css/materialize.min.css"
+              // "node_modules/materialize-css/dist/css/materialize.min.css"
             ],
             "assets": [
               "src/assets",

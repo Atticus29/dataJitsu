@@ -12,7 +12,10 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      util: require.resolve("util/")
+    }
   },
   output: {
     filename: 'bundle.js',
