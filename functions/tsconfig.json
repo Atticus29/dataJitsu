@@ -9,6 +9,7 @@
     "target": "es2017"
   },
   "compileOnSave": true,
+  "skipLibCheck": true,
   "include": [
     "src"
   ]

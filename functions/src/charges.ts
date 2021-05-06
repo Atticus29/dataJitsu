@@ -27,7 +27,7 @@ export const createCharge = async(uid: string, source: string, amount: number, i
   console.log("createCharge entered");
   const customer = await getCustomer(uid);
   // const customer = await getOrCreateCustomer(uid);
-  let customerId: string = customer.id;
+  // const customerId: string = customer.id;
   console.log("customer");
   console.log(customer);
   // console.log("customerId");

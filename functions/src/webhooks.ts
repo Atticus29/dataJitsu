@@ -19,18 +19,26 @@ export const webhookHandler = async (data: any) => {
     if(snapshot){
       console.log("dbFirebase call in webhook function yields user:");
       console.log(snapshot.val());
-      let usr = snapshot.val();
-      let usrId = Object.keys(usr)[0];
-      let updates = {};
-      updates['/users/' + id + '/paidStatus'] = isActive;
-      dbFirebase.ref().update(updates);
+      const usr = snapshot.val();
+      const usrId = Object.keys(usr)[0];
+      const updates: any = {};
+      updates['/users/' + usrId + '/paidStatus'] = isActive;
+      // updates['/users/' + id + '/paidStatus'] = isActive;
+      dbFirebase.ref().update(updates).then(res => {
+        console.log("Did the update paid status as webhook thing");
+      }).catch(function (error) {
+        console.log('Error updating paid status as webhook: ', error);
+      });
       // usr = usr[Object.keys(usr)[0]];
     }
   });
 
-  const docData = {
-    [subscription.plan.id]: isActive,
-    [subscription.id]: subscription.status,
+  let docData: any = null;
+  if(subscription && subscription.plan && subscription.plan.id){
+    docData = {
+      [subscription.plan.id]: isActive,
+      [subscription.id]: subscription.status,
+    }
   }
 
   return await db.doc(`users/${uid}`).set(docData, { merge: true });
@@ -39,7 +47,7 @@ export const webhookHandler = async (data: any) => {
 export const invoiceWebhookEndpoint = functions.https.onRequest(
   async (req, res) => {
     try {
-      const sig = req.headers['stripe-signature'];
+      const sig: any = req.headers['stripe-signature'];
       const event = stripe.webhooks.constructEvent(
         (req as any).rawBody,
         sig,

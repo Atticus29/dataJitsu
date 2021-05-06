@@ -4,7 +4,6 @@ import { stripe, db, dbFirebase } from './config';
 import { getCustomer, getOrCreateCustomer } from './customers';
 import { attachSource } from './sources';
 
-
 /**
 Gets a user's subscriptions
 */
@@ -55,17 +54,28 @@ export const createSubscription = async(uid:string, source:string, plan: string,
       if(snapshot){
         console.log("dbFirebase call in cloud function yields user:");
         console.log(snapshot.val());
-        let usr = snapshot.val();
-        let usrId = Object.keys(usr)[0];
-        let updates = {};
+        const usr = snapshot.val();
+        const usrId = Object.keys(usr)[0];
+        let updates: any = {};
         // console.log("paidStatus about to be updated to true from cloud function!!!");
         updates['/users/' + usrId + '/paidStatus'] = true;
-        dbFirebase.ref().update(updates);
+        dbFirebase.ref().update(updates).then(res =>{
+          console.log("Did the plan add to sbuscription thing");
+        }).catch(function (error) {
+          console.log('Error adding plan to existing subscription: ', error);
+        });
         updates = {};
         updates['/users/' + usrId + '/subscriptionInfo'] = {customerId : customerId, subscriptionId : subscription.id};
-        dbFirebase.ref().update(updates);
+        dbFirebase.ref().update(updates).then(res => {
+          console.log("Did the plan add to sbuscription thing");
+        }).catch(function (error) {
+          console.log('Error adding plan to existing subscription: ', error);
+        });
       }
+    }).catch(function (error) {
+      console.log('Error adding play to subscription: ', error);
     });
+    ;
 
     const docData = {
         [plan]: true,
@@ -98,14 +108,24 @@ export async function cancelSubscription(uid: string, subId: string): Promise<an
     if(snapshot){
       console.log("dbFirebase call in cloud function yields user:");
       console.log(snapshot.val());
-      let usr = snapshot.val();
-      let usrId = Object.keys(usr)[0];
-      let updates = {};
+      const usr = snapshot.val();
+      const usrId = Object.keys(usr)[0];
+      const updates: any = {};
       updates['/users/' + usrId + '/paidStatus'] = false;
-      dbFirebase.ref().update(updates);
-      let ref = dbFirebase.ref('/users/' + usrId + '/subscriptionInfo');
-      ref.remove();
+      dbFirebase.ref().update(updates).then(res => {
+        console.log("Did the plan add to sbuscription thing");
+      }).catch(function (error) {
+        console.log('Error adding plan to existing subscription: ', error);
+      });
+      const ref = dbFirebase.ref('/users/' + usrId + '/subscriptionInfo');
+      ref.remove().then(res => {
+        console.log("Did the remove subscription info. thing");
+      }).catch(function (error) {
+        console.log('Error removing subscription info.: ', error);
+      });
     }
+  }).catch(function (error) {
+    console.log('Error updating paid status: ', error);
   });
 
   const docData = {

@@ -13,8 +13,15 @@ export const attachSource = async(uid: string, source: string) => {
     const customer = await getOrCreateCustomer(uid);
     console.log("customer in attachSource:");
     console.log(customer);
+    let existingSource = null;
+    if(customer){
+        if(customer.sources){
+            if(customer.sources.data){
+                existingSource = customer.sources.data.filter(s => s.id === source).pop();
+            }
+        }
+    }
 
-    const existingSource = customer.sources.data.filter(s => s.id === source).pop();
 
     if (existingSource) {
         return existingSource;

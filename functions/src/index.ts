@@ -25,3 +25,8 @@ export {
 export {
     invoiceWebhookEndpoint
 } from './webhooks';
+
+
+export{
+    deleteUserByEmail
+} from './deleteUser';
