@@ -135,6 +135,7 @@ import { ReputationLogComponent } from './reputation-log/reputation-log.componen
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { NewItemNameDialogComponent } from './new-item-name-dialog/new-item-name-dialog.component';
 import { UserInfoEditComponent } from './user-info-edit/user-info-edit.component';
+import { UserDeleteComponent } from './user-delete/user-delete.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -211,7 +212,8 @@ export const firebaseConfig = {
     ReputationLogComponent,
     SandboxComponent,
     NewItemNameDialogComponent,
-    UserInfoEditComponent
+    UserInfoEditComponent,
+    UserDeleteComponent
   ],
   imports: [
     BrowserModule,

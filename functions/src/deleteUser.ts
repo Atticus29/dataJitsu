@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-admin.initializeApp();
+// admin.initializeApp();
 
 export const deleteUserByEmail = functions.https.onRequest(async (request, response) =>{
     const userEmail = request.body.userEmail;
