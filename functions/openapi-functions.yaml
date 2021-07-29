@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  title: Cloud Endpoints + GCF
+  description: Sample API on Cloud Endpoints with a Google Cloud Functions backend
+  version: 1.0.0
+host: cloud-run-cors-service-ihwyzwhg7q-uc.a.run.app
+schemes:
+  - https
+produces:
+  - application/json
+x-google-endpoints:
+  - name: "cloud-run-cors-service-ihwyzwhg7q-uc.a.run.app"
+  # allowCors: True
+paths:
+  /deleteUserByEmail:
+    post:
+      summary: Delete a user from firebase by their email address
+      operationId: deleteUserByEmail
+      x-google-backend:
+        address: https://us-central1-datajitsu.cloudfunctions.net/deleteUserByEmail
+        protocol: h2
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
