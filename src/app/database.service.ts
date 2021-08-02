@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { takeUntil, take, first, merge } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { takeUntil, take, first, merge, catchError, retry } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 import { TextTransformationService } from './text-transformation.service';
 import { DateCalculationsService } from './date-calculations.service';
 import { ValidationService } from './validation.service';
+import { deleteUserEndpointUrl } from './secrets';
 
 import { User } from './user.model';
 import { Video } from './video.model';
@@ -22,6 +25,7 @@ import { FormQuestionBase } from './formQuestionBase.model';
 
 @Injectable()
 export class DatabaseService {
+  private handleError: HandleError;
   videos:Observable<any>;
   weightClasses:Observable<any>;
   giRanks:Observable<any>;
@@ -35,23 +39,31 @@ export class DatabaseService {
   eventsAsObject: Observable<any>;
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, public db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateCalculationsService: DateCalculationsService, private validationService: ValidationService) {
-    this.videos = db.list<Video>('/videos').valueChanges();
-    this.weightClasses = db.list<String>('/weightClasses').valueChanges();
-    this.giRanks = db.list<String>('/giRanks').valueChanges();
-    this.noGiRanks = db.list<String>('/noGiRanks').valueChanges();
-    this.ageClasses = db.list<String>('/ageClasses').valueChanges();
-    this.users = db.list<User>('/users').valueChanges();
-    this.events = db.list<String>('/events').valueChanges(); //TODO maybe JSON?
-    this.eventsAsObject = db.object('/events').valueChanges();
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    public db: AngularFireDatabase,
+    private textTransformationService: TextTransformationService,
+    private dateCalculationsService: DateCalculationsService,
+    private httpErrorHandler: HttpErrorHandler,
+    private validationService: ValidationService) {
+      this.handleError = this.httpErrorHandler.createHandleError('database service');
+      this.videos = db.list<Video>('/videos').valueChanges();
+      this.weightClasses = db.list<String>('/weightClasses').valueChanges();
+      this.giRanks = db.list<String>('/giRanks').valueChanges();
+      this.noGiRanks = db.list<String>('/noGiRanks').valueChanges();
+      this.ageClasses = db.list<String>('/ageClasses').valueChanges();
+      this.users = db.list<User>('/users').valueChanges();
+      this.events = db.list<String>('/events').valueChanges(); //TODO maybe JSON?
+      this.eventsAsObject = db.object('/events').valueChanges();
   }
 
   getEventIdByVideoIdAndStartTime(videoId: string, timeInitiated: number){
     let ref = firebase.database().ref('videos/' + videoId + '/events');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild("timeInitiated").equalTo(timeInitiated).once("child_added", snapshot =>{
-        if(snapshot){
-          if(snapshot.key){
+        if(snapshot) {
+          if(snapshot.key) {
             // console.log(snapshot.key); //TODO get key
             let annotationId = snapshot.key; //TODO key instead of val
             observer.next(annotationId);
@@ -79,8 +91,31 @@ export class DatabaseService {
   getTournamentNames(): any{
     return this.getGeneric('/tournamentNames/');
   }
-  getGeneric(path:string): any{
+  getGeneric(path:string): any {
     return this.db.list(path).valueChanges();
+  }
+
+  deleteUserByEmail(emailAddress: String): Observable<boolean> {
+    //TODO
+    console.log('deleteMe deleteUserByEmail got called');
+    return this.http.post<Observable<boolean>>(deleteUserEndpointUrl, { emailAddress })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+    // const results =  this.http.post<boolean>(deleteUserEndpointUrl, {emailAddress})
+    //   .pipe(
+    //     retry(3),
+    //     catchError(this.handleError)
+    //   );
+    // console.log('deleteMe and do more stuff with results: ');
+    // console.log(results);
+    // return of(true);
+    // return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
+    //   .pipe(
+    //     catchError(this.handleError('addHero', hero))
+    //   );
+    // return true;
   }
 
   getCandidateTournamentNames(): any{

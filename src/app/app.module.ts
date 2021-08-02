@@ -36,15 +36,15 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { VideoDataSource } from './videoDataSource.model';
-// import { FeedbackItem } from './feedbackItem.model';
 import { HorizontalTimelineComponent } from './horizontal-timeline/horizontal-timeline.component';
 import { DynamicDatabase } from './dynamicDatabase.model';
-// import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-// import { EmailLoginDialog } from './emailLoginDialog.model';
 import { HelperService } from './helper.service';
 import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 import { FormProcessingService } from './form-processing.service';
 import { NgxFeedbackModule } from 'ngx-feedback';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpErrorHandler } from './http-error-handler.service';
+import { MessageService } from './message.service';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -217,6 +217,7 @@ export const firebaseConfig = {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(firebaseConfig),
@@ -267,7 +268,25 @@ export const firebaseConfig = {
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent, EmailLoginDialogComponent, AnnotationLegendDialogComponent, NewAthleteNameDialogComponent, NewMoveDialogComponent, NewTournamentNameDialogComponent, NewWeightClassDialogComponent, NewNoGiRankDialogComponent, NewAgeClassDialogComponent, NewLocationNameDialogComponent, NewItemNameDialogComponent],
-  providers: [AuthorizationService, DatabaseService, ProtectionGuard, AuthGuard, LoggedInGuard, D3Service, ValidationService, TextTransformationService, VideoDataSource, DynamicDatabase, AngularFireAuthGuard, HelperService, AngularFireFunctions,QuestionControlService, QuestionService, FormProcessingService,
+  providers:[
+    AuthorizationService,
+    DatabaseService,
+    ProtectionGuard,
+    AuthGuard,
+    LoggedInGuard,
+    D3Service,
+    ValidationService,
+    TextTransformationService,
+    VideoDataSource,
+    DynamicDatabase,
+    AngularFireAuthGuard,
+    HelperService,
+    AngularFireFunctions,
+    QuestionControlService,
+    QuestionService,
+    HttpErrorHandler,
+    MessageService,
+    FormProcessingService,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ],
 })
