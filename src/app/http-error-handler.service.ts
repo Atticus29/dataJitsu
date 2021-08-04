@@ -28,6 +28,7 @@ export class HttpErrorHandler {
    * @param result - optional value to return as the observable result
    */
   handleError<T>(serviceName = '', operation = 'operation', result = {} as T) {
+    console.log('deleteMe got into the body of handleError');
 
     return (error: HttpErrorResponse): Observable<T> => {
       // TODO: send the error to remote logging infrastructure

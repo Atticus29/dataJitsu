@@ -97,8 +97,8 @@ export class DatabaseService {
 
   deleteUserByEmail(emailAddress: String): Observable<boolean> {
     //TODO
-    console.log('deleteMe deleteUserByEmail got called');
-    return this.http.post<Observable<boolean>>(deleteUserEndpointUrl, { emailAddress })
+    console.log('deleteMe deleteUserByEmail got called and deleteUserEndpointUrl is: ' + deleteUserEndpointUrl);
+    return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
       .pipe(
         retry(3),
         catchError(this.handleError)
