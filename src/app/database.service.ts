@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { takeUntil, take, first, merge, catchError, retry } from 'rxjs/operators';
+import { takeUntil, take, first, merge, catchError, retry, map } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -267,6 +267,9 @@ export class DatabaseService {
   return result;
 }
 
+  getUsers(): Observable<User[]> {
+    return this.db.list('users/').map(User.fromJson);
+  }
 
   getUserReputationPoints(userId: string){
     return this.db.object('users/' + userId + '/reputationPoints').valueChanges();

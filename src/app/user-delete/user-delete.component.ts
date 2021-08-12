@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-user-delete',
@@ -12,28 +13,26 @@ import { DatabaseService } from '../database.service';
 })
 export class UserDeleteComponent extends BaseComponent implements OnInit {
 
-  constructor(private databaseServie: DatabaseService) {
+  constructor(private databaseService: DatabaseService) {
     super();
   }
 
   async ngOnInit() {
     const userEmail: String = 'tmp11@gmail.com';
-    // const deleteUserFn = this.functions.httpsCallable('deleteUserByEmail');
     try {
-      const deletionStatus: Observable<boolean> = this.databaseServie.deleteUserByEmail(userEmail);
+      this.databaseService.getUsers().pipe(takeUntil(this.ngUnsubscribe)).subscribe(userResults =>{
+        const nameAndEmails = userResults.map(result => {
+          return {name: result.name, email: result.email};
+        });
+        console.log('nameAndEmails is: ');
+        console.log(nameAndEmails);
+      });
+
+      const deletionStatus: Observable<boolean> = this.databaseService.deleteUserByEmail(userEmail);
       deletionStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         console.log('deleteMe result of deletion call is: ');
         console.log(result);
       })
-      // const res = await deleteUserFn({ userEmail: userEmail }).toPromise();
-      // console.log('deleteMe got here with response in UserDeleteComponent');
-      // console.log(res);
-      // if (res) {
-      //   // this.subscriptionStatus = "Subscription is " + this.textTransformationService.capitalizeFirstLetter(res.status);
-      //   // this.openSnackBar(this.subscriptionStatus);
-      //   // this.loading = false;
-      //   // this.localPaymentStatus = false;
-      // }
     } catch (error) {
       console.log('deleteMe got here error is: ');
       console.log(error);
