@@ -611,20 +611,20 @@ export class QuestionService{
   });
 
   private userNameAutocomplete: AutocompleteQuestion = new AutocompleteQuestion({
-    key: 'user',
+    key: 'userDelete',
     label: 'Select User',
     value: '',
     required: true,
     giveOptionToAnswerThisQuestionMultipleTimes: false,
     disableAddButtonIfCurrentValueIsBlank: true,
     pairThisQuestionWithPreviousQuestion: false,
-    isThisQuestionTheLastOfAQuestionGroup: true,
-    indentThisQuestion: true,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
     placeHolder: 'E.g., beccaBjj',
     type: 'text',
     order: 1,
     submitAfterThisQuestion: true,
-    autocompleteOptions: this.databaseService.getUsers(),
+    autocompleteOptions: this.databaseService.getUserNames(),
     enableAddNew: false,
     pathToCandidateValues: '/candidateUsers/',
     pathToConfirmedValues: '/users/'

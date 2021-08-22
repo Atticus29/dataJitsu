@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
@@ -8,6 +8,7 @@ import { QuestionService } from '../question.service';
 import { User } from '../user.model';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormProcessingService } from '../form-processing.service';
+import { FormQuestionBase } from 'app/formQuestionBase.model';
 
 @Component({
   selector: 'app-user-delete',
@@ -17,7 +18,9 @@ import { FormProcessingService } from '../form-processing.service';
 export class UserDeleteComponent extends BaseComponent implements OnInit {
   private localDetailList: User[] = null;
   private localConfigOptions: DynamicFormConfiguration;
-  private currentQuestion: any;
+  private localQuestions: FormQuestionBase<any>[];
+  // private currentQuestion: any;
+  private stopCounter = 0;
 
   constructor(
       private databaseService: DatabaseService,
@@ -28,12 +31,17 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
   }
 
   async ngOnInit() {
+    const self = this;
+    this.databaseService.getUsers().pipe(takeUntil(this.ngUnsubscribe)).subscribe(userResults => {
+      this.localDetailList = userResults;
+    });
     try {
       this.questionService.getUserDeleteQuestion().pipe(takeUntil(this.ngUnsubscribe)).subscribe((userDeleteQuestionObj) => {
         if (userDeleteQuestionObj) {
           this.localConfigOptions = new DynamicFormConfiguration(userDeleteQuestionObj, [], 'Delete');
-          this.currentQuestion = userDeleteQuestionObj[0];
-          this.formProcessingService.captureQuestionArrayOfCurrentForm([this.currentQuestion]);
+          // this.localQuestions = userDeleteQuestionObj;
+          this.formProcessingService.captureQuestionArrayOfCurrentForm(this.localQuestions);
+          this.handleFormSubmission();
         }
       });
 
@@ -52,33 +60,64 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
       console.log('error getting the user edit autocomplete');
       console.log(error);
     }
+}
 
-
-    const userEmail: String = 'tmp11@gmail.com';
-    try {
-      this.databaseService.getUsers().pipe(takeUntil(this.ngUnsubscribe)).subscribe(userResults =>{
-        this.localDetailList = userResults;
-        console.log('deleteMe localDetailList is: ');
-        console.log(this.localDetailList);
-        // const nameAndEmails = userResults.map(result => {
-        //   return {name: result.name, email: result.email};
-        // });
-        // console.log('nameAndEmails is: ');
-        // console.log(nameAndEmails);
-      });
-
-      const deletionStatus: Observable<boolean> = this.databaseService.deleteUserByEmail(userEmail);
-      deletionStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        console.log('deleteMe result of deletion call is: ');
-        console.log(result);
-      })
-    } catch (error) {
-      console.log('deleteMe got here error is: ');
-      console.log(error);
-      // this.openSnackBar(error.message);
-      // this.cardErrors = error.message;
-      // this.subscriptionStatus = '';
-    }
+  handleFormSubmission() {
+    console.log('deleteMe handleFormSubmission entered');
+    this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted => {
+      console.log('deleteMe isFormSubmitted is: ' + isFormSubmitted);
+      if (isFormSubmitted && this.stopCounter < 1) {
+        console.log('deleteMe got here 1');
+        this.stopCounter++;
+        const formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(
+          withLatestFrom(this.formProcessingService.questionArrayOfForm)
+        );
+        console.log('deleteMe got here 2/3');
+        formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults => {
+          console.log('deleteMe got here 4');
+          const formResults = combinedResults[0];
+          const currentFormQuestions = combinedResults[1];
+          if (formResults) {
+            console.log('deleteMe got here 5');
+            if (formResults[0] !== "Stop") {
+              console.log('deleteMe got here 6');
+              // begin custom stuff
+              if (currentFormQuestions) {
+                console.log('deleteMe got here 7');
+                if (currentFormQuestions[0] !== 'Stop') {
+                  console.log('deleteMe got here 8');
+                  console.log('dleteMe formResults are: ');
+                  console.log(formResults);
+                  this.handleUserDeletion(formResults, self);
+                  // TODO delete user
+                  // TODO handle resetting the form
+                  // let newUser: User = this.createUserObjFromDynamicForm(formResults);
+                  // this.addUserToDbHelper(newUser, formResults);
+                }
+              }
+            }
+          }
+        });
+      }
+    });
   }
 
+  handleUserDeletion(formResults, self) {
+    const userName: string = formResults ? formResults.userDelete : null ;
+    this.databaseService.getFirstUserByUsername(userName).pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(results => {
+        try {
+            console.log('about to delete user with email address: ' + results.email);
+            const deletionStatus: Observable<boolean> = this.databaseService.deleteUserByEmail(results.email);
+            deletionStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+              console.log('deleteMe result of deletion call is: ');
+              console.log(result);
+            });
+          } catch (error) {
+            console.log('deleteMe got here error is: ');
+            console.log(error);
+          }
+      });
+      }
 }
+

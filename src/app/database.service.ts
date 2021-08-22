@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { takeUntil, take, first, merge, catchError, retry, map } from 'rxjs/operators';
+import { takeUntil, take, first, merge, catchError, retry } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -95,27 +95,28 @@ export class DatabaseService {
     return this.db.list(path).valueChanges();
   }
 
-  deleteUserByEmail(emailAddress: String): Observable<boolean> {
-    //TODO
+  deleteUserByEmail(emailAddress: string): any {
     console.log('deleteMe deleteUserByEmail got called and deleteUserEndpointUrl is: ' + deleteUserEndpointUrl);
+    // TODO delete the user from your personal /user list
+    let ref = firebase.database().ref('users/');
+    ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+        console.log('deleteMe deleteUserByEmail and snapshot search results are:');
+        console.log(snapshot.val());
+        let user = snapshot.val();
+        let deleteRef = firebase.database().ref('users/' + user.id);
+        deleteRef.remove();
+    });
+    // delete the user from firebase authenticated users
     return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
       .pipe(
         retry(3),
-        catchError(this.handleError)
+        // TODO catchError(this.handleError)
+        catchError(err => {
+          console.log('deleteMe err is: ');
+          console.log(err);
+          return Observable.throw(err.statusText);
+        })
       );
-    // const results =  this.http.post<boolean>(deleteUserEndpointUrl, {emailAddress})
-    //   .pipe(
-    //     retry(3),
-    //     catchError(this.handleError)
-    //   );
-    // console.log('deleteMe and do more stuff with results: ');
-    // console.log(results);
-    // return of(true);
-    // return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
-    //   .pipe(
-    //     catchError(this.handleError('addHero', hero))
-    //   );
-    // return true;
   }
 
   getCandidateTournamentNames(): any{
@@ -262,13 +263,36 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  async getVideosV2(){
+  async getVideosV2() {
   let result = this.db.list<Video>('/videos').valueChanges().pipe(first()).toPromise();
   return result;
 }
 
   getUsers(): Observable<User[]> {
-    return this.db.list('users/').map(User.fromJson);
+    const ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      ref.on('value', snapshot => {
+        // console.log('deleteMe snapshot.val() is: ');
+        // console.log(Object.values(snapshot.val()));
+        const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
+        observer.next(snapshotAsUsers);
+      });
+    });
+    return resultObservable;
+  }
+
+  getUserNames(): Observable<User[]> {
+    const ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      ref.on('value', snapshot => {
+        // console.log('deleteMe snapshot.val() is: ');
+        // console.log(Object.values(snapshot.val()));
+        const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
+        const userNames = snapshotAsUsers.map(user => user.name);
+        observer.next(userNames);
+      });
+    });
+    return resultObservable;
   }
 
   getUserReputationPoints(userId: string){
@@ -461,24 +485,26 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  getDateSinceAnnotated(userId: string){
-    return this.db.object('/users/' + userId + '/dateLastAnnotated');  //TODO check that there is an annotation status and that this is the firebase path to it
+  getDateSinceAnnotated(userId: string) {
+    return this.db.object('/users/' + userId + '/dateLastAnnotated');
+    // TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  hasBeenAnnotated(videoId: string){
-    return this.db.object('/videos/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+  hasBeenAnnotated(videoId: string) {
+    return this.db.object('/videos/'+ videoId + '/annotationStatus');
+    // TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  getUserByUid(uid: string) : Observable<any>{
-    console.log("getUserByUid entered. Uid is: " + uid);
+  getUserByUid(uid: string) : Observable<any> {
+    // console.log("getUserByUid entered. Uid is: " + uid);
     let ref = firebase.database().ref('/users/');
     let user: User;
-    let resultObservable = Observable.create(observer =>{
+    let resultObservable = Observable.create(observer => {
       if(uid){
         try{
           ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-            console.log("query result in getUserByUid in databaseService: ");
-            console.log(snapshot.val());
+            // console.log("query result in getUserByUid in databaseService: ");
+            // console.log(snapshot.val());
             user = snapshot.val();
             user = user[Object.keys(user)[0]];
             observer.next(user);
@@ -492,7 +518,7 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  getMatchFromNodeKey(key: string){
+  getMatchFromNodeKey(key: string) {
     this.retrievedMatch = this.db.object('videos/' + key).valueChanges();
     return this.retrievedMatch;
   }
@@ -526,15 +552,38 @@ export class DatabaseService {
       // this.events.push(events);
   }
 
-  getUserById(userId: string){
+  getUserById(userId: string) {
     let ref = firebase.database().ref('users/' + userId);
-    let resultObservable = Observable.create(observer =>{
+    let resultObservable = Observable.create(observer => {
       return ref.on("value", snapshot => {
         // console.log("got to snapshot in getUserById in database service");
         let user = snapshot.val();
         observer.next(user);
       });
     });
+    return resultObservable;
+  }
+
+  getFirstUserByUsername(userName: string) {
+    let ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      return ref.orderByChild('name').equalTo(userName).limitToFirst(1).on("child_added", snapshot => {
+        console.log('deleteMe getFirstUserByUsername and snapshot search results are:');
+        console.log(snapshot.val());
+        let user = snapshot.val();
+        observer.next(user);
+      });
+    });
+
+    // .pipe(first()).toPromise()
+    // let resultObservable = Observable.create(observer => {
+    //   return ref.orderByChild('email').equalTo(email).limitToFirst(1).on("child_added", snapshot => {
+    //     // console.log("got to snapshot in getNodeIdFromEmail in database service: ");
+    //     // console.log(snapshot.val().id);
+    //     nodeId = snapshot.val().id;
+    //     observer.next(nodeId);
+    //   });
+    // });
     return resultObservable;
   }
 
@@ -1959,4 +2008,5 @@ export class DatabaseService {
     });
     return obsRet;
   }
+
 }

@@ -100,7 +100,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
             this.dbService.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
               // console.log("isAdmin? " + status);
               // console.log(typeof(status));
-              if(status === true){
+              if (status === true) {
                 // console.log("setting isAdmin to true");
                 this.isAdmin = status;
               }

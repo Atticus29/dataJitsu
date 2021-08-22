@@ -10,7 +10,7 @@ export var masterFirebaseConfigProd = {
   adminPassword: "APython!11"
 };
 
-export var masterFirebaseConfig = {
+export var videoAnnotatorTestConfig = {
   apiKey: "AIzaSyBcuRXkbfSbMRr7l9XJl4ejSUfdTeoSB5s",
     authDomain: "videoannotatortest.firebaseapp.com",
     databaseURL: "https://videoannotatortest.firebaseio.com",
@@ -21,6 +21,19 @@ export var masterFirebaseConfig = {
     measurementId: "G-73FTW1RHYP",
     adminEmailAddress: "mark.aaron.fisher@gmail.com",
     adminPassword: "APython!11"
+}
+
+export var masterFirebaseConfig = {
+  apiKey: "AIzaSyCq5Tsw5OY-FvLj_ayll5tIKzjC37q4qSg",
+  authDomain: "annotatevidio.firebaseapp.com",
+  databaseURL: "https://annotatevidio.firebaseio.com",
+  projectId: "annotatevidio",
+  storageBucket: "annotatevidio.appspot.com",
+  messagingSenderId: "722785847131",
+  appId: "1:722785847131:web:c32566b24c4df3b504bc7e",
+  measurementId: "G-HMLC3N6F5T",
+  adminEmailAddress: "mark.aaron.fisher@gmail.com",
+  adminPassword: "APython!11"
 }
 
 export var masterStripeConfig = {

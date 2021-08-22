@@ -1,3 +1,4 @@
+import { event } from 'jquery';
 import { constants } from './constants';
 import { EventInVideo } from './eventInVideo.model';
 import { ReputationLog } from './reputationLog.model';
@@ -15,6 +16,8 @@ export class User {
   private eventsInVideo: EventInVideo[];
 
   static fromJson(jsonObj: any): User {
+    // console.log('deleteMe entered fromJson. jsonObj is: ');
+    // console.log(jsonObj);
     const affiliation: string = jsonObj.affiliation;
     const age: number = jsonObj.age;
     const annotatedEnoughOverride: boolean = jsonObj.annotatedEnoughOverride;
@@ -24,15 +27,15 @@ export class User {
     const gender: string = jsonObj.gender;
     const giRank: string = jsonObj.giRank;
     const id: string = jsonObj.id;
-    const eventsAnnotated: EventInVideo[] = jsonObj.movesAnnotated.map(event => {
-      return EventInVideo.fromJson(event);
-    });
+    const areThereEvents: boolean = jsonObj.eventsAnnotated ? true : false;
+    const eventsAnnotated: EventInVideo[] = areThereEvents ? Object.values(jsonObj.eventsAnnotated).map(EventInVideo.fromJson) : [];
     const name: string = jsonObj.name;
     const noGiRank: string = jsonObj.noGiRank;
     const paidStatus: boolean = jsonObj.paidStatus;
     const password: string = jsonObj.password;
     const privileges: {} = jsonObj.privileges;
-    const reputationLog: ReputationLog = ReputationLog.fromJson(jsonObj.reputationLog);
+    const isThereReputationLog: boolean = jsonObj.reputationLog ? true : false;
+    const reputationLog: ReputationLog = isThereReputationLog ? ReputationLog.fromJson(jsonObj.reputationLog) : null;
     const reputationPoints: number = jsonObj.reputationPoints;
     const uid: string = jsonObj.uid;
     const annotationVotesCastToday: number = jsonObj.votingInfo ? jsonObj.votingInfo.annotationVotesCastToday : 0;
@@ -54,11 +57,11 @@ export class User {
     newUser.setVotesCastToday(annotationVotesCastToday);
     newUser.setId(id);
     newUser.setUid(uid);
-    newUser.setReputationLog(reputationLog);
+    if (reputationLog) {newUser.setReputationLog(reputationLog); }
     newUser.setPrivileges(privileges);
     newUser.setPaidStatus(paidStatus);
     newUser.setAnnotatedEnoughOverride(annotatedEnoughOverride);
-    newUser.addEventsInVideo(eventsAnnotated);
+    if (eventsAnnotated) { newUser.addEventsInVideo(eventsAnnotated); }
     return newUser;
   }
 
@@ -97,7 +100,13 @@ export class User {
   }
 
   addEventsInVideo(newEvents: EventInVideo[]) {
-    this.eventsInVideo.concat(newEvents); // TODO check that this works correctly
+    // console.log('deleteMe addEventsInVideo entered and newEvents are: ');
+    // console.log(newEvents);
+    if (this.eventsInVideo) {
+      this.eventsInVideo.concat(newEvents); // TODO check that this works correctly
+    } else {
+      this.eventsInVideo = newEvents;
+    }
   }
 
   setPaidStatus(paidStatus: boolean) {

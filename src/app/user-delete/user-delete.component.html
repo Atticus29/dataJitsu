@@ -1,3 +1,5 @@
-<app-dynamic-form [isFormOwner]="true" [configOptions]="localConfigOptions"
-    [questions]="formProcessingService.questionArrayOfForm|async">
+<app-dynamic-form 
+    [isFormOwner]="false" 
+    [configOptions]="localConfigOptions"
+    [questions]="questionService.getUserDeleteQuestion()|async">
 </app-dynamic-form>
