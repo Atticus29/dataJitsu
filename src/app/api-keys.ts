@@ -25,7 +25,7 @@ export var videoAnnotatorTestConfig = {
 
 export var masterFirebaseConfig = {
   apiKey: "AIzaSyCq5Tsw5OY-FvLj_ayll5tIKzjC37q4qSg",
-  authDomain: "annotatevidio.firebaseapp.com",
+  authDomain: "annotatevidio.firebaseapp.comStupid",
   databaseURL: "https://annotatevidio-default-rtdb.firebaseio.com/",
   projectId: "annotatevidio",
   storageBucket: "annotatevidio.appspot.com",
