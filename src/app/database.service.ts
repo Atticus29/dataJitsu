@@ -620,6 +620,8 @@ export class DatabaseService {
   }
 
   addUserToDb(user: User): Observable<string>{
+    console.log('deleteMe addUserToDb entered and user is: ');
+    console.log(user);
     let ref = this.db.list<User>('/users');
     let userId = ref.push(user).key;
     let updates = {};

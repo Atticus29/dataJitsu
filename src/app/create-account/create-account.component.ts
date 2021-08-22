@@ -82,9 +82,22 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     });
   }
 
-  createUserObjFromDynamicForm(formResults: any){
-    let {userName, emailAddress, password, confirmPassword, gymAffiliation, gender, giRank, noGiRank, weight, age} = formResults;
-    let newUser = new User(userName, emailAddress, password, giRank, noGiRank, gymAffiliation, Number(age), Number(weight), 100, "", gender, new Date().toJSON());
+  createUserObjFromDynamicForm(formResults: any) {
+    const { name, email, password, confirmPassword, affiliation, gender, giRank, noGiRank, weight, age} = formResults;
+    const newUser = new User(
+      name,
+      email,
+      password,
+      giRank,
+      noGiRank,
+      affiliation,
+      Number(age),
+      Number(weight),
+      100,
+      '',
+      gender,
+      new Date().toJSON()
+    );
     return newUser;
   }
 
