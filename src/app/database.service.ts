@@ -98,25 +98,48 @@ export class DatabaseService {
   deleteUserByEmail(emailAddress: string): any {
     console.log('deleteMe deleteUserByEmail got called and deleteUserEndpointUrl is: ' + deleteUserEndpointUrl);
     // TODO delete the user from your personal /user list
-    let ref = firebase.database().ref('users/');
-    ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
-        console.log('deleteMe deleteUserByEmail and snapshot search results are:');
-        console.log(snapshot.val());
-        let user = snapshot.val();
-        let deleteRef = firebase.database().ref('users/' + user.id);
-        deleteRef.remove();
-    });
+    // let ref = firebase.database().ref('users/');
+    // ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+    //     console.log('deleteMe deleteUserByEmail and snapshot search results are:');
+    //     console.log(snapshot.val());
+    //     let user = snapshot.val();
+    //     let deleteRef = firebase.database().ref('users/' + user.id);
+    //     deleteRef.remove();
+    // });
     // delete the user from firebase authenticated users
     return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
       .pipe(
         retry(3),
         // TODO catchError(this.handleError)
-        catchError(err => {
-          console.log('deleteMe err is: ');
-          console.log(err);
-          return Observable.throw(err.statusText);
+        catchError(res => {
+          console.log('deleteMe res is: ');
+          console.log(res);
+          console.log(res.error);
+          return of({ok: res.ok, message: res.error});
+          // return Observable.throw(err.statusText);
         })
       );
+  }
+
+  deleteUserFromDatabase(emailAddress: string): Observable<boolean>{
+    let ref = firebase.database().ref('users/');
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+          console.log('deleteMe deleteUserByEmail and snapshot search results are:');
+          console.log(snapshot.val());
+          let user = snapshot.val();
+          let deleteRef = firebase.database().ref('users/' + user.id);
+          try{
+              deleteRef.remove();
+              observer.next(true);
+          } catch (error){
+            console.log('Error deleting user from database: ');
+            console.log(error);
+            observer.next(false);
+          }
+      });
+    });
+    return obsRet;
   }
 
   getCandidateTournamentNames(): any{

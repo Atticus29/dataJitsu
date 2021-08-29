@@ -1,6 +1,6 @@
 <h4>Administrator Tasks</h4>
 <mat-tab-group>
-  <mat-tab label="User Management">
+  <mat-tab label="User Management" *ngIf="localIsAdmin">
     <div class="container">
       <app-user-delete></app-user-delete>
     </div>
@@ -9,13 +9,13 @@
     <app-athlete-name-approval></app-athlete-name-approval>
   </mat-tab>
   <mat-tab label="Move Name Approval"> <!-- TODO "move" should be a configurable word -->
-    
+
     <app-move-name-approval></app-move-name-approval>
   </mat-tab>
   <mat-tab label="Tournament Name Approval">
     <app-base-approval [approvalConfig]="localTournamentNameApprovalConfig"></app-base-approval>
   </mat-tab>
-  <mat-tab label="Weight Class Name Approval"b>
+  <mat-tab label="Weight Class Name Approval">
     <app-base-approval [approvalConfig]="localWeightClassApprovalConfig"></app-base-approval>
   </mat-tab>
   <mat-tab label="No Gi Rank Name Approval">

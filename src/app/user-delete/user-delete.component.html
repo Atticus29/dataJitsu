@@ -1,5 +1,8 @@
-<app-dynamic-form 
-    [isFormOwner]="false" 
+<div class="spinner-container" *ngIf="showLoader" id="spinner-login">
+  <mat-spinner id="spinner"></mat-spinner>
+</div>
+<app-dynamic-form *ngIf="!showLoader"
+    [isFormOwner]="false"
     [configOptions]="localConfigOptions"
     [questions]="questionService.getUserDeleteQuestion()|async">
 </app-dynamic-form>

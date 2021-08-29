@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil, withLatestFrom } from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
 import { BaseComponent } from '../base/base.component';
 import { DatabaseService } from '../database.service';
@@ -9,6 +10,7 @@ import { User } from '../user.model';
 import { DynamicFormConfiguration } from '../dynamicFormConfiguration.model';
 import { FormProcessingService } from '../form-processing.service';
 import { FormQuestionBase } from 'app/formQuestionBase.model';
+import { constants } from '../constants';
 
 @Component({
   selector: 'app-user-delete',
@@ -21,11 +23,13 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
   private localQuestions: FormQuestionBase<any>[];
   // private currentQuestion: any;
   private stopCounter = 0;
+  private showLoader: boolean = false;
 
   constructor(
       private databaseService: DatabaseService,
       private questionService: QuestionService,
-      private formProcessingService: FormProcessingService
+      private formProcessingService: FormProcessingService,
+      public snackBar: MatSnackBar
     ) {
     super();
   }
@@ -67,6 +71,7 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
     this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted => {
       console.log('deleteMe isFormSubmitted is: ' + isFormSubmitted);
       if (isFormSubmitted && this.stopCounter < 1) {
+        this.showLoader = true;
         console.log('deleteMe got here 1');
         this.stopCounter++;
         const formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(
@@ -108,16 +113,29 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
       takeUntil(this.ngUnsubscribe)).subscribe(results => {
         try {
             console.log('about to delete user with email address: ' + results.email);
-            const deletionStatus: Observable<boolean> = this.databaseService.deleteUserByEmail(results.email);
-            deletionStatus.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+            const deletionResponse: Observable<any> = this.databaseService.deleteUserByEmail(results.email);
+            deletionResponse.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
               console.log('deleteMe result of deletion call is: ');
               console.log(result);
+              this.showLoader = false;
+              this.openSnackBar(result.message);
+              if(!(result.ok)){
+                console.log('deleteMe resoponse was not ok');
+              } else{
+                this.databaseService.deleteUserFromDatabase(results.email);
+              }
             });
           } catch (error) {
             console.log('deleteMe got here error is: ');
             console.log(error);
           }
       });
-      }
-}
+  }
 
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 5000,
+    });
+  }
+
+}
