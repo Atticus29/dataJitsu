@@ -254,19 +254,8 @@ export class DatabaseService {
   }
 
   getVideos() {
-    console.log('deleteMe got here a1 getVideos entered');
-    let ref = firebase.database().ref('videos /');
-    console.log('deleteMe got here a2');
-    let resultObservable = Observable.create(observer => {
-      console.log('deleteMe got here a3');
-      ref.on('value', snapshot=> {
-        console.log('deleteMe got here a4');
-        console.log('deleteMe snapshot.val() is: ');
-        console.log(snapshot.val());
-        observer.next(snapshot.val());
-      });
-    });
-    return resultObservable;
+    const videoRef = this.db.list('videos');
+    return videoRef.valueChanges();
   }
 
   async getVideosV2() {
