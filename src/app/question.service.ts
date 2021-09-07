@@ -397,7 +397,7 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: true,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: false,
+    enableAddNew: true,
     pathToCandidateValues: '/candidateAthleteNames/',
     pathToConfirmedValues: '/individualNames/'
   });

@@ -236,7 +236,8 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
         // console.log(this.localUser.id);
         // console.log(this.localMatchDeets);
         if(this.localMatchDeets){
-          // console.log("YOOOOOO");
+          // console.log('deleteMe val is: ');
+          // console.log(val);
           // console.log(this.localMatchDeets);
           // console.log(this.localMatchDeets.videoUrl);
           this.db.addCandidateEventInVideoToDb(val.move, val.eventCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);

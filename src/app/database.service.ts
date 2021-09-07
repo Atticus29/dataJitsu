@@ -147,7 +147,7 @@ export class DatabaseService {
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('name').on("value", snapshot =>{
         let resultObj = snapshot.val();
-        if(resultObj){
+        if(resultObj){  
           let names = Object.keys(resultObj).map(index => resultObj[index].name);
           observer.next(names);
         } else{
