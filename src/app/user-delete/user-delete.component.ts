@@ -69,7 +69,7 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
   handleFormSubmission() {
     console.log('deleteMe handleFormSubmission entered');
     this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted => {
-      console.log('deleteMe isFormSubmitted is: ' + isFormSubmitted);
+      console.log('deleteMe isFormSubmitted for user-delete-component is: ' + isFormSubmitted);
       if (isFormSubmitted && this.stopCounter < 1) {
         this.showLoader = true;
         console.log('deleteMe got here 1');

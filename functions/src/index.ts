@@ -30,3 +30,7 @@ export {
 export{
     deleteUserByEmail
 } from './deleteUser';
+
+export{
+    deleteUserByEmailAnnotateVideo
+} from './deleteUserByEmailAnnotateVideo';
