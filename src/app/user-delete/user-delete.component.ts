@@ -118,10 +118,11 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
               console.log('deleteMe result of deletion call is: ');
               console.log(result);
               this.showLoader = false;
-              this.openSnackBar(result.message);
-              if(!(result.ok)){
+              if (!(result.ok)) {
+                this.openSnackBar(result.error);
                 console.log('deleteMe resoponse was not ok');
-              } else{
+              } else {
+                this.openSnackBar(result.message);
                 this.databaseService.deleteUserFromDatabase(results.email);
               }
             });

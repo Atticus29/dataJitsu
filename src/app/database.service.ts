@@ -109,32 +109,37 @@ export class DatabaseService {
     // delete the user from firebase authenticated users
     return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
       .pipe(
-        retry(3),
+      //   retry(3),
         // TODO catchError(this.handleError)
         catchError(res => {
-          console.log('deleteMe res is: ');
+          console.log('deleteMe error in deleteUserByEmail res is: ');
           console.log(res);
           console.log(res.error);
-          return of({ok: res.ok, message: res.error});
+          return of(res.error);
           // return Observable.throw(err.statusText);
         })
       );
   }
 
-  deleteUserFromDatabase(emailAddress: string): Observable<boolean>{
+  deleteUserFromDatabase(emailAddress: string): Observable<boolean> {
+    console.log('deleteMe emailAddress in deleteUserFromDatabase is: ' + emailAddress);
     let ref = firebase.database().ref('users/');
-    let obsRet = Observable.create(function(observer){
+    let obsRet = Observable.create(function(observer) {
       ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
           console.log('deleteMe deleteUserByEmail and snapshot search results are:');
           console.log(snapshot.val());
           let user = snapshot.val();
           let deleteRef = firebase.database().ref('users/' + user.id);
-          try{
+          try {
+              console.log('deleteMe got here d1');
               deleteRef.remove();
+            console.log('deleteMe got here d2');
               observer.next(true);
-          } catch (error){
+          } catch (error) {
+            console.log('deleteMe got here d3');
             console.log('Error deleting user from database: ');
             console.log(error);
+            console.log('deleteMe got here d4');
             observer.next(false);
           }
       });
@@ -147,7 +152,7 @@ export class DatabaseService {
     let obsRet = Observable.create(function(observer){
       ref.orderByChild('name').on("value", snapshot =>{
         let resultObj = snapshot.val();
-        if(resultObj){  
+        if(resultObj){
           let names = Object.keys(resultObj).map(index => resultObj[index].name);
           observer.next(names);
         } else{

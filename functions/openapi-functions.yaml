@@ -12,10 +12,10 @@ x-google-endpoints:
   - name: "cloud-run-cors-service-ihwyzwhg7q-uc.a.run.app"
   # allowCors: True
 paths:
-  /deleteUserByEmailAnnotateVideo:
+  /deleteUserAvByEmail:
     post:
       summary: Delete a user from firebase by their email address
-      operationId: deleteUserByEmailAnnotateVideo
+      operationId: deleteUserAvByEmail
       x-google-backend:
         address: https://us-central1-annotatevideo.cloudfunctions.net/deleteUserByEmailAnnotateVideo
         protocol: h2

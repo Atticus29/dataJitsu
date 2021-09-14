@@ -118,6 +118,9 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
         // console.log("currentUser DNE; changing authenticationStatus to false ....")
         this.authenticationStatus = false;
         this.name = "Anonymous User";
+
+        console.log("user doesn't exist now. Should move along...");
+        this.router.navigate(['login']);
       }
     });
   }
