@@ -122,8 +122,13 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
                 this.openSnackBar(result.error);
                 console.log('deleteMe resoponse was not ok');
               } else {
-                this.openSnackBar(result.message);
-                this.databaseService.deleteUserFromDatabase(results.email);
+                this.databaseService.deleteUserFromDatabase(
+                  results.email).pipe(takeUntil(this.ngUnsubscribe)).subscribe(wasDbDeleteSuccessful => {
+                  console.log('deleteMe TODO something with wasDbDeleteSuccessful, which is: ' + wasDbDeleteSuccessful);
+                  if (wasDbDeleteSuccessful) {
+                    this.openSnackBar(result.message);
+                  }
+                });
               }
             });
           } catch (error) {

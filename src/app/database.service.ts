@@ -123,12 +123,36 @@ export class DatabaseService {
 
   deleteUserFromDatabase(emailAddress: string): Observable<boolean> {
     console.log('deleteMe emailAddress in deleteUserFromDatabase is: ' + emailAddress);
-    let ref = firebase.database().ref('users/');
-    let obsRet = Observable.create(function(observer) {
-      ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+    let ref = firebase.database().ref("users");
+    console.log('deleteMe got here a1');
+    // ref.orderByChild("email").equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => { // TODO LEFT OFF HERE this works fine... so why does inclusion of Observable.create ruin it???
+    //   console.log('deleteMe got here a3');
+    //   console.log('deleteMe deleteUserByEmail and snapshot search results are:');
+    //   console.log(snapshot.val());
+    //   console.log('deleteMe got here a4');
+    //   let user = snapshot.val();
+    //   console.log('deleteMe got here a5');
+    //   let deleteRef = firebase.database().ref('users/' + user.id);
+    //   try {
+    //     console.log('deleteMe got here d1');
+    //     deleteRef.remove();
+    //     console.log('deleteMe got here d2');
+    //   } catch (error) {
+    //     console.log('deleteMe got here d3');
+    //     console.log('Error deleting user from database: ');
+    //     console.log(error);
+    //     console.log('deleteMe got here d4');
+    //   }
+    // });
+    let obsRet = Observable.create(function(observer){
+      console.log('deleteMe got here a2');
+      ref.orderByChild("email").equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+          console.log('deleteMe got here a3');
           console.log('deleteMe deleteUserByEmail and snapshot search results are:');
           console.log(snapshot.val());
+          console.log('deleteMe got here a4');
           let user = snapshot.val();
+          console.log('deleteMe got here a5');
           let deleteRef = firebase.database().ref('users/' + user.id);
           try {
               console.log('deleteMe got here d1');
@@ -144,6 +168,7 @@ export class DatabaseService {
           }
       });
     });
+    console.log('deleteMe got here a6');
     return obsRet;
   }
 
@@ -170,6 +195,7 @@ export class DatabaseService {
   getGenericAndOrderBy(path: string, orderByParameter: string): any{
     let ref = firebase.database().ref(path);
     let obsRet = Observable.create(function(observer){
+      console.log('deleteMe blorp');
       ref.orderByChild(orderByParameter).on("value", snapshot =>{
         let resultObj = snapshot.val();
         if(resultObj){
@@ -294,6 +320,7 @@ export class DatabaseService {
   getUsers(): Observable<User[]> {
     const ref = firebase.database().ref('users/');
     let resultObservable = Observable.create(observer => {
+      console.log('deleteMe got here xyz');
       ref.on('value', snapshot => {
         // console.log('deleteMe snapshot.val() is: ');
         // console.log(Object.values(snapshot.val()));
