@@ -67,30 +67,30 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
 }
 
   handleFormSubmission() {
-    console.log('deleteMe handleFormSubmission entered');
+    // console.log('deleteMe handleFormSubmission entered');
     this.formProcessingService.formSubmitted.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isFormSubmitted => {
-      console.log('deleteMe isFormSubmitted for user-delete-component is: ' + isFormSubmitted);
+      // console.log('deleteMe isFormSubmitted for user-delete-component is: ' + isFormSubmitted);
       if (isFormSubmitted && this.stopCounter < 1) {
         this.showLoader = true;
-        console.log('deleteMe got here 1');
+        // console.log('deleteMe got here 1');
         this.stopCounter++;
         const formResultObservableWithLatestQuestions = this.formProcessingService.formResults.pipe(
           withLatestFrom(this.formProcessingService.questionArrayOfForm)
         );
-        console.log('deleteMe got here 2/3');
+        // console.log('deleteMe got here 2/3');
         formResultObservableWithLatestQuestions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(combinedResults => {
-          console.log('deleteMe got here 4');
+          // console.log('deleteMe got here 4');
           const formResults = combinedResults[0];
           const currentFormQuestions = combinedResults[1];
           if (formResults) {
-            console.log('deleteMe got here 5');
+            // console.log('deleteMe got here 5');
             if (formResults[0] !== "Stop") {
-              console.log('deleteMe got here 6');
+              // console.log('deleteMe got here 6');
               // begin custom stuff
               if (currentFormQuestions) {
-                console.log('deleteMe got here 7');
+                // console.log('deleteMe got here 7');
                 if (currentFormQuestions[0] !== 'Stop') {
-                  console.log('deleteMe got here 8');
+                  // console.log('deleteMe got here 8');
                   console.log('dleteMe formResults are: ');
                   console.log(formResults);
                   this.handleUserDeletion(formResults, self);
@@ -112,19 +112,14 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
     this.databaseService.getFirstUserByUsername(userName).pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(results => {
         try {
-            console.log('about to delete user with email address: ' + results.email);
             const deletionResponse: Observable<any> = this.databaseService.deleteUserByEmail(results.email);
             deletionResponse.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-              console.log('deleteMe result of deletion call is: ');
-              console.log(result);
               this.showLoader = false;
               if (!(result.ok)) {
                 this.openSnackBar(result.error);
-                console.log('deleteMe resoponse was not ok');
               } else {
                 this.databaseService.deleteUserFromDatabase(
                   results.email).pipe(takeUntil(this.ngUnsubscribe)).subscribe(wasDbDeleteSuccessful => {
-                  console.log('deleteMe TODO something with wasDbDeleteSuccessful, which is: ' + wasDbDeleteSuccessful);
                   if (wasDbDeleteSuccessful) {
                     this.openSnackBar(result.message);
                   }
@@ -132,7 +127,7 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
               }
             });
           } catch (error) {
-            console.log('deleteMe got here error is: ');
+            console.log('Error handling user deletion: ');
             console.log(error);
           }
       });

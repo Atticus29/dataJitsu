@@ -39,27 +39,27 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
       const self = this;
       if (this.questions) {
         this.form = this.qcs.toFormGroup(this.questions);
-        console.log('deleteMe got here b0 and this.form is: ');
-        console.log(this.form);
+        // console.log('deleteMe got here b0 and this.form is: ');
+        // console.log(this.form);
         if (this.questions.length > -1) {
-          console.log('deleteMe got here b0.5');
+          // console.log('deleteMe got here b0.5');
           const requireds = this.questions.map(question => question.required).reduce((a, b) => Number(a) + Number(b), 0);
-          console.log('deleteMe got here b0.75 and requireds are: ');
-          console.log(requireds);
+          // console.log('deleteMe got here b0.75 and requireds are: ');
+          // console.log(requireds);
           this.totalNumberOfQuestions = requireds;
         }
         this.formProcessingService.actualForm.next(this.form);
         this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
-        console.log('deleteMe got here b0.8 localButtonDisplayName is: ' + this.localButtonDisplayName);
+        // console.log('deleteMe got here b0.8 localButtonDisplayName is: ' + this.localButtonDisplayName);
       }
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
       this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm => {
-        console.log('deleteMe got here b1');
+        // console.log('deleteMe got here b1');
         if (!this.form) {
-          console.log('deleteMe got here b2');
-          console.log('getting new questionArray and no form currently exists');
-          console.log(questionArrayOfForm);
+          // console.log('deleteMe got here b2');
+          // console.log('getting new questionArray and no form currently exists');
+          // console.log(questionArrayOfForm);
           // this.form = this.qcs.toFormGroup(this.questions);
           this.form = this.qcs.toFormGroup(questionArrayOfForm);
           this.formProcessingService.actualForm.next(this.form);
@@ -70,26 +70,26 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           });
         }
         if (questionArrayOfForm) {
-          console.log('deleteMe got here b3');
+          // console.log('deleteMe got here b3');
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
-            console.log('getting new questionArray and form currently exists and button display name is: ' + buttonDisplayName);
-            console.log(questionArrayOfForm);
+            // console.log('getting new questionArray and form currently exists and button display name is: ' + buttonDisplayName);
+            // console.log(questionArrayOfForm);
             if (questionArrayOfForm[0] !== 'Stop' && buttonDisplayName !== 'Next') {
               this.questions = questionArrayOfForm;
-              console.log("this.questions is: ");
-              console.log(this.questions);
+              // console.log("this.questions is: ");
+              // console.log(this.questions);
               // TODO if I add this in, the owned questions work, but the collection creation stepper 1 does not
               this.form = this.qcs.toFormGroup(this.questions);
-              console.log('deleteMe got here b4 this.form is: ');
-              console.log(this.form);
+              // console.log('deleteMe got here b4 this.form is: ');
+              // console.log(this.form);
               // this.formProcessingService.actualForm.next(this.form);
               // this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
             } else {
               if (questionArrayOfForm[0] !== 'Stop') {
-                console.log('deleteMe got here b5');
+                // console.log('deleteMe got here b5');
                 this.questions = questionArrayOfForm;
-                console.log("this.questions is: ");
-                console.log(this.questions);
+                // console.log("this.questions is: ");
+                // console.log(this.questions);
               }
             }
           });
@@ -196,9 +196,7 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
           this.uniqueQuestionKeys.push(isValidFormEmittedData.questionKey);
         }
         if(this.uniqueQuestionKeys.length == this.totalNumberOfQuestions){
-          console.log('deleteMe got here c1 and setting nonRequiredIsInvalid to false...');
           this.nonRequiredIsInvalid = false; //everything valid
-          console.log('deleteMe see? c2 nonRequiredIsInvalid is now: ' + this.nonRequiredIsInvalid);
         }
         if(this.questions && isRequired && (!isValidFormEmittedData.isValid)){ //not valid
           let uniqueQuestionKeysIndex = this.uniqueQuestionKeys.indexOf(isValidFormEmittedData.questionKey);
