@@ -96,79 +96,30 @@ export class DatabaseService {
   }
 
   deleteUserByEmail(emailAddress: string): any {
-    console.log('deleteMe deleteUserByEmail got called and deleteUserEndpointUrl is: ' + deleteUserEndpointUrl);
-    // TODO delete the user from your personal /user list
-    // let ref = firebase.database().ref('users/');
-    // ref.orderByChild('email').equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
-    //     console.log('deleteMe deleteUserByEmail and snapshot search results are:');
-    //     console.log(snapshot.val());
-    //     let user = snapshot.val();
-    //     let deleteRef = firebase.database().ref('users/' + user.id);
-    //     deleteRef.remove();
-    // });
-    // delete the user from firebase authenticated users
     return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
       .pipe(
-      //   retry(3),
-        // TODO catchError(this.handleError)
         catchError(res => {
-          console.log('deleteMe error in deleteUserByEmail res is: ');
-          console.log(res);
-          console.log(res.error);
           return of(res.error);
-          // return Observable.throw(err.statusText);
         })
       );
   }
 
   deleteUserFromDatabase(emailAddress: string): Observable<boolean> {
-    console.log('deleteMe emailAddress in deleteUserFromDatabase is: ' + emailAddress);
     let ref = firebase.database().ref("users");
-    console.log('deleteMe got here a1');
-    // ref.orderByChild("email").equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => { // TODO LEFT OFF HERE this works fine... so why does inclusion of Observable.create ruin it???
-    //   console.log('deleteMe got here a3');
-    //   console.log('deleteMe deleteUserByEmail and snapshot search results are:');
-    //   console.log(snapshot.val());
-    //   console.log('deleteMe got here a4');
-    //   let user = snapshot.val();
-    //   console.log('deleteMe got here a5');
-    //   let deleteRef = firebase.database().ref('users/' + user.id);
-    //   try {
-    //     console.log('deleteMe got here d1');
-    //     deleteRef.remove();
-    //     console.log('deleteMe got here d2');
-    //   } catch (error) {
-    //     console.log('deleteMe got here d3');
-    //     console.log('Error deleting user from database: ');
-    //     console.log(error);
-    //     console.log('deleteMe got here d4');
-    //   }
-    // });
     let obsRet = Observable.create(function(observer){
-      console.log('deleteMe got here a2');
       ref.orderByChild("email").equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
-          console.log('deleteMe got here a3');
-          console.log('deleteMe deleteUserByEmail and snapshot search results are:');
-          console.log(snapshot.val());
-          console.log('deleteMe got here a4');
           let user = snapshot.val();
-          console.log('deleteMe got here a5');
           let deleteRef = firebase.database().ref('users/' + user.id);
           try {
-              console.log('deleteMe got here d1');
               deleteRef.remove();
-            console.log('deleteMe got here d2');
               observer.next(true);
           } catch (error) {
-            console.log('deleteMe got here d3');
             console.log('Error deleting user from database: ');
             console.log(error);
-            console.log('deleteMe got here d4');
             observer.next(false);
           }
       });
     });
-    console.log('deleteMe got here a6');
     return obsRet;
   }
 
@@ -195,7 +146,6 @@ export class DatabaseService {
   getGenericAndOrderBy(path: string, orderByParameter: string): any{
     let ref = firebase.database().ref(path);
     let obsRet = Observable.create(function(observer){
-      console.log('deleteMe blorp');
       ref.orderByChild(orderByParameter).on("value", snapshot =>{
         let resultObj = snapshot.val();
         if(resultObj){
@@ -320,10 +270,7 @@ export class DatabaseService {
   getUsers(): Observable<User[]> {
     const ref = firebase.database().ref('users/');
     let resultObservable = Observable.create(observer => {
-      console.log('deleteMe got here xyz');
       ref.on('value', snapshot => {
-        // console.log('deleteMe snapshot.val() is: ');
-        // console.log(Object.values(snapshot.val()));
         const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
         observer.next(snapshotAsUsers);
       });
@@ -335,8 +282,6 @@ export class DatabaseService {
     const ref = firebase.database().ref('users/');
     let resultObservable = Observable.create(observer => {
       ref.on('value', snapshot => {
-        // console.log('deleteMe snapshot.val() is: ');
-        // console.log(Object.values(snapshot.val()));
         const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
         const userNames = snapshotAsUsers.map(user => user.name);
         observer.next(userNames);
@@ -618,22 +563,10 @@ export class DatabaseService {
     let ref = firebase.database().ref('users/');
     let resultObservable = Observable.create(observer => {
       return ref.orderByChild('name').equalTo(userName).limitToFirst(1).on("child_added", snapshot => {
-        console.log('deleteMe getFirstUserByUsername and snapshot search results are:');
-        console.log(snapshot.val());
         let user = snapshot.val();
         observer.next(user);
       });
     });
-
-    // .pipe(first()).toPromise()
-    // let resultObservable = Observable.create(observer => {
-    //   return ref.orderByChild('email').equalTo(email).limitToFirst(1).on("child_added", snapshot => {
-    //     // console.log("got to snapshot in getNodeIdFromEmail in database service: ");
-    //     // console.log(snapshot.val().id);
-    //     nodeId = snapshot.val().id;
-    //     observer.next(nodeId);
-    //   });
-    // });
     return resultObservable;
   }
 
@@ -656,13 +589,7 @@ export class DatabaseService {
     let updates = {};
     updates[path + videoId + '/id'] = videoId;
     updates[path + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
-    console.log("got here 1");
-    console.log("updates is:");
-    console.log(updates);
     updates['users/'+ video.videoDeets.genericArgs.originalPosterId +'/'+ path + videoId + '/' ] = video;
-    // console.log("got here 2");
-    console.log("updates is:");
-    console.log(updates);
     // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/id'] = videoId;
     // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
@@ -670,8 +597,6 @@ export class DatabaseService {
   }
 
   addUserToDb(user: User): Observable<string>{
-    console.log('deleteMe addUserToDb entered and user is: ');
-    console.log(user);
     let ref = this.db.list<User>('/users');
     let userId = ref.push(user).key;
     let updates = {};

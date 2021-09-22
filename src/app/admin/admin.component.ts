@@ -26,8 +26,6 @@ export class AdminComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
-      console.log('deleteMe local user result is: ');
-      console.log(user);
       if (user && user.uid && user.privileges && user.privileges.isAdmin) {
         this.localIsAdmin = true;
       }

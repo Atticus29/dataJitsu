@@ -16,8 +16,6 @@ export class User {
   private eventsInVideo: EventInVideo[];
 
   static fromJson(jsonObj: any): User {
-    // console.log('deleteMe entered fromJson. jsonObj is: ');
-    // console.log(jsonObj);
     const affiliation: string = jsonObj.affiliation;
     const age: number = jsonObj.age;
     const annotatedEnoughOverride: boolean = jsonObj.annotatedEnoughOverride;
@@ -100,8 +98,6 @@ export class User {
   }
 
   addEventsInVideo(newEvents: EventInVideo[]) {
-    // console.log('deleteMe addEventsInVideo entered and newEvents are: ');
-    // console.log(newEvents);
     if (this.eventsInVideo) {
       this.eventsInVideo.concat(newEvents); // TODO check that this works correctly
     } else {

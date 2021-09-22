@@ -3,13 +3,13 @@ info:
   title: Cloud Endpoints + GCF
   description: API on Cloud Endpoints with a Google Cloud Functions backend
   version: 1.0.0
-host: cloud-run-cors-service-ihwyzwhg7q-uc.a.run.app
+host: fillMeIn
 schemes:
   - https
 produces:
   - application/json
 x-google-endpoints:
-  - name: "cloud-run-cors-service-ihwyzwhg7q-uc.a.run.app"
+  - name: "fillMeIn"
   # allowCors: True
 paths:
   /deleteUserAvByEmail:
@@ -17,19 +17,7 @@ paths:
       summary: Delete a user from firebase by their email address
       operationId: deleteUserAvByEmail
       x-google-backend:
-        address: https://us-central1-annotatevideo.cloudfunctions.net/deleteUserByEmailAnnotateVideo
-        protocol: h2
-      responses:
-        '200':
-          description: A successful response
-          schema:
-            type: string
-  /deleteUserByEmail:
-    post:
-      summary: Delete a user from firebase by their email address
-      operationId: deleteUserByEmail
-      x-google-backend:
-        address: https://us-central1-datajitsu.cloudfunctions.net/deleteUserByEmail
+        address: fillMeIn
         protocol: h2
       responses:
         '200':
