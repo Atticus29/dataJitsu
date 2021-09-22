@@ -21,6 +21,17 @@ export var masterFirebaseConfig = {
 
 You can get your on firebase API key and other info. from [here](//@TODO)
 
+Deploy the google cloud functions in the ./functions directory to your own google cloud project, which you'll [need to configure yourself](https://cloud.google.com/functions). It's non-trivial; I am sorry.
+
+Since your cloud function might violate CORS, [set up a cloud service proxy as an api gateway for your cloud functions](https://cloud.google.com/endpoints/docs/openapi/get-started-cloud-run). Really, the only one that needs an endpoint is the deleteUserByEmailAnnotateVideo cloud function. This is also extremely non-trivial, but openapi-functions.yaml file includes in this repository should be a helpful start.
+
+Create a file in the app subdirectory called, secrets.ts. In it, place the following code:
+
+```
+// tslint:disable-next-line:eofline
+export const deleteUserEndpointUrl = 'https://whateverTheHostOfYourESPv2Is/deleteUserAvByEmail';
+```
+
 # DataJitsu
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.

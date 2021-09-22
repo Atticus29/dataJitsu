@@ -1,7 +1,7 @@
 <div class="">
   <div class="row">
     <div class="">
-      <div class="card title-buffer">
+      <div class="card title-buffer large-card">
         <span class="card-title" id="match-display-name">
           <div *ngIf="displayModeInd1">
             <h5 class="centered match-title">Match: {{match?.videoDeets?.athlete1Name}} (left)
@@ -36,7 +36,7 @@
           <div class="flexbox-container-alt" *ngIf="loading">
             <mat-spinner id="spinner"></mat-spinner>
           </div>
-          <youtube-player [videoId]="ytId" (ready)="savePlayer($event)" (change)="onStateChange($event)" id="youTubeFrame">
+          <youtube-player width="600px" height="400px" [videoId]="ytId" (ready)="savePlayer($event)" (change)="onStateChange($event)" id="youTubeFrame">
           </youtube-player>
           <div id="video-buttons-container" *ngIf="!loading">
             <a id="play" type="submit" value="play" class="btn-floating halfwary-fab waves-effect waves-light green tooltipped" data-position="bottom" data-delay="10" matTooltip="Start Match" (click)="playVideo()">

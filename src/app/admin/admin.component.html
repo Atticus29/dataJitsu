@@ -1,36 +1,33 @@
 <h4>Administrator Tasks</h4>
-<div class="flexbox-container">
-  <div class="flexbox-item">
+<mat-tab-group>
+  <mat-tab label="User Management" *ngIf="localIsAdmin">
+    <div class="container">
+      <app-user-delete></app-user-delete>
+    </div>
+  </mat-tab>
+  <mat-tab label="Athlete Name Approval"> <!-- TODO "Athlete" should be a configurable word -->
     <app-athlete-name-approval></app-athlete-name-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Move Name Approval"> <!-- TODO "move" should be a configurable word -->
+
     <app-move-name-approval></app-move-name-approval>
-  </div>
-  <!-- <div class="flexbox-item">
-    <app-tournament-name-approval></app-tournament-name-approval>
-  </div> -->
-  <!-- <div class="flexbox-item">
-    <app-weight-class-name-approval></app-weight-class-name-approval>
-  </div> -->
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Tournament Name Approval">
     <app-base-approval [approvalConfig]="localTournamentNameApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Weight Class Name Approval">
     <app-base-approval [approvalConfig]="localWeightClassApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="No Gi Rank Name Approval">
     <app-base-approval [approvalConfig]="localNoGiApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Age Class Name Approval">
     <app-base-approval [approvalConfig]="localAgeClassApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Location Name Approval">
     <app-base-approval [approvalConfig]="localLocationNameApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
+  </mat-tab>
+  <mat-tab label="Gym Affiliation Name Approval">
     <app-base-approval [approvalConfig]="localGymAffiliationApprovalConfig"></app-base-approval>
-  </div>
-  <div class="flexbox-item">
-    <app-feedback-view></app-feedback-view>
-  </div>
-</div>
+  </mat-tab>
+</mat-tab-group>

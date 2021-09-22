@@ -49,7 +49,6 @@ export class UserInfoEditComponent extends BaseComponent implements OnInit {
             let currentObj: {} = {param: usrResults[param]};
             currentObj['originalKey'] = param;
             if (param === constants.privilegesParamName){
-              console.log("got here hi");
               currentObj['isPrivileges'] = true;
               let paramObj: any = usrResults[param];
               let paramObjKeys = Object.keys(paramObj);
@@ -57,8 +56,8 @@ export class UserInfoEditComponent extends BaseComponent implements OnInit {
               paramObjKeys.forEach(paramObjkey =>{
                 this.localPrivileges.push({"displayName":constants.displayablePrivilegesInfoObj[paramObjkey], "val": paramObj[paramObjkey]});
               });
-              console.log("this.localPrivileges is: ");
-              console.log(this.localPrivileges);
+              // console.log("this.localPrivileges is: ");
+              // console.log(this.localPrivileges);
 
             }
             if (typeof usrResults[param] === "string" && param.includes(constants.stringSharedByAllDateParams)){
@@ -66,10 +65,10 @@ export class UserInfoEditComponent extends BaseComponent implements OnInit {
               currentObj['param'] = transformedText;
             }
             currentObj['displayWords'] = constants.displayableUserInfoObj[param];
-            console.log("currentObj is: ");
-            console.log(currentObj);
-            console.log("type is: ");
-            console.log(typeof usrResults[param]);
+            // console.log("currentObj is: ");
+            // console.log(currentObj);
+            // console.log("type is: ");
+            // console.log(typeof usrResults[param]);
             this.displayItems = this.replaceOrAddInto(this.displayItems, currentObj);
           }
         });

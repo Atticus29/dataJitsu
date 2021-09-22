@@ -397,7 +397,7 @@ export class QuestionService{
     order: 1,
     submitAfterThisQuestion: true,
     autocompleteOptions: this.databaseService.getIndividualNames(),
-    enableAddNew: false,
+    enableAddNew: true,
     pathToCandidateValues: '/candidateAthleteNames/',
     pathToConfirmedValues: '/individualNames/'
   });
@@ -610,6 +610,26 @@ export class QuestionService{
     submitAfterThisQuestion: true
   });
 
+  private userNameAutocomplete: AutocompleteQuestion = new AutocompleteQuestion({
+    key: 'userDelete',
+    label: 'Select User',
+    value: '',
+    required: true,
+    giveOptionToAnswerThisQuestionMultipleTimes: false,
+    disableAddButtonIfCurrentValueIsBlank: true,
+    pairThisQuestionWithPreviousQuestion: false,
+    isThisQuestionTheLastOfAQuestionGroup: false,
+    indentThisQuestion: false,
+    placeHolder: 'E.g., beccaBjj',
+    type: 'text',
+    order: 1,
+    submitAfterThisQuestion: true,
+    autocompleteOptions: this.databaseService.getUserNames(),
+    enableAddNew: false,
+    pathToCandidateValues: '/candidateUsers/',
+    pathToConfirmedValues: '/users/'
+  });
+
   getUserEditQuestions() {
     let accountEditQuestions: {} = {};
     accountEditQuestions["name"]=(this.userNameQuestion);
@@ -779,34 +799,40 @@ export class QuestionService{
   }
 
   getEditRankQuestion(){
-    let rankQuestionArray: FormQuestionBase<string>[] = [];
+    const rankQuestionArray: FormQuestionBase<string>[] = [];
     rankQuestionArray.push(this.rankEditQuestion);
     return of(rankQuestionArray);
   }
 
   getNewEntryDetailQuestions(){
-    let entryDetailQuestions: FormQuestionBase<string>[] = [];
+    const entryDetailQuestions: FormQuestionBase<string>[] = [];
     entryDetailQuestions.push(this.genericLabelQuestion);
     entryDetailQuestions.push(this.genericInputTypeQuestion);
     return of(entryDetailQuestions);
   }
 
+  getUserDeleteQuestion() {
+    const userDeleteQuestions: FormQuestionBase<string>[] = [];
+    userDeleteQuestions.push(this.userNameAutocomplete);
+    return of(userDeleteQuestions);
+  }
+
   questionsFromDbCollection(collection: Collection): Observable<any>{
-    let collectionDbQuestions: FormQuestionBase<string>[] = [];
+    const collectionDbQuestions: FormQuestionBase<string>[] = [];
     // console.log("collection from questionsFromDbCollection is:");
     // console.log(collection);
-    let ownerQuestions: OwnerQuestion[] = collection.getOwnerQuestions();
-    if(ownerQuestions){
+    const ownerQuestions: OwnerQuestion[] = collection.getOwnerQuestions();
+    if (ownerQuestions) {
       // console.log("ownerQuestions.length is " + ownerQuestions.length);
-      for(let i=0; i<ownerQuestions.length; i++){
-        let currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
+      for (let i = 0; i < ownerQuestions.length; i++) {
+        const currentOwnerQuestion: any = ownerQuestions[i]; //still json somehow
         // console.log("currentOwnerQuestion is: ");
         // console.log(currentOwnerQuestion.question);
-        let questionContent: any = {
+        const questionContent: any = {
           key: 'ownerQuestion' + i,
           label: currentOwnerQuestion.question,
           value: '',
-          required: currentOwnerQuestion.question==="Video URL"? true:false,
+          required: currentOwnerQuestion.question === "Video URL"? true:false,
           giveOptionToAnswerThisQuestionMultipleTimes: false,
           disableAddButtonIfCurrentValueIsBlank: false,
           groupLabel: 'Questions about the video',

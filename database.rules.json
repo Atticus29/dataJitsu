@@ -1,29 +1,119 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "true",
-    "users": {
-      ".indexOn": [
-        "uid",
-        "email"
-      ]
-    },
+    ".write": "auth.uid == 'G5YXbwCzNSg2HwnU6SEgpCwpNsc2'",
+      ".read":"auth.uid == 'G5YXbwCzNSg2HwnU6SEgpCwpNsc2'",
+    	"ageClasses" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "candidateAthleteNames" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "candidateLocationNames" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "candidateMoveNames" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "candidateTournamentNames" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "collections" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "customers" : {
+        ".read": "auth.uid != null &&
+            query.orderByChild == 'stripeCustomerId' && query.equalTo == auth.uid",
+        ".write": "auth.uid != null &&
+            query.orderByChild == 'stripeCustomerId' &&
+            query.equalTo == auth.uid"
+      },
+      "events" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "feedback" : {
+        ".write":"auth.uid == 'G5YXbwCzNSg2HwnU6SEgpCwpNsc2'",
+        ".read": "auth.uid == 'G5YXbwCzNSg2HwnU6SEgpCwpNsc2'"
+      },
+      "giRanks" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "gymAffiliations" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "individualNames" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "locations" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "noGiRanks" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "tournamentNames" : {
+        ".write":"auth.uid != null",
+        ".read": "true"
+      },
+      "users" : {
+        "$user_id":{
+          ".write":"true",
+          //TODO add read and write here?
+          "reputationPoints":{
+          	".read": "auth.uid != null",
+        		".write": "auth.uid != null" //TODO check a parent variable
+          },
+            "reputationLog":{
+              ".read": "auth.uid != null", //TODO check a parent variable
+              ".write": "auth.uid != null" //TODO check a parent variable
+            }
+        },
+        ".read": "auth.uid != null", //TODO && child uid should match auth.uid
+
+        ".write": "auth.uid != null",  //TODO && child uid should match auth.uid
+        ".indexOn": [
+          "uid",
+          "email"
+      	]
+      },
+      "weightClasses" : {
+        ".write":"auth.uid != null",
+        ".read": "auth.uid != null"
+      },
+      "login":{
+        ".write":true,
+        ".read": true
+      },
+        "videos":{
+          ".write":"auth.uid !=null",
+            ".read": "auth.uid!=null"
+        },
     "matches": {
       ".indexOn": [
-        "videoDeets/videoUrl",
-        "videoDeets/athlete1Name",
-        "videoDeets/athlete2Name"
+        "matchDeets/videoUrl",
+        "matchDeets/athlete1Name",
+        "matchDeets/athlete2Name"
       ],
-      "$videoId": {
+      "$matchId": {
         ".indexOn": [
-          "/videoCreated",
-          "/videoDeets",
-          "videoDeets/videoUrl",
-          "/videoDeets/annotationRating",
-          "/videoDeets/athlete1Name",
-          "/videoDeets/athlete2Name"
+          "/matchCreated",
+          "/matchDeets",
+          "matchDeets/videoUrl",
+          "/matchDeets/annotationRating",
+          "/matchDeets/athlete1Name",
+          "/matchDeets/athlete2Name"
         ],
-        "videoDeets": {
+        "matchDeets": {
           ".indexOn": [
             "videoUrl",
             "annotationRating",

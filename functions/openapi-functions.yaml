@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  title: Cloud Endpoints + GCF
+  description: API on Cloud Endpoints with a Google Cloud Functions backend
+  version: 1.0.0
+host: fillMeIn
+schemes:
+  - https
+produces:
+  - application/json
+x-google-endpoints:
+  - name: "fillMeIn"
+  # allowCors: True
+paths:
+  /deleteUserAvByEmail:
+    post:
+      summary: Delete a user from firebase by their email address
+      operationId: deleteUserAvByEmail
+      x-google-backend:
+        address: fillMeIn
+        protocol: h2
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

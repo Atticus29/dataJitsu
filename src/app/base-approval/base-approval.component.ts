@@ -1,5 +1,3 @@
-//NOTE TODO future somehow figure out constructor stuff so that you can actually make this an inherited class rather than just a template
-
 import { Component, OnInit, Input } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 // import { Subject, Observable, BehaviorSubject } from 'rxjs';
@@ -48,17 +46,11 @@ export class BaseApprovalComponent extends BaseComponent implements OnInit {
     });
 
     this.db.getGenericAndOrderBy(this.approvalConfig.candidatePath,'name').pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results from getGenericAndOrderBy");
-      console.log(results);
       this.approvalConfig.localCandidateNames = results;
     });
   }
 
   approveName(name: string, metaDataName: string){
-    // console.log("approveName entered");
-    // console.log(name);
-    // console.log(metaDataName);
-    // console.log(this.approvalConfig);
     let confirmation = confirm("Are you sure you want to APPROVE the " + metaDataName + " name " + name + "?");
     if(confirmation){
       this.db.addGenericItemToDb(this.approvalConfig.localApprovedListPath, name);

@@ -80,7 +80,7 @@ export var constants = {
     numberOfFlagsAnAnnotationNeedsBeforeItIsDisplayedToDrawAttention: 1,
     numberOfPointsToAwardForBeingMajorityAnnotatorOfAGoodAnnotationRating: 10,
     numberOfStarsForAnAnnotationRatingToBeConsideredStrong: 4,
-    stipePlanId: "plan_GQ7IoLADxXFFak",
+    stipePlanId: 'plan_GQ7IoLADxXFFak', // TODO move this??
     get weightClassApprovalConfig() {
       return new ApprovalConfig(null, null, 'Weight class', 'weight class', this.weightClassRemovedMessage, this.numberOfPointsToAwardForApprovingWeigthClassName, 'videoDeets/weightClass', '/weightClasses', '/candidateWeightClasses')
     },

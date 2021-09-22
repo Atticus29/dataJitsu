@@ -46,6 +46,12 @@ Thumbs.db
 ./src/app/api-keys.ts 
 src/app/api-keys.ts
 
+# Secrets
+./src/app/secrets.ts
+src/app/api-keys.ts
+src/app/secrets.ts
+/src/app/api-keys.ts
+
 # Functions
 /functions/service-account.json
 

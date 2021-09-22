@@ -232,13 +232,7 @@ export class AnnotationDisplayComponent extends BaseComponent implements OnInit 
       this.trackerService.eventCategory.next(val.eventCategory);
       this.trackerService.moveSubcategory.next(val.moveSubcategory);
       if(this.localUser.id){
-        // console.log("user db id is: ");
-        // console.log(this.localUser.id);
-        // console.log(this.localMatchDeets);
         if(this.localMatchDeets){
-          // console.log("YOOOOOO");
-          // console.log(this.localMatchDeets);
-          // console.log(this.localMatchDeets.videoUrl);
           this.db.addCandidateEventInVideoToDb(val.move, val.eventCategory,val.moveSubcategory, this.localUser.id, this.localMatchDeets.videoUrl);
         }
       }

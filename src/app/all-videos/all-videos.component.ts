@@ -36,29 +36,39 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
   // private constants: Object = constants;
   private columnsToDisplay = constants.columnsToDisplay; //TODO make this dynamic somehow
   user: any = null;
-  constructor(private authService: AuthorizationService, private d3Service: D3Service, private dbService: DatabaseService, private textTransformationService: TextTransformationService, private dataSource: VideoDataSource, private cdr: ChangeDetectorRef, private router: Router, private trackerService: TrackerService, public ngZone: NgZone) {
+  constructor(
+    private authService: AuthorizationService,
+    private d3Service: D3Service,
+    private dbService: DatabaseService,
+    private textTransformationService: TextTransformationService,
+    private dataSource: VideoDataSource,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private trackerService: TrackerService,
+    public ngZone: NgZone
+  ) {
     super();
     this.dataSource = new VideoDataSource(this.dbService);
   }
 
   ngOnInit() {
     this.dataSource = new VideoDataSource(this.dbService);
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user=>{
+    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      if(user && user.uid){
-        this.dbService.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-          if(dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches || dbUser.paidStatus){
-          } else{
-            this.ngZone.run(() =>{
+      if (user && user.uid) {
+        this.dbService.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser => {
+          if (dbUser.privileges.isAdmin || dbUser.privileges.canViewAllMatches || dbUser.paidStatus) {
+          } else {
+            this.ngZone.run(() => {
               this.router.navigate(['landing']);
             });
           }
-          if(dbUser.privileges.isAdmin && !this.columnsToDisplay.includes('deleteMatch')){
+          if (dbUser.privileges.isAdmin && !this.columnsToDisplay.includes('deleteMatch')) {
             // console.log("adding deleteMatch column...");
             this.columnsToDisplay.push('deleteMatch');
           }
         });
-      } else{
+      } else {
         // alert("didn't get a uid in all-matches");
       }
     });
@@ -76,31 +86,31 @@ export class AllVideosComponent extends BaseComponent implements OnInit, OnDestr
     }
   }
 
-  ngAfterViewInit(){
-    // console.log("ngAfterViewInit entered")
+  ngAfterViewInit() {
+    console.log("ngAfterViewInit entered")
     this.dataSource.paginator = this.paginator;
-    // console.log("got past paginator");
-    // console.log(this.paginator);
+    console.log("got past paginator");
+    console.log(this.paginator);
     this.dataSource.sort = this.sort;
-    // console.log("sort is: ");
-    // console.log(this.sort);
-    // console.log("got past sort ");
-    this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs =>{
-      // console.log("videoObjs is: ");
-      // console.log(videoObjs);
+    console.log("sort is: ");
+    console.log(this.sort);
+    console.log("got past sort ");
+    this.dbService.getVideos().pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoObjs => {
+      console.log("videoObjs is: ");
+      console.log(videoObjs);
       let videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
       this.dataSource.data = videos;
-      // console.log("dataSource:");
-      // console.log(this.dataSource);
+      console.log("dataSource:");
+      console.log(this.dataSource);
       if(this.paginator == undefined || this.sort == undefined){
-        // console.log("Oh crud undefined!");
+        console.log("Oh crud undefined!");
         this.ngZone.run(() =>{
           this.router.navigate([constants.allVideosPathName]);
           // location.reload();
         });
       }
       if (this.dataSource.data && this.dataSource.sort && this.dataSource.paginator) {
-        // console.log("data and everything exists")
+        console.log("data and everything exists")
         this.isLoadingResults = false;
       }
     });

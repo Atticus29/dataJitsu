@@ -21,13 +21,13 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
   @Input() isFormOwner: boolean;
   @Input() configOptions: DynamicFormConfiguration;
     form: FormGroup;
-    payLoad: string = '';
+    payLoad = '';
     private localButtonDisplayName: String;
-    checked: boolean = false;
-    private nonRequiredIsInvalid: boolean = true;
-    private totalNumberOfQuestions: number = 0;
+    checked = false;
+    private nonRequiredIsInvalid = true;
+    private totalNumberOfQuestions = 0;
     private uniqueQuestionKeys: string[] = [];
-    private confirmMatchesOtherQuestionVal: boolean = true;
+    private confirmMatchesOtherQuestionVal = true;
     // gridLengthsForButtons: number = null;
     // gridLengthsForInput: number = null;
 
@@ -36,45 +36,57 @@ export class DynamicFormComponent extends BaseComponent implements OnInit, OnDes
     }
 
     ngOnInit() {
-      let self = this;
-      if(this.questions){
+      const self = this;
+      if (this.questions) {
         this.form = this.qcs.toFormGroup(this.questions);
-        if(this.questions.length>-1){
-          let requireds = this.questions.map(question => question.required).reduce((a,b)=>Number(a)+Number(b),0);
+        // console.log('deleteMe got here b0 and this.form is: ');
+        // console.log(this.form);
+        if (this.questions.length > -1) {
+          // console.log('deleteMe got here b0.5');
+          const requireds = this.questions.map(question => question.required).reduce((a, b) => Number(a) + Number(b), 0);
+          // console.log('deleteMe got here b0.75 and requireds are: ');
+          // console.log(requireds);
           this.totalNumberOfQuestions = requireds;
         }
         this.formProcessingService.actualForm.next(this.form);
         this.localButtonDisplayName = this.configOptions.getSubmitButtonDisplay();
+        // console.log('deleteMe got here b0.8 localButtonDisplayName is: ' + this.localButtonDisplayName);
       }
       // this.gridLengthsForButtons = this.configOptions.getGridLengthsForButtons();
       // this.gridLengthsForInput = this.configOptions.getGridLengthsForInput();
-      this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm =>{
-        if(!this.form){
-          console.log("getting new questionArray and no form currently exists");
-          console.log(questionArrayOfForm);
+      this.formProcessingService.questionArrayOfForm.pipe(takeUntil(this.ngUnsubscribe)).subscribe(questionArrayOfForm => {
+        // console.log('deleteMe got here b1');
+        if (!this.form) {
+          // console.log('deleteMe got here b2');
+          // console.log('getting new questionArray and no form currently exists');
+          // console.log(questionArrayOfForm);
           // this.form = this.qcs.toFormGroup(this.questions);
           this.form = this.qcs.toFormGroup(questionArrayOfForm);
           this.formProcessingService.actualForm.next(this.form);
           this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
-          //TODO button should be emitted as well
-          self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
+          // TODO button should be emitted as well
+          self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName => {
             self.localButtonDisplayName = buttonDisplayName;
           });
         }
-        if(questionArrayOfForm){
-
+        if (questionArrayOfForm) {
+          // console.log('deleteMe got here b3');
           self.formProcessingService.buttonDisplayName.pipe(takeUntil(self.ngUnsubscribe)).subscribe(buttonDisplayName =>{
-            console.log("getting new questionArray and form currently exists and button display name is: " + buttonDisplayName);
-            console.log(questionArrayOfForm);
-            if(questionArrayOfForm[0]!== "Stop" && buttonDisplayName !== "Next"){
+            // console.log('getting new questionArray and form currently exists and button display name is: ' + buttonDisplayName);
+            // console.log(questionArrayOfForm);
+            if (questionArrayOfForm[0] !== 'Stop' && buttonDisplayName !== 'Next') {
               this.questions = questionArrayOfForm;
               // console.log("this.questions is: ");
               // console.log(this.questions);
-              this.form = this.qcs.toFormGroup(this.questions); //TODO if I add this in, the owned questions work, but the collection creation stepper 1 does not
+              // TODO if I add this in, the owned questions work, but the collection creation stepper 1 does not
+              this.form = this.qcs.toFormGroup(this.questions);
+              // console.log('deleteMe got here b4 this.form is: ');
+              // console.log(this.form);
               // this.formProcessingService.actualForm.next(this.form);
               // this.repopulateFormWithPreviousPayload(this.form, {}, this.questions);
-            } else{
-              if(questionArrayOfForm[0]!== "Stop"){
+            } else {
+              if (questionArrayOfForm[0] !== 'Stop') {
+                // console.log('deleteMe got here b5');
                 this.questions = questionArrayOfForm;
                 // console.log("this.questions is: ");
                 // console.log(this.questions);

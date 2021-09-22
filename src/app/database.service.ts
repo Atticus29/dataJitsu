@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { takeUntil, take, first, merge } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { takeUntil, take, first, merge, catchError, retry } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 import { TextTransformationService } from './text-transformation.service';
 import { DateCalculationsService } from './date-calculations.service';
 import { ValidationService } from './validation.service';
+import { deleteUserEndpointUrl } from './secrets';
 
 import { User } from './user.model';
 import { Video } from './video.model';
@@ -22,6 +25,7 @@ import { FormQuestionBase } from './formQuestionBase.model';
 
 @Injectable()
 export class DatabaseService {
+  private handleError: HandleError;
   videos:Observable<any>;
   weightClasses:Observable<any>;
   giRanks:Observable<any>;
@@ -35,23 +39,31 @@ export class DatabaseService {
   eventsAsObject: Observable<any>;
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, public db: AngularFireDatabase, private textTransformationService: TextTransformationService, private dateCalculationsService: DateCalculationsService, private validationService: ValidationService) {
-    this.videos = db.list<Video>('/videos').valueChanges();
-    this.weightClasses = db.list<String>('/weightClasses').valueChanges();
-    this.giRanks = db.list<String>('/giRanks').valueChanges();
-    this.noGiRanks = db.list<String>('/noGiRanks').valueChanges();
-    this.ageClasses = db.list<String>('/ageClasses').valueChanges();
-    this.users = db.list<User>('/users').valueChanges();
-    this.events = db.list<String>('/events').valueChanges(); //TODO maybe JSON?
-    this.eventsAsObject = db.object('/events').valueChanges();
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    public db: AngularFireDatabase,
+    private textTransformationService: TextTransformationService,
+    private dateCalculationsService: DateCalculationsService,
+    private httpErrorHandler: HttpErrorHandler,
+    private validationService: ValidationService) {
+      this.handleError = this.httpErrorHandler.createHandleError('database service');
+      this.videos = db.list<Video>('/videos').valueChanges();
+      this.weightClasses = db.list<String>('/weightClasses').valueChanges();
+      this.giRanks = db.list<String>('/giRanks').valueChanges();
+      this.noGiRanks = db.list<String>('/noGiRanks').valueChanges();
+      this.ageClasses = db.list<String>('/ageClasses').valueChanges();
+      this.users = db.list<User>('/users').valueChanges();
+      this.events = db.list<String>('/events').valueChanges(); //TODO maybe JSON?
+      this.eventsAsObject = db.object('/events').valueChanges();
   }
 
   getEventIdByVideoIdAndStartTime(videoId: string, timeInitiated: number){
     let ref = firebase.database().ref('videos/' + videoId + '/events');
     let obsRet = Observable.create(function(observer){
       ref.orderByChild("timeInitiated").equalTo(timeInitiated).once("child_added", snapshot =>{
-        if(snapshot){
-          if(snapshot.key){
+        if(snapshot) {
+          if(snapshot.key) {
             // console.log(snapshot.key); //TODO get key
             let annotationId = snapshot.key; //TODO key instead of val
             observer.next(annotationId);
@@ -79,8 +91,36 @@ export class DatabaseService {
   getTournamentNames(): any{
     return this.getGeneric('/tournamentNames/');
   }
-  getGeneric(path:string): any{
+  getGeneric(path:string): any {
     return this.db.list(path).valueChanges();
+  }
+
+  deleteUserByEmail(emailAddress: string): any {
+    return this.http.post<boolean>(deleteUserEndpointUrl, { "userEmail":emailAddress })
+      .pipe(
+        catchError(res => {
+          return of(res.error);
+        })
+      );
+  }
+
+  deleteUserFromDatabase(emailAddress: string): Observable<boolean> {
+    let ref = firebase.database().ref("users");
+    let obsRet = Observable.create(function(observer){
+      ref.orderByChild("email").equalTo(emailAddress).limitToFirst(1).on("child_added", snapshot => {
+          let user = snapshot.val();
+          let deleteRef = firebase.database().ref('users/' + user.id);
+          try {
+              deleteRef.remove();
+              observer.next(true);
+          } catch (error) {
+            console.log('Error deleting user from database: ');
+            console.log(error);
+            observer.next(false);
+          }
+      });
+    });
+    return obsRet;
   }
 
   getCandidateTournamentNames(): any{
@@ -217,21 +257,38 @@ export class DatabaseService {
     return obsRet;
   }
 
-  getVideos(){
-    let ref = firebase.database().ref('/videos');
-    let resultObservable = Observable.create(observer =>{
-      ref.on('value', snapshot=>{
-        observer.next(snapshot.val());
+  getVideos() {
+    const videoRef = this.db.list('videos');
+    return videoRef.valueChanges();
+  }
+
+  async getVideosV2() {
+  let result = this.db.list<Video>('/videos').valueChanges().pipe(first()).toPromise();
+  return result;
+}
+
+  getUsers(): Observable<User[]> {
+    const ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      ref.on('value', snapshot => {
+        const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
+        observer.next(snapshotAsUsers);
       });
     });
     return resultObservable;
   }
 
-  async getVideosV2(){
-  let result = this.db.list<Video>('/videos').valueChanges().pipe(first()).toPromise();
-  return result;
-}
-
+  getUserNames(): Observable<User[]> {
+    const ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      ref.on('value', snapshot => {
+        const snapshotAsUsers = Object.values(snapshot.val()).map(User.fromJson);
+        const userNames = snapshotAsUsers.map(user => user.name);
+        observer.next(userNames);
+      });
+    });
+    return resultObservable;
+  }
 
   getUserReputationPoints(userId: string){
     return this.db.object('users/' + userId + '/reputationPoints').valueChanges();
@@ -423,24 +480,26 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  getDateSinceAnnotated(userId: string){
-    return this.db.object('/users/' + userId + '/dateLastAnnotated');  //TODO check that there is an annotation status and that this is the firebase path to it
+  getDateSinceAnnotated(userId: string) {
+    return this.db.object('/users/' + userId + '/dateLastAnnotated');
+    // TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  hasBeenAnnotated(videoId: string){
-    return this.db.object('/videos/'+ videoId + '/annotationStatus'); //TODO check that there is an annotation status and that this is the firebase path to it
+  hasBeenAnnotated(videoId: string) {
+    return this.db.object('/videos/'+ videoId + '/annotationStatus');
+    // TODO check that there is an annotation status and that this is the firebase path to it
   }
 
-  getUserByUid(uid: string) : Observable<any>{
-    console.log("getUserByUid entered. Uid is: " + uid);
+  getUserByUid(uid: string) : Observable<any> {
+    // console.log("getUserByUid entered. Uid is: " + uid);
     let ref = firebase.database().ref('/users/');
     let user: User;
-    let resultObservable = Observable.create(observer =>{
+    let resultObservable = Observable.create(observer => {
       if(uid){
         try{
           ref.orderByChild('uid').equalTo(uid).limitToFirst(1).on("value", snapshot => {
-            console.log("query result in getUserByUid in databaseService: ");
-            console.log(snapshot.val());
+            // console.log("query result in getUserByUid in databaseService: ");
+            // console.log(snapshot.val());
             user = snapshot.val();
             user = user[Object.keys(user)[0]];
             observer.next(user);
@@ -454,7 +513,7 @@ export class DatabaseService {
     return resultObservable;
   }
 
-  getMatchFromNodeKey(key: string){
+  getMatchFromNodeKey(key: string) {
     this.retrievedMatch = this.db.object('videos/' + key).valueChanges();
     return this.retrievedMatch;
   }
@@ -488,11 +547,22 @@ export class DatabaseService {
       // this.events.push(events);
   }
 
-  getUserById(userId: string){
+  getUserById(userId: string) {
     let ref = firebase.database().ref('users/' + userId);
-    let resultObservable = Observable.create(observer =>{
+    let resultObservable = Observable.create(observer => {
       return ref.on("value", snapshot => {
         // console.log("got to snapshot in getUserById in database service");
+        let user = snapshot.val();
+        observer.next(user);
+      });
+    });
+    return resultObservable;
+  }
+
+  getFirstUserByUsername(userName: string) {
+    let ref = firebase.database().ref('users/');
+    let resultObservable = Observable.create(observer => {
+      return ref.orderByChild('name').equalTo(userName).limitToFirst(1).on("child_added", snapshot => {
         let user = snapshot.val();
         observer.next(user);
       });
@@ -519,13 +589,7 @@ export class DatabaseService {
     let updates = {};
     updates[path + videoId + '/id'] = videoId;
     updates[path + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
-    console.log("got here 1");
-    console.log("updates is:");
-    console.log(updates);
     updates['users/'+ video.videoDeets.genericArgs.originalPosterId +'/'+ path + videoId + '/' ] = video;
-    // console.log("got here 2");
-    console.log("updates is:");
-    console.log(updates);
     // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/id'] = videoId;
     // updates['users/'+ video.videoDeets.genericArgs.originalPosterId + '/collections/' + videoId + '/videoCreated'] = firebase.database.ServerValue.TIMESTAMP;
     firebase.database().ref().update(updates);
@@ -1921,4 +1985,5 @@ export class DatabaseService {
     });
     return obsRet;
   }
+
 }
