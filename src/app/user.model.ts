@@ -1,7 +1,7 @@
-import { event } from 'jquery';
-import { constants } from './constants';
-import { EventInVideo } from './eventInVideo.model';
-import { ReputationLog } from './reputationLog.model';
+import { event } from "jquery";
+import { constants } from "./constants";
+import { EventInVideo } from "./eventInVideo.model";
+import { ReputationLog } from "./reputationLog.model";
 
 export class User {
   public id: string;
@@ -26,17 +26,23 @@ export class User {
     const giRank: string = jsonObj.giRank;
     const id: string = jsonObj.id;
     const areThereEvents: boolean = jsonObj.eventsAnnotated ? true : false;
-    const eventsAnnotated: EventInVideo[] = areThereEvents ? Object.values(jsonObj.eventsAnnotated).map(EventInVideo.fromJson) : [];
+    const eventsAnnotated: EventInVideo[] = areThereEvents
+      ? Object.values(jsonObj.eventsAnnotated).map(EventInVideo.fromJson)
+      : [];
     const name: string = jsonObj.name;
     const noGiRank: string = jsonObj.noGiRank;
     const paidStatus: boolean = jsonObj.paidStatus;
     const password: string = jsonObj.password;
     const privileges: {} = jsonObj.privileges;
     const isThereReputationLog: boolean = jsonObj.reputationLog ? true : false;
-    const reputationLog: ReputationLog = isThereReputationLog ? ReputationLog.fromJson(jsonObj.reputationLog) : null;
+    const reputationLog: ReputationLog = isThereReputationLog
+      ? ReputationLog.fromJson(jsonObj.reputationLog)
+      : null;
     const reputationPoints: number = jsonObj.reputationPoints;
     const uid: string = jsonObj.uid;
-    const annotationVotesCastToday: number = jsonObj.votingInfo ? jsonObj.votingInfo.annotationVotesCastToday : 0;
+    const annotationVotesCastToday: number = jsonObj.votingInfo
+      ? jsonObj.votingInfo.annotationVotesCastToday
+      : 0;
     const weight: number = jsonObj.weight;
     const newUser = new User(
       name,
@@ -55,28 +61,32 @@ export class User {
     newUser.setVotesCastToday(annotationVotesCastToday);
     newUser.setId(id);
     newUser.setUid(uid);
-    if (reputationLog) {newUser.setReputationLog(reputationLog); }
+    if (reputationLog) {
+      newUser.setReputationLog(reputationLog);
+    }
     newUser.setPrivileges(privileges);
     newUser.setPaidStatus(paidStatus);
     newUser.setAnnotatedEnoughOverride(annotatedEnoughOverride);
-    if (eventsAnnotated) { newUser.addEventsInVideo(eventsAnnotated); }
+    if (eventsAnnotated) {
+      newUser.addEventsInVideo(eventsAnnotated);
+    }
     return newUser;
   }
 
   constructor(
-      public name: string,
-      public email: string,
-      public password: string,
-      public giRank: string,
-      public noGiRank: string,
-      public affiliation: string,
-      public age: number,
-      public weight: number,
-      public reputationPoints: number,
-      public dateLastAnnotated: string,
-      public gender: string,
-      public dateCreated: any
-    ) {
+    public name: string,
+    public email: string,
+    public password: string,
+    public giRank: string,
+    public noGiRank: string,
+    public affiliation: string,
+    public age: number,
+    public weight: number,
+    public reputationPoints: number,
+    public dateLastAnnotated: string,
+    public gender: string,
+    public dateCreated: any
+  ) {
     this.privileges = {
       isAdmin: false,
       isModerator: false, // can confirm removal of move names and downvoted/flagged annotations
@@ -87,12 +97,12 @@ export class User {
       canFlagAnnotations: false,
       canFlagUsers: false,
       canViewAllMatches: false,
-      canEditVideo: false
+      canEditVideo: false,
     };
     this.votingInfo = {
       annotationVoteQuota: constants.annotationVoteQuota,
-      annotationVotesCastToday: 0
-    }
+      annotationVotesCastToday: 0,
+    };
     this.paidStatus = false;
     this.annotatedEnoughOverride = false;
   }
@@ -114,7 +124,7 @@ export class User {
   }
 
   isValidWeight(): boolean {
-    return (this.weight < 8 || this.weight > 1400);
+    return this.weight < 8 || this.weight > 1400;
   }
 
   setPrivileges(privileges: {}) {
@@ -128,51 +138,51 @@ export class User {
   setVotesCastToday(numVotes: number) {
     this.votingInfo = {
       annotationVoteQuota: constants.annotationVoteQuota,
-      annotationVotesCastToday: numVotes
-    }
+      annotationVotesCastToday: numVotes,
+    };
   }
 
-  setUid(uid: string){
+  setUid(uid: string) {
     this.uid = uid;
   }
 
-  setId(id: string){
+  setId(id: string) {
     this.id = id;
   }
 
-  getName(){
+  getName() {
     return this.name;
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
 
-  getUid(): string{
+  getUid(): string {
     return this.uid;
   }
 
-  setWeightClass(weightClass: string){
+  setWeightClass(weightClass: string) {
     this.weightClass = weightClass;
   }
 
-  setAgeClass(ageClass: string){
+  setAgeClass(ageClass: string) {
     this.ageClass = ageClass;
   }
 
-  getPassword(){
+  getPassword() {
     return this.password;
   }
 
-  getUserName(){
+  getUserName() {
     return this.name;
   }
 
-  getEmail(){
+  getEmail() {
     return this.email;
   }
 
-  getPrivileges(){
+  getPrivileges() {
     return this.privileges;
   }
 }
