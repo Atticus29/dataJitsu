@@ -27,7 +27,7 @@ import { FormProcessingService } from '../form-processing.service';
 })
 export class CreateAccountComponent extends BaseComponent implements OnInit {
 
-  //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
+  //@TODO make weight class, age class, etc. autocompletes
   newUserForm: FormGroup;
   title: string = "Create an Account";
   genders: Array<string> = constants.genders;
