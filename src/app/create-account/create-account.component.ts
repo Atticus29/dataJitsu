@@ -107,9 +107,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
                     if (currentFormQuestions[0] !== "Stop") {
                       let newUser: User =
                         this.createUserObjFromDynamicForm(formResults);
-                      console.log("deleteMe got here d1");
                       this.addUserToDbHelper(newUser, formResults);
-                      console.log("deleteMe got here d2");
                     }
                   }
                 }
@@ -120,7 +118,6 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   }
 
   createUserObjFromDynamicForm(formResults: any) {
-    console.log("deleteMe createUserObjFromDynamicForm entered");
     const {
       name,
       email,
@@ -158,17 +155,13 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
 
     //The signup and db add HAVE to happen before the subscription. You've made this mistake before
     this.as.emailSignUp(newUser.getEmail(), newUser.getPassword());
-    console.log("deleteMe got here e1");
     this.databaseService
       .addUserToDb(newUser)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((dbUserId: string) => {
         if (dbUserId) {
-          console.log("deleteMe got here e2");
-          console.log("deleteMe dbUserId is: " + dbUserId);
           self.trackerService.currentUserDbId.next(dbUserId); // app.component listens for this and reconciles the guid from firebase and adds it to a user with this node
           this.trackerService.currentUserDbId.next(dbUserId);
-          console.log("deleteMe got here e3");
           //can assume success TODO
           let path: string = null;
           let candidatePath: string = null;
@@ -239,13 +232,12 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
               });
           }
 
-          // self.openSnackBar(constants.userAddedToDbNotification);
           this.trackerService.currentUserBehaviorSubject.next(newUser);
           self.formProcessingService.stopFormAndQuestions();
           self.formProcessingService.finalSubmitButtonClicked.next(true);
           self.formProcessingService.restartFormAndQuestions(
             self.questionService.getAccountCreationQuestionsAsObj()
-          ); //self.questionService.getIndividualOneEditQuestionAsObj()
+          );
           self.stopCounter = 0;
           // this.trackerService.currentUserUid
           //   .pipe(takeUntil(this.ngUnsubscribe))
@@ -261,16 +253,12 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
           this.trackerService.currentUserBehaviorSubject
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((user) => {
-              console.log("deleteMe got here a1");
               if (user) {
-                console.log("deleteMe got here a2");
                 if (user.uid) {
-                  console.log("deleteMe got here a3");
                   this.databaseService.addUidToUser(user.uid, dbUserId);
-                  console.log("deleteMe got here a4");
                 }
                 this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
-                console.log("deleteMe got here a5");
+                self.openSnackBar(constants.userAddedToDbNotification);
                 // TODO navigate to user page
                 // this.ngZone.run(() => {
                 //   console.log("deleteMe got here a6");
@@ -282,7 +270,6 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
               }
             });
         } else {
-          console.log("deleteMe got here a8");
           self.openSnackBar(constants.userAddedToDbFailureNotification);
         }
       });

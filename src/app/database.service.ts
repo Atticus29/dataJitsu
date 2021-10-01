@@ -592,7 +592,7 @@ export class DatabaseService {
   }
 
   getUserByUid(uid: string): Observable<any> {
-    console.log("getUserByUid entered. Uid is: " + uid);
+    // console.log("getUserByUid entered. Uid is: " + uid);
     let ref = firebase.database().ref("/users/");
     let user: User;
     let resultObservable = Observable.create((observer) => {
@@ -603,12 +603,12 @@ export class DatabaseService {
             .equalTo(uid)
             .limitToFirst(1)
             .on("value", (snapshot) => {
-              console.log("query result in getUserByUid in databaseService: ");
-              console.log(snapshot.val());
+              // console.log("query result in getUserByUid in databaseService: ");
+              // console.log(snapshot.val());
               user = snapshot.val();
               user ? (user = user[Object.keys(user)[0]]) : (user = null);
-              console.log("deleteMe user is: ");
-              console.log(user);
+              // console.log("deleteMe user is: ");
+              // console.log(user);
               observer.next(user);
             });
         } catch (e) {

@@ -224,12 +224,12 @@ export class AuthorizationService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          // console.log("user in emailLogin in authorization service");
-          // console.log(result);
+          console.log("user in emailLogin in authorization service");
+          console.log(result);
           this.authState = result; //TODO?
           // console.log("navigating to matches...");
           // this.router.navigate([constants.allVideosPathName]);
-          this.router.navigate([constants.userInfoPath]);
+          // this.router.navigate([constants.userInfoPath]);
         });
         // console.log(this.currentUserId);
         // this.updateUserData()

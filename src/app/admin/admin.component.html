@@ -5,29 +5,43 @@
       <app-user-delete></app-user-delete>
     </div>
   </mat-tab>
-  <mat-tab label="Athlete Name Approval"> <!-- TODO "Athlete" should be a configurable word -->
+  <mat-tab label="Athlete Name Approval">
+    <!-- TODO "Athlete" should be a configurable word -->
     <app-athlete-name-approval></app-athlete-name-approval>
   </mat-tab>
-  <mat-tab label="Move Name Approval"> <!-- TODO "move" should be a configurable word -->
+  <mat-tab label="Move Name Approval">
+    <!-- TODO "move" should be a configurable word -->
 
     <app-move-name-approval></app-move-name-approval>
   </mat-tab>
   <mat-tab label="Tournament Name Approval">
-    <app-base-approval [approvalConfig]="localTournamentNameApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localTournamentNameApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
   <mat-tab label="Weight Class Name Approval">
-    <app-base-approval [approvalConfig]="localWeightClassApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localWeightClassApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
   <mat-tab label="No Gi Rank Name Approval">
-    <app-base-approval [approvalConfig]="localNoGiApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localNoGiApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
   <mat-tab label="Age Class Name Approval">
-    <app-base-approval [approvalConfig]="localAgeClassApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localAgeClassApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
   <mat-tab label="Location Name Approval">
-    <app-base-approval [approvalConfig]="localLocationNameApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localLocationNameApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
   <mat-tab label="Gym Affiliation Name Approval">
-    <app-base-approval [approvalConfig]="localGymAffiliationApprovalConfig"></app-base-approval>
+    <app-base-approval
+      [approvalConfig]="localGymAffiliationApprovalConfig"
+    ></app-base-approval>
   </mat-tab>
 </mat-tab-group>

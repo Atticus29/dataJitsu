@@ -67,24 +67,15 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.trackerService.currentUserDbId
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((results) => {
-        console.log("deleteMe got here k1");
-        console.log(results);
-      });
-
     combineLatest([
       this.trackerService.currentUserDbId,
       this.trackerService.currentUserUid,
     ])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((results) => {
-        console.log("deleteMe got here j1");
-        console.log(results);
         const dbId = results[0];
         const uid = results[1];
-        this.databaseService.addUidToUser(uid, dbId);
+        if (dbId && uid) this.databaseService.addUidToUser(uid, dbId);
       });
 
     combineLatest([
@@ -93,32 +84,20 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((results) => {
-        console.log("deleteMe got here f1");
-        console.log("results entered in combineLatest call");
-        console.log(results);
-        let result = results[0];
-        let authState = results[1];
-        console.log("deleteMe got here f2 and result is: ");
-        console.log(result);
-        console.log("deleteMe got here f3 and authState is: ");
-        console.log(authState);
+        const result = results[0];
+        const authState = results[1];
         if (result && result.uid && authState) {
-          console.log("deleteMe got here b1");
           this.trackerService.currentUserUid.next(result.uid);
-          console.log("deleteMe got here b1.5");
           this.databaseService
             .getUserByUid(result.uid)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((dbUser: any) => {
-              console.log("deleteMe got here b2");
-              console.log("dbUser is: ");
-              console.log(dbUser);
-              // console.log(dbUser.privileges);
-              if (dbUser && dbUser.id) {
+              if (dbUser && dbUser.id && dbUser.privileges) {
                 if (dbUser.privileges.canViewAllMatches) {
                   this.canViewAllMatches = dbUser.privileges.canViewAllMatches;
                 } else {
-                  console.log("got here instead 2");
+                  // TODO
+                  // console.log("got here instead 2");
                 }
                 this.databaseService
                   .getUserReputationPoints(dbUser.id)
@@ -140,7 +119,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
                     console.log(currentUserDbId);
                     console.log("deleteMe got here i2. uid is: ");
                     console.log(result.uid);
-                    // TODO add uid to userDb node
+                    // TODO add uid to userDb node or, more likely, remove this chunk
                   });
               }
             });
@@ -159,14 +138,10 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
             // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
             // console.log("changing authenticationStatus to true...");
             this.authenticationStatus = true;
-            console.log("deleteMe got here c1");
             this.databaseService
               .getUserByUid(currentUser.uid)
               .pipe(takeUntil(this.ngUnsubscribe))
               .subscribe((dbUser) => {
-                console.log("deleteMe got here c2");
-                console.log("db user from getUserByUid in app.component is:");
-                console.log(dbUser);
                 this.user = dbUser;
                 this.name = dbUser.name;
                 this.shouldAnnotate = dbUser.paymentStatus;
@@ -202,7 +177,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
           this.name = "Anonymous User";
 
           console.log("user doesn't exist now. Should move along...");
-          this.router.navigate(["login"]);
+          // this.router.navigate(["login"]);
         }
       });
   }
