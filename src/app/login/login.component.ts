@@ -1,45 +1,57 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProtectionGuard } from '../protection.guard';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ProtectionGuard } from "../protection.guard";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { auth } from 'firebase/app';
+import { auth } from "firebase/app";
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
-import { TrackerService } from '../tracker.service';
-import { BaseComponent } from '../base/base.component';
-import { AuthorizationService } from '../authorization.service';
-import { ValidationService } from '../validation.service';
+import { TrackerService } from "../tracker.service";
+import { BaseComponent } from "../base/base.component";
+import { AuthorizationService } from "../authorization.service";
+import { ValidationService } from "../validation.service";
 // import { EmailLoginDialog } from '../emailLoginDialog.model';
-import { EmailLoginDialogComponent } from '../email-login-dialog/email-login-dialog.component';
-import { User } from '../user.model';
+import { EmailLoginDialogComponent } from "../email-login-dialog/email-login-dialog.component";
+import { User } from "../user.model";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  providers: [ValidationService, AuthorizationService, ProtectionGuard, TrackerService]
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
+  providers: [
+    ValidationService,
+    AuthorizationService,
+    ProtectionGuard,
+    TrackerService,
+  ],
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   private user: User = null;
   private loggedIn: boolean = false;
 
-  constructor(public authService: AuthorizationService, private router: Router, private as: AuthorizationService, public dialog: MatDialog, public trackerService: TrackerService) {
+  constructor(
+    public authService: AuthorizationService,
+    private router: Router,
+    private as: AuthorizationService,
+    public dialog: MatDialog,
+    public trackerService: TrackerService
+  ) {
     super();
   }
 
   ngOnInit() {
-    console.log("got into login component");
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      this.user = result;
-      if(result){
-        this.loggedIn = true;
-      }else{
-        this.loggedIn = false;
-      }
-    });
+    this.trackerService.currentUserBehaviorSubject
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        this.user = result;
+        if (result) {
+          this.loggedIn = true;
+        } else {
+          this.loggedIn = false;
+        }
+      });
   }
 
   signInWithGoogle() {
@@ -56,14 +68,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(EmailLoginDialogComponent, dialogConfig);
-    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
-      if(val){
-        this.authService.emailLogin(val.email, val.passwd);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((val) => {
+        if (val) {
+          this.authService.emailLogin(val.email, val.passwd);
+        }
+      });
   }
 
-  newAccount(){
-    this.router.navigate(['createaccount']);
+  newAccount() {
+    this.router.navigate(["createaccount"]);
   }
 }

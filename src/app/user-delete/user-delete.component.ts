@@ -41,8 +41,6 @@ export class UserDeleteComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((userResults) => {
         this.localDetailList = userResults;
-        console.log("deleteMe got here a1 userResults are: ");
-        console.log(userResults);
       });
     try {
       this.questionService

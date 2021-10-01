@@ -110,17 +110,8 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
                 // console.log(dbUser);
                 this.userObjFromDb = dbUser;
               } else {
-                // handle case where we have a non-null authState and a non-null uid, but there is no user in the database with that uid yet
-                // this.trackerService.currentUidBehaviorSubject.next(result.uid);
-                this.trackerService.currentUserDbId
-                  .pipe(takeUntil(this.ngUnsubscribe))
-                  .subscribe((currentUserDbId: string) => {
-                    console.log("deleteMe got here i1. currentUserDbId is: ");
-                    console.log(currentUserDbId);
-                    console.log("deleteMe got here i2. uid is: ");
-                    console.log(result.uid);
-                    // TODO add uid to userDb node or, more likely, remove this chunk
-                  });
+                // TODO case where we have a non-null authState and a non-null uid, but there is no user in the database with that uid yet should not be possible
+                console.log("Something weird has happened. Alert staff.");
               }
             });
         } else {

@@ -255,18 +255,12 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
             .subscribe((user) => {
               if (user) {
                 if (user.uid) {
-                  this.databaseService.addUidToUser(user.uid, dbUserId);
+                  // this.databaseService.addUidToUser used to happen here, but now that is handled in app.component to avoid circularity issues
+
+                  // don't try login until the user had a uid associated with them
+                  this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
+                  self.openSnackBar(constants.userAddedToDbNotification);
                 }
-                this.as.emailLogin(newUser.getEmail(), newUser.getPassword()); //TODO I'm not sure where to put this... putting it below FUBARs it
-                self.openSnackBar(constants.userAddedToDbNotification);
-                // TODO navigate to user page
-                // this.ngZone.run(() => {
-                //   console.log("deleteMe got here a6");
-                //   this.router.navigate([
-                //     constants.userInfoPath + "/" + user.uid,
-                //   ]);
-                //   console.log("deleteMe got here a7");
-                // });
               }
             });
         } else {

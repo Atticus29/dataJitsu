@@ -40,9 +40,9 @@ export class AuthorizationService {
       }
     });
     this.authError.subscribe((errorResults) => {
-      //.pipe(takeUntil(this.ngUnsubscribe))
-      // console.log("errorResults");
-      // console.log(errorResults);
+      // .pipe(takeUntil(this.ngUnsubscribe))
+      console.log("errorResults from authorization service");
+      console.log(errorResults);
     });
   }
 
