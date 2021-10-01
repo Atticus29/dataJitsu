@@ -1,33 +1,59 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User } from './user.model';
+import { Injectable, Optional, SkipSelf } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { User } from "./user.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TrackerService {
   public startTimePoint: BehaviorSubject<number> = new BehaviorSubject(0);
   public endTimePoint: BehaviorSubject<number> = new BehaviorSubject(1);
   public points: BehaviorSubject<number> = new BehaviorSubject(-1);
-  public eventCategory: BehaviorSubject<string> = new BehaviorSubject("No Category Currently Selected");
+  public eventCategory: BehaviorSubject<string> = new BehaviorSubject(
+    "No Category Currently Selected"
+  );
   public moveSubcategory: BehaviorSubject<string> = new BehaviorSubject("");
-  public eventName: BehaviorSubject<string> = new BehaviorSubject("No Annotation Currently Selected");
-  public currentMatch: BehaviorSubject<string> = new BehaviorSubject("currentMatch");
+  public eventName: BehaviorSubject<string> = new BehaviorSubject(
+    "No Annotation Currently Selected"
+  );
+  public currentMatch: BehaviorSubject<string> = new BehaviorSubject(
+    "currentMatch"
+  );
   public performer: BehaviorSubject<string> = new BehaviorSubject("Nobody");
   public recipient: BehaviorSubject<string> = new BehaviorSubject("Nobody");
   public videoId: BehaviorSubject<string> = new BehaviorSubject("tmpId");
-  public videoResumeStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public submission: BehaviorSubject<string> = new BehaviorSubject<string>("No");
+  public videoResumeStatus: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public submission: BehaviorSubject<string> = new BehaviorSubject<string>(
+    "No"
+  );
   public annotationBegun: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public attemptStatus: BehaviorSubject<string> = new BehaviorSubject("Yes");
-  public currentUserBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-  public desiredJumpStartTime: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-  public fetchNewAnnotations: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public youtubePlayerLoadedStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public currentUserBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(
+    null
+  );
+  public desiredJumpStartTime: BehaviorSubject<number> =
+    new BehaviorSubject<number>(null);
+  public fetchNewAnnotations: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public youtubePlayerLoadedStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject(false);
+  public currentUserDbId: BehaviorSubject<any> = new BehaviorSubject(null);
+  public currentUserUid: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  constructor() { }
+  constructor(@Optional() @SkipSelf() parent?: TrackerService) {
+    // if (parent) {
+    //   throw Error(
+    //     `[TrackerService]: trying to create multiple instances,
+    //     but this service should be a singleton.`
+    //   );
+    // }
+    // console.log("deleteMe l1 trackerService instantiated");
+  }
 
-  resetAllExceptCurrentMatch(){
+  resetAllExceptCurrentMatch() {
     // console.log("resetAllExceptCurrentMatch has been called");
     this.startTimePoint.next(-1);
     this.endTimePoint.next(-1);
@@ -46,7 +72,7 @@ export class TrackerService {
     // console.log("resetAllExceptCurrentMatch has been completed");
   }
 
-  resetAll(){
+  resetAll() {
     this.startTimePoint.next(-1);
     this.endTimePoint.next(-1);
     this.points.next(-1);
@@ -62,5 +88,5 @@ export class TrackerService {
     this.attemptStatus.next("Yes");
     this.annotationBegun.next(false);
     this.youtubePlayerLoadedStatus.next(false);
-  };
+  }
 }
