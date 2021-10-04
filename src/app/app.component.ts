@@ -20,7 +20,7 @@ import { BaseComponent } from "./base/base.component";
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
-  providers: [AuthorizationService, ProtectionGuard],
+  // providers: [AuthorizationService, ProtectionGuard],
 })
 export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -97,7 +97,6 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
                   this.canViewAllMatches = dbUser.privileges.canViewAllMatches;
                 } else {
                   // TODO
-                  // console.log("got here instead 2");
                 }
                 this.databaseService
                   .getUserReputationPoints(dbUser.id)
@@ -106,8 +105,6 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
                     this.localReputation = Number(repPoints); //TODO this is the only part that is not in base component...experiment with putting it in there
                   });
                 this.trackerService.currentUserBehaviorSubject.next(dbUser); //this should be the ONLY emission to currentUserObservable app-wide!
-                // console.log("dbUser entered! Got: ");
-                // console.log(dbUser);
                 this.userObjFromDb = dbUser;
               } else {
                 // TODO case where we have a non-null authState and a non-null uid, but there is no user in the database with that uid yet should not be possible
@@ -122,7 +119,10 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
     this.trackerService.currentUserBehaviorSubject
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((currentUser) => {
-        // console.log("currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: ");
+        console.log(
+          "currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: "
+        );
+        console.log(currentUser);
         if (currentUser) {
           // console.log(currentUser);
           if (currentUser.uid) {

@@ -3,6 +3,7 @@ import { AngularFireDatabase } from "@angular/fire/database"; //removed Firebase
 import { AngularFireAuth } from "@angular/fire/auth";
 import { auth } from "firebase/app";
 import { Router } from "@angular/router";
+import { get } from "lodash";
 // import * as firebase from 'firebase';
 
 import { takeUntil, take, first } from "rxjs/operators";
@@ -26,7 +27,7 @@ export class AuthorizationService {
     private afdb: AngularFireDatabase,
     private router: Router,
     public ngZone: NgZone,
-    private dbService: DatabaseService
+    private databaseService: DatabaseService
   ) {
     // let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     this.afAuth.authState.subscribe((user) => {
@@ -71,11 +72,11 @@ export class AuthorizationService {
 
   // Returns
   get currentUserObservable(): Observable<any> {
-    let self = this;
-    let obsRet = Observable.create(function (observer) {
+    const self = this;
+    const obsRet = Observable.create(function (observer) {
       self.afAuth.authState.subscribe((auth) => {
-        // console.log("user in currentUserObservable in authorization service: ");
-        // console.log(auth);
+        console.log("user in currentUserObservable in authorization service: ");
+        console.log(auth);
         observer.next(auth);
       });
     });
@@ -133,7 +134,7 @@ export class AuthorizationService {
           this.authState = result.user;
           // console.log("result.user in socialSignIn:");
           // console.log(result.user);
-          this.router.navigate(["landing"]);
+          this.router.navigate(["landing"]); // TODO update
           //TODO switch user to the one in the db
           // this.updateUserData()
         });
@@ -160,30 +161,33 @@ export class AuthorizationService {
   //// Email/Password Auth ////
 
   emailSignUp(email: string, password: string) {
-    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
-    let self = this;
+    const localUnsubscribeSubject: Subject<void> = new Subject<void>();
+    const self = this;
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
         if (result) {
           if (result.user) {
             this.authState = result.user;
-            this.dbService
+            this.databaseService
               .getNodeIdFromEmail(result.user.email)
               .pipe(takeUntil(localUnsubscribeSubject))
               .subscribe((nodeId: string) => {
                 // console.log("nodeId is " + nodeId);
                 if (nodeId) {
-                  this.dbService.setUidFromNodeId(result.user.uid, nodeId);
+                  this.databaseService.setUidFromNodeId(
+                    result.user.uid,
+                    nodeId
+                  );
                   localUnsubscribeSubject.next();
                   localUnsubscribeSubject.complete();
-                  // this.dbService.getUserById(nodeId).pipe().subscribe((user: User) =>{
+                  // this.databaseService.getUserById(nodeId).pipe().subscribe((user: User) =>{
                   //   console.log("user in getUserById inside getNodeIdFromEmail in emailSignUp in AuthorizationService: ");
                   //   console.log(user);
                   //   if(user){
                   //
                   //   }
-                  //   this.dbService.setUidFromNodeId(result.user.uid,nodeId);
+                  //   this.databaseService.setUidFromNodeId(result.user.uid,nodeId);
                   // });
                 }
               });
@@ -223,14 +227,26 @@ export class AuthorizationService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          console.log("user in emailLogin in authorization service");
-          console.log(result);
-          this.authState = result; //TODO?
-          // console.log("navigating to matches...");
-          // this.router.navigate([constants.allVideosPathName]);
-          // this.router.navigate([constants.userInfoPath]);
-        });
+        console.log("user in emailLogin in authorization service");
+        console.log(result);
+        this.authState = result; //TODO?
+        // const emailAddress = get(result, "email", "");
+        // console.log("deleteMe got here emailAddress is: " + emailAddress);
+        if (email) {
+          this.databaseService
+            .getUserByEmailAddress(email)
+            .pipe(take(1))
+            .subscribe((dbUser) => {
+              this.ngZone.run(() => {
+                this.router.navigate([
+                  constants.userInfoPath + "/" + get(dbUser, "id", ""),
+                ]);
+              });
+            });
+        }
+        // console.log("navigating to matches...");
+        // this.router.navigate([constants.allVideosPathName]);
+        // this.router.navigate([constants.userInfoPath]);
         // console.log(this.currentUserId);
         // this.updateUserData()
       })
@@ -259,7 +275,7 @@ export class AuthorizationService {
 
   // Sends email allowing user to reset password
   resetPassword(email: string) {
-    var auth = auth();
+    const auth = auth();
     return auth
       .sendPasswordResetEmail(email)
       .then(() => console.log("email sent"))
@@ -268,7 +284,7 @@ export class AuthorizationService {
 
   //// Sign Out ////
   signOut(): void {
-    let localUnsubscribeSubject: Subject<void> = new Subject<void>();
+    const localUnsubscribeSubject: Subject<void> = new Subject<void>();
     this.afAuth.signOut();
     this.currentUserObservable
       .pipe(takeUntil(localUnsubscribeSubject))
@@ -278,7 +294,9 @@ export class AuthorizationService {
         if (!currentUsr) {
           localUnsubscribeSubject.next();
           localUnsubscribeSubject.complete();
-          this.router.navigate(["login"]);
+          this.ngZone.run(() => {
+            this.router.navigate(["login"]);
+          });
         }
       });
   }
@@ -307,7 +325,7 @@ export class AuthorizationService {
   //               photoURL: user.photoURL,
   //               emailVerified: user.emailVerified
   //             }
-  // this.dbService.object(path).update(data)
+  // this.databaseService.object(path).update(data)
   // .catch(error => console.log(error));
   // });
   // Writes user name and email to realtime db

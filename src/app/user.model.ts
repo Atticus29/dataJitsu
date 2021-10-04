@@ -2,6 +2,7 @@ import { event } from "jquery";
 import { constants } from "./constants";
 import { EventInVideo } from "./eventInVideo.model";
 import { ReputationLog } from "./reputationLog.model";
+import * as bcrypt from "bcryptjs";
 
 export class User {
   public id: string;
@@ -14,6 +15,7 @@ export class User {
   private annotatedEnoughOverride: boolean;
   private reputationLog: ReputationLog;
   private eventsInVideo: EventInVideo[];
+  private salt: string;
 
   static fromJson(jsonObj: any): User {
     const affiliation: string = jsonObj.affiliation;
@@ -87,6 +89,10 @@ export class User {
     public gender: string,
     public dateCreated: any
   ) {
+    this.generateSaltAndHash(this.password);
+
+    // TODO has the password
+
     this.privileges = {
       isAdmin: false,
       isModerator: false, // can confirm removal of move names and downvoted/flagged annotations
@@ -105,6 +111,13 @@ export class User {
     };
     this.paidStatus = false;
     this.annotatedEnoughOverride = false;
+  }
+
+  generateSaltAndHash(password: string) {
+    const salt = bcrypt.genSaltSync(10);
+    this.salt = salt;
+    const hash = bcrypt.hashSync(password, salt);
+    this.password = hash;
   }
 
   addEventsInVideo(newEvents: EventInVideo[]) {

@@ -591,11 +591,45 @@ export class DatabaseService {
     // TODO check that there is an annotation status and that this is the firebase path to it
   }
 
+  getUserByEmailAddress(emailAddress: string) {
+    //: Observable<any>
+    console.log(
+      "getUserByEmailAddress entered. emailAddress is: " + emailAddress
+    );
+    const ref = firebase.database().ref("users/");
+    let user: User;
+    const resultObservable = new Observable((observer) => {
+      if (emailAddress) {
+        try {
+          return ref
+            .orderByChild("email")
+            .equalTo(emailAddress)
+            .limitToFirst(1)
+            .on("child_added", (snapshot) => {
+              console.log(
+                "query result in getUserByEmailAddress in databaseService: "
+              );
+              console.log(snapshot);
+              if (snapshot && snapshot.val()) {
+                console.log(snapshot.val());
+                user = snapshot.val();
+              }
+              observer.next(user);
+            });
+        } catch (e) {
+          console.log("error in getUserByEmailAddress call");
+          console.log(e);
+        }
+      }
+    });
+    return resultObservable;
+  }
+
   getUserByUid(uid: string): Observable<any> {
     // console.log("getUserByUid entered. Uid is: " + uid);
-    let ref = firebase.database().ref("/users/");
+    const ref = firebase.database().ref("/users/");
     let user: User;
-    let resultObservable = Observable.create((observer) => {
+    const resultObservable = Observable.create((observer) => {
       if (uid) {
         try {
           ref
@@ -603,12 +637,10 @@ export class DatabaseService {
             .equalTo(uid)
             .limitToFirst(1)
             .on("value", (snapshot) => {
-              // console.log("query result in getUserByUid in databaseService: ");
-              // console.log(snapshot.val());
-              user = snapshot.val();
+              if (snapshot && snapshot.val()) {
+                user = snapshot.val();
+              }
               user ? (user = user[Object.keys(user)[0]]) : (user = null);
-              // console.log("deleteMe user is: ");
-              // console.log(user);
               observer.next(user);
             });
         } catch (e) {
