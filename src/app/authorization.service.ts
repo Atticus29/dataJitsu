@@ -74,10 +74,10 @@ export class AuthorizationService {
   get currentUserObservable(): Observable<any> {
     const self = this;
     const obsRet = Observable.create(function (observer) {
-      self.afAuth.authState.subscribe((auth) => {
+      self.afAuth.authState.subscribe((authStateObs) => {
         console.log("user in currentUserObservable in authorization service: ");
-        console.log(auth);
-        observer.next(auth);
+        console.log(authStateObs);
+        observer.next(authStateObs);
       });
     });
     return obsRet;
@@ -275,8 +275,7 @@ export class AuthorizationService {
 
   // Sends email allowing user to reset password
   resetPassword(email: string) {
-    const auth = auth();
-    return auth
+    return auth()
       .sendPasswordResetEmail(email)
       .then(() => console.log("email sent"))
       .catch((error) => console.log(error));
