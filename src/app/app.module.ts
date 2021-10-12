@@ -141,6 +141,7 @@ import { SandboxComponent } from "./sandbox/sandbox.component";
 import { NewItemNameDialogComponent } from "./new-item-name-dialog/new-item-name-dialog.component";
 import { UserInfoEditComponent } from "./user-info-edit/user-info-edit.component";
 import { UserDeleteComponent } from "./user-delete/user-delete.component";
+import { FullAnalysisDisplayComponent } from './full-analysis-display/full-analysis-display.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -219,6 +220,7 @@ export const firebaseConfig = {
     NewItemNameDialogComponent,
     UserInfoEditComponent,
     UserDeleteComponent,
+    FullAnalysisDisplayComponent,
   ],
   imports: [
     BrowserModule,
