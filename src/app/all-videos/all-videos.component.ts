@@ -47,6 +47,7 @@ export class AllVideosComponent
   // private constants: Object = constants;
   private columnsToDisplay = constants.columnsToDisplay; //TODO make this dynamic somehow
   private dataForD3 = new Array<Video>();
+  private dataPresent: boolean = false;
   user: any = null;
   constructor(
     private authService: AuthorizationService,
@@ -113,6 +114,14 @@ export class AllVideosComponent
     console.log(this.dataSource.filteredData);
     // TODO send the d3 service render here with this.dataSource.filteredData
     this.dataForD3 = this.dataSource.filteredData;
+    if (this.dataForD3.length > 0) {
+      console.log("deleteMe got here");
+      this.dataPresent = true;
+      this.d3Service.createStackedBarChart(this.dataForD3);
+    } else {
+      this.d3Service.clearSvg();
+      this.dataPresent = false;
+    }
   }
 
   ngAfterViewInit() {

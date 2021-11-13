@@ -17,7 +17,7 @@ import { ValidationService } from "../validation.service";
 import { EmailLoginDialogComponent } from "../email-login-dialog/email-login-dialog.component";
 import { User } from "../user.model";
 import { DatabaseService } from "../database.service";
-import * as bcrypt from "bcryptjs";
+import { hashSync } from "bcryptjs";
 import { constants } from "../constants";
 
 @Component({
@@ -78,10 +78,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             .pipe(takeUntil(self.ngUnsubscribe))
             .subscribe((dbUser) => {
               if (get(dbUser, "salt", "")) {
-                const hash = bcrypt.hashSync(
-                  val.passwd,
-                  get(dbUser, "salt", "")
-                );
+                const hash = hashSync(val.passwd, get(dbUser, "salt", ""));
                 self.authService.emailLogin(val.email, hash);
               } else {
                 alert(constants.noSaltAlert);

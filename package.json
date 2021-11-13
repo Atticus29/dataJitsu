@@ -84,6 +84,9 @@
     "typescript": "^3.4.5",
     "webpack": "^4.36.1"
   },
+  "browser": {
+    "crypto": false
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"

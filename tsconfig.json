@@ -12,19 +12,12 @@
     "allowSyntheticDefaultImports": true,
     "module": "es6",
     "target": "es6",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "esnext",
-      "dom"
-    ],
-    "types": [
-      "jquery",
-      "firebase",
-      "node",
-      "cypress"],
-    "skipLibCheck": true
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "esnext", "dom"],
+    "types": ["jquery", "firebase", "node", "cypress"],
+    "skipLibCheck": true,
+    "paths": {
+      "crypto": ["./node_modules/crypto-browserify"]
+    }
   }
 }

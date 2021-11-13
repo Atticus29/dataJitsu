@@ -18,6 +18,7 @@
 ></script>
 <br />
 <app-full-analysis-display [dataForD3]="dataForD3"></app-full-analysis-display>
+<svg *ngIf="dataPresent" width="960" height="770"></svg>
 <div class="spinner-container" *ngIf="isLoadingResults">
   <mat-spinner id="spinner"></mat-spinner>
 </div>

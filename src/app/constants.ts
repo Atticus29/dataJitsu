@@ -282,6 +282,13 @@ export var constants = {
   nameOfIndividual2InDb: "athlete2Name",
   nameOfVideoDetailsInDb: "videoDeets",
   nameOfEventsInDb: "events",
+  nameOfEventUserFacing: "move",
+  nameOfEventsUserFacingPlural: "moves",
+  nameOfVideoInDb: "video",
+  nameOfVideosInDbPlural: "videos",
+  nameofVideoUserFacing: "match",
+  nameofVideosUserFacingPlural: "matches",
+  numOccurrences: "Number of Occurrences",
   editableUserInfoList: [
     "affiliation",
     "age",
