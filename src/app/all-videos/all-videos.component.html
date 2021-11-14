@@ -17,8 +17,21 @@
   src="http://mbostock.github.com/d3/d3.layout.js?2.1.3"
 ></script>
 <br />
-<app-full-analysis-display [dataForD3]="dataForD3"></app-full-analysis-display>
-<svg *ngIf="dataPresent" width="960" height="770"></svg>
+<mat-slide-toggle
+  [formControlName]="toggleDataVisOnAllDisplayText"
+  [id]="toggleDataVisOnAllDisplayText"
+  [color]="$primary - color"
+  [checked]="checked"
+  (change)="changed()"
+>
+  {{ constants.toggleDataVisOnAllDisplayText }}
+</mat-slide-toggle>
+<div *ngIf="visualAnalysisDesired">
+  <app-full-analysis-display
+    [dataForD3]="dataForD3"
+  ></app-full-analysis-display>
+  <svg *ngIf="dataPresent" width="960" height="770"></svg>
+</div>
 <div class="spinner-container" *ngIf="isLoadingResults">
   <mat-spinner id="spinner"></mat-spinner>
 </div>
@@ -28,7 +41,7 @@
       matInput
       id="table-filter-input"
       (keyup)="applyFilter($event.target.value)"
-      placeholder="Filter"
+      placeholder="{{ constants.filter }}"
     />
   </mat-form-field>
   <mat-table matSort #table [dataSource]="dataSource" class="mat-elevation-z8">

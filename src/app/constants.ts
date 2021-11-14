@@ -325,4 +325,6 @@ export var constants = {
   },
   noSaltAlert:
     "Your password is not salted! Please alert staff using the feedback button",
+  filter: "Filter",
+  toggleDataVisOnAllDisplayText: "Display Histogram",
 };

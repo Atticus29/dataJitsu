@@ -32,8 +32,8 @@ export class D3Service {
     for (const entry of eventNames) {
       hist[entry] = hist[entry] ? hist[entry] + 1 : 1;
     }
-    console.log("deleteMe hist is: ");
-    console.log(hist);
+    // console.log("deleteMe hist is: ");
+    // console.log(hist);
     const returnHist = new Array<any>();
     let currentHistObj = {};
     const histKeys = Object.keys(hist);
@@ -45,13 +45,13 @@ export class D3Service {
     for (let i = 0; i < histKeys.length; i++) {
       currentHistObj["name"] = histKeys[i];
       currentHistObj["count"] = histVals[i];
-      console.log("deleteMe currentHistObj is: ");
-      console.log(currentHistObj);
+      // console.log("deleteMe currentHistObj is: ");
+      // console.log(currentHistObj);
       returnHist.push(currentHistObj);
       currentHistObj = {};
     } // TODO dry this up!
-    console.log("deleteMe returning: ");
-    console.log(returnHist);
+    // console.log("deleteMe returning: ");
+    // console.log(returnHist);
     return returnHist;
   }
 
@@ -71,16 +71,16 @@ export class D3Service {
       const xAxisLabelText = constants.numOccurrences;
       const svg = d3.select("svg");
       const width = +svg.attr("width");
-      const heigth = +svg.attr("height");
+      const height = +svg.attr("height");
 
       const render = (data) => {
-        console.log("deleteMe got here and data is: ");
-        console.log(data);
+        // console.log("deleteMe got here and data is: ");
+        // console.log(data);
         const xValue = (datum) => +datum["count"];
         const yValue = (datum) => datum.name;
         const margin = { top: 50, right: 40, bottom: 77, left: 180 };
         const innerWidth = width - margin.left - margin.right;
-        const innerHeigth = heigth - margin.top - margin.bottom;
+        const innerHeight = height - margin.top - margin.bottom;
         const xScale = d3
           .scaleLinear()
           .domain([0, d3.max(data, xValue)])
@@ -94,8 +94,10 @@ export class D3Service {
           .append("g")
           .attr("transform", `translate(${margin.left}, ${margin.top})`); // group to add some padding in
 
-        const xAxisTickFormat = (number) =>
-          d3.format(".3s")(number).replace("G", "B");
+        const xAxisTickFormat = (number) => {
+          return number;
+        };
+        // d3.format(".3s")(number).replace("G", "B");
         const xAxis = d3
           .axisBottom(xScale)
           .tickFormat(xAxisTickFormat)
