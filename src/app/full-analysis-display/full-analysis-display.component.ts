@@ -13,7 +13,7 @@ export class FullAnalysisDisplayComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log("deleteMe got here and dataForD3 is: ");
-    console.log(this.dataForD3);
+    // console.log("deleteMe got here and dataForD3 is: ");
+    // console.log(this.dataForD3);
   }
 }

@@ -71,7 +71,7 @@ export class AllVideosComponent
     const currentData = await this.dataSource.loadVideos();
     this.dataForD3 = currentData;
     if (currentData && currentData.length > 0 && this.visualAnalysisDesired) {
-      this.d3Service.createStackedBarChart(currentData);
+      this.d3Service.createStackedBarChart(currentData, ["count", "successes"]);
       console.log("deleteMe this happened");
     }
     this.trackerService.currentUserBehaviorSubject
@@ -120,7 +120,7 @@ export class AllVideosComponent
   }
 
   applyFilter(filterValue: string) {
-    console.log("got into applyFilter");
+    // console.log("got into applyFilter");
     this.dataSource.filter = filterValue.trim().toLowerCase();
     console.log(this.dataSource.filter);
     if (this.dataSource.paginator) {
@@ -150,7 +150,10 @@ export class AllVideosComponent
     if (this.dataForD3.length > 0) {
       // console.log("deleteMe got here a1");
       this.dataPresent = true;
-      this.d3Service.createStackedBarChart(this.dataForD3);
+      this.d3Service.createStackedBarChart(this.dataForD3, [
+        "count",
+        "successes",
+      ]);
     } else {
       console.log("deleteMe got here a2");
       this.d3Service.clearSvg();
