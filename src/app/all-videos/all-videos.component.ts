@@ -143,10 +143,10 @@ export class AllVideosComponent
   }
 
   handleD3clearAndDisplay() {
-    console.log(
-      "deleteMe got here in handleD3clearAndDisplay and this.dataForD3 is: "
-    );
-    console.log(this.dataForD3);
+    // console.log(
+    //   "deleteMe got here in handleD3clearAndDisplay and this.dataForD3 is: "
+    // );
+    // console.log(this.dataForD3);
     if (this.dataForD3.length > 0) {
       // console.log("deleteMe got here a1");
       this.dataPresent = true;
