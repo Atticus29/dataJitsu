@@ -26,19 +26,29 @@ export class D3Service {
   tranformDataToHistogram(inputData: EventInVideo[], options: {}): any[] {
     const hist = {};
     const eventNames = inputData.map((event) => get(event, "eventName", ""));
-    if (get(options, "filterBySuccess", null)) {
+    if (get(options, "filterBySuccess", false)) {
       const successes = inputData.map((event) =>
-        get(event, "isSuccessfulAttempt", "")
+        get(event, "isSuccessfulAttempt", true)
       );
+      console.log("deleteMe successes is: ");
+      console.log(successes);
       if (eventNames.length === successes.length) {
+        console.log("deleteMe got here a1");
         // just a logic check
         for (let i = 0; i < eventNames.length; i++) {
+          console.log("deleteMe got here a2");
           const currentEventName = eventNames[i];
           const currentEventSuccessStatus = successes[i];
+          console.log("deleteMe currentEventSuccessStatus is: ");
+          console.log(currentEventSuccessStatus);
           if (currentEventSuccessStatus) {
+            console.log("deleteMe before is: ");
+            console.log(hist[currentEventName]);
             hist[currentEventName] = hist[currentEventName]
               ? hist[currentEventName] + 1
               : 1;
+            console.log("deleteMe after is: ");
+            console.log(hist[currentEventName]);
           }
         }
       }
@@ -53,11 +63,194 @@ export class D3Service {
     const histVals = Object.values(hist);
     for (let i = 0; i < histKeys.length; i++) {
       currentHistObj["name"] = histKeys[i];
-      currentHistObj["count"] = histVals[i];
+      currentHistObj["attempts"] = histVals[i];
       returnHist.push(currentHistObj);
       currentHistObj = {};
     } // TODO dry this up!
     return returnHist;
+  }
+
+  concatHistsByMatchingKey(
+    originalHist,
+    donorHist,
+    matchingKeyName,
+    nameOfKeyToBeAdded,
+    desiredKeyNameInOriginalHist
+  ) {
+    for (let i = 0; i < originalHist.length; i++) {
+      const currentEvent = originalHist[i];
+      const indexInDonor = donorHist
+        .map((entry) => entry[matchingKeyName])
+        .indexOf(currentEvent[matchingKeyName]);
+      if (indexInDonor > -1) {
+        originalHist[i][desiredKeyNameInOriginalHist] =
+          donorHist[indexInDonor][nameOfKeyToBeAdded];
+      } else {
+        originalHist[i][desiredKeyNameInOriginalHist] = 0;
+      }
+    }
+    return originalHist;
+  }
+
+  createStackedBarChartV2(
+    hist,
+    {
+      x = (d) => d, // given d in data, returns the (quantitative) x-value
+      y = (d, i) => i, // given d in data, returns the (ordinal) y-value
+      z = () => 1, // given d in data, returns the (categorical) z-value
+      title: string = null, // given d in data, returns the title text
+      marginTop = 30, // top margin, in pixels
+      marginRight = 0, // right margin, in pixels
+      marginBottom = 0, // bottom margin, in pixels
+      marginLeft = 40, // left margin, in pixels
+      width = 640, // outer width, in pixels
+      height = 0, // outer height, in pixels
+      xType = d3.scaleLinear, // type of x-scale
+      xDomain = null, // [xmin, xmax]
+      xRange = [marginLeft, width - marginRight], // [left, right]
+      yDomain = null, // array of y-values
+      yRange = null, // [bottom, top]
+      yPadding = 0.1, // amount of y-range to reserve to separate bars
+      zDomain = null, // array of z-values
+      offset = d3.stackOffsetDiverging, // stack offset method
+      order = d3.stackOrderNone, // stack order method
+      xFormat = null, // a format specifier string for the x-axis
+      xLabel = null, // a label for the x-axis
+      colors = d3.schemeTableau10, // array of colors
+    } = {}
+  ) {
+    // Process data
+    // this.clearSvg();
+    // const events: Array<EventInVideo> = this.extractEventsFromVides(data);
+    // let hist = this.tranformDataToHistogram(events, null);
+    // const successHist = this.tranformDataToHistogram(events, {
+    //   filterBySuccess: true,
+    // });
+    // hist = this.concatHistsByMatchingKey(
+    //   hist,
+    //   successHist,
+    //   "name",
+    //   "count",
+    //   "successes"
+    // );
+    // hist["columns"] = ["name", "count", "successes"]; // TODO make generic if possible
+    // console.log("deleteMe got here a6 and hist is: ");
+    // console.log(hist);
+
+    // Compute values.
+    const X = d3.map(hist, x);
+    const Y = d3.map(hist, y);
+    const Z = d3.map(hist, z);
+
+    // Compute default y- and z-domains, and unique them.
+    if (yDomain === undefined) yDomain = Y;
+    if (zDomain === undefined) zDomain = Z;
+    yDomain = new d3.InternSet(yDomain);
+    zDomain = new d3.InternSet(zDomain);
+
+    // Omit any data not present in the y- and z-domains.
+    const I = d3
+      .range(X.length)
+      .filter((i) => yDomain.has(Y[i]) && zDomain.has(Z[i]));
+
+    // If the height is not specified, derive it from the y-domain.
+    if (height === undefined)
+      height = yDomain.size * 25 + marginTop + marginBottom;
+    if (yRange === undefined) yRange = [height - marginBottom, marginTop];
+
+    // Compute a nested array of series where each series is [[x1, x2], [x1, x2],
+    // [x1, x2], …] representing the x-extent of each stacked rect. In addition,
+    // each tuple has an i (index) property so that we can refer back to the
+    // original data point (data[i]). This code assumes that there is only one
+    // data point for a given unique y- and z-value.
+    const series = d3
+      .stack()
+      .keys(zDomain)
+      .value(([, I], z) => {
+        return X[I.get(z)];
+      })
+      .order(order)
+      .offset(offset)(
+        d3.rollup(
+          I,
+          ([i]) => i,
+          (i) => Y[i],
+          (i) => Z[i]
+        )
+      )
+      .map((s) => s.map((d) => Object.assign(d, { i: d.data[1].get(s.key) })));
+
+    // Compute the default y-domain. Note: diverging stacks can be negative.
+    if (xDomain === undefined) xDomain = d3.extent(series.flat(2));
+
+    // Construct scales, axes, and formats.
+    const xScale = xType(xDomain, xRange);
+    const yScale = d3.scaleBand(yDomain, yRange).paddingInner(yPadding);
+    const color = d3.scaleOrdinal(zDomain, colors);
+    const xAxis = d3.axisTop(xScale).ticks(width / 80, xFormat);
+    const yAxis = d3.axisLeft(yScale).tickSizeOuter(0);
+
+    // Compute titles.
+    if (title === undefined) {
+      const formatValue = xScale.tickFormat(100, xFormat);
+      title = (i) => `${Y[i]}\n${Z[i]}\n${formatValue(X[i])}`;
+    } else {
+      const O = d3.map(hist, (d) => d);
+      const T = title;
+      title = (i) => T(O[i], i, hist);
+    }
+
+    const svg = d3
+      .create("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${marginTop})`)
+      .call(xAxis)
+      .call((g) => g.select(".domain").remove())
+      .call((g) =>
+        g
+          .selectAll(".tick line")
+          .clone()
+          .attr("y2", height - marginTop - marginBottom)
+          .attr("stroke-opacity", 0.1)
+      )
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", width - marginRight)
+          .attr("y", -22)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "end")
+          .text(xLabel)
+      );
+
+    const bar = svg
+      .append("g")
+      .selectAll("g")
+      .data(series)
+      .join("g")
+      .attr("fill", ([{ i }]) => color(Z[i]))
+      .selectAll("rect")
+      .data((d) => d)
+      .join("rect")
+      .attr("x", ([x1, x2]) => Math.min(xScale(x1), xScale(x2)))
+      .attr("y", ({ i }) => yScale(Y[i]))
+      .attr("width", ([x1, x2]) => Math.abs(xScale(x1) - xScale(x2)))
+      .attr("height", yScale.bandwidth());
+
+    if (title) bar.append("title").text(({ i }) => title(i));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(${xScale(0)},0)`)
+      .call(yAxis);
+
+    return Object.assign(svg.node(), { scales: { color } });
   }
 
   createStackedBarChart(inputData: Video[], stackKeys) {
@@ -113,7 +306,7 @@ export class D3Service {
         // console.log(data);
 
         const color = d3
-          .scaleOrdinal()
+          .scaleOrdinal<string>()
           // .domain(subgroups)
           .range(["#e41a1c", "#377eb8"]); // TODO make generic if possible
 
@@ -175,6 +368,7 @@ export class D3Service {
         // console.log(data);
         // tslint:disable-next-line:no-shadowed-variable
         const mrgin = { top: 50, right: 40, bottom: 77, left: 180 };
+        // const mrgin = { top: 0, right: 0, bottom: 0, left: 0 };
         const innerWidth = width - mrgin.left - mrgin.right;
         const innerHeight = height - mrgin.top - mrgin.bottom;
         // const xValue = (datum) => +get(datum, [0]);
@@ -204,8 +398,8 @@ export class D3Service {
 
         //keys is subgroups, count is total, y is yValue, x is xValue, z is color
         yValue.domain(data.map((d) => d.successes));
-        console.log("deleteMe data is: ");
-        console.log(data);
+        // console.log("deleteMe data is: ");
+        // console.log(data);
         const dataMax: number = Math.max(
           ...data.map((datum: object) => {
             return +get(datum, "count");
@@ -288,7 +482,11 @@ export class D3Service {
           .attr("x", width - 24)
           .attr("y", 9.5)
           .attr("dy", "0.32em")
-          .text((d) => d);
+          .text((d) => {
+            console.log("deleteMe d is: ");
+            console.log(d);
+            return d.toString();
+          });
 
         // const xAxisTickFormat = (number) => {
         //   return number;
@@ -406,27 +604,5 @@ export class D3Service {
 
       render(hist);
     }
-  }
-
-  concatHistsByMatchingKey(
-    originalHist,
-    donorHist,
-    matchingKeyName,
-    nameOfKeyToBeAdded,
-    desiredKeyNameInOriginalHist
-  ) {
-    for (let i = 0; i < originalHist.length; i++) {
-      const currentEvent = originalHist[i];
-      const indexInDonor = donorHist
-        .map((entry) => entry[matchingKeyName])
-        .indexOf(currentEvent[matchingKeyName]);
-      if (indexInDonor > -1) {
-        originalHist[i][desiredKeyNameInOriginalHist] =
-          donorHist[indexInDonor][nameOfKeyToBeAdded];
-      } else {
-        originalHist[i][desiredKeyNameInOriginalHist] = 0;
-      }
-    }
-    return originalHist;
   }
 }

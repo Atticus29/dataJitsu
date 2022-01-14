@@ -7,6 +7,7 @@ import {
   NgZone,
   OnChanges,
 } from "@angular/core";
+import * as d3 from "d3";
 import * as firebase from "firebase/app";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
@@ -19,7 +20,10 @@ import { tap, takeUntil } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import { ChangeDetectorRef } from "@angular/core";
 
+import { get } from "lodash";
+
 import { constants } from "../constants";
+import { EventInVideo } from "../eventInVideo.model";
 import { BaseComponent } from "../base/base.component";
 import { DatabaseService } from "../database.service";
 import { TrackerService } from "../tracker.service";
@@ -71,7 +75,13 @@ export class AllVideosComponent
     const currentData = await this.dataSource.loadVideos();
     this.dataForD3 = currentData;
     if (currentData && currentData.length > 0 && this.visualAnalysisDesired) {
-      this.d3Service.createStackedBarChart(currentData, ["count", "successes"]);
+      console.log("deleteMe curentData is: ");
+      console.log(currentData);
+      // TODO add this in here?? deleteMe
+      // this.d3Service.createStackedBarChart(currentData, ["count", "successes"]);
+      // this.d3Service.createStackedBarChartV2(currentData, {
+
+      // });
       console.log("deleteMe this happened");
     }
     this.trackerService.currentUserBehaviorSubject
@@ -150,10 +160,60 @@ export class AllVideosComponent
     if (this.dataForD3.length > 0) {
       // console.log("deleteMe got here a1");
       this.dataPresent = true;
-      this.d3Service.createStackedBarChart(this.dataForD3, [
-        "count",
-        "successes",
-      ]);
+
+      // process data
+      this.d3Service.clearSvg();
+      const events: Array<EventInVideo> = this.d3Service.extractEventsFromVides(
+        this.dataForD3
+      );
+      let hist = this.d3Service.tranformDataToHistogram(events, null);
+      const successHist = this.d3Service.tranformDataToHistogram(events, {
+        filterBySuccess: true,
+      });
+      hist = this.d3Service.concatHistsByMatchingKey(
+        hist,
+        successHist,
+        "name",
+        "attempts",
+        "successes"
+      );
+      hist["columns"] = ["name", "attempts", "successes"]; // TODO make generic if possible
+      console.log("deleteMe got here a6 and hist is: ");
+      console.log(hist);
+      const countCategoryArr: Array<string> = get(hist, "columns", []).slice(1);
+      console.log("deleteMe countCategoryArr is: ");
+      console.log(countCategoryArr);
+      const moveCounts = countCategoryArr.flatMap((entry) =>
+        hist.map((d) => ({
+          move: d.name,
+          countCategory: entry,
+          count: d[entry],
+        }))
+      );
+      console.log("deleteMe moveCounts is: ");
+      console.log(moveCounts);
+
+      this.d3Service.createStackedBarChartV2(moveCounts, {
+        x: (d) => d.count,
+        y: (d) => d.name,
+        z: (d) => d.countCategory,
+        xLabel: "Counts",
+        yDomain: d3.groupSort(
+          moveCounts,
+          (D) => d3.sum(D, (d) => d.count),
+          (d) => d.name
+        ),
+        //   (D) => d3.sum(D, (d) => d.count),
+        //   (d) => d.name
+        // ), // sort y by x
+        zDomain: countCategoryArr,
+        colors: d3.schemeSpectral[countCategoryArr.length],
+        width: 960,
+      });
+      // this.d3Service.createStackedBarChart(this.dataForD3, [
+      //   "count",
+      //   "successes",
+      // ]);
     } else {
       console.log("deleteMe got here a2");
       this.d3Service.clearSvg();
