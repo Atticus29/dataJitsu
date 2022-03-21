@@ -5,12 +5,13 @@ import { EventInVideo } from "./eventInVideo.model";
 import { get, zip } from "lodash";
 import { constants } from "../app/constants";
 import { match } from "cypress/types/sinon";
+import { any } from "cypress/types/bluebird";
 
 @Injectable()
 export class D3Service {
   constructor() {}
 
-  extractEventsFromVides(inputData: Video[]): EventInVideo[] {
+  extractEventsFromVids(inputData: Video[]): EventInVideo[] {
     let allEvents: EventInVideo[] = new Array<EventInVideo>();
     inputData.forEach((video) => {
       allEvents = allEvents.concat(video.getMovesInTheVideo());
@@ -97,8 +98,9 @@ export class D3Service {
     {
       x = (d) => d, // given d in data, returns the (quantitative) x-value
       y = (d, i) => i, // given d in data, returns the (ordinal) y-value
-      z = () => 1, // given d in data, returns the (categorical) z-value
-      title: string = null, // given d in data, returns the title text
+      z = null,
+      // z = () => 1, // given d in data, returns the (categorical) z-value
+      title = null, // given d in data, returns the title text
       marginTop = 30, // top margin, in pixels
       marginRight = 0, // right margin, in pixels
       marginBottom = 0, // bottom margin, in pixels
@@ -121,7 +123,7 @@ export class D3Service {
   ) {
     // Process data
     // this.clearSvg();
-    // const events: Array<EventInVideo> = this.extractEventsFromVides(data);
+    // const events: Array<EventInVideo> = this.extractEventsFromVids(data);
     // let hist = this.tranformDataToHistogram(events, null);
     // const successHist = this.tranformDataToHistogram(events, {
     //   filterBySuccess: true,
@@ -163,10 +165,22 @@ export class D3Service {
     // each tuple has an i (index) property so that we can refer back to the
     // original data point (data[i]). This code assumes that there is only one
     // data point for a given unique y- and z-value.
-    const series = d3
+    const seriesStep1 = d3
       .stack()
       .keys(zDomain)
-      .value(([, I], z) => {
+      // tslint:disable-next-line:no-shadowed-variable
+      .value(([, I]: any, z: any) => {
+        return X[I.get(z)];
+      })
+      .order(order)
+      .offset(offset);
+    console.log("deleteMe seriesStep1 is: ");
+    console.log(seriesStep1);
+    const series: any = d3
+      .stack()
+      .keys(zDomain)
+      // tslint:disable-next-line:no-shadowed-variable
+      .value(([, I]: any, z: any) => {
         return X[I.get(z)];
       })
       .order(order)
@@ -179,13 +193,15 @@ export class D3Service {
         )
       )
       .map((s) => s.map((d) => Object.assign(d, { i: d.data[1].get(s.key) })));
+    console.log("deleteMe series is: ");
+    console.log(series);
 
     // Compute the default y-domain. Note: diverging stacks can be negative.
     if (xDomain === undefined) xDomain = d3.extent(series.flat(2));
 
     // Construct scales, axes, and formats.
     const xScale = xType(xDomain, xRange);
-    const yScale = d3.scaleBand(yDomain, yRange).paddingInner(yPadding);
+    const yScale: any = d3.scaleBand(yDomain, yRange).paddingInner(yPadding);
     const color = d3.scaleOrdinal(zDomain, colors);
     const xAxis = d3.axisTop(xScale).ticks(width / 80, xFormat);
     const yAxis = d3.axisLeft(yScale).tickSizeOuter(0);
@@ -259,7 +275,7 @@ export class D3Service {
     // console.log("deleteMe got here and stackKeys is: ");
     // console.log(stackKeys);
     this.clearSvg();
-    const events: Array<EventInVideo> = this.extractEventsFromVides(inputData);
+    const events: Array<EventInVideo> = this.extractEventsFromVids(inputData);
     let hist = this.tranformDataToHistogram(events, null);
     const successHist = this.tranformDataToHistogram(events, {
       filterBySuccess: true,

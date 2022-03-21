@@ -163,7 +163,7 @@ export class AllVideosComponent
 
       // process data
       this.d3Service.clearSvg();
-      const events: Array<EventInVideo> = this.d3Service.extractEventsFromVides(
+      const events: Array<EventInVideo> = this.d3Service.extractEventsFromVids(
         this.dataForD3
       );
       let hist = this.d3Service.tranformDataToHistogram(events, null);
@@ -201,7 +201,7 @@ export class AllVideosComponent
         yDomain: d3.groupSort(
           moveCounts,
           (D) => d3.sum(D, (d) => d.count),
-          (d) => d.name
+          (d) => get(d, "name")
         ),
         //   (D) => d3.sum(D, (d) => d.count),
         //   (d) => d.name
