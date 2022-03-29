@@ -1,26 +1,26 @@
 <div class="container">
   <mat-tab-group>
-    <mat-tab label="{{constants.subscriptManageLabel}}">
+    <mat-tab label="{{ constants.userIdLabel }}">
       <div class="container">
-        <br>
-        <h4>{{constants.subscriptionStatusLabel}}</h4>
-        <hr>
+        <app-user-info-edit></app-user-info-edit>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{ constants.subscriptManageLabel }}">
+      <div class="container">
+        <br />
+        <h4>{{ constants.subscriptionStatusLabel }}</h4>
+        <hr />
         <app-stripe></app-stripe>
       </div>
     </mat-tab>
-    <mat-tab id="collection-tab" label="{{constants.collectionLabel}}">
+    <mat-tab id="collection-tab" label="{{ constants.collectionLabel }}">
       <div class="container">
         <app-user-collections-display></app-user-collections-display>
       </div>
     </mat-tab>
-    <mat-tab label="{{constants.reputationLogLable}}">
+    <mat-tab label="{{ constants.reputationLogLable }}">
       <div class="container">
         <app-reputation-log></app-reputation-log>
-      </div>
-    </mat-tab>
-    <mat-tab label="{{constants.userIdLabel}}">
-      <div class="container">
-        <app-user-info-edit></app-user-info-edit>
       </div>
     </mat-tab>
   </mat-tab-group>

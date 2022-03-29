@@ -6,7 +6,7 @@ import { ChangeDetectorRef } from "@angular/core";
 
 import { takeUntil, take, first } from "rxjs/operators";
 import { Subject, combineLatest } from "rxjs";
-import { NgxFeedbackService, FeedbackData } from "ngx-feedback";
+// import { NgxFeedbackService, FeedbackData } from "ngx-feedback";
 
 import { constants } from "./constants";
 import { ProtectionGuard } from "./protection.guard";
@@ -44,8 +44,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     public afAuth: AngularFireAuth,
     private trackerService: TrackerService,
-    public ngZone: NgZone,
-    private readonly feedbackService: NgxFeedbackService
+    public ngZone: NgZone // private readonly feedbackService: NgxFeedbackService
   ) {
     super();
   }
@@ -53,19 +52,19 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // console.log("ngOnInit entered");
     const self = this;
-    this.feedbackService
-      .listenForFeedbacks()
-      .subscribe(async (data: FeedbackData) => {
-        // console.log("listenForFeedbacks called");
-        const tmpUsr = await this.trackerService.currentUserBehaviorSubject
-          .pipe(first())
-          .toPromise();
-        if (tmpUsr) {
-          // console.log("user in listenForFeedbacks: ");
-          // console.log(tmpUsr);
-          this.databaseService.addFeedbackToDatabase(data, tmpUsr.id);
-        }
-      });
+    // this.feedbackService
+    //   .listenForFeedbacks()
+    //   .subscribe(async (data: FeedbackData) => {
+    //     // console.log("listenForFeedbacks called");
+    //     const tmpUsr = await this.trackerService.currentUserBehaviorSubject
+    //       .pipe(first())
+    //       .toPromise();
+    //     if (tmpUsr) {
+    //       // console.log("user in listenForFeedbacks: ");
+    //       // console.log(tmpUsr);
+    //       this.databaseService.addFeedbackToDatabase(data, tmpUsr.id);
+    //     }
+    //   });
 
     combineLatest([
       this.trackerService.currentUserDbId,
@@ -126,8 +125,11 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
         if (currentUser) {
           // console.log(currentUser);
           if (currentUser.uid) {
-            // console.log("currentUserObservable currentUser.uid in ngOnInit in app.component: " + currentUser.uid);
-            // console.log("changing authenticationStatus to true...");
+            console.log(
+              "currentUserObservable currentUser.uid in ngOnInit in app.component: " +
+                currentUser.uid
+            );
+            console.log("changing authenticationStatus to true...");
             this.authenticationStatus = true;
             this.databaseService
               .getUserByUid(currentUser.uid)
