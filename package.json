@@ -44,7 +44,6 @@
     "lodash": "^4.17.21",
     "materialize-css": "^0.100.2",
     "moment": "^2.24.0",
-    "ngx-feedback": "^1.0.0",
     "ngx-youtube-player": "7.1.1",
     "rxjs": "^6.5.2",
     "stripe": "^7.9.1",
@@ -83,6 +82,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.5",
     "webpack": "^4.36.1"
+  },
+  "browser": {
+    "crypto": false
   },
   "husky": {
     "hooks": {

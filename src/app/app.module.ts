@@ -46,7 +46,7 @@ import { DynamicDatabase } from "./dynamicDatabase.model";
 import { HelperService } from "./helper.service";
 import { NgxYoutubePlayerModule } from "ngx-youtube-player";
 import { FormProcessingService } from "./form-processing.service";
-import { NgxFeedbackModule } from "ngx-feedback";
+// import { NgxFeedbackModule } from "ngx-feedback";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpErrorHandler } from "./http-error-handler.service";
 import { MessageService } from "./message.service";
@@ -269,7 +269,7 @@ export const firebaseConfig = {
     ReactiveFormsModule,
     AppRoutingModule,
     NgxYoutubePlayerModule,
-    NgxFeedbackModule,
+    // NgxFeedbackModule,
   ],
   bootstrap: [AppComponent],
   entryComponents: [
