@@ -26,16 +26,16 @@ import { constants } from "../constants";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent extends BaseComponent implements OnInit {
-  private localUser: User = null;
-  private loggedIn: boolean = false;
-
+  public localUser: User = null;
+  public loggedIn: boolean = false;
+  public showLoader: boolean = true;
   constructor(
     public authService: AuthorizationService,
-    private router: Router,
-    private as: AuthorizationService,
+    public router: Router,
+    public as: AuthorizationService,
     public dialog: MatDialog,
     public trackerService: TrackerService,
-    private databaseService: DatabaseService
+    public databaseService: DatabaseService
   ) {
     super();
   }
@@ -50,6 +50,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         } else {
           this.loggedIn = false;
         }
+        this.showLoader = false;
       });
   }
 

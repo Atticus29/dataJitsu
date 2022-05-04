@@ -1,34 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { constants } from './constants';
-import { DatabaseService } from './database.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { constants } from "./constants";
+import { DatabaseService } from "./database.service";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class HelperService {
-  private ngUnsubscribe = new Subject<void>();
+  public ngUnsubscribe = new Subject<void>();
 
-  constructor(private dbService: DatabaseService) { }
+  constructor(public dbService: DatabaseService) {}
 
-  hasSubcategories(opts: any){ //returns true if array is array of arrays
-    if(opts){
-      if(Array.isArray(opts)){
+  hasSubcategories(opts: any) {
+    //returns true if array is array of arrays
+    if (opts) {
+      if (Array.isArray(opts)) {
         return Array.isArray(opts[0]);
-      } else{
-        if (typeof opts === 'string'){
+      } else {
+        if (typeof opts === "string") {
           // console.log(opts);
           // console.log(constants.rootNodesWithSubcategories);
-          if(constants.rootNodesWithSubcategories.includes(opts)){ //TODO stop this from erroring
+          if (constants.rootNodesWithSubcategories.includes(opts)) {
+            //TODO stop this from erroring
             return true;
-          } else{
+          } else {
             return false;
           }
         }
       }
-    } else{
+    } else {
       return false;
     }
   }
@@ -40,39 +42,39 @@ export class HelperService {
   //   });
   // }
 
-  renderFlatStringObjectAsArray(obj: Object){
+  renderFlatStringObjectAsArray(obj: Object) {
     let returnArray = Object.values(obj);
-    if(this.isFlatStringObj(obj)){
-    } else{
+    if (this.isFlatStringObj(obj)) {
+    } else {
       returnArray = null;
       alert("obj not flat! error!"); //TODO this doesn't handle well. Fix
     }
     return returnArray;
   }
 
-  isFlatStringObj(obj: Object){
+  isFlatStringObj(obj: Object) {
     const flattenedArray = Object.values(obj);
     let stringTracker: number = 0;
-    flattenedArray.forEach(elem =>{
-      if(typeof elem !=="string"){
+    flattenedArray.forEach((elem) => {
+      if (typeof elem !== "string") {
         stringTracker++;
       }
     });
-    let returnVal = stringTracker>0? false: true;
+    let returnVal = stringTracker > 0 ? false : true;
     return returnVal;
   }
 
-  convertObjectValuesToStrings(obj: Object){
-    if(typeof obj === "string"){
+  convertObjectValuesToStrings(obj: Object) {
+    if (typeof obj === "string") {
       return obj;
     }
     let objKeys = Object.keys(obj);
     let objVals = Object.values(obj);
     let returnObj = {};
-    for(let i=0; i<objKeys.length; i++){
-      if(typeof objVals[i] !== "string"){
+    for (let i = 0; i < objKeys.length; i++) {
+      if (typeof objVals[i] !== "string") {
         returnObj[objKeys[i]] = objVals[i].toString();
-      }else{
+      } else {
         returnObj[objKeys[i]] = objVals[i];
       }
     }

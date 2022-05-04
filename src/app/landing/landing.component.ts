@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import {AuthorizationService} from '../authorization.service';
-import { BaseComponent } from '../base/base.component';
+import { AuthorizationService } from "../authorization.service";
+import { BaseComponent } from "../base/base.component";
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss']
+  selector: "app-landing",
+  templateUrl: "./landing.component.html",
+  styleUrls: ["./landing.component.scss"],
 })
 export class LandingComponent extends BaseComponent implements OnInit {
-  private sub: any;
+  public sub: any;
 
-  constructor(private as: AuthorizationService) {
+  constructor(public as: AuthorizationService) {
     super();
 
     // this.sub = this.as.authState.(val => {
@@ -23,8 +23,5 @@ export class LandingComponent extends BaseComponent implements OnInit {
     // });
   }
 
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -14,13 +14,13 @@ import { DatabaseService } from "../database.service";
   styleUrls: ["./reputation-log.component.scss"],
 })
 export class ReputationLogComponent extends BaseComponent implements OnInit {
-  private logEntries: Array<ReputationLog> = null;
-  private userDbId: string = null;
+  public logEntries: Array<ReputationLog> = null;
+  public userDbId: string = null;
 
   constructor(
-    private route: ActivatedRoute,
-    private db: DatabaseService,
-    private textTransformationService: TextTransformationService
+    public route: ActivatedRoute,
+    public db: DatabaseService,
+    public textTransformationService: TextTransformationService
   ) {
     super();
   }

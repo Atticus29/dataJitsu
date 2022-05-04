@@ -1,151 +1,173 @@
-import { CategoryWithItems } from './categoryWithItems.model';
-import { FormQuestionBase } from './formQuestionBase.model';
+import { CategoryWithItems } from "./categoryWithItems.model";
+import { FormQuestionBase } from "./formQuestionBase.model";
 
-import { OwnerQuestion } from './ownerQuestion.model';
+import { OwnerQuestion } from "./ownerQuestion.model";
 
 export class Collection {
-  private details: Object;
-  private id: string = "temp";
-  private categoriesWithItems: CategoryWithItems[] = new Array<CategoryWithItems>();
-  private ownerQuestions: OwnerQuestion[] = new Array<OwnerQuestion>();
+  public details: Object;
+  public id: string = "temp";
+  public categoriesWithItems: CategoryWithItems[] =
+    new Array<CategoryWithItems>();
+  public ownerQuestions: OwnerQuestion[] = new Array<OwnerQuestion>();
   // constructor(public tournamentName: string, public location: string, public date: string, public athlete1Name: string, public athlete2Name: string, public weightClass: string, public rank: string, public videoUrl: string, public gender: string, public giStatus: boolean, public ageClass: string) {
-  constructor(private name: string) {
-   }
+  constructor(public name: string) {}
 
-   static fromForm (jsonObj: any, questions: FormQuestionBase<string>[]): Collection{
-     // console.log("fromForm in Collection model entered");
-     // console.log(jsonObj);
-     // console.log(questions);
-     let name = jsonObj.collectionName;
-     let newCollection = new Collection(name);
-     let detailObj = {};
-     let jsonObjKeys = Object.keys(jsonObj);
-     let jsonObjVals = Object.values(jsonObj);
-     let currentItemArray:string[] = new Array<string>();
-     let currentCategoryWithItems = new CategoryWithItems('temp', []);
-     for(let i = 0; i<questions.length; i++){
-       // console.log("i is " + i);
-       let baseKey: string = questions[i].key.split(/\d+/)[0];
-       // console.log("baseKey is " + baseKey);
-       if(baseKey === "categoryName"){
-         // console.log("entered categoryName branch")
-         if(currentItemArray.length>0){
-           // console.log("currentItemArray should not be empty here:");
-           // console.log(currentItemArray);
-           currentCategoryWithItems.addItems(currentItemArray);
-           // console.log("maybe items added to currentCategoryWithItems?");
-           // console.log(currentCategoryWithItems);
-           newCollection.addCategoryWithItems(currentCategoryWithItems);
-           // console.log("maybe categoryWithItems added to newCollection?");
-           // console.log(newCollection);
-         }
-         currentItemArray = new Array<string>();
-         currentCategoryWithItems = new CategoryWithItems(jsonObj[questions[i].key],[]);
-       }
-       if(baseKey === "itemName"){
-         // console.log("got into itemName");
-         // console.log("adding the following item name: " + jsonObj[questions[i].key]);
-         currentItemArray.push(jsonObj[questions[i].key]);
-         // console.log("currentItemArray is:");
-         // console.log(currentItemArray);
-         if(i==questions.length-1){
-           //this is the last itemNameSet
-           currentCategoryWithItems.addItems(currentItemArray);
-           // console.log("maybe items added to currentCategoryWithItems?");
-           // console.log(currentCategoryWithItems);
-           newCollection.addCategoryWithItems(currentCategoryWithItems);
-           // console.log("maybe categoryWithItems added to newCollection?");
-           // console.log(newCollection);
-         }
-       }
-       if(baseKey !== 'collectionName' && baseKey !== 'categoryName' && baseKey !== 'itemName'){
-          // console.log("shouldn't get here for now");
-          detailObj[baseKey] ? detailObj[baseKey].push(jsonObjVals[i]): detailObj[baseKey]=[jsonObjVals[i]];
-          detailObj[baseKey] = detailObj[baseKey].sort();
-       }
-     }
-     // console.log(detailObj);
-     newCollection.addDetails(detailObj);
-     // newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
-     // console.log("returning this collection:");
-     // console.log(newCollection);
-     return newCollection;
-   }
+  static fromForm(
+    jsonObj: any,
+    questions: FormQuestionBase<string>[]
+  ): Collection {
+    // console.log("fromForm in Collection model entered");
+    // console.log(jsonObj);
+    // console.log(questions);
+    let name = jsonObj.collectionName;
+    let newCollection = new Collection(name);
+    let detailObj = {};
+    let jsonObjKeys = Object.keys(jsonObj);
+    let jsonObjVals = Object.values(jsonObj);
+    let currentItemArray: string[] = new Array<string>();
+    let currentCategoryWithItems = new CategoryWithItems("temp", []);
+    for (let i = 0; i < questions.length; i++) {
+      // console.log("i is " + i);
+      let baseKey: string = questions[i].key.split(/\d+/)[0];
+      // console.log("baseKey is " + baseKey);
+      if (baseKey === "categoryName") {
+        // console.log("entered categoryName branch")
+        if (currentItemArray.length > 0) {
+          // console.log("currentItemArray should not be empty here:");
+          // console.log(currentItemArray);
+          currentCategoryWithItems.addItems(currentItemArray);
+          // console.log("maybe items added to currentCategoryWithItems?");
+          // console.log(currentCategoryWithItems);
+          newCollection.addCategoryWithItems(currentCategoryWithItems);
+          // console.log("maybe categoryWithItems added to newCollection?");
+          // console.log(newCollection);
+        }
+        currentItemArray = new Array<string>();
+        currentCategoryWithItems = new CategoryWithItems(
+          jsonObj[questions[i].key],
+          []
+        );
+      }
+      if (baseKey === "itemName") {
+        // console.log("got into itemName");
+        // console.log("adding the following item name: " + jsonObj[questions[i].key]);
+        currentItemArray.push(jsonObj[questions[i].key]);
+        // console.log("currentItemArray is:");
+        // console.log(currentItemArray);
+        if (i == questions.length - 1) {
+          //this is the last itemNameSet
+          currentCategoryWithItems.addItems(currentItemArray);
+          // console.log("maybe items added to currentCategoryWithItems?");
+          // console.log(currentCategoryWithItems);
+          newCollection.addCategoryWithItems(currentCategoryWithItems);
+          // console.log("maybe categoryWithItems added to newCollection?");
+          // console.log(newCollection);
+        }
+      }
+      if (
+        baseKey !== "collectionName" &&
+        baseKey !== "categoryName" &&
+        baseKey !== "itemName"
+      ) {
+        // console.log("shouldn't get here for now");
+        detailObj[baseKey]
+          ? detailObj[baseKey].push(jsonObjVals[i])
+          : (detailObj[baseKey] = [jsonObjVals[i]]);
+        detailObj[baseKey] = detailObj[baseKey].sort();
+      }
+    }
+    // console.log(detailObj);
+    newCollection.addDetails(detailObj);
+    // newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
+    // console.log("returning this collection:");
+    // console.log(newCollection);
+    return newCollection;
+  }
 
-   addCategoriesWithItems(newCategoriesWithItems: CategoryWithItems[]){
-     this.categoriesWithItems = this.categoriesWithItems.concat(newCategoriesWithItems);
-   }
+  addCategoriesWithItems(newCategoriesWithItems: CategoryWithItems[]) {
+    this.categoriesWithItems = this.categoriesWithItems.concat(
+      newCategoriesWithItems
+    );
+  }
 
-   addOwnerQuestions(newOwnerQuestions: OwnerQuestion[]){
-     // console.log("newOwnerQuestions are: ");
-     // console.log(newOwnerQuestions);
-     this.ownerQuestions = this.ownerQuestions.concat(newOwnerQuestions);
-   }
+  addOwnerQuestions(newOwnerQuestions: OwnerQuestion[]) {
+    // console.log("newOwnerQuestions are: ");
+    // console.log(newOwnerQuestions);
+    this.ownerQuestions = this.ownerQuestions.concat(newOwnerQuestions);
+  }
 
+  addCategoryWithItems(newCategoryWithItems: CategoryWithItems) {
+    this.categoriesWithItems.push(newCategoryWithItems);
+  }
 
+  static fromDataBase(jsonObj: any): Collection {
+    // console.log("jsonObj is: ");
+    // console.log(jsonObj);
+    let name = jsonObj.name;
+    let newCollection = new Collection(name);
+    newCollection.addDetails(jsonObj.details);
+    newCollection.setId(jsonObj.id);
+    newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
+    // console.log("ownerQuestions in Collection.fromDataBase is: ");
+    // console.log(jsonObj.ownerQuestions);
+    newCollection.addOwnerQuestions(jsonObj.ownerQuestions); //TODO do I need a OwnerQuestions.fromDb??
+    return newCollection;
+  }
 
-   addCategoryWithItems(newCategoryWithItems: CategoryWithItems){
-     this.categoriesWithItems.push(newCategoryWithItems);
-   }
+  static isEqual(collection1: Collection, collection2: Collection) {
+    // console.log("isEqual from collection entered");
+    let nameMatch = collection1.name === collection2.name;
+    let categoriesWithItemsCountsMatch =
+      collection1.categoriesWithItems.length ==
+      collection2.categoriesWithItems.length;
+    // console.log("do collection names match? " + nameMatch);
+    let categoriesWithItemsMatchCounter = 0;
+    collection1.categoriesWithItems.forEach((categoryWithItems) => {
+      for (let i = 0; i < collection2.categoriesWithItems.length; i++) {
+        if (
+          CategoryWithItems.isEqual(
+            categoryWithItems,
+            collection2.categoriesWithItems[i]
+          )
+        ) {
+          // console.log("CategoryWithItems match at:");
+          // console.log(categoryWithItems);
+          // console.log("and");
+          // console.log(collection2.categoriesWithItems[i]);
+          categoriesWithItemsMatchCounter += 1;
+          // return true;
+        }
+      }
+    });
+    let equalityStatus =
+      nameMatch &&
+      categoriesWithItemsMatchCounter ==
+        collection2.categoriesWithItems.length &&
+      categoriesWithItemsCountsMatch;
+    // console.log(" equalityStatus for collection is: " + equalityStatus);
+    return equalityStatus;
+  }
 
-   static fromDataBase (jsonObj: any): Collection{
-     // console.log("jsonObj is: ");
-     // console.log(jsonObj);
-     let name = jsonObj.name;
-     let newCollection = new Collection(name);
-     newCollection.addDetails(jsonObj.details);
-     newCollection.setId(jsonObj.id);
-     newCollection.addCategoriesWithItems(jsonObj.categoriesWithItems);
-     // console.log("ownerQuestions in Collection.fromDataBase is: ");
-     // console.log(jsonObj.ownerQuestions);
-     newCollection.addOwnerQuestions(jsonObj.ownerQuestions); //TODO do I need a OwnerQuestions.fromDb??
-     return newCollection;
-   }
+  addDetails(detailsObj: Object) {
+    this.details = detailsObj;
+  }
 
-   static isEqual(collection1: Collection, collection2: Collection){
-     // console.log("isEqual from collection entered");
-     let nameMatch = collection1.name === collection2.name;
-     let categoriesWithItemsCountsMatch = collection1.categoriesWithItems.length == collection2.categoriesWithItems.length
-     // console.log("do collection names match? " + nameMatch);
-     let categoriesWithItemsMatchCounter = 0;
-     collection1.categoriesWithItems.forEach(categoryWithItems =>{
-       for (let i=0; i<collection2.categoriesWithItems.length; i++){
-         if(CategoryWithItems.isEqual(categoryWithItems, collection2.categoriesWithItems[i])){
-           // console.log("CategoryWithItems match at:");
-           // console.log(categoryWithItems);
-           // console.log("and");
-           // console.log(collection2.categoriesWithItems[i]);
-           categoriesWithItemsMatchCounter += 1;
-           // return true;
-         }
-       }
-     });
-     let equalityStatus = nameMatch && categoriesWithItemsMatchCounter== collection2.categoriesWithItems.length && categoriesWithItemsCountsMatch;
-     // console.log(" equalityStatus for collection is: " + equalityStatus);
-     return equalityStatus;
-   }
+  setId(id: string) {
+    this.id = id;
+  }
 
-   addDetails(detailsObj: Object){
-     this.details= detailsObj;
-   }
+  updateName(newName: string) {
+    this.name = newName;
+  }
 
-   setId(id: string){
-     this.id = id;
-   }
+  getName() {
+    return this.name;
+  }
+  getId() {
+    return this.id ? this.id : null;
+  }
 
-   updateName(newName: string){
-     this.name = newName;
-   }
-
-   getName(){
-     return this.name;
-   }
-   getId(){
-     return this.id? this.id: null;
-   }
-
-   getOwnerQuestions(){
-     return this.ownerQuestions? this.ownerQuestions: null;
-   }
-
+  getOwnerQuestions() {
+    return this.ownerQuestions ? this.ownerQuestions : null;
+  }
 }

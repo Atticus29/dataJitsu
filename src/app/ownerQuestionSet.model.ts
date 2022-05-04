@@ -1,10 +1,12 @@
-import { OwnerQuestion } from './ownerQuestion.model';
-import { FormQuestionBase } from './formQuestionBase.model';
+import { OwnerQuestion } from "./ownerQuestion.model";
+import { FormQuestionBase } from "./formQuestionBase.model";
 
 export class OwnerQuestionSet {
-  constructor(private collectionId: string, private ownerQuestions:OwnerQuestion[]){}
-
-  static fromForm(collectionId: string, jsonObj: any, questions: FormQuestionBase<string>[]): OwnerQuestionSet{
+  static fromForm(
+    collectionId: string,
+    jsonObj: any,
+    questions: FormQuestionBase<string>[]
+  ): OwnerQuestionSet {
     // console.log("fromForm entered in OwnerQuestionSet");
     // console.log("questions are:");
     console.log(questions);
@@ -17,15 +19,24 @@ export class OwnerQuestionSet {
     let defaulOwnerQuestion = new OwnerQuestion("Video URL", "Text", "text");
     let ownerQuestions: OwnerQuestion[] = new Array<OwnerQuestion>();
     ownerQuestions.push(defaulOwnerQuestion);
-    for(let i = 0; i<questions.length; i++){
-
+    for (let i = 0; i < questions.length; i++) {
       let baseKey: string = questions[i].key.split(/\d+/)[0];
       // console.log("baseKey is: " + baseKey);
-      let indexOfJsonObjKeyMatchingCurrentQuestionKey: number = jsonObjKeys.indexOf(questions[i].key);
+      let indexOfJsonObjKeyMatchingCurrentQuestionKey: number =
+        jsonObjKeys.indexOf(questions[i].key);
       // console.log("indexOfJsonObjKeyMatchingCurrentQuestionKey is: " + indexOfJsonObjKeyMatchingCurrentQuestionKey);
       // let currentOwnerQuestion = new OwnerQuestion()
-      if(baseKey === "labelQuestionName" || baseKey === "genericLabelQuestionName"){
-        let currentOwnerQuestion = new OwnerQuestion(String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1]), String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey+1]).replace(/\s/g, "").toLowerCase()); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preceed their question types
+      if (
+        baseKey === "labelQuestionName" ||
+        baseKey === "genericLabelQuestionName"
+      ) {
+        let currentOwnerQuestion = new OwnerQuestion(
+          String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey]),
+          String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey + 1]),
+          String(jsonObjVals[indexOfJsonObjKeyMatchingCurrentQuestionKey + 1])
+            .replace(/\s/g, "")
+            .toLowerCase()
+        ); //TODO this hopefully will not throw index errors where you go beyond the array. Assumes that question entries will always preceed their question types
         ownerQuestions.push(currentOwnerQuestion);
       }
     }
@@ -34,20 +45,24 @@ export class OwnerQuestionSet {
     return new OwnerQuestionSet(collectionId, ownerQuestions);
   }
 
-  getCollectionId(): string{
+  constructor(
+    public collectionId: string,
+    public ownerQuestions: OwnerQuestion[]
+  ) {}
+
+  getCollectionId(): string {
     return this.collectionId;
   }
 
-  getOwnerQuestions(): OwnerQuestion[]{
+  getOwnerQuestions(): OwnerQuestion[] {
     return this.ownerQuestions;
   }
 
-  setOwnerQuestion(ownerQuestions: OwnerQuestion[]){
+  setOwnerQuestion(ownerQuestions: OwnerQuestion[]) {
     this.ownerQuestions = ownerQuestions;
   }
 
-  setCollectionId(collectionId: string){
+  setCollectionId(collectionId: string) {
     this.collectionId = collectionId;
   }
-
 }

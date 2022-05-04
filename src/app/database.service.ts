@@ -36,7 +36,7 @@ import { FormQuestionBase } from "./formQuestionBase.model";
 
 @Injectable()
 export class DatabaseService {
-  private handleError: HandleError;
+  public handleError: HandleError;
   videos: Observable<any>;
   weightClasses: Observable<any>;
   giRanks: Observable<any>;
@@ -48,16 +48,16 @@ export class DatabaseService {
   retrievedMatch: Observable<any>;
   VideoDetails: Observable<any>;
   eventsAsObject: Observable<any>;
-  // private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // public ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient,
+    public route: ActivatedRoute,
+    public http: HttpClient,
     public db: AngularFireDatabase,
-    private textTransformationService: TextTransformationService,
-    private dateCalculationsService: DateCalculationsService,
-    private httpErrorHandler: HttpErrorHandler,
-    private validationService: ValidationService
+    public textTransformationService: TextTransformationService,
+    public dateCalculationsService: DateCalculationsService,
+    public httpErrorHandler: HttpErrorHandler,
+    public validationService: ValidationService
   ) {
     this.handleError =
       this.httpErrorHandler.createHandleError("database service");

@@ -6,16 +6,16 @@ import * as bcrypt from "bcryptjs";
 
 export class User {
   public id: string;
-  private weightClass: string;
-  private ageClass: string;
+  public weightClass: string;
+  public ageClass: string;
   public uid: string;
-  private privileges: {};
-  private votingInfo: {};
+  public privileges: {};
+  public votingInfo: {};
   public paidStatus: boolean;
-  private annotatedEnoughOverride: boolean;
-  private reputationLog: ReputationLog;
-  private eventsInVideo: EventInVideo[];
-  private salt: string;
+  public annotatedEnoughOverride: boolean;
+  public reputationLog: ReputationLog;
+  public eventsInVideo: EventInVideo[];
+  public salt: string;
 
   static fromJson(jsonObj: any): User {
     const affiliation: string = jsonObj.affiliation;

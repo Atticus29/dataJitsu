@@ -1,30 +1,33 @@
 export class OwnerQuestion {
-  // private question: string;
-  // private questionType: string;
-  constructor(private question: string, private questionType:string, private controlType:string){}
+  // public question: string;
+  // public questionType: string;
+  constructor(
+    public question: string,
+    public questionType: string,
+    public controlType: string
+  ) {}
 
-  getQuestion(): string{
+  getQuestion(): string {
     return this.question;
   }
 
-  getQuestionType(): string{
+  getQuestionType(): string {
     return this.question;
   }
 
-  getControlType(): string{
+  getControlType(): string {
     return this.controlType;
   }
 
-  setControlType(controlType: string){
+  setControlType(controlType: string) {
     this.controlType = controlType;
   }
 
-  setQuestion(question: string){
+  setQuestion(question: string) {
     this.question = question;
   }
 
-  setQuestionType(questionType: string){
+  setQuestionType(questionType: string) {
     this.questionType = questionType;
   }
-
 }

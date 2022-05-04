@@ -47,20 +47,21 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   disabledNoGiRank: boolean = false;
   disabledGiRank: boolean = false;
   disabledAgeClass: boolean = false;
-  private localConfigOptions: DynamicFormConfiguration;
-  private stopCounter: number = 0;
+  public localConfigOptions: DynamicFormConfiguration;
+  public stopCounter: number = 0;
+  public user: any;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private vs: ValidationService,
-    private as: AuthorizationService,
-    private trackerService: TrackerService,
-    private defaultErrorStateMatcher: ErrorStateMatcher,
-    private questionService: QuestionService,
-    private formProcessingService: FormProcessingService,
-    private databaseService: DatabaseService,
-    private textTransformationService: TextTransformationService,
+    public fb: FormBuilder,
+    public router: Router,
+    public vs: ValidationService,
+    public as: AuthorizationService,
+    public trackerService: TrackerService,
+    public defaultErrorStateMatcher: ErrorStateMatcher,
+    public questionService: QuestionService,
+    public formProcessingService: FormProcessingService,
+    public databaseService: DatabaseService,
+    public textTransformationService: TextTransformationService,
     public snackBar: MatSnackBar,
     public ngZone: NgZone
   ) {
@@ -255,6 +256,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
             .subscribe((user) => {
               if (user) {
                 if (user.uid) {
+                  self.user = user;
                   // this.databaseService.addUidToUser used to happen here, but now that is handled in app.component to avoid circularity issues
 
                   // don't try login until the user had a uid associated with them

@@ -23,28 +23,28 @@ import { BaseComponent } from "./base/base.component";
   // providers: [AuthorizationService, ProtectionGuard],
 })
 export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
-  // private ngUnsubscribe: Subject<void> = new Subject<void>();
-  // private constants: Object = constants;
-  private paidStatus: boolean = false;
-  private isAdmin: boolean = false;
+  // public ngUnsubscribe: Subject<void> = new Subject<void>();
+  // public constants: Object = constants;
+  public paidStatus: boolean = false;
+  public isAdmin: boolean = false;
   user: any = null;
-  private name: string = "Anonymous User";
+  public name: string = "Anonymous User";
   userObjFromDb: Object = { id: null };
   title: string = constants.title;
   authenticationStatus: boolean = false;
   shouldAnnotate: boolean = false;
-  private canViewAllMatches: boolean = false; //TODO flesh out
-  private localReputation: number = null;
-  private localNewReputationCount: number = 0;
+  public canViewAllMatches: boolean = false; //TODO flesh out
+  public localReputation: number = null;
+  public localNewReputationCount: number = 0;
 
   constructor(
-    private authService: AuthorizationService,
-    private databaseService: DatabaseService,
-    private router: Router,
-    private cdr: ChangeDetectorRef,
+    public authService: AuthorizationService,
+    public databaseService: DatabaseService,
+    public router: Router,
+    public cdr: ChangeDetectorRef,
     public afAuth: AngularFireAuth,
-    private trackerService: TrackerService,
-    public ngZone: NgZone // private readonly feedbackService: NgxFeedbackService
+    public trackerService: TrackerService,
+    public ngZone: NgZone // public readonly feedbackService: NgxFeedbackService
   ) {
     super();
   }

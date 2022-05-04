@@ -1,48 +1,57 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from "@angular/core";
 // import {MaterializeDirective,MaterializeAction} from "angular2-materialize";
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
-import {Location} from "@angular/common";
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  FormArray,
+  Validators,
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { Location } from "@angular/common";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AngularFireDatabase,AngularFireList, AngularFireObject } from '@angular/fire/database';
-import { Subject ,  Observable } from 'rxjs';
-import { takeUntil, take, switchMap, first } from 'rxjs/operators';
+import {
+  AngularFireDatabase,
+  AngularFireList,
+  AngularFireObject,
+} from "@angular/fire/database";
+import { Subject, Observable } from "rxjs";
+import { takeUntil, take, switchMap, first } from "rxjs/operators";
 
-import { User } from '../user.model';
-import { AuthorizationService } from '../authorization.service';
-import { TrackerService } from '../tracker.service';
-import { ProtectionGuard } from '../protection.guard';
-import { VideoDetails } from '../videoDetails.model';
-import { Video } from '../video.model';
-import { EventInVideo } from '../eventInVideo.model';
-import { DatabaseService } from '../database.service';
-import { ValidationService } from '../validation.service';
-import { TextTransformationService } from '../text-transformation.service';
-import { BaseComponent } from '../base/base.component';
-import { constants } from '../constants';
+import { User } from "../user.model";
+import { AuthorizationService } from "../authorization.service";
+import { TrackerService } from "../tracker.service";
+import { ProtectionGuard } from "../protection.guard";
+import { VideoDetails } from "../videoDetails.model";
+import { Video } from "../video.model";
+import { EventInVideo } from "../eventInVideo.model";
+import { DatabaseService } from "../database.service";
+import { ValidationService } from "../validation.service";
+import { TextTransformationService } from "../text-transformation.service";
+import { BaseComponent } from "../base/base.component";
+import { constants } from "../constants";
 
-import { NewAthleteNameDialogComponent } from '../new-athlete-name-dialog/new-athlete-name-dialog.component';
-import { NewTournamentNameDialogComponent } from '../new-tournament-name-dialog/new-tournament-name-dialog.component';
-import { NewWeightClassDialogComponent } from '../new-weight-class-dialog/new-weight-class-dialog.component';
-import { NewNoGiRankDialogComponent } from '../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component';
-import { NewAgeClassDialogComponent } from '../new-age-class-dialog/new-age-class-dialog.component';
-import { NewLocationNameDialogComponent } from '../new-location-name-dialog/new-location-name-dialog.component';
+import { NewAthleteNameDialogComponent } from "../new-athlete-name-dialog/new-athlete-name-dialog.component";
+import { NewTournamentNameDialogComponent } from "../new-tournament-name-dialog/new-tournament-name-dialog.component";
+import { NewWeightClassDialogComponent } from "../new-weight-class-dialog/new-weight-class-dialog.component";
+import { NewNoGiRankDialogComponent } from "../new-no-gi-rank-dialog/new-no-gi-rank-dialog.component";
+import { NewAgeClassDialogComponent } from "../new-age-class-dialog/new-age-class-dialog.component";
+import { NewLocationNameDialogComponent } from "../new-location-name-dialog/new-location-name-dialog.component";
 
-declare var $:any;
+declare var $: any;
 
 @Component({
-  selector: 'app-new-video',
-  templateUrl: './new-video.component.html',
-  styleUrls: ['./new-video.component.scss'],
+  selector: "app-new-video",
+  templateUrl: "./new-video.component.html",
+  styleUrls: ["./new-video.component.scss"],
 })
-
 export class NewVideoComponent extends BaseComponent implements OnInit {
-    //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
-  private sub: any;
-  private matchCreationCounter: number = 0;
-  private rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
+  //@TODO add option to add new weight class, age class, etc. in the html here rather than on the db to keep in the bottom and isolate for special behavior
+  public sub: any;
+  public matchCreationCounter: number = 0;
+  public rankBound: string = ""; //has to be special because if left blank messes up because dynamically toggles between gi and nogi
   title: string = "Submit a New Match for Annotation";
   ageClasses: any[];
   ranks: any[];
@@ -61,14 +70,19 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   disabledAgeClass: boolean = false;
   disabledGiRank: boolean = false;
   disabledNoGiRank: boolean = false;
+  disabledNoGiRankName: boolean = false;
   disabledWeightClass: boolean = false;
   disabledLocationName: boolean = false;
+  disabledAthleteName: boolean = false;
+  disabledTournamentName: boolean = false;
+  disabledAgeClassName: boolean = false;
+  disabledWeigthClassName: boolean = false;
   giStatus: boolean = false;
   checked: boolean = false;
   rankSelection: string;
-  private hasPaid: boolean = false;
-  private isAdmin: boolean = false;
-  private localUser: any = null;
+  public hasPaid: boolean = false;
+  public isAdmin: boolean = false;
+  public localUser: any = null;
 
   // localvideoUrlBound: string = null;
   localAthlete1Name: string = null;
@@ -88,20 +102,50 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
   // localWeightBound: string = null;
 
   newRankForm: FormGroup; //TODO what is this?
-  private videoUrlBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private athlete1NameBoundFc: FormControl = new FormControl('', []);
-  private athlete2NameBoundFc: FormControl = new FormControl('', []);
-  private tournamentNameBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private locationBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private tournamentDateBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private giStatusBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private genderBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private ageClassBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private rankBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private weightBoundFc: FormControl = new FormControl('', [Validators.required]);
-  private noGiRankBoundFc: FormControl = new FormControl('', [Validators.required]);
+  public videoUrlBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public athlete1NameBoundFc: FormControl = new FormControl("", []);
+  public athlete2NameBoundFc: FormControl = new FormControl("", []);
+  public tournamentNameBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public locationBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public tournamentDateBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public giStatusBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public genderBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public ageClassBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public rankBoundFc: FormControl = new FormControl("", [Validators.required]);
+  public weightBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
+  public noGiRankBoundFc: FormControl = new FormControl("", [
+    Validators.required,
+  ]);
 
-  constructor(private fb: FormBuilder, private db: DatabaseService, private router: Router, private as: AuthorizationService, private location: Location, private vs: ValidationService, private _snackBar: MatSnackBar, private trackerService: TrackerService, public ngZone: NgZone, public dialog: MatDialog, private textTransformationService: TextTransformationService) {
+  constructor(
+    public fb: FormBuilder,
+    public db: DatabaseService,
+    public router: Router,
+    public as: AuthorizationService,
+    public location: Location,
+    public vs: ValidationService,
+    public _snackBar: MatSnackBar,
+    public trackerService: TrackerService,
+    public ngZone: NgZone,
+    public dialog: MatDialog,
+    public textTransformationService: TextTransformationService
+  ) {
     super();
     // let temp = this.as.isAuthenticated();
     // temp.subscribe(result =>{
@@ -111,110 +155,141 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
 
   getErrorMessage() {
     let errorMessage: string = "A form error has occurred";
-    if(this.videoUrlBoundFc.hasError('required')){
-      errorMessage = 'Match URL is required';
-      return  errorMessage;
+    if (this.videoUrlBoundFc.hasError("required")) {
+      errorMessage = "Match URL is required";
+      return errorMessage;
     }
-    if(!this.vs.validateUrl(this.videoUrlBoundFc.value)){
+    if (!this.vs.validateUrl(this.videoUrlBoundFc.value)) {
       errorMessage = "Match URL must be a valid YouTube URL"; //TODO accommodate vimeo, etc?
-      return  errorMessage;
+      return errorMessage;
     }
     //TODO custom url error
-    return  errorMessage;
+    return errorMessage;
   }
 
-
   ngOnInit() {
-    $('.modal').modal();
+    $(".modal").modal();
 
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(currentUser =>{
-      // console.log("currentUser in new-match component:");
-      // console.log(currentUser);
-      if(currentUser && currentUser.uid){
-        this.localUser = currentUser;
-        this.db.getUserByUid(currentUser.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-          this.db.hasUserPaid(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(paymentStatus =>{
-            this.hasPaid = paymentStatus;
-          });
-          this.db.isAdmin(dbUser.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(status =>{
-            this.isAdmin = status;
-          });
-        });
-      }
-    });
+    this.trackerService.currentUserBehaviorSubject
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((currentUser) => {
+        // console.log("currentUser in new-match component:");
+        // console.log(currentUser);
+        if (currentUser && currentUser.uid) {
+          this.localUser = currentUser;
+          this.db
+            .getUserByUid(currentUser.uid)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((dbUser) => {
+              this.db
+                .hasUserPaid(dbUser.id)
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe((paymentStatus) => {
+                  this.hasPaid = paymentStatus;
+                });
+              this.db
+                .isAdmin(dbUser.id)
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe((status) => {
+                  this.isAdmin = status;
+                });
+            });
+        }
+      });
 
     this.genders = constants.genders;
 
-    this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
-      this.athleteNames = athleteNames.sort();
-    });
+    this.db
+      .getIndividualNames()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((athleteNames) => {
+        this.athleteNames = athleteNames.sort();
+      });
 
-    this.db.getTournamentNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(tournamentNames =>{
-      this.tournamentNames = tournamentNames.sort();
-    });
+    this.db
+      .getTournamentNames()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((tournamentNames) => {
+        this.tournamentNames = tournamentNames.sort();
+      });
 
-    this.db.getGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(giRanks=>{
-      this.giRanks = giRanks; //.sort();
-      this.ranks = giRanks; //.sort();
-      // this.disabledGiRank = true;
-    });
+    this.db
+      .getGiRanks()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((giRanks) => {
+        this.giRanks = giRanks; //.sort();
+        this.ranks = giRanks; //.sort();
+        // this.disabledGiRank = true;
+      });
 
-    this.db.getNoGiRanks().pipe(takeUntil(this.ngUnsubscribe)).subscribe(noGiRanks=>{
-      this.nogiRanks = noGiRanks; //.sort();
-      this.ranks = noGiRanks; //.sort();
-      // this.disabledNoGiRank = true;
-    })
+    this.db
+      .getNoGiRanks()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((noGiRanks) => {
+        this.nogiRanks = noGiRanks; //.sort();
+        this.ranks = noGiRanks; //.sort();
+        // this.disabledNoGiRank = true;
+      });
 
-    this.db.getAgeClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(ageClasses=>{
-      this.ageClasses = ageClasses.sort();
-      this.disabledAgeClass = true;
-    });
+    this.db
+      .getAgeClasses()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((ageClasses) => {
+        this.ageClasses = ageClasses.sort();
+        this.disabledAgeClass = true;
+      });
 
-    this.db.getWeightClasses().pipe(takeUntil(this.ngUnsubscribe)).subscribe(weightClasses=>{
-      this.weightClasses = weightClasses.sort();
-      this.disabledWeightClass = true;
-    });
+    this.db
+      .getWeightClasses()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((weightClasses) => {
+        this.weightClasses = weightClasses.sort();
+        this.disabledWeightClass = true;
+      });
 
-    this.db.getLocations().pipe(takeUntil(this.ngUnsubscribe)).subscribe(locationNames=>{
-      this.locationNames = locationNames.sort();
-      this.disabledLocationName = true;
-    });
+    this.db
+      .getLocations()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((locationNames) => {
+        this.locationNames = locationNames.sort();
+        this.disabledLocationName = true;
+      });
 
     this.newMatchForm = this.fb.group({
-      videoUrlBound: ['', Validators.required],
-      athlete1NameBound: [''],
-      athlete2NameBound: [''],
-      tournamentNameBound: [''],
-      locationBound: [''],
-      tournamentDateBound: [''],
-      genderBound: [''],
-      ageClassBound: [''],
-      rankBound: [''],
-      weightBound: [''],
-      giStatusBound: ['']
+      videoUrlBound: ["", Validators.required],
+      athlete1NameBound: [""],
+      athlete2NameBound: [""],
+      tournamentNameBound: [""],
+      locationBound: [""],
+      tournamentDateBound: [""],
+      genderBound: [""],
+      ageClassBound: [""],
+      rankBound: [""],
+      weightBound: [""],
+      giStatusBound: [""],
     });
 
     this.newRankForm = this.fb.group({
-      newRankBound: ['', Validators.required]
+      newRankBound: ["", Validators.required],
     });
     // this.currentUser = this.userService.getUser(this.currentUserId); //@TODO mature this
   }
 
-  getNewRankValues(){
-      let result = this.newRankForm.value;
-      return result;
+  getNewRankValues() {
+    let result = this.newRankForm.value;
+    return result;
   }
 
-  getValues(){
+  getValues() {
     let videoUrlBound = this.videoUrlBoundFc.value;
     let athlete1NameBound = this.athlete1NameBoundFc.value;
     let athlete2NameBound = this.athlete2NameBoundFc.value;
-    if(this.localAthlete1Name){
+    if (this.localAthlete1Name) {
       console.log("localAthlete1Name exists");
       athlete1NameBound = this.localAthlete1Name;
       this.db.addCandidateNameToDb(athlete1NameBound, videoUrlBound);
     }
-    if(this.localAthlete2Name){
+    if (this.localAthlete2Name) {
       console.log("localAthlete2Name exists");
       athlete2NameBound = this.localAthlete2Name;
       this.db.addCandidateNameToDb(athlete2NameBound, videoUrlBound);
@@ -222,68 +297,111 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     // console.log(athlete1NameBound);
     // console.log(athlete2NameBound);
     let tournamentNameBound = this.tournamentNameBoundFc.value;
-    if(this.localTournamentName){
+    if (this.localTournamentName) {
       console.log("localTournamentName exists");
       tournamentNameBound = this.localTournamentName;
-      this.db.addCandidateTournamentNameToDb(tournamentNameBound, videoUrlBound);
+      this.db.addCandidateTournamentNameToDb(
+        tournamentNameBound,
+        videoUrlBound
+      );
     }
 
     let weightBound = this.weightBoundFc.value;
-    if(this.localWeightClassName){
+    if (this.localWeightClassName) {
       console.log("localWeightClassName exists");
       weightBound = this.localWeightClassName;
-      this.db.addGenericCandidateNameToDb('candidateWeightClasses', weightBound, videoUrlBound);
+      this.db.addGenericCandidateNameToDb(
+        "candidateWeightClasses",
+        weightBound,
+        videoUrlBound
+      );
     }
     let locationBound = this.locationBoundFc.value;
-    if(this.localLocationName){
+    if (this.localLocationName) {
       console.log("localLocationName exists");
       locationBound = this.localLocationName;
-      this.db.addGenericCandidateNameToDb('candidateLocationNames', locationBound, videoUrlBound);
+      this.db.addGenericCandidateNameToDb(
+        "candidateLocationNames",
+        locationBound,
+        videoUrlBound
+      );
     }
     let tournamentDateBound = this.tournamentDateBoundFc.value;
     let giStatusBound = this.giStatusBoundFc.value;
     let genderBound = this.genderBoundFc.value;
     let ageClassBound = this.ageClassBoundFc.value;
-    if(this.localAgeClassName){
+    if (this.localAgeClassName) {
       console.log("localAgeClassName exists");
       ageClassBound = this.localAgeClassName;
-      this.db.addGenericCandidateNameToDb('candidateAgeClasses', ageClassBound, videoUrlBound);
+      this.db.addGenericCandidateNameToDb(
+        "candidateAgeClasses",
+        ageClassBound,
+        videoUrlBound
+      );
     }
     let rankBound = this.rankBoundFc.value;
-    if(this.localNoGiRankName){
+    if (this.localNoGiRankName) {
       console.log("localNoGiRankName exists");
       rankBound = this.localNoGiRankName;
-      this.db.addGenericCandidateNameToDb('candidateNoGiRanks', rankBound, videoUrlBound);
+      this.db.addGenericCandidateNameToDb(
+        "candidateNoGiRanks",
+        rankBound,
+        videoUrlBound
+      );
     }
 
     // let otherResults = this.newMatchForm.value;
-    return {videoUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound,giStatusBound, genderBound, ageClassBound, rankBound, weightBound};
+    return {
+      videoUrlBound,
+      athlete1NameBound,
+      athlete2NameBound,
+      tournamentNameBound,
+      locationBound,
+      tournamentDateBound,
+      giStatusBound,
+      genderBound,
+      ageClassBound,
+      rankBound,
+      weightBound,
+    };
   }
 
-  allValid(matchForm: FormGroup){
+  allValid(matchForm: FormGroup) {
     let videoUrlValidCheck = this.videoUrlBoundFc.value;
-    if(this.vs.validateUrl(videoUrlValidCheck)){ //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
+    if (this.vs.validateUrl(videoUrlValidCheck)) {
+      //&& values.athlete1NameBound !== "" && values.athlete2NameBound !== "" && this.vs.validateDate(values.tournamentDateBound) && values.locationBound !== "" && values.tournamentNameBound !== "" && values.genderBound !== "" && values.ageClassBound !== "" && values.rankBound !== "" && values.weightBound !== ""  && values.weightBound !== ""
       return true;
-    } else{
+    } else {
       return false;
     }
   }
 
-  createMatchObj(result: any){
+  createMatchObj(result: any) {
     console.log("result in createMatchObj is:");
     console.log(result);
     let self = this;
     //TODO genericize?
-    let {videoUrlBound, athlete1NameBound, athlete2NameBound, tournamentNameBound, locationBound, tournamentDateBound, rankBound, genderBound, ageClassBound, weightBound, giStatusBound} = result;
-    this.rankBound = result.rankBound==undefined ? "" : result.rankBound;
-    let videoDeets:VideoDetails = VideoDetails.fromForm(result);
+    let {
+      videoUrlBound,
+      athlete1NameBound,
+      athlete2NameBound,
+      tournamentNameBound,
+      locationBound,
+      tournamentDateBound,
+      rankBound,
+      genderBound,
+      ageClassBound,
+      weightBound,
+      giStatusBound,
+    } = result;
+    this.rankBound = result.rankBound == undefined ? "" : result.rankBound;
+    let videoDeets: VideoDetails = VideoDetails.fromForm(result);
     console.log("videoDeets is:");
     console.log(videoDeets);
 
-
     let moves: Array<EventInVideo> = new Array<EventInVideo>();
-    let createMatchObservable = Observable.create(function(observer){
-      if(self.localUser != null){
+    let createMatchObservable = Observable.create(function (observer) {
+      if (self.localUser != null) {
         let match = new Video(videoDeets, self.localUser.id, moves);
         observer.next(match);
       }
@@ -291,25 +409,25 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     return createMatchObservable;
   }
 
-  onChange(val){
+  onChange(val) {
     // console.log(val);
-    if(val === "addNew"){
+    if (val === "addNew") {
       // console.log("contains add new!");
       //TODO new stuff here
-    } else{
+    } else {
       //do nothing
     }
   }
 
-  changed(){
+  changed() {
     console.log("checked in changed: ");
     console.log(this.checked);
-    if(this.checked){
+    if (this.checked) {
       this.rankType = "Gi";
       this.ranks = this.giRanks;
       this.giStatus = true;
       // this.localNoGiRankName = "";
-    } else{
+    } else {
       console.log("nogi selected");
       this.rankType = "Nogi";
       this.giStatus = false;
@@ -323,27 +441,35 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     // }
   }
 
-  submitFormAndAnnotate(){ //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
+  submitFormAndAnnotate() {
+    //TODO can DRY this and combine with submitFormAndReturnToMain if you add a router parameter
     console.log("submitFormAndAnnotate entered");
     let values = this.getValues();
-    this.db.doesMatchExist(values.videoUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      // console.log(result);
-      if(!result && this.matchCreationCounter<1){
-        let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-          // console.log(result)
-          this.matchCreationCounter ++; //Note that if you remove this, you might experience weird, multiple-submission bugs
+    this.db
+      .doesMatchExist(values.videoUrlBound)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        // console.log(result);
+        if (!result && this.matchCreationCounter < 1) {
+          let match = this.createMatchObj(values)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((result) => {
+              // console.log(result)
+              this.matchCreationCounter++; //Note that if you remove this, you might experience weird, multiple-submission bugs
 
-          let videoId = this.db.addVideoToDb(result);
-          this.openSnackBar("Match Successfully Created!", null);
-          this.ngZone.run(() =>{
-              // this.router.navigate(['landing']);
-              this.router.navigate([constants.individualPathName + '/' + videoId]);
-          });
-        });
-      } else{
-        this.openSnackBar("Match Already Exists in the Database!", null);
-      }
-    });
+              let videoId = this.db.addVideoToDb(result);
+              this.openSnackBar("Match Successfully Created!", null);
+              this.ngZone.run(() => {
+                // this.router.navigate(['landing']);
+                this.router.navigate([
+                  constants.individualPathName + "/" + videoId,
+                ]);
+              });
+            });
+        } else {
+          this.openSnackBar("Match Already Exists in the Database!", null);
+        }
+      });
   }
 
   openSnackBar(message: string, action: string) {
@@ -352,123 +478,176 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     });
   }
 
-  submitFormAndReturnToMain(){
+  submitFormAndReturnToMain() {
     console.log("submitFormAndReturnToMain entered");
     let values = this.getValues();
     console.log(values);
-    this.db.doesMatchExist(values.videoUrlBound).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{
-      console.log("does match exist result in submitFormAndReturnToMain");
-      console.log(result);
-      if(!result && this.matchCreationCounter<1){
-        let match = this.createMatchObj(values).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result=>{
-          console.log("got into result for submitFormAndReturnToMain call:");
-          console.log(result);
-          this.matchCreationCounter ++;
-          this.db.addVideoToDb(result);
-          this.openSnackBar("Match Successfully Created!", null);
-          this.ngZone.run(() =>{
-            if(this.hasPaid || this.isAdmin){
-              this.router.navigate([constants.allVideosPathName]);
-            }else {
-              this.router.navigate(['/']);
-            }
-          });
-        });
-      } else{
-        this.openSnackBar("Match Already Exists in the Database!", null);
-      }
-    });
+    this.db
+      .doesMatchExist(values.videoUrlBound)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        console.log("does match exist result in submitFormAndReturnToMain");
+        console.log(result);
+        if (!result && this.matchCreationCounter < 1) {
+          let match = this.createMatchObj(values)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((result) => {
+              console.log(
+                "got into result for submitFormAndReturnToMain call:"
+              );
+              console.log(result);
+              this.matchCreationCounter++;
+              this.db.addVideoToDb(result);
+              this.openSnackBar("Match Successfully Created!", null);
+              this.ngZone.run(() => {
+                if (this.hasPaid || this.isAdmin) {
+                  this.router.navigate([constants.allVideosPathName]);
+                } else {
+                  this.router.navigate(["/"]);
+                }
+              });
+            });
+        } else {
+          this.openSnackBar("Match Already Exists in the Database!", null);
+        }
+      });
   }
 
-  pushToDb(match: Video){
+  pushToDb(match: Video) {}
 
-  }
-
-  annotateCurrentVideo(){
+  annotateCurrentVideo() {
     // console.log("Annotate"); //@TODO flesh out
   }
 
-  addToQueueAndReturnToMain(){
+  addToQueueAndReturnToMain() {
     // console.log("Queue"); //@TODO flesh out
   }
 
-  submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch(){
+  submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch() {
     //TODO flesh out
     // console.log("entered submitRankFormAndAddToCandidateListAndAddRankTemporarilyToMatch");
   }
 
-  onDestroy(){
+  onDestroy() {}
 
-  }
-
-  async openAgeClassNameDialog(){
+  async openAgeClassNameDialog() {
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewAgeClassDialogComponent, dialogConfig);
-    this.localAgeClassName = await this.processGenericDialog(dialogRef, 'ageClasses', 'ageClassName');
+    const dialogRef = this.dialog.open(
+      NewAgeClassDialogComponent,
+      dialogConfig
+    );
+    this.localAgeClassName = await this.processGenericDialog(
+      dialogRef,
+      "ageClasses",
+      "ageClassName"
+    );
   }
 
-  async openWeightClassNameDialog(){
+  async openWeightClassNameDialog() {
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewWeightClassDialogComponent, dialogConfig);
-    this.localWeightClassName = await this.processGenericDialog(dialogRef, 'weightClasses', 'weightClassName');
+    const dialogRef = this.dialog.open(
+      NewWeightClassDialogComponent,
+      dialogConfig
+    );
+    this.localWeightClassName = await this.processGenericDialog(
+      dialogRef,
+      "weightClasses",
+      "weightClassName"
+    );
   }
 
-  async openNoGiRankDialog(){
+  async openNoGiRankDialog() {
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewNoGiRankDialogComponent, dialogConfig);
-    this.localNoGiRankName = await this.processGenericDialog(dialogRef, 'noGiRanks', 'noGiRankName');
-
+    const dialogRef = this.dialog.open(
+      NewNoGiRankDialogComponent,
+      dialogConfig
+    );
+    this.localNoGiRankName = await this.processGenericDialog(
+      dialogRef,
+      "noGiRanks",
+      "noGiRankName"
+    );
   }
 
-  async openTournamentNameDialog(){
+  async openTournamentNameDialog() {
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewTournamentNameDialogComponent, dialogConfig);
-    this.localTournamentName = await this.processGenericDialog(dialogRef, 'tournamentNames', 'tournamentName');
+    const dialogRef = this.dialog.open(
+      NewTournamentNameDialogComponent,
+      dialogConfig
+    );
+    this.localTournamentName = await this.processGenericDialog(
+      dialogRef,
+      "tournamentNames",
+      "tournamentName"
+    );
   }
 
-  async openLocationNameDialog(){
+  async openLocationNameDialog() {
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewLocationNameDialogComponent, dialogConfig);
-    this.localLocationName = await this.processGenericDialog(dialogRef, 'locations', 'locationName');
+    const dialogRef = this.dialog.open(
+      NewLocationNameDialogComponent,
+      dialogConfig
+    );
+    this.localLocationName = await this.processGenericDialog(
+      dialogRef,
+      "locations",
+      "locationName"
+    );
   }
 
-  openAddNameDialog(athleteNumber: number){
+  openAddNameDialog(athleteNumber: number) {
     // console.log("clicked!");
     console.log("athlete number is " + athleteNumber);
     let dialogConfig = this.getGenericDialogConfig();
-    const dialogRef = this.dialog.open(NewAthleteNameDialogComponent, dialogConfig);
-    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(val => {
-      console.log("got dialog data to new-match component?:");
-      console.log(val);
-      this.db.getIndividualNames().pipe(takeUntil(this.ngUnsubscribe)).subscribe(athleteNames =>{
-        // console.log(athleteNames);
-        val.last = this.textTransformationService.capitalizeFirstLetter(val.last);
-        val.first = this.textTransformationService.capitalizeFirstLetter(val.first);
+    const dialogRef = this.dialog.open(
+      NewAthleteNameDialogComponent,
+      dialogConfig
+    );
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((val) => {
+        console.log("got dialog data to new-match component?:");
+        console.log(val);
+        this.db
+          .getIndividualNames()
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((athleteNames) => {
+            // console.log(athleteNames);
+            val.last = this.textTransformationService.capitalizeFirstLetter(
+              val.last
+            );
+            val.first = this.textTransformationService.capitalizeFirstLetter(
+              val.first
+            );
 
-        let candidateName = val.last + ", " + val.first;
-        // console.log(candidateName);
-        if(athleteNames.includes(candidateName)){
-          // console.log("name already exits");
-          this.openSnackBar("Name already exists in dropdown menu!", null);
-          this.localAthlete1Name = null;
-          this.localAthlete2Name = null;
-
-        }else{
-          if(athleteNumber == 1){
-            this.localAthlete1Name = val.last + ", " + val.first;
-            console.log("localAthlete1Name added; it is " + this.localAthlete1Name);
-          }
-          if(athleteNumber == 2){
-            this.localAthlete2Name = val.last + ", " + val.first;
-            console.log("localAthlete2Name added; it is " + this.localAthlete2Name);
-          }
-        }
+            let candidateName = val.last + ", " + val.first;
+            // console.log(candidateName);
+            if (athleteNames.includes(candidateName)) {
+              // console.log("name already exits");
+              this.openSnackBar("Name already exists in dropdown menu!", null);
+              this.localAthlete1Name = null;
+              this.localAthlete2Name = null;
+            } else {
+              if (athleteNumber == 1) {
+                this.localAthlete1Name = val.last + ", " + val.first;
+                console.log(
+                  "localAthlete1Name added; it is " + this.localAthlete1Name
+                );
+              }
+              if (athleteNumber == 2) {
+                this.localAthlete2Name = val.last + ", " + val.first;
+                console.log(
+                  "localAthlete2Name added; it is " + this.localAthlete2Name
+                );
+              }
+            }
+          });
+        // this.authService.emailLogin(val.email, val.passwd);
       });
-      // this.authService.emailLogin(val.email, val.passwd);
-    });
   }
 
-  getGenericDialogConfig(){
+  getGenericDialogConfig() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -476,25 +655,35 @@ export class NewVideoComponent extends BaseComponent implements OnInit {
     return dialogConfig;
   }
 
-  async processGenericDialog(dialogRef: any, path: string, parameterFromForm: string) : Promise<any>{ //TODO Promise<any>
-    console.log("entered processGenericDialog")
-    let [val, genericStringNames] = await Promise.all([dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(), this.db.getGenericStringNames(path).pipe(first()).toPromise()]);
-      if(val){
-        console.log("val");
-        console.log(val);
-        let candidateNameCapitalized = this.textTransformationService.capitalizeFirstLetter(val[parameterFromForm]);
-        console.log("candidateNameCapitalized is " + candidateNameCapitalized);
-        if(genericStringNames.includes(candidateNameCapitalized)){
-          // debugger;
-          this.openSnackBar(constants.alreadyExistsNotification, null);
-          return null;
-        }else{
-          console.log("got here");
-          return candidateNameCapitalized;
-        }
-      }else{
+  async processGenericDialog(
+    dialogRef: any,
+    path: string,
+    parameterFromForm: string
+  ): Promise<any> {
+    //TODO Promise<any>
+    console.log("entered processGenericDialog");
+    let [val, genericStringNames] = await Promise.all([
+      dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).toPromise(),
+      this.db.getGenericStringNames(path).pipe(first()).toPromise(),
+    ]);
+    if (val) {
+      console.log("val");
+      console.log(val);
+      let candidateNameCapitalized =
+        this.textTransformationService.capitalizeFirstLetter(
+          val[parameterFromForm]
+        );
+      console.log("candidateNameCapitalized is " + candidateNameCapitalized);
+      if (genericStringNames.includes(candidateNameCapitalized)) {
+        // debugger;
+        this.openSnackBar(constants.alreadyExistsNotification, null);
         return null;
+      } else {
+        console.log("got here");
+        return candidateNameCapitalized;
       }
+    } else {
+      return null;
+    }
   }
-
 }

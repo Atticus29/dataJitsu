@@ -1,18 +1,17 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from "@angular/core";
 
 @Directive({
-  selector: '[appWinDraw]'
+  selector: "[appWinDraw]",
 })
-export class WinDrawDirective {
-  @Input('appWinDraw') isWinOrDraw: boolean;
+export class WinDrawDirective implements OnInit {
+  @Input("appWinDraw") isWinOrDraw: boolean;
 
-  constructor(private el: ElementRef) { }
+  constructor(public el: ElementRef) {}
 
-  ngOnInit(){
+  ngOnInit() {
     if (this.isWinOrDraw) {
       this.el.nativeElement.style.backgroundColor = "#4A7CCE";
       //TODO fleshout styling change
     }
   }
-
 }

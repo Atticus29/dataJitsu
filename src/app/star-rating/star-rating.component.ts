@@ -1,20 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation,
+} from "@angular/core";
 
 @Component({
-  selector: 'app-star-rating',
-  templateUrl: './star-rating.component.html',
-  styleUrls: ['./star-rating.component.scss']
+  selector: "app-star-rating",
+  templateUrl: "./star-rating.component.html",
+  styleUrls: ["./star-rating.component.scss"],
 })
 export class StarRatingComponent implements OnInit {
-  @Input('rating') private rating: number = 3;
-  @Input('starCount') private starCount: number = 5;
-  @Input('color') private color: string = 'accent';
-  @Output() private ratingUpdated = new EventEmitter();
+  @Input("rating") public rating: number = 3;
+  @Input("starCount") public starCount: number = 5;
+  @Input("color") public color: string = "accent";
+  @Output() public ratingUpdated = new EventEmitter();
 
-  private ratingArr = [];
+  public ratingArr = [];
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {
     // console.log("ngOnInit in star-rating entered"+this.starCount)
@@ -23,17 +29,17 @@ export class StarRatingComponent implements OnInit {
     }
   }
 
-  onClick(rating:number) {
+  onClick(rating: number) {
     // console.log(rating)
     this.ratingUpdated.emit(rating);
     return false;
   }
 
-  showIcon(index:number) {
+  showIcon(index: number) {
     if (this.rating >= index + 1) {
-      return 'star';
+      return "star";
     } else {
-      return 'star_border';
+      return "star_border";
     }
   }
 }
@@ -41,5 +47,5 @@ export class StarRatingComponent implements OnInit {
 export enum StarRatingColor {
   primary = "primary",
   accent = "accent",
-  warn = "warn"
+  warn = "warn",
 }

@@ -1,84 +1,249 @@
 <div class="container">
   <div class="row">
     <div class="col s12">
-      <h3 class="subtitle">{{title}}</h3>
+      <h3 class="subtitle">{{ title }}</h3>
     </div>
   </div>
   <div class="row">
     <form class="col s12" materialize [formGroup]="newMatchForm">
       <div class="row">
-        <label for="videoUrl" class="active" data-error="Not valid" data-success="Valid">Match URL</label>
-        <input matInput [formControl]="videoUrlBoundFc" type="url" placeholder="Video URL" value="E.g., https://youtu.be/AYdi8oupOcs" id="videoUrl" required>
-        <mat-error *ngIf="!vs.validateUrl(videoUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
-        <mat-error *ngIf="videoUrlBoundFc.invalid && vs.validateUrl(videoUrlBoundFc.value)">{{getErrorMessage()}}</mat-error>
+        <label
+          for="videoUrl"
+          class="active"
+          data-error="Not valid"
+          data-success="Valid"
+          >Match URL</label
+        >
+        <input
+          matInput
+          [formControl]="videoUrlBoundFc"
+          type="url"
+          placeholder="Video URL"
+          value="E.g., https://youtu.be/AYdi8oupOcs"
+          id="videoUrl"
+          required
+        />
+        <mat-error *ngIf="!vs.validateUrl(videoUrlBoundFc.value)">{{
+          getErrorMessage()
+        }}</mat-error>
+        <mat-error
+          *ngIf="
+            videoUrlBoundFc.invalid && vs.validateUrl(videoUrlBoundFc.value)
+          "
+          >{{ getErrorMessage() }}</mat-error
+        >
         <mat-form-field class="col m6 s12">
-          <mat-select [formControl]="athlete1NameBoundFc" placeholder="Choose Athlete 1 Name" id="athlete1-select">
-            <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 1 name</mat-option>
-            <mat-option [value]="localAthlete1Name" (click)="openAddNameDialog(1)" color="accent" id="athlete-1-write-in">
-              <button mat-flat-button color="accent" id="custom-athlete1-button">
+          <mat-select
+            [formControl]="athlete1NameBoundFc"
+            placeholder="Choose Athlete 1 Name"
+            id="athlete1-select"
+          >
+            <mat-option value="" [disabled]="disabledAthleteName"
+              >Choose athlete 1 name</mat-option
+            >
+            <mat-option
+              [value]="localAthlete1Name"
+              (click)="openAddNameDialog(1)"
+              color="accent"
+              id="athlete-1-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-athlete1-button"
+              >
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new name
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let athlete1Name of athleteNames" [value]="athlete1Name" id="athlete-1-dropdown">{{athlete1Name}}</mat-option>
+            <mat-option
+              *ngFor="let athlete1Name of athleteNames"
+              [value]="athlete1Name"
+              id="athlete-1-dropdown"
+              >{{ athlete1Name }}</mat-option
+            >
           </mat-select>
-          <p *ngIf="localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete1Name}}</mat-chip></span></p>
-          <p *ngIf="athlete1NameBoundFc.value && !localAthlete1Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete1NameBoundFc.value}}</mat-chip></span></p>
+          <p *ngIf="localAthlete1Name">
+            Athlete Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localAthlete1Name
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="athlete1NameBoundFc.value && !localAthlete1Name">
+            Athlete Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                athlete1NameBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
         </mat-form-field>
         <mat-form-field class="col m6 s12">
-          <mat-select [formControl]="athlete2NameBoundFc" placeholder="Choose Athlete 2 Name" id="athlete2-select">
-            <mat-option value="" [disabled]="disabledAthleteName">Choose athlete 2 name</mat-option>
-            <mat-option [value]="localAthlete2Name" (click)="openAddNameDialog(2)" color="accent" id="athlete-2-write-in">
-              <button mat-flat-button color="accent" id="custom-athlete2-button">
+          <mat-select
+            [formControl]="athlete2NameBoundFc"
+            placeholder="Choose Athlete 2 Name"
+            id="athlete2-select"
+          >
+            <mat-option value="" [disabled]="disabledAthleteName"
+              >Choose athlete 2 name</mat-option
+            >
+            <mat-option
+              [value]="localAthlete2Name"
+              (click)="openAddNameDialog(2)"
+              color="accent"
+              id="athlete-2-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-athlete2-button"
+              >
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new name
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let athlete2Name of athleteNames" [value]="localAthlete2Name? localAthlete2Name:athlete2Name" id="athlete-2-dropdown">{{localAthlete2Name? localAthlete2Name:athlete2Name}}</mat-option>
+            <mat-option
+              *ngFor="let athlete2Name of athleteNames"
+              [value]="localAthlete2Name ? localAthlete2Name : athlete2Name"
+              id="athlete-2-dropdown"
+              >{{
+                localAthlete2Name ? localAthlete2Name : athlete2Name
+              }}</mat-option
+            >
           </mat-select>
-          <p *ngIf="localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{localAthlete2Name}}</mat-chip></span></p>
-          <p *ngIf="athlete2NameBoundFc.value && !localAthlete2Name">Athlete Selected: <span><mat-chip color="primary" selected>{{athlete2NameBoundFc.value}}</mat-chip></span></p>
+          <p *ngIf="localAthlete2Name">
+            Athlete Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localAthlete2Name
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="athlete2NameBoundFc.value && !localAthlete2Name">
+            Athlete Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                athlete2NameBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
         </mat-form-field>
       </div>
       <div class="row">
         <mat-form-field class="col m6 s12">
-          <mat-select [formControl]="tournamentNameBoundFc" placeholder="Choose Tournament Name" id="tournament-select">
-            <mat-option value="" [disabled]="disabledTournamentName">Choose tournament name</mat-option>
-            <mat-option [value]="localTournamentName" (click)="openTournamentNameDialog()" color="accent" id="tournament-name-write-in">
-              <button mat-flat-button color="accent" id="custom-tournament-button">
+          <mat-select
+            [formControl]="tournamentNameBoundFc"
+            placeholder="Choose Tournament Name"
+            id="tournament-select"
+          >
+            <mat-option value="" [disabled]="disabledTournamentName"
+              >Choose tournament name</mat-option
+            >
+            <mat-option
+              [value]="localTournamentName"
+              (click)="openTournamentNameDialog()"
+              color="accent"
+              id="tournament-name-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-tournament-button"
+              >
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new tournament name
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let tournamentName of tournamentNames" [value]="tournamentName" id="tournament-name-dropdown">{{tournamentName}}</mat-option>
+            <mat-option
+              *ngFor="let tournamentName of tournamentNames"
+              [value]="tournamentName"
+              id="tournament-name-dropdown"
+              >{{ tournamentName }}</mat-option
+            >
           </mat-select>
-          <p *ngIf="localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{localTournamentName}}</mat-chip></span></p>
-          <p *ngIf="tournamentNameBoundFc.value && !localTournamentName">Tournament Selected: <span><mat-chip color="primary" selected>{{tournamentNameBoundFc.value}}</mat-chip></span></p>
+          <p *ngIf="localTournamentName">
+            Tournament Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localTournamentName
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="tournamentNameBoundFc.value && !localTournamentName">
+            Tournament Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                tournamentNameBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
         </mat-form-field>
         <mat-form-field class="col m6 s12">
-          <mat-select [formControl]="locationBoundFc" placeholder="Choose Location Name" id="location-select">
-            <mat-option value="" [disabled]="disabledLocationName">Choose location name</mat-option>
-            <mat-option [value]="localLocationName" (click)="openLocationNameDialog()" color="accent" id="location-name-write-in">
-              <button mat-flat-button color="accent" id="custom-location-button">
+          <mat-select
+            [formControl]="locationBoundFc"
+            placeholder="Choose Location Name"
+            id="location-select"
+          >
+            <mat-option value="" [disabled]="disabledLocationName"
+              >Choose location name</mat-option
+            >
+            <mat-option
+              [value]="localLocationName"
+              (click)="openLocationNameDialog()"
+              color="accent"
+              id="location-name-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-location-button"
+              >
                 <span>
                   <i class="material-icons align-middle-things">add_circle</i>
                   Add a new location
                 </span>
               </button>
             </mat-option>
-            <mat-option *ngFor="let locationName of locationNames" [value]="locationName" id="location-name-dropdown">{{locationName}}</mat-option>
+            <mat-option
+              *ngFor="let locationName of locationNames"
+              [value]="locationName"
+              id="location-name-dropdown"
+              >{{ locationName }}</mat-option
+            >
           </mat-select>
-          <p *ngIf="localLocationName">Location Selected: <span><mat-chip color="primary" selected>{{localLocationName}}</mat-chip></span></p>
-          <p *ngIf="locationBoundFc.value && !localLocationName">Location Selected: <span><mat-chip color="primary" selected>{{locationBoundFc.value}}</mat-chip></span></p>
+          <p *ngIf="localLocationName">
+            Location Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localLocationName
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="locationBoundFc.value && !localLocationName">
+            Location Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                locationBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
         </mat-form-field>
-        <br>
-        <input matInput [formControl]="tournamentDateBoundFc" [matDatepicker]="picker" placeholder="Match Date (m/d/yyyy)" id="date-input">
+        <br />
+        <input
+          matInput
+          [formControl]="tournamentDateBoundFc"
+          [matDatepicker]="picker"
+          placeholder="Match Date (m/d/yyyy)"
+          id="date-input"
+        />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker required="" id="test"></mat-datepicker>
       </div>
@@ -87,84 +252,216 @@
           <div class="col s12 m2 switch">
             No Gi
             <mat-slide-toggle
-            [formControl]="giStatusBoundFc"
-            id="giStatus"
-            [color]="$primary-color"
-            (change)="changed()"
-            [(ngModel)]="checked"
+              [formControl]="giStatusBoundFc"
+              id="giStatus"
+              (change)="changed()"
+              [(ngModel)]="checked"
             >
-            Gi
-          </mat-slide-toggle>
+              Gi
+            </mat-slide-toggle>
+          </div>
         </div>
+        <mat-form-field class="col m2 s12">
+          <mat-select
+            [formControl]="genderBoundFc"
+            placeholder="Gender"
+            id="gender-select"
+          >
+            <mat-option value="(choose)" [disabled]="disabledGender"
+              >Choose gender</mat-option
+            >
+            <mat-option *ngFor="let gender of genders" [value]="gender">{{
+              gender
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col m6 s12">
+          <mat-select
+            [formControl]="ageClassBoundFc"
+            placeholder="Choose Age Class"
+            id="age-class-select"
+          >
+            <mat-option value="" [disabled]="disabledAgeClassName"
+              >Choose Age Class</mat-option
+            >
+            <mat-option
+              [value]="localAgeClassName"
+              (click)="openAgeClassNameDialog()"
+              color="accent"
+              id="age-class-name-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-age-class-button"
+              >
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new age class name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option
+              *ngFor="let ageClass of ageClasses"
+              [value]="ageClass"
+              id="age-class-name-dropdown"
+              >{{ ageClass }}</mat-option
+            >
+          </mat-select>
+          <p *ngIf="localAgeClassName">
+            Age Class Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localAgeClassName
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="ageClassBoundFc.value && !localAgeClassName">
+            Age Class Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                ageClassBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
+        </mat-form-field>
+        <mat-form-field class="col m6 s12">
+          <mat-select
+            [formControl]="rankBoundFc"
+            placeholder="Choose Rank"
+            id="rank-select"
+          >
+            <mat-option value="" [disabled]="disabledNoGiRankName"
+              >Choose {{ rankType }} Rank</mat-option
+            >
+            <mat-option
+              *ngIf="rankType === 'Nogi'"
+              [value]="localNoGiRankName"
+              (click)="openNoGiRankDialog()"
+              color="accent"
+              id="no-gi-rank-name-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-no-gi-rank-button"
+              >
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new no gi rank name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option
+              *ngFor="let rank of ranks"
+              [value]="rank"
+              id="no-gi-rank-name-dropdown"
+              >{{ rank }}</mat-option
+            >
+          </mat-select>
+          <p *ngIf="localNoGiRankName">
+            {{ rankType }} Rank Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localNoGiRankName
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="rankBoundFc.value && !localNoGiRankName">
+            {{ rankType }} Rank Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                rankBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
+        </mat-form-field>
+        <mat-form-field class="col m6 s12">
+          <mat-select
+            [formControl]="weightBoundFc"
+            placeholder="Choose Weight Class"
+            id="weight-class-select"
+          >
+            <mat-option value="" [disabled]="disabledWeigthClassName"
+              >Choose Weight Class</mat-option
+            >
+            <mat-option
+              [value]="localWeightClassName"
+              (click)="openWeightClassNameDialog()"
+              color="accent"
+              id="weight-class-name-write-in"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                id="custom-weight-class-button"
+              >
+                <span>
+                  <i class="material-icons align-middle-things">add_circle</i>
+                  Add a new weight class name
+                </span>
+              </button>
+            </mat-option>
+            <mat-option
+              *ngFor="let weight of weightClasses"
+              [value]="weight"
+              id="weight-class-name-dropdown"
+              >{{ weight }}</mat-option
+            >
+          </mat-select>
+          <p *ngIf="localWeightClassName">
+            Weight Class Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                localWeightClassName
+              }}</mat-chip></span
+            >
+          </p>
+          <p *ngIf="weightBoundFc.value && !localWeightClassName">
+            Weight Class Selected:
+            <span
+              ><mat-chip color="primary" selected>{{
+                weightBoundFc.value
+              }}</mat-chip></span
+            >
+          </p>
+        </mat-form-field>
       </div>
-      <mat-form-field class="col m2 s12">
-        <mat-select [formControl]="genderBoundFc" placeholder="Gender" id="gender-select">
-          <mat-option value="(choose)" [disabled]="disabledGender" >Choose gender</mat-option>
-          <mat-option *ngFor="let gender of genders" [value]="gender">{{gender}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="col m6 s12">
-        <mat-select [formControl]="ageClassBoundFc" placeholder="Choose Age Class" id="age-class-select">
-          <mat-option value="" [disabled]="disabledAgeClassName">Choose Age Class</mat-option>
-          <mat-option [value]="localAgeClassName" (click)="openAgeClassNameDialog()" color="accent" id="age-class-name-write-in">
-            <button mat-flat-button color="accent" id="custom-age-class-button">
-              <span>
-                <i class="material-icons align-middle-things">add_circle</i>
-                Add a new age class name
-              </span>
-            </button>
-          </mat-option>
-          <mat-option *ngFor="let ageClass of ageClasses" [value]="ageClass" id="age-class-name-dropdown">{{ageClass}}</mat-option>
-        </mat-select>
-        <p *ngIf="localAgeClassName">Age Class Selected: <span><mat-chip color="primary" selected>{{localAgeClassName}}</mat-chip></span></p>
-        <p *ngIf="ageClassBoundFc.value && !localAgeClassName">Age Class Selected: <span><mat-chip color="primary" selected>{{ageClassBoundFc.value}}</mat-chip></span></p>
-      </mat-form-field>
-      <mat-form-field class="col m6 s12">
-        <mat-select [formControl]="rankBoundFc" placeholder="Choose Rank" id="rank-select">
-          <mat-option value="" [disabled]="disabledNoGiRankName">Choose {{rankType}} Rank</mat-option>
-          <mat-option *ngIf="rankType === 'Nogi'" [value]="localNoGiRankName" (click)="openNoGiRankDialog()" color="accent" id="no-gi-rank-name-write-in">
-            <button mat-flat-button color="accent" id="custom-no-gi-rank-button">
-              <span>
-                <i class="material-icons align-middle-things">add_circle</i>
-                Add a new no gi rank name
-              </span>
-            </button>
-          </mat-option>
-          <mat-option *ngFor="let rank of ranks" [value]="rank" id="no-gi-rank-name-dropdown">{{rank}}</mat-option>
-        </mat-select>
-        <p *ngIf="localNoGiRankName">{{rankType}} Rank Selected: <span><mat-chip color="primary" selected>{{localNoGiRankName}}</mat-chip></span></p>
-        <p *ngIf="rankBoundFc.value && !localNoGiRankName">{{rankType}} Rank Selected: <span><mat-chip color="primary" selected>{{rankBoundFc.value}}</mat-chip></span></p>
-      </mat-form-field>
-      <mat-form-field class="col m6 s12">
-        <mat-select [formControl]="weightBoundFc" placeholder="Choose Weight Class" id="weight-class-select">
-          <mat-option value="" [disabled]="disabledWeigthClassName">Choose Weight Class</mat-option>
-          <mat-option [value]="localWeightClassName" (click)="openWeightClassNameDialog()" color="accent" id="weight-class-name-write-in">
-            <button mat-flat-button color="accent" id="custom-weight-class-button">
-              <span>
-                <i class="material-icons align-middle-things">add_circle</i>
-                Add a new weight class name
-              </span>
-            </button>
-          </mat-option>
-          <mat-option *ngFor="let weight of weightClasses" [value]="weight" id="weight-class-name-dropdown">{{weight}}</mat-option>
-        </mat-select>
-        <p *ngIf="localWeightClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{localWeightClassName}}</mat-chip></span></p>
-        <p *ngIf="weightBoundFc.value && !localWeightClassName">Weight Class Selected: <span><mat-chip color="primary" selected>{{weightBoundFc.value}}</mat-chip></span></p>
-      </mat-form-field>
-    </div>
-    <button id="new-match-submit-button" [disabled]="!allValid(newMatchForm)"  class="btn modal-trigger waves-effect waves-light" data-target="modal1">Submit <!---[disabled]="!newMatchForm.valid" -->
-      <i class="material-icons right">send</i>
-    </button>
-  </form>
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>Annotate your submission?</h4>
-      <p>You can either go ahead and annotate your own submission, or it will be added to the annotation queue, to be annotated at some later time.</p>
-    </div>
-    <div class="modal-footer">
-      <button id="annotate-modal-button" class="modal-action modal-close waves-effect waves-green btn" (click)="submitFormAndAnnotate()">Annotate</button>
-      <button id="add-to-queue-modal-button" (click)="submitFormAndReturnToMain()" class="modal-action modal-close waves-effect waves-green btn">Add to Queue</button>
+      <button
+        id="new-match-submit-button"
+        [disabled]="!allValid(newMatchForm)"
+        class="btn modal-trigger waves-effect waves-light"
+        data-target="modal1"
+      >
+        Submit
+        <!---[disabled]="!newMatchForm.valid" -->
+        <i class="material-icons right">send</i>
+      </button>
+    </form>
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Annotate your submission?</h4>
+        <p>
+          You can either go ahead and annotate your own submission, or it will
+          be added to the annotation queue, to be annotated at some later time.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          id="annotate-modal-button"
+          class="modal-action modal-close waves-effect waves-green btn"
+          (click)="submitFormAndAnnotate()"
+        >
+          Annotate
+        </button>
+        <button
+          id="add-to-queue-modal-button"
+          (click)="submitFormAndReturnToMain()"
+          class="modal-action modal-close waves-effect waves-green btn"
+        >
+          Add to Queue
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </div>

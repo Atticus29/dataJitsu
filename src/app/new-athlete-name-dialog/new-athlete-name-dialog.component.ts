@@ -1,56 +1,72 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  FormArray,
+  Validators,
+} from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from "rxjs/operators";
 
-import { ValidationService } from '../validation.service';
-import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
-import { TrackerService } from '../tracker.service';
-import { DatabaseService } from '../database.service';
-import { constants } from '../constants';
-import { TextTransformationService } from '../text-transformation.service';
-
+import { ValidationService } from "../validation.service";
+import { BaseDialogComponent } from "../base-dialog/base-dialog.component";
+import { TrackerService } from "../tracker.service";
+import { DatabaseService } from "../database.service";
+import { constants } from "../constants";
+import { TextTransformationService } from "../text-transformation.service";
 
 @Component({
-  selector: 'app-new-athlete-name-dialog',
-  templateUrl: './new-athlete-name-dialog.component.html',
-  styleUrls: ['./new-athlete-name-dialog.component.scss']
+  selector: "app-new-athlete-name-dialog",
+  templateUrl: "./new-athlete-name-dialog.component.html",
+  styleUrls: ["./new-athlete-name-dialog.component.scss"],
 })
-export class NewAthleteNameDialogComponent extends BaseDialogComponent implements OnInit {
+export class NewAthleteNameDialogComponent
+  extends BaseDialogComponent
+  implements OnInit
+{
   form: FormGroup;
-  private lastFc: FormControl = new FormControl('', [Validators.required]);
-  private firstFc: FormControl = new FormControl('', [Validators.required]);
+  public lastFc: FormControl = new FormControl("", [Validators.required]);
+  public firstFc: FormControl = new FormControl("", [Validators.required]);
 
-  constructor(private dialogRef: MatDialogRef<NewAthleteNameDialogComponent>, @Inject(MAT_DIALOG_DATA) {lastFc, firstFc}, public snackBar: MatSnackBar, public fb: FormBuilder, public vs: ValidationService, public trackerService: TrackerService, public db: DatabaseService, public textTransformationService: TextTransformationService) {
+  constructor(
+    public dialogRef: MatDialogRef<NewAthleteNameDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) { lastFc, firstFc },
+    public snackBar: MatSnackBar,
+    public fb: FormBuilder,
+    public vs: ValidationService,
+    public trackerService: TrackerService,
+    public db: DatabaseService,
+    public textTransformationService: TextTransformationService
+  ) {
     super(snackBar, fb, vs, trackerService, db, textTransformationService);
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      lastFc: ['', Validators.required],
-      firstFc: ['', Validators.required],
+      lastFc: ["", Validators.required],
+      firstFc: ["", Validators.required],
     });
-
   }
 
-  getValues(){
+  getValues() {
     let last = this.lastFc.value;
     // console.log(last);
     let first = this.firstFc.value;
     // console.log(first);
     // let otherResults = this.newMatchForm.value;
-    return {last, first};
+    return { last, first };
   }
 
-  processDialogData(){
+  processDialogData() {
     let vals = this.getValues();
     this.sendDataThroughDialog(vals);
     // this.db.addCandidateNameToDb(vals.last + ", " + vals.first);
   }
 
-  sendDataThroughDialog(data: any){
+  sendDataThroughDialog(data: any) {
     this.dialogRef.close(data);
   }
 
@@ -58,15 +74,18 @@ export class NewAthleteNameDialogComponent extends BaseDialogComponent implement
   //
   // }
 
-  close(){
+  close() {
     this.dialogRef.close();
   }
 
-  allValid(){
+  allValid() {
     let values = this.getValues();
-    if(this.vs.validateString(values.last) && this.vs.validateString(values.first)){
+    if (
+      this.vs.validateString(values.last) &&
+      this.vs.validateString(values.first)
+    ) {
       return true;
-    } else{
+    } else {
       return false;
     }
   }
@@ -74,17 +93,14 @@ export class NewAthleteNameDialogComponent extends BaseDialogComponent implement
   getErrorMessage() {
     console.log("getErrorMessage entered");
     let errorMessage: string = "";
-    if(this.lastFc.hasError('required')){
-      errorMessage = 'Last name is required';
-      return  errorMessage;
+    if (this.lastFc.hasError("required")) {
+      errorMessage = "Last name is required";
+      return errorMessage;
     }
-    if(this.firstFc.hasError('required')){
-      errorMessage = 'First name is required';
-      return  errorMessage;
+    if (this.firstFc.hasError("required")) {
+      errorMessage = "First name is required";
+      return errorMessage;
     }
-    return  errorMessage;
+    return errorMessage;
   }
-
-
-
 }

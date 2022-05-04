@@ -21,10 +21,10 @@ import { constants } from "../constants";
 export class LoggedInGuard implements CanActivate {
   ngUnsubscribe = new Subject<void>();
   constructor(
-    private authService: AuthorizationService,
-    private router: Router,
+    public authService: AuthorizationService,
+    public router: Router,
     public afAuth: AngularFireAuth,
-    private databaseService: DatabaseService
+    public databaseService: DatabaseService
   ) {}
   canActivate(
     next: ActivatedRouteSnapshot,

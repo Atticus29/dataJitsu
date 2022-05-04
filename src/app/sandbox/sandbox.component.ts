@@ -18,15 +18,15 @@ import { TrackerService } from "../tracker.service";
   styleUrls: ["./sandbox.component.scss"],
 })
 export class SandboxComponent extends BaseComponent implements OnInit {
-  private localTestQuestionConfigOptions: DynamicFormConfiguration;
-  private localTestQuestions: FormQuestionBase<any>[];
+  public localTestQuestionConfigOptions: DynamicFormConfiguration;
+  public localTestQuestions: FormQuestionBase<any>[];
 
   constructor(
-    private databaseService: DatabaseService,
-    private questionService: QuestionService,
-    private formProcessingService: FormProcessingService,
+    public databaseService: DatabaseService,
+    public questionService: QuestionService,
+    public formProcessingService: FormProcessingService,
     public snackBar: MatSnackBar,
-    private trackerService: TrackerService
+    public trackerService: TrackerService
   ) {
     super();
   }

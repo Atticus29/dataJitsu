@@ -1,36 +1,37 @@
-import { FormQuestionBase } from './formQuestionBase.model';
+import { FormQuestionBase } from "./formQuestionBase.model";
 export class DynamicFormConfiguration {
-  // private includeSubmitButton: boolean = true;
-  // private idOfDynamicFormComponentToAttachTo: string = null;
-  // private includeSubmitButton: boolean, private attachToPreviousFormGroupStatus: boolean,
-  // private gridLengthsForInput: number = 12;
-  // private gridLengthsForButtons: number = 12;
-  constructor (
-      private originalQuestionGroup: FormQuestionBase<string>[],
-      private supplementaryQuestionGroup: FormQuestionBase<string>[],
-      private submitButtonDisplay: String
-    ) { // private gridLengthsForInput: number, private gridLengthsForButtons: number
+  // public includeSubmitButton: boolean = true;
+  // public idOfDynamicFormComponentToAttachTo: string = null;
+  // public includeSubmitButton: boolean, public attachToPreviousFormGroupStatus: boolean,
+  // public gridLengthsForInput: number = 12;
+  // public gridLengthsForButtons: number = 12;
+  constructor(
+    public originalQuestionGroup: FormQuestionBase<string>[],
+    public supplementaryQuestionGroup: FormQuestionBase<string>[],
+    public submitButtonDisplay: String
+  ) {
+    // public gridLengthsForInput: number, public gridLengthsForButtons: number
     // this.gridLengthsForInput = gridLengthsForInput;
     // this.gridLengthsForButtons = gridLengthsForButtons;
-   }
+  }
 
-   getOriginalQuestionGroup(): FormQuestionBase<string>[] {
-     return this.originalQuestionGroup;
-   }
+  getOriginalQuestionGroup(): FormQuestionBase<string>[] {
+    return this.originalQuestionGroup;
+  }
 
-   getSupplementaryQuestionGroup(): FormQuestionBase<string>[] {
-     return this.supplementaryQuestionGroup;
-   }
+  getSupplementaryQuestionGroup(): FormQuestionBase<string>[] {
+    return this.supplementaryQuestionGroup;
+  }
 
-   getSubmitButtonDisplay() {
-     return this.submitButtonDisplay;
-   }
+  getSubmitButtonDisplay() {
+    return this.submitButtonDisplay;
+  }
 
-   // getGridLengthsForInput(): number{
-   //   return this.gridLengthsForInput;
-   // }
+  // getGridLengthsForInput(): number{
+  //   return this.gridLengthsForInput;
+  // }
 
-   // getGridLengthsForButtons(): number{
-   //   return this.gridLengthsForButtons;
-   // }
+  // getGridLengthsForButtons(): number{
+  //   return this.gridLengthsForButtons;
+  // }
 }

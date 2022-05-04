@@ -1,65 +1,84 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 
-import { Observable, combineLatest, of } from 'rxjs';
-import { takeUntil, takeLast, takeWhile, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, of } from "rxjs";
+import {
+  takeUntil,
+  takeLast,
+  takeWhile,
+  take,
+  withLatestFrom,
+} from "rxjs/operators";
 // import {MatSnackBar} from '@angular/material';
-import {MatStepper} from '@angular/material/stepper';
+import { MatStepper } from "@angular/material/stepper";
 
 // import { constants } from '../constants';
 
-import { TrackerService } from '../tracker.service';
-import { QuestionService } from '../question.service';
-import { FormProcessingService } from '../form-processing.service';
-import { BaseComponent } from '../base/base.component';
-import { Collection } from '../collection.model';
+import { TrackerService } from "../tracker.service";
+import { QuestionService } from "../question.service";
+import { FormProcessingService } from "../form-processing.service";
+import { BaseComponent } from "../base/base.component";
+import { Collection } from "../collection.model";
 // import { DatabaseService } from '../database.service';
-import { AuthorizationService } from '../authorization.service';
-
-
+import { AuthorizationService } from "../authorization.service";
 
 @Component({
-  selector: 'app-collection-creation-form',
-  templateUrl: './collection-creation-form.component.html',
-  styleUrls: ['./collection-creation-form.component.scss']
+  selector: "app-collection-creation-form",
+  templateUrl: "./collection-creation-form.component.html",
+  styleUrls: ["./collection-creation-form.component.scss"],
 })
-export class CollectionCreationFormComponent extends BaseComponent implements OnInit, OnDestroy {
-  @ViewChild('stepper', {static:false}) stepper: MatStepper;
-  private localCurrentStep: number;
+export class CollectionCreationFormComponent
+  extends BaseComponent
+  implements OnInit, OnDestroy
+{
+  @ViewChild("stepper", { static: false }) stepper: MatStepper;
+  public localCurrentStep: number;
 
+  public localUser: any;
+  public currentStepInStepper: Observable<number>;
+  public localValid: boolean = false;
 
-  private localUser: any;
-  private currentStepInStepper: Observable<number>;
-  private localValid: boolean = false;
-
-  constructor(private formProcessingService:FormProcessingService, private trackerService: TrackerService, private questionService: QuestionService) {
+  constructor(
+    public formProcessingService: FormProcessingService,
+    public trackerService: TrackerService,
+    public questionService: QuestionService
+  ) {
     super();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     console.log("ng on destroy entered in collection-creation-form component");
     // this.formProcessingService.captureFormResults(["Stop"]);
     // this.formProcessingService.captureQuestionArrayOfCurrentForm(["Stop"]);
-    this.formProcessingService.restartFormAndQuestions(this.questionService.getNewCollectionQuestionsAsObj());
+    this.formProcessingService.restartFormAndQuestions(
+      this.questionService.getNewCollectionQuestionsAsObj()
+    );
   }
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     console.log("ngAfterViewInit called in collection creation form");
-    let stepNum = this.stepper?this.stepper.selectedIndex:0;
+    let stepNum = this.stepper ? this.stepper.selectedIndex : 0;
   }
 
   ngOnInit() {
     console.log("ngOnInit in collection-creation form component entered");
-    this.formProcessingService.nextButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(nextButtonClicked=>{
-      if(nextButtonClicked){
-        console.log("next button clicked registered in collection creation form component");
-        this.stepper.next();
-      }
-    });
-    this.formProcessingService.finalSubmitButtonClicked.pipe(takeUntil(this.ngUnsubscribe)).subscribe(finalSubmitButtonClicked=>{
-      if(finalSubmitButtonClicked){
-        console.log("final submit button clicked registered in collection creation form component");
-        this.stepper.reset();
-      }
-    });
+    this.formProcessingService.nextButtonClicked
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((nextButtonClicked) => {
+        if (nextButtonClicked) {
+          console.log(
+            "next button clicked registered in collection creation form component"
+          );
+          this.stepper.next();
+        }
+      });
+    this.formProcessingService.finalSubmitButtonClicked
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((finalSubmitButtonClicked) => {
+        if (finalSubmitButtonClicked) {
+          console.log(
+            "final submit button clicked registered in collection creation form component"
+          );
+          this.stepper.reset();
+        }
+      });
   }
-
 }

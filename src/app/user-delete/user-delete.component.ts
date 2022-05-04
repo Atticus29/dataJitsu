@@ -18,17 +18,17 @@ import { constants } from "../constants";
   styleUrls: ["./user-delete.component.scss"],
 })
 export class UserDeleteComponent extends BaseComponent implements OnInit {
-  private localDetailList: User[] = null;
-  private localConfigOptions: DynamicFormConfiguration;
-  private localQuestions: FormQuestionBase<any>[];
-  // private currentQuestion: any;
-  private stopCounter = 0;
-  private showLoader: boolean = false;
+  public localDetailList: User[] = null;
+  public localConfigOptions: DynamicFormConfiguration;
+  public localQuestions: FormQuestionBase<any>[];
+  // public currentQuestion: any;
+  public stopCounter = 0;
+  public showLoader: boolean = false;
 
   constructor(
-    private databaseService: DatabaseService,
-    private questionService: QuestionService,
-    private formProcessingService: FormProcessingService,
+    public databaseService: DatabaseService,
+    public questionService: QuestionService,
+    public formProcessingService: FormProcessingService,
     public snackBar: MatSnackBar
   ) {
     super();

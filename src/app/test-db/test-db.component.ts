@@ -1,20 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import {
+  AngularFireDatabase,
+  AngularFireList,
+  AngularFireObject,
+} from "@angular/fire/database";
 
-import { VideoDetails } from '../videoDetails.model';
-import { Video } from '../video.model';
-import { EventInVideo } from '../eventInVideo.model';
-import { DatabaseService } from '../database.service';
-import { User } from '../user.model';
-import { allCurrentMoves } from '../moves';
-import { BaseComponent } from '../base/base.component';
+import { VideoDetails } from "../videoDetails.model";
+import { Video } from "../video.model";
+import { EventInVideo } from "../eventInVideo.model";
+import { DatabaseService } from "../database.service";
+import { User } from "../user.model";
+import { allCurrentMoves } from "../moves";
+import { BaseComponent } from "../base/base.component";
 
 @Component({
-  selector: 'app-test-db',
-  templateUrl: './test-db.component.html',
-  styleUrls: ['./test-db.component.scss'],
-  providers: [DatabaseService]
+  selector: "app-test-db",
+  templateUrl: "./test-db.component.html",
+  styleUrls: ["./test-db.component.scss"],
+  providers: [DatabaseService],
 })
 export class TestDbComponent extends BaseComponent implements OnInit {
   ages: Array<string>;
@@ -24,20 +28,18 @@ export class TestDbComponent extends BaseComponent implements OnInit {
   weightClasses: Array<string>;
   athleteNames: Array<string>;
 
-  constructor(private db: DatabaseService) {
+  constructor(public db: DatabaseService) {
     super();
   }
 
   ngOnInit() {
     // console.log(allCurrentMoves);
     // this.db.addMovesListToDb(allCurrentMoves); //TODO this is the line to uncomment
-
-//     this.athleteNames = ["Tonon, Garry", "Gracie, Kron", "Garcia, Marcelo", "Oliveira, Arnaldo", "Cornelius, Kennan", "Lo, Leandro", "Musumeci, Michael", "Miyao, João", "Mendes, Rafael", "Charles, Rubens Cobrihna", "Santana, Murilo", "Barral, Romulo", "Ribeiro, Vitor 'Shaolin'",
-//      "Augusto, Fernando 'Terere'", "Dern, Mackenzie", "Nicolini, Michelle", "Enick, Trayton", "Deodara, Dirt", "Diógenes de Aquino, Thamires", "Alencar, Ana Talita de Oliveira", "Martinez, Richie 'The Boogeyman'",
-//    "Jones, Craig", "Meregali, Nicholas de Barcellos", "Rice, Tanner", "Ribeiro, Xande", "Pena, Felipe",
-//  "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
-// "Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
-
+    //     this.athleteNames = ["Tonon, Garry", "Gracie, Kron", "Garcia, Marcelo", "Oliveira, Arnaldo", "Cornelius, Kennan", "Lo, Leandro", "Musumeci, Michael", "Miyao, João", "Mendes, Rafael", "Charles, Rubens Cobrihna", "Santana, Murilo", "Barral, Romulo", "Ribeiro, Vitor 'Shaolin'",
+    //      "Augusto, Fernando 'Terere'", "Dern, Mackenzie", "Nicolini, Michelle", "Enick, Trayton", "Deodara, Dirt", "Diógenes de Aquino, Thamires", "Alencar, Ana Talita de Oliveira", "Martinez, Richie 'The Boogeyman'",
+    //    "Jones, Craig", "Meregali, Nicholas de Barcellos", "Rice, Tanner", "Ribeiro, Xande", "Pena, Felipe",
+    //  "Ryan, Gordon", "Malfacine,Bruno da Silva", "Gabriel,Rodnei Barbosa Junior", "Orian, Kat", "Gilardi, Zach",
+    // "Gundlach, Andrew", "Candela, Austin", "Fisher, Mark", "Un-named Athlete"];
     // this.db.addIndividualNamesToDb(this.athleteNames);
     //
     // let videoDeets: VideoDetails = new VideoDetails("worlds", "california", new Date().toJSON(), "athlete1", "athlete2", "rooster", "black", "https://www.youtube.com/watch?v=LPj368_plK0&index=183&list=WL", "male", false, "master 1");
@@ -71,8 +73,5 @@ export class TestDbComponent extends BaseComponent implements OnInit {
     // this.nogiRanks.forEach(noGiRank=>{
     //   this.db.addNoGiRankToDb(noGiRank);
     // });
-
-
   }
-
 }

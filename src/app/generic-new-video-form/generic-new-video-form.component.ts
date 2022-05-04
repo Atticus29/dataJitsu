@@ -28,25 +28,25 @@ export class GenericNewVideoFormComponent
   extends BaseComponent
   implements OnInit
 {
-  private localCollection: Collection = null;
-  private localCollectionBackupCopy: Collection = null;
-  private localCollectionQuestions: FormQuestionBase<any>[] =
+  public localCollection: Collection = null;
+  public localCollectionBackupCopy: Collection = null;
+  public localCollectionQuestions: FormQuestionBase<any>[] =
     this.questionService.getShamCollectionQuestionsInstantly();
-  private localCollectionConfigOptions: DynamicFormConfiguration =
+  public localCollectionConfigOptions: DynamicFormConfiguration =
     new DynamicFormConfiguration(this.localCollectionQuestions, [], "Submit");
-  private localUser: any;
-  private localCounter = 0;
-  private isCurrentCollectionOwnedByCurrentUser: boolean;
+  public localUser: any;
+  public localCounter = 0;
+  public isCurrentCollectionOwnedByCurrentUser: boolean;
 
   constructor(
     public snackBar: MatSnackBar,
-    private databaseService: DatabaseService,
-    private route: ActivatedRoute,
-    private questionService: QuestionService,
-    private qcs: QuestionControlService,
-    private formProcessingService: FormProcessingService,
-    private trackerService: TrackerService,
-    private helperService: HelperService
+    public databaseService: DatabaseService,
+    public route: ActivatedRoute,
+    public questionService: QuestionService,
+    public qcs: QuestionControlService,
+    public formProcessingService: FormProcessingService,
+    public trackerService: TrackerService,
+    public helperService: HelperService
   ) {
     super();
   }

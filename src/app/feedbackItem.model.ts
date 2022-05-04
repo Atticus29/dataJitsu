@@ -1,25 +1,27 @@
 export class FeedbackItem {
-  private  userWhoSubmitted: string;
-  constructor(public comment: string, public rating: number, public screenshot: string) {
-  }
-
-  static fromDataBase (jsonObj: any): FeedbackItem{
-    if(jsonObj){
-      let comment = jsonObj.comment;
-      let rating = jsonObj.rate;
-      let screenshot = jsonObj.screenshot;
-      let newFeedbackItem = new FeedbackItem(comment, rating, screenshot);
+  public userWhoSubmitted: string;
+  static fromDataBase(jsonObj: any): FeedbackItem {
+    if (jsonObj) {
+      const comment = jsonObj.comment;
+      const rating = jsonObj.rate;
+      const screenshot = jsonObj.screenshot;
+      const newFeedbackItem = new FeedbackItem(comment, rating, screenshot);
       newFeedbackItem.setUserWhoSubmitted(jsonObj.userWhoSubmitted);
       return newFeedbackItem;
-    } else{
+    } else {
       return null;
     }
   }
+  constructor(
+    public comment: string,
+    public rating: number,
+    public screenshot: string
+  ) {}
 
-  setUserWhoSubmitted(userId: string){
+  setUserWhoSubmitted(userId: string) {
     this.userWhoSubmitted = userId;
   }
-  getUserWhoSubmitted(){
+  getUserWhoSubmitted() {
     return this.userWhoSubmitted;
   }
 }

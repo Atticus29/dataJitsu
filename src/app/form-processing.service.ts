@@ -1,21 +1,23 @@
-import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Injectable } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
-import { FormQuestionBase } from './formQuestionBase.model';
-import { QuestionService } from './question.service';
-
+import { FormQuestionBase } from "./formQuestionBase.model";
+import { QuestionService } from "./question.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class FormProcessingService {
   public formResults: BehaviorSubject<any> = new BehaviorSubject(null);
   public questionArrayOfForm: BehaviorSubject<any> = new BehaviorSubject(null);
-  public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public finalSubmitButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public nextButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public finalSubmitButtonClicked: BehaviorSubject<boolean> =
+    new BehaviorSubject(false);
   // public backButtonClicked: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public formSubmitted: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public actualForm: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
@@ -23,35 +25,38 @@ export class FormProcessingService {
   public ngUnsubscribe = new Subject<void>();
   public buttonDisplayName: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  constructor(private questionService: QuestionService) { }
+  constructor(public questionService: QuestionService) {}
 
-  captureFormResults(formResults: any){
+  captureFormResults(formResults: any) {
     // console.log("captureFormResults emitted and formResults are:");
     // console.log(formResults);
     this.formResults.next(formResults);
   }
 
-  captureQuestionArrayOfCurrentForm(newValue:any){ //questionArray: FormQuestionBase<string>[]
-    console.log("captureQuestionArrayOfCurrentForm has been entered. New questionArray is: ");
+  captureQuestionArrayOfCurrentForm(newValue: any) {
+    //questionArray: FormQuestionBase<string>[]
+    console.log(
+      "captureQuestionArrayOfCurrentForm has been entered. New questionArray is: "
+    );
     console.log(newValue);
     this.questionArrayOfForm.next(newValue);
   }
 
-  stopFormAndQuestions(){
+  stopFormAndQuestions() {
     console.log("stopFormAndQuestions called");
     this.formResults.next(["Stop"]);
     this.questionArrayOfForm.next(["Stop"]);
   }
 
-  restartFormAndQuestions(questions){
+  restartFormAndQuestions(questions) {
     console.log("restartFormAndQuestions called");
-    if(questions){
+    if (questions) {
       this.questionArrayOfForm.next(questions);
       this.formResults.next(null);
       this.nextButtonClicked.next(false);
       this.finalSubmitButtonClicked.next(false);
       this.buttonDisplayName.next("Next");
-    }else{
+    } else {
       this.questionArrayOfForm.next(null);
       this.formResults.next(null);
       this.nextButtonClicked.next(false);

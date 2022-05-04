@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { Video } from '../video.model';
-import { VideoDetails } from '../videoDetails.model';
-import { EventInVideo } from '../eventInVideo.model';
-import { User } from '../user.model';
-import { DatabaseService } from '../database.service';
-import { TrackerService } from '../tracker.service';
-import { BaseComponent } from '../base/base.component';
-
+import { Video } from "../video.model";
+import { VideoDetails } from "../videoDetails.model";
+import { EventInVideo } from "../eventInVideo.model";
+import { User } from "../user.model";
+import { DatabaseService } from "../database.service";
+import { TrackerService } from "../tracker.service";
+import { BaseComponent } from "../base/base.component";
 
 @Component({
-  selector: 'app-youtube',
-  templateUrl: './youtube.component.html',
-  styleUrls: ['./youtube.component.scss'],
-  providers: [DatabaseService]
+  selector: "app-youtube",
+  templateUrl: "./youtube.component.html",
+  styleUrls: ["./youtube.component.scss"],
+  providers: [DatabaseService],
 })
 export class YoutubeComponent extends BaseComponent implements OnInit {
-
-  constructor(private db:DatabaseService, private trackerService: TrackerService) {
+  constructor(
+    public db: DatabaseService,
+    public trackerService: TrackerService
+  ) {
     super();
   }
 
@@ -37,7 +38,7 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
     //   }
     // });
 
-    window['onYouTubeIframeAPIReady'] = function() {
+    window["onYouTubeIframeAPIReady"] = function () {
       console.log("onYouTubeIframeAPIReady entered");
       // player = new window['YT'].Player('video', {
       //   height: '195',
@@ -51,29 +52,29 @@ export class YoutubeComponent extends BaseComponent implements OnInit {
       //     'onStateChange': onPlayerStateChange
       //   }
       // });
-    }
+    };
 
-    function onPlayerStateChange(event){
-      if (event.data == window['YT'].PlayerState.PAUSED) {
+    function onPlayerStateChange(event) {
+      if (event.data == window["YT"].PlayerState.PAUSED) {
         // console.log(player.getCurrentTime());
         this.trackerService.startTimePoint.next(player.getCurrentTime());
       }
     }
 
     function onPlayerReady(event) {
-      document.getElementById("pause").addEventListener("click", function() {
+      document.getElementById("pause").addEventListener("click", function () {
         player.pauseVideo();
       });
-      document.getElementById("play").addEventListener("click", function() {
+      document.getElementById("play").addEventListener("click", function () {
         player.playVideo();
       });
     }
 
-    if (!window['YT']){
+    if (!window["YT"]) {
       console.log("nothing is here!");
-      var tag = document.createElement('script');
+      var tag = document.createElement("script");
       tag.src = "httsp://www.youtube.com/player_api?controls=0";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
+      var firstScriptTag = document.getElementsByTagName("script")[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
   }

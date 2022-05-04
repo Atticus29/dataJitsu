@@ -1,95 +1,162 @@
-import { Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { takeUntil } from "rxjs/operators";
 // import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
-import { BaseComponent } from '../base/base.component';
-import { DatabaseService } from '../database.service';
-import { constants } from '../constants';
-import { TrackerService } from '../tracker.service';
-import { HelperService } from '../helper.service';
+import { BaseComponent } from "../base/base.component";
+import { DatabaseService } from "../database.service";
+import { constants } from "../constants";
+import { TrackerService } from "../tracker.service";
+import { HelperService } from "../helper.service";
 
 @Component({
-  selector: 'app-weight-class-name-approval',
-  templateUrl: './weight-class-name-approval.component.html',
-  styleUrls: ['./weight-class-name-approval.component.scss']
+  selector: "app-weight-class-name-approval",
+  templateUrl: "./weight-class-name-approval.component.html",
+  styleUrls: ["./weight-class-name-approval.component.scss"],
 })
-export class WeightClassNameApprovalComponent extends BaseComponent implements OnInit {
-  private localCandidateNames: any = null;
-  private localApprovedNames: any = null;
-  private localUser: any = null;
-  private localIsAdmin: boolean = false;
-  private localParameterPhrase: string = 'Weight class';
-  private localApprovalAndDisapprovalPhrase: string = 'weight class';
-  private localReplacementText: string = constants.weightClassRemovedMessage;
-  private localApprovalAndDisapprovalPoints: number = constants.numberOfPointsToAwardForApprovingWeigthClassName;
-  private localSubPathToMatchParameter: string = 'videoDeets/weightClass';
-  private localApprovedListPath: string = '/weightClasses';
-  private candidatePath: string = '/candidateWeightClasses';
+export class WeightClassNameApprovalComponent
+  extends BaseComponent
+  implements OnInit
+{
+  public localCandidateNames: any = null;
+  public localApprovedNames: any = null;
+  public localUser: any = null;
+  public localIsAdmin: boolean = false;
+  public localParameterPhrase: string = "Weight class";
+  public localApprovalAndDisapprovalPhrase: string = "weight class";
+  public localReplacementText: string = constants.weightClassRemovedMessage;
+  public localApprovalAndDisapprovalPoints: number =
+    constants.numberOfPointsToAwardForApprovingWeigthClassName;
+  public localSubPathToMatchParameter: string = "videoDeets/weightClass";
+  public localApprovedListPath: string = "/weightClasses";
+  public candidatePath: string = "/candidateWeightClasses";
 
-  constructor(private db: DatabaseService, private trackerService: TrackerService, private helperService: HelperService) {
+  constructor(
+    public db: DatabaseService,
+    public trackerService: TrackerService,
+    public helperService: HelperService
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.db.getGenericApprovedList(this.localApprovedListPath).pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("entered getGenericApprovedList");
-      console.log(results);
-      this.localApprovedNames = results;
-    });
+    this.db
+      .getGenericApprovedList(this.localApprovedListPath)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((results) => {
+        console.log("entered getGenericApprovedList");
+        console.log(results);
+        this.localApprovedNames = results;
+      });
 
-    this.trackerService.currentUserBehaviorSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user =>{
-      if(user){
-        this.localUser = user;
-        this.db.getUserByUid(user.uid).pipe(takeUntil(this.ngUnsubscribe)).subscribe(dbUser =>{
-          if(dbUser.privileges.isAdmin){
-            this.localIsAdmin = true;
-          } else{
-            this.localIsAdmin = false;
-          }
-        });
-      }
-    });
+    this.trackerService.currentUserBehaviorSubject
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        if (user) {
+          this.localUser = user;
+          this.db
+            .getUserByUid(user.uid)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((dbUser) => {
+              if (dbUser.privileges.isAdmin) {
+                this.localIsAdmin = true;
+              } else {
+                this.localIsAdmin = false;
+              }
+            });
+        }
+      });
 
-    this.db.getGenericAndOrderBy(this.candidatePath,'name').pipe(takeUntil(this.ngUnsubscribe)).subscribe(results =>{
-      console.log("results from getGenericAndOrderBy");
-      console.log(results);
-      this.localCandidateNames = results;
-    });
+    this.db
+      .getGenericAndOrderBy(this.candidatePath, "name")
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((results) => {
+        console.log("results from getGenericAndOrderBy");
+        console.log(results);
+        this.localCandidateNames = results;
+      });
   }
 
-  approveName(name: string, metaDataName: string){
-    let confirmation = confirm("Are you sure you want to APPROVE the " + metaDataName + " name " + name + "?");
-    if(confirmation){
+  approveName(name: string, metaDataName: string) {
+    let confirmation = confirm(
+      "Are you sure you want to APPROVE the " +
+        metaDataName +
+        " name " +
+        name +
+        "?"
+    );
+    if (confirmation) {
       this.db.addGenericItemToDb(this.localApprovedListPath, name);
-      this.db.removeGenericStringWithOrderByFromDb(this.candidatePath,'name', name);
-      if(this.localUser){
-        this.db.updateUserReputationPoints(this.localUser.id, this.localApprovalAndDisapprovalPoints, "You approved " + metaDataName + " name " + name);
+      this.db.removeGenericStringWithOrderByFromDb(
+        this.candidatePath,
+        "name",
+        name
+      );
+      if (this.localUser) {
+        this.db.updateUserReputationPoints(
+          this.localUser.id,
+          this.localApprovalAndDisapprovalPoints,
+          "You approved " + metaDataName + " name " + name
+        );
       }
     }
   }
 
-  disapproveName(name: string, metaDataName: string){
-    let confirmation = confirm("Are you sure you want to DISAPPROVE the " + metaDataName + " name " + name + "?");
-    if(confirmation){
-      this.db.getIdentifyingInformationFromGenericCandidateName(this.candidatePath, 'name', name).pipe(takeUntil(this.ngUnsubscribe)).subscribe(urlResult =>{
-        this.db.getVideoIdFromVideoUrl(urlResult).pipe(takeUntil(this.ngUnsubscribe)).subscribe(videoIdResult =>{
-          console.log("getVideoIdFromVideoUrl from disapproveName is " + videoIdResult);
-          this.db.updateGenericNameInVideo(this.localSubPathToMatchParameter,videoIdResult, this.localReplacementText);
+  disapproveName(name: string, metaDataName: string) {
+    let confirmation = confirm(
+      "Are you sure you want to DISAPPROVE the " +
+        metaDataName +
+        " name " +
+        name +
+        "?"
+    );
+    if (confirmation) {
+      this.db
+        .getIdentifyingInformationFromGenericCandidateName(
+          this.candidatePath,
+          "name",
+          name
+        )
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((urlResult) => {
+          this.db
+            .getVideoIdFromVideoUrl(urlResult)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((videoIdResult) => {
+              console.log(
+                "getVideoIdFromVideoUrl from disapproveName is " + videoIdResult
+              );
+              this.db.updateGenericNameInVideo(
+                this.localSubPathToMatchParameter,
+                videoIdResult,
+                this.localReplacementText
+              );
+            });
         });
-      })
-      this.db.removeGenericStringWithOrderByFromDb(this.candidatePath, 'name', name);
-      if(this.localUser){
-        this.db.updateUserReputationPoints(this.localUser.id, this.localApprovalAndDisapprovalPoints, "You disapproved " + metaDataName + " name " + name);
+      this.db.removeGenericStringWithOrderByFromDb(
+        this.candidatePath,
+        "name",
+        name
+      );
+      if (this.localUser) {
+        this.db.updateUserReputationPoints(
+          this.localUser.id,
+          this.localApprovalAndDisapprovalPoints,
+          "You disapproved " + metaDataName + " name " + name
+        );
       }
     }
   }
 
-  deleteName(name: string, metaDataName: string){
-    let confirmation = confirm("Are you sure you want to delete "+ metaDataName + " " + name + " from the database?");
-    if(confirmation){
-        this.db.deleteGenericString(this.localApprovedListPath, name);
+  deleteName(name: string, metaDataName: string) {
+    let confirmation = confirm(
+      "Are you sure you want to delete " +
+        metaDataName +
+        " " +
+        name +
+        " from the database?"
+    );
+    if (confirmation) {
+      this.db.deleteGenericString(this.localApprovedListPath, name);
     }
   }
-
-
 }

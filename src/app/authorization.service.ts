@@ -17,17 +17,17 @@ import { constants } from "./constants";
   providedIn: "root",
 })
 export class AuthorizationService {
-  private authError: BehaviorSubject<any> = new BehaviorSubject(null);
-  private authState: any = null;
+  public authError: BehaviorSubject<any> = new BehaviorSubject(null);
+  public authState: any = null;
   public authenticated: boolean = false;
-  // private ngUnsubscribe: Subject<void> = new Subject<void>();
+  // public ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afdb: AngularFireDatabase,
-    private router: Router,
+    public afAuth: AngularFireAuth,
+    public afdb: AngularFireDatabase,
+    public router: Router,
     public ngZone: NgZone,
-    private databaseService: DatabaseService
+    public databaseService: DatabaseService
   ) {
     // let localUnsubscribeSubject: Subject<void> = new Subject<void>();
     this.afAuth.authState.subscribe((user) => {
@@ -126,7 +126,7 @@ export class AuthorizationService {
     return this.socialSignIn(provider);
   }
 
-  private socialSignIn(provider) {
+  public socialSignIn(provider) {
     return this.afAuth
       .signInWithPopup(provider)
       .then((result) => {
@@ -301,7 +301,7 @@ export class AuthorizationService {
   }
   //// Helpers ////
 
-  // private updateUserData(user: any): void {
+  // public updateUserData(user: any): void {
   //   SetUserData(user) {
   //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
   //   const userData: User = {
