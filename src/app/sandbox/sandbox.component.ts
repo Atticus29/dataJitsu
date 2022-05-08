@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+} from "@angular/core";
 
 import { MatSnackBar } from "@angular/material";
 import { takeUntil, withLatestFrom, take } from "rxjs/operators";
@@ -18,6 +24,8 @@ import { TrackerService } from "../tracker.service";
   styleUrls: ["./sandbox.component.scss"],
 })
 export class SandboxComponent extends BaseComponent implements OnInit {
+  @ViewChild("graphSpace", { static: true })
+  private svgMap: ElementRef<SVGElement>;
   private localTestQuestionConfigOptions: DynamicFormConfiguration;
   private localTestQuestions: FormQuestionBase<any>[];
 
@@ -32,6 +40,18 @@ export class SandboxComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("deleteMe svgMap is: ");
+    console.log(this.svgMap);
+    const testLine: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line"
+    );
+    testLine.setAttribute("x1", "0");
+    testLine.setAttribute("y1", "0");
+    testLine.setAttribute("x2", "500");
+    testLine.setAttribute("y2", "500");
+    testLine.setAttribute("stroke", "black");
+    this.svgMap.nativeElement.appendChild(testLine);
     this.questionService
       .getTestQuestions()
       .pipe(takeUntil(this.ngUnsubscribe))
