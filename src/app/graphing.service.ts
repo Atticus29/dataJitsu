@@ -6,104 +6,39 @@ import { ElementRef, Injectable } from "@angular/core";
 export class GraphingService {
   constructor() {}
 
-  drawArc(
-    x: number,
-    y: number,
-    radius: number,
-    startAngle: number,
-    endAngle: number,
-    elementRef: ElementRef,
-    color: string,
-    fillStatus: boolean
-  ) {
-    const canvas = <HTMLCanvasElement>elementRef.nativeElement;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      ctx.beginPath();
-      ctx.arc(x, y, radius, startAngle, endAngle);
-      if (fillStatus) {
-        ctx.fillStyle = color;
-        ctx.fill();
-      } else {
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color;
-        ctx.stroke();
-      }
-    }
+  drawGraph(svgMap: ElementRef<SVGSVGElement>) {
+    // const width: number = svgMap.nativeElement.getBBox().x;
+    const width: number = svgMap.nativeElement.viewBox.baseVal.width;
+    const height: number = svgMap.nativeElement.viewBox.baseVal.height;
+    const xOffset: number = width * 0.1;
+    const yOffset: number = height * 0.1;
+    console.log("deleteMe this.width is: ");
+    console.log(width);
+    console.log("deleteMe this.height is: ");
+    console.log(height);
+    this.drawAxes(svgMap, width, height, xOffset, yOffset);
   }
 
-  drawTriangle(
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    x3: number,
-    y3: number,
-    elementRef: ElementRef,
-    color: string,
-    fillStatus: boolean
-  ) {
-    const canvasElement = <HTMLCanvasElement>elementRef.nativeElement;
-    if (canvasElement) {
-      const context = canvasElement.getContext("2d");
-      context.beginPath();
-      context.moveTo(x1, y1);
-      context.lineTo(x2, y2);
-      context.lineTo(x3, y3);
-      context.closePath();
-      context.lineWidth = 1;
-      context.strokeStyle = color;
-      context.stroke();
-      if (fillStatus) {
-        context.fillStyle = color;
-        context.fill();
-      }
-    }
-  }
-
-  drawEllipse(
-    x: number,
-    y: number,
-    radiusX: number,
-    radiusY: number,
-    rotation: number,
-    startAngle: number,
-    endAngle: number,
-    elementRef: ElementRef,
-    color: string,
-    fillStatus: boolean
-  ) {
-    const canvas = <HTMLCanvasElement>elementRef.nativeElement;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      ctx.beginPath();
-      ctx.ellipse(
-        x,
-        y,
-        radiusX,
-        radiusY,
-        rotation,
-        startAngle,
-        endAngle,
-        false
-      );
-      ctx.stroke();
-      if (fillStatus) {
-        ctx.fillStyle = color;
-        ctx.fill();
-      }
-      ctx.closePath();
-    }
-  }
-
-  drawLine(
-    xStart: number,
-    yStart: number,
-    xEnd: number,
-    yEnd: number,
+  drawAxes(
+    svgMap: ElementRef<SVGSVGElement>,
     width: number,
-    color: string
+    height: number,
+    xOffset: number,
+    yOffset: number
   ) {
-    //TODO
+    const yAxis: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line"
+    );
+    yAxis.setAttribute("x1", String(0 + xOffset));
+    yAxis.setAttribute("y1", String(0 + yOffset));
+    yAxis.setAttribute("x2", String(0 + xOffset));
+    yAxis.setAttribute("y2", String(0 + height - yOffset));
+    yAxis.setAttribute("stroke", "black");
+    svgMap.nativeElement.appendChild(yAxis);
+    const xAxis: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line"
+    );
   }
 }
