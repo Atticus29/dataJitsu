@@ -6,7 +6,7 @@ import { ElementRef, Injectable } from "@angular/core";
 export class GraphingService {
   constructor() {}
 
-  drawGraph(svgMap: ElementRef<SVGSVGElement>) {
+  drawGraph(svgMap: ElementRef<SVGSVGElement>, data) {
     // const width: number = svgMap.nativeElement.getBBox().x;
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
@@ -40,5 +40,11 @@ export class GraphingService {
       "http://www.w3.org/2000/svg",
       "line"
     );
+    xAxis.setAttribute("x1", String(0 + xOffset));
+    xAxis.setAttribute("y1", String(0 + height - yOffset));
+    xAxis.setAttribute("x2", String(0 + width - xOffset));
+    xAxis.setAttribute("y2", String(0 + height - yOffset));
+    xAxis.setAttribute("stroke", "black");
+    svgMap.nativeElement.appendChild(xAxis);
   }
 }

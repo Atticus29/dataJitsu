@@ -75,8 +75,8 @@ export class AuthorizationService {
     const self = this;
     const obsRet = Observable.create(function (observer) {
       self.afAuth.authState.subscribe((authStateObs) => {
-        console.log("user in currentUserObservable in authorization service: ");
-        console.log(authStateObs);
+        // console.log("deleteMe user in currentUserObservable in authorization service: ");
+        // console.log(authStateObs);
         observer.next(authStateObs);
       });
     });

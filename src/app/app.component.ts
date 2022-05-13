@@ -118,18 +118,18 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
     this.trackerService.currentUserBehaviorSubject
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((currentUser) => {
-        console.log(
-          "currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: "
-        );
-        console.log(currentUser);
+        // console.log(
+        //   "deleteMe currentUser in trackerService as seen in app.component [check if this has uid and id both; it should]: "
+        // );
+        // console.log(currentUser);
         if (currentUser) {
           // console.log(currentUser);
           if (currentUser.uid) {
-            console.log(
-              "currentUserObservable currentUser.uid in ngOnInit in app.component: " +
-                currentUser.uid
-            );
-            console.log("changing authenticationStatus to true...");
+            // console.log(
+            //   "deleteMe currentUserObservable currentUser.uid in ngOnInit in app.component: " +
+            //     currentUser.uid
+            // );
+            // console.log("changing authenticationStatus to true...");
             this.authenticationStatus = true;
             this.databaseService
               .getUserByUid(currentUser.uid)
