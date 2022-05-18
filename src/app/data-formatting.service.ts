@@ -12,29 +12,23 @@ export class DataFormattingService {
     inputData: EventInVideo[],
     options: { appendSuccesses: false }
   ): any[] {
-    // console.log("deleteMe inputData are: ");
-    // console.log(inputData);
     const eventNames: String[] = map(
       inputData,
       (event) => get(event, "eventName"),
       []
     );
-    let successHist = [];
-    let successfulEvents: EventInVideo[] = [];
+    let successHist: {} = {};
     if (get(options, "appendSuccesses", false)) {
-      successfulEvents = filter(
+      const successfulEvents: EventInVideo[] = filter(
         inputData,
         (event: EventInVideo) => get(event, "isSuccessfulAttempt", true),
         []
       );
-      const successfulEventNames = map(
+      const successfulEventNames: String[] = map(
         successfulEvents,
         (event) => get(event, "eventName"),
         []
       );
-
-      console.log("deleteMe successfulEventNames are: ");
-      console.log(successfulEventNames);
       successHist = reduce(
         successfulEventNames,
         (memo, eventName) => {
@@ -42,22 +36,15 @@ export class DataFormattingService {
         },
         {}
       );
-      console.log("deleteMe successHist is: ");
-      console.log(successHist);
-      // const successfulEventNames = map(
-      //   successfulEvents,
-      //   (event) => get(event, "eventName"),
-      //   []
-      // );
     }
-    const hist = reduce(
+    const hist: {} = reduce(
       eventNames,
       (memo, eventName) => {
         return { ...memo, [eventName]: (memo[eventName] || 0) + 1 };
       },
       {}
     );
-    const returnHist = reduce(
+    const returnHist: [] = reduce(
       hist,
       (memo, value, key) => {
         const currentObj = {
@@ -69,8 +56,6 @@ export class DataFormattingService {
       },
       []
     );
-    console.log("deleteMe returnHist is: ");
-    console.log(returnHist);
     return returnHist;
   }
 }
