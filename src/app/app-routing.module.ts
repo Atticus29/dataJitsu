@@ -168,6 +168,7 @@ const routes: Routes = [
   },
   {
     path: "test",
+    canActivate: [AuthGuard],
     component: SandboxComponent,
     pathMatch: "full",
   },

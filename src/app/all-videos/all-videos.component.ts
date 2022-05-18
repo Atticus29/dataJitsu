@@ -151,21 +151,21 @@ export class AllVideosComponent
         this.dataSource.data = videos;
         console.log("dataSource:");
         console.log(this.dataSource);
-        const allEventNames = reduce(
+        const allEvents = reduce(
           get(this.dataSource, "filteredData"),
           (memo, datum) => {
             const currentEvents: EventInVideo[] = get(datum, "eventsInVideo");
-            const currentEventsNames: String[] = map(
-              currentEvents,
-              (currentEvent) => get(currentEvent, "eventName"),
-              []
-            );
-            return [...memo, ...currentEventsNames];
+            // const currentEventsNames: String[] = map(
+            //   currentEvents,
+            //   (currentEvent) => get(currentEvent, "eventName"),
+            //   []
+            // );
+            return [...memo, ...currentEvents];
           },
           []
         ); // TODO move this to a formatter; TODO now make this into a histogram
-        console.log("deleteMe allEventNames are: ");
-        console.log(allEventNames);
+        console.log("deleteMe allEvents are: ");
+        console.log(allEvents);
         if (this.paginator === undefined || this.sort === undefined) {
           console.log("Oh crud undefined!");
           this.ngZone.run(() => {

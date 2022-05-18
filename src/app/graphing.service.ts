@@ -1,12 +1,15 @@
 import { ElementRef, Injectable } from "@angular/core";
+import { DataFormattingService } from "./data-formatting.service";
+import { EventInVideo } from "./eventInVideo.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class GraphingService {
-  constructor() {}
+  constructor(private dataFormattingService: DataFormattingService) {}
 
-  drawGraph(svgMap: ElementRef<SVGSVGElement>, data) {
+  drawGraph(svgMap: ElementRef<SVGSVGElement>, data: EventInVideo[]) {
+    //TODO deleteMe un-any this
     // const width: number = svgMap.nativeElement.getBBox().x;
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
@@ -17,6 +20,7 @@ export class GraphingService {
     console.log("deleteMe this.height is: ");
     console.log(height);
     this.drawAxes(svgMap, width, height, xOffset, yOffset);
+    this.drawStackedBarChart(svgMap, width, height, xOffset, yOffset, data);
   }
 
   drawAxes(
@@ -46,5 +50,19 @@ export class GraphingService {
     xAxis.setAttribute("y2", String(0 + height - yOffset));
     xAxis.setAttribute("stroke", "black");
     svgMap.nativeElement.appendChild(xAxis);
+  }
+
+  drawStackedBarChart(
+    svgMap: ElementRef<SVGSVGElement>,
+    width: number,
+    height: number,
+    xOffset: number,
+    yOffset: number,
+    data: EventInVideo[]
+  ) {
+    const formattedHistogram =
+      this.dataFormattingService.tranformDataToHistogram(data, {
+        appendSuccesses: true,
+      });
   }
 }

@@ -8,6 +8,7 @@ import {
 
 import { MatSnackBar } from "@angular/material";
 import { takeUntil, withLatestFrom, take } from "rxjs/operators";
+import { get, reduce } from "lodash";
 
 import { constants } from "../constants";
 import { DynamicFormConfiguration } from "../dynamicFormConfiguration.model";
@@ -18,6 +19,8 @@ import { BaseComponent } from "../base/base.component";
 import { DatabaseService } from "../database.service";
 import { TrackerService } from "../tracker.service";
 import { GraphingService } from "app/graphing.service";
+import { EventInVideo } from "app/eventInVideo.model";
+import { Video } from "app/video.model";
 
 @Component({
   selector: "app-sandbox",
@@ -42,29 +45,34 @@ export class SandboxComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("deleteMe svgMap is: ");
-    console.log(this.svgMap);
-    this.graphingService.drawGraph(this.svgMap);
-    const testLine: SVGElement = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line"
-    );
-    // testLine.setAttribute("x1", "0");
-    // testLine.setAttribute("y1", "0");
-    // testLine.setAttribute("x2", "500");
-    // testLine.setAttribute("y2", "500");
-    // testLine.setAttribute("stroke", "black");
-    // this.svgMap.nativeElement.appendChild(testLine);
-    this.questionService
-      .getTestQuestions()
+    this.databaseService
+      .getVideos()
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((questionResults) => {
-        this.localTestQuestionConfigOptions = new DynamicFormConfiguration(
-          questionResults,
-          [],
-          "Done"
+      .subscribe((videoObjs) => {
+        const videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
+        this.graphingService.drawGraph(
+          this.svgMap,
+          reduce(
+            videos,
+            (memo, video) => {
+              const currentEventsInVideo = get(video, "eventsInVideo");
+              return [...memo, ...currentEventsInVideo];
+            },
+            []
+          )
         );
-        this.localTestQuestions = questionResults;
       });
+
+    // this.questionService
+    //   .getTestQuestions()
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((questionResults) => {
+    //     this.localTestQuestionConfigOptions = new DynamicFormConfiguration(
+    //       questionResults,
+    //       [],
+    //       "Done"
+    //     );
+    //     this.localTestQuestions = questionResults;
+    //   });
   }
 }
