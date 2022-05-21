@@ -1,3 +1,5 @@
+import { reduce, get } from "lodash";
+
 import { ElementRef, Injectable } from "@angular/core";
 import { DataFormattingService } from "./data-formatting.service";
 import { EventInVideo } from "./eventInVideo.model";
@@ -62,7 +64,22 @@ export class GraphingService {
   ) {
     const formattedHistogram =
       this.dataFormattingService.tranformDataToHistogram(data, {
-        appendSuccesses: true,
+        appendSuccess: true,
       });
+    const maxVal: number = reduce(
+      formattedHistogram,
+      (memo, entry) => {
+        return get(entry, "attempts") > memo ? get(entry, "attempts") : memo;
+      },
+      0
+    );
+    console.log("deleteMe maxVal is: " + maxVal);
+    formattedHistogram.forEach((entry, idx) => {
+      console.log("deleteMe entry is: ");
+      console.log(entry);
+      console.log("deleteMe idx is: " + idx);
+    });
+    console.log("deleteMe formattedHistogram is: ");
+    console.log(formattedHistogram);
   }
 }

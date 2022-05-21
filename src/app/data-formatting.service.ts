@@ -2,17 +2,18 @@ import { Injectable } from "@angular/core";
 import { EventInVideo } from "./eventInVideo.model";
 import { get, map, filter, reduce } from "lodash";
 
+export interface Options {
+  appendSuccess?: boolean;
+}
+
 @Injectable({
   providedIn: "root",
 })
 export class DataFormattingService {
   constructor() {}
 
-  tranformDataToHistogram(
-    inputData: EventInVideo[],
-    options: { appendSuccesses: false }
-  ): any[] {
-    const eventNames: String[] = map(
+  tranformDataToHistogram(inputData: EventInVideo[], options?: Options): any[] {
+    const eventNames: string[] = map(
       inputData,
       (event) => get(event, "eventName"),
       []
@@ -24,14 +25,14 @@ export class DataFormattingService {
         (event: EventInVideo) => get(event, "isSuccessfulAttempt", true),
         []
       );
-      const successfulEventNames: String[] = map(
+      const successfulEventNames: string[] = map(
         successfulEvents,
         (event) => get(event, "eventName"),
         []
       );
       successHist = reduce(
         successfulEventNames,
-        (memo, eventName) => {
+        (memo: {}, eventName: string) => {
           return { ...memo, [eventName]: (memo[eventName] || 0) + 1 };
         },
         {}
@@ -39,7 +40,7 @@ export class DataFormattingService {
     }
     const hist: {} = reduce(
       eventNames,
-      (memo, eventName) => {
+      (memo: {}, eventName: string) => {
         return { ...memo, [eventName]: (memo[eventName] || 0) + 1 };
       },
       {}
