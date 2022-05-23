@@ -1,4 +1,4 @@
-import { reduce, get } from "lodash";
+import { reduce, get, orderBy } from "lodash";
 
 import { ElementRef, Injectable } from "@angular/core";
 import { DataFormattingService } from "./data-formatting.service";
@@ -64,8 +64,10 @@ export class GraphingService {
   ) {
     const formattedHistogram =
       this.dataFormattingService.tranformDataToHistogram(data, {
-        appendSuccess: true,
+        appendSuccesses: true,
       });
+    console.log("deleteMe formattedHistogram is: ");
+    console.log(formattedHistogram);
     const maxVal: number = reduce(
       formattedHistogram,
       (memo, entry) => {
@@ -73,11 +75,58 @@ export class GraphingService {
       },
       0
     );
-    console.log("deleteMe maxVal is: " + maxVal);
-    formattedHistogram.forEach((entry, idx) => {
+    const numEvents = formattedHistogram ? formattedHistogram.length : 0;
+    const xPadding: number = 0.007 * width; //TODO make it so that this and the rectWidth can be dynamicall figured out together
+    console.log("deleteMe xPadding is: " + xPadding);
+    const rectWidth: number =
+      (width - 2 * xOffset - (numEvents - 1) * xPadding) / numEvents;
+    console.log("deleteMe rectWidth is: " + rectWidth);
+    const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
+    const yUnit: number = (height - 2 * yOffset) / maxVal;
+    sortedHistogram.forEach((entry, idx) => {
       console.log("deleteMe entry is: ");
       console.log(entry);
-      console.log("deleteMe idx is: " + idx);
+      const attemptRect: SVGElement = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+      );
+      attemptRect.setAttribute(
+        "x",
+        String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
+      );
+      attemptRect.setAttribute("width", String(rectWidth));
+      attemptRect.setAttribute(
+        "y",
+        String(height - yOffset - get(entry, "attempts") * yUnit)
+      );
+      attemptRect.setAttribute(
+        "height",
+        String(get(entry, "attempts") * yUnit)
+      );
+      attemptRect.setAttribute("stroke", "black");
+      svgMap.nativeElement.appendChild(attemptRect);
+
+      const successRect: SVGElement = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+      );
+      successRect.setAttribute(
+        "x",
+        String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
+      );
+      successRect.setAttribute("width", String(rectWidth));
+      successRect.setAttribute(
+        "y",
+        String(height - yOffset - get(entry, "successes") * yUnit)
+      );
+      successRect.setAttribute(
+        "height",
+        String(get(entry, "successes") * yUnit)
+      );
+      successRect.setAttribute("stroke", "blue");
+      console.log("deleteMe successRect is: ");
+      console.log(successRect);
+      svgMap.nativeElement.appendChild(successRect);
     });
     console.log("deleteMe formattedHistogram is: ");
     console.log(formattedHistogram);

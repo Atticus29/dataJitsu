@@ -3,7 +3,7 @@ import { EventInVideo } from "./eventInVideo.model";
 import { get, map, filter, reduce } from "lodash";
 
 export interface Options {
-  appendSuccess?: boolean;
+  appendSuccesses?: boolean;
 }
 
 @Injectable({
@@ -22,7 +22,14 @@ export class DataFormattingService {
     if (get(options, "appendSuccesses", false)) {
       const successfulEvents: EventInVideo[] = filter(
         inputData,
-        (event: EventInVideo) => get(event, "isSuccessfulAttempt", true),
+        (event: EventInVideo) => {
+          console.log("deleteMe event is: ");
+          console.log(event);
+          const successfulAttempts = get(event, "isSuccessfulAttempt", true);
+          console.log("deleteMe successfulAttempts are: ");
+          console.log(successfulAttempts);
+          return get(event, "isSuccessfulAttempt", true);
+        },
         []
       );
       const successfulEventNames: string[] = map(
