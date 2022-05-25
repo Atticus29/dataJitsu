@@ -66,8 +66,6 @@ export class GraphingService {
       this.dataFormattingService.tranformDataToHistogram(data, {
         appendSuccesses: true,
       });
-    console.log("deleteMe formattedHistogram is: ");
-    console.log(formattedHistogram);
     const maxVal: number = reduce(
       formattedHistogram,
       (memo, entry) => {
@@ -76,59 +74,154 @@ export class GraphingService {
       0
     );
     const numEvents = formattedHistogram ? formattedHistogram.length : 0;
-    const xPadding: number = 0.007 * width; //TODO make it so that this and the rectWidth can be dynamicall figured out together
-    console.log("deleteMe xPadding is: " + xPadding);
-    const rectWidth: number =
-      (width - 2 * xOffset - (numEvents - 1) * xPadding) / numEvents;
-    console.log("deleteMe rectWidth is: " + rectWidth);
+    const rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
+    console.log("deleteMe rectWidthPlusPadding is: ");
+    console.log(rectWidthPlusPadding);
+    const xPadding: number = rectWidthPlusPadding * 0.33;
+    // const xPadding: number = 0.007 * width; //TODO make it so that this and the rectWidth can be dynamicall figured out together
+    // const rectWidth: number =
+    //   (width - 2 * xOffset - (numEvents - 1) * xPadding) / numEvents;
+    const rectWidth: number = rectWidthPlusPadding * 0.67;
     const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
     const yUnit: number = (height - 2 * yOffset) / maxVal;
     sortedHistogram.forEach((entry, idx) => {
-      console.log("deleteMe entry is: ");
-      console.log(entry);
-      const attemptRect: SVGElement = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "rect"
+      this.drawAttemptRect(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        height,
+        yOffset,
+        entry,
+        yUnit,
+        svgMap
       );
-      attemptRect.setAttribute(
-        "x",
-        String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
+      this.drawSuccessRect(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        height,
+        yOffset,
+        entry,
+        yUnit,
+        svgMap
       );
-      attemptRect.setAttribute("width", String(rectWidth));
-      attemptRect.setAttribute(
-        "y",
-        String(height - yOffset - get(entry, "attempts") * yUnit)
+      // if (idx === 1)
+      this.drawXLabel(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        height,
+        yOffset,
+        entry,
+        yUnit,
+        svgMap
       );
-      attemptRect.setAttribute(
-        "height",
-        String(get(entry, "attempts") * yUnit)
-      );
-      attemptRect.setAttribute("stroke", "black");
-      svgMap.nativeElement.appendChild(attemptRect);
-
-      const successRect: SVGElement = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "rect"
-      );
-      successRect.setAttribute(
-        "x",
-        String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
-      );
-      successRect.setAttribute("width", String(rectWidth));
-      successRect.setAttribute(
-        "y",
-        String(height - yOffset - get(entry, "successes") * yUnit)
-      );
-      successRect.setAttribute(
-        "height",
-        String(get(entry, "successes") * yUnit)
-      );
-      successRect.setAttribute("stroke", "blue");
-      console.log("deleteMe successRect is: ");
-      console.log(successRect);
-      svgMap.nativeElement.appendChild(successRect);
     });
-    console.log("deleteMe formattedHistogram is: ");
-    console.log(formattedHistogram);
+  }
+
+  drawAttemptRect(
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    height: number,
+    yOffset: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>
+  ) {
+    const attemptRect: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    attemptRect.setAttribute(
+      "x",
+      String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
+    );
+    attemptRect.setAttribute("width", String(rectWidth));
+    attemptRect.setAttribute(
+      "y",
+      String(height - yOffset - get(entry, "attempts") * yUnit)
+    );
+    attemptRect.setAttribute("height", String(get(entry, "attempts") * yUnit));
+    attemptRect.setAttribute("stroke", "black");
+    svgMap.nativeElement.appendChild(attemptRect);
+  }
+
+  drawSuccessRect(
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    height: number,
+    yOffset: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>
+  ) {
+    const successRect: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    successRect.setAttribute(
+      "x",
+      String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
+    );
+    successRect.setAttribute("width", String(rectWidth));
+    successRect.setAttribute(
+      "y",
+      String(height - yOffset - get(entry, "successes") * yUnit)
+    );
+    successRect.setAttribute("height", String(get(entry, "successes") * yUnit));
+    successRect.setAttribute("stroke", "grey");
+    svgMap.nativeElement.appendChild(successRect);
+  }
+
+  drawXLabel(
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    height: number,
+    yOffset: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>
+  ) {
+    const name = get(entry, "name");
+    const text: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+    const xPosition = xOffset + (idx + 1) * xPadding + idx * rectWidth;
+    text.setAttribute("x", String(xPosition));
+    const yPosition = height - yOffset + xPadding;
+    text.setAttribute("y", String(yPosition));
+    text.setAttribute("fill", "black");
+    // text.setAttribute("rotate", "-90");
+    console.log("deleteMe yUnit is: " + yUnit);
+    text.setAttribute("font-size", String(0.25 * yUnit));
+    text.setAttribute("text-anchor", "start");
+    // const xPosition = xOffset + (idx + 1) * xPadding + idx * rectWidth;
+    // const yPosition = height - yOffset;
+    // text.setAttribute(
+    //   "rotate",
+    //   "90," + String(xPosition) + "," + String(yPosition)
+    // );
+    text.setAttribute(
+      "transform",
+      "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
+    );
+    // text.setAttribute("transform", "rotate(90)");
+    // text.setAttribute("rotate", "45");
+    // text.setAttribute(
+    //   "transform",
+    //   "translate(" + xPosition + "," + yPosition + ") rotate(90)"
+    // );
+    text.textContent = name;
+    svgMap.nativeElement.appendChild(text);
   }
 }
