@@ -23,11 +23,7 @@ export class DataFormattingService {
       const successfulEvents: EventInVideo[] = filter(
         inputData,
         (event: EventInVideo) => {
-          console.log("deleteMe event is: ");
-          console.log(event);
           const successfulAttempts = get(event, "isSuccessfulAttempt", true);
-          console.log("deleteMe successfulAttempts are: ");
-          console.log(successfulAttempts);
           return get(event, "isSuccessfulAttempt", true);
         },
         []

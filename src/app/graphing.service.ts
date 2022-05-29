@@ -11,18 +11,53 @@ export class GraphingService {
   constructor(private dataFormattingService: DataFormattingService) {}
 
   drawGraph(svgMap: ElementRef<SVGSVGElement>, data: EventInVideo[]) {
-    //TODO deleteMe un-any this
-    // const width: number = svgMap.nativeElement.getBBox().x;
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
     const xOffset: number = width * 0.1;
-    const yOffset: number = height * 0.1;
-    console.log("deleteMe this.width is: ");
-    console.log(width);
-    console.log("deleteMe this.height is: ");
-    console.log(height);
+    const minWidth: number = 13;
+    const formattedHistogram =
+      this.dataFormattingService.tranformDataToHistogram(data, {
+        appendSuccesses: true,
+      });
+    const numEvents = formattedHistogram ? formattedHistogram.length : 0;
+    let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
+    const tooManyValues: boolean = rectWidthPlusPadding < minWidth;
+    const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
+    let truncatedLength: number;
+    if (tooManyValues) {
+      rectWidthPlusPadding = minWidth;
+      truncatedLength = Math.floor((width - 2 * xOffset) / minWidth);
+    }
+    const fontSize = rectWidthPlusPadding / 2.5;
+    const finalHistogram = tooManyValues
+      ? sortedHistogram.slice(0, truncatedLength)
+      : sortedHistogram;
+    const longestText = reduce(
+      finalHistogram,
+      (memo, entry) => {
+        return get(entry, "name", "").length > memo
+          ? get(entry, "name").length
+          : memo;
+      },
+      0
+    );
+    // const yOffset: number = height * 0.1;
+
+    // const yOffset: number = height / longestText;
+    const yOffset: number = ((fontSize * 12) / 16) * longestText;
+    console.log("deleteMe longestText is: " + longestText);
+    console.log("deleteMe yOffset is: " + yOffset);
     this.drawAxes(svgMap, width, height, xOffset, yOffset);
-    this.drawStackedBarChart(svgMap, width, height, xOffset, yOffset, data);
+    this.drawStackedBarChart(
+      svgMap,
+      width,
+      height,
+      xOffset,
+      yOffset,
+      finalHistogram,
+      rectWidthPlusPadding,
+      fontSize
+    );
   }
 
   drawAxes(
@@ -60,31 +95,48 @@ export class GraphingService {
     height: number,
     xOffset: number,
     yOffset: number,
-    data: EventInVideo[]
+    finalHistogram: {}[],
+    rectWidthPlusPadding: number,
+    fontSize: number
   ) {
-    const formattedHistogram =
-      this.dataFormattingService.tranformDataToHistogram(data, {
-        appendSuccesses: true,
-      });
+    // const formattedHistogram =
+    //   this.dataFormattingService.tranformDataToHistogram(data, {
+    //     appendSuccesses: true,
+    //   });
+    // const maxVal: number = reduce(
+    //   formattedHistogram,
+    //   (memo, entry) => {
+    //     return get(entry, "attempts") > memo ? get(entry, "attempts") : memo;
+    //   },
+    //   0
+    // );
     const maxVal: number = reduce(
-      formattedHistogram,
+      finalHistogram,
       (memo, entry) => {
         return get(entry, "attempts") > memo ? get(entry, "attempts") : memo;
       },
       0
     );
-    const numEvents = formattedHistogram ? formattedHistogram.length : 0;
-    const rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
-    console.log("deleteMe rectWidthPlusPadding is: ");
-    console.log(rectWidthPlusPadding);
+    // const numEvents = formattedHistogram ? formattedHistogram.length : 0;
+    // let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
+    // const tooManyValues = rectWidthPlusPadding < minWidth;
+    // const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
+    // let truncatedLength: number;
+    // if (tooManyValues) {
+    //   rectWidthPlusPadding = minWidth;
+    //   truncatedLength = Math.floor((width - 2 * xOffset) / minWidth);
+    //   console.log("deleteMe truncatedLength: is");
+    //   console.log(truncatedLength);
+    // }
+    // const finalHistogram = tooManyValues
+    //   ? sortedHistogram.slice(0, truncatedLength)
+    //   : sortedHistogram;
+    // console.log("deleteMe rectWidthPlusPadding is: ");
+    // console.log(rectWidthPlusPadding);
     const xPadding: number = rectWidthPlusPadding * 0.33;
-    // const xPadding: number = 0.007 * width; //TODO make it so that this and the rectWidth can be dynamicall figured out together
-    // const rectWidth: number =
-    //   (width - 2 * xOffset - (numEvents - 1) * xPadding) / numEvents;
     const rectWidth: number = rectWidthPlusPadding * 0.67;
-    const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
     const yUnit: number = (height - 2 * yOffset) / maxVal;
-    sortedHistogram.forEach((entry, idx) => {
+    finalHistogram.forEach((entry, idx) => {
       this.drawAttemptRect(
         xOffset,
         idx,
@@ -117,7 +169,9 @@ export class GraphingService {
         yOffset,
         entry,
         yUnit,
-        svgMap
+        svgMap,
+        rectWidthPlusPadding,
+        fontSize
       );
     });
   }
@@ -176,7 +230,7 @@ export class GraphingService {
       String(height - yOffset - get(entry, "successes") * yUnit)
     );
     successRect.setAttribute("height", String(get(entry, "successes") * yUnit));
-    successRect.setAttribute("stroke", "grey");
+    successRect.setAttribute("fill", "grey");
     svgMap.nativeElement.appendChild(successRect);
   }
 
@@ -189,7 +243,9 @@ export class GraphingService {
     yOffset: number,
     entry: {},
     yUnit: number,
-    svgMap: ElementRef<SVGSVGElement>
+    svgMap: ElementRef<SVGSVGElement>,
+    rectWidthPlusPadding: number,
+    fontSize: number
   ) {
     const name = get(entry, "name");
     const text: SVGElement = document.createElementNS(
@@ -201,25 +257,16 @@ export class GraphingService {
     const yPosition = height - yOffset + xPadding;
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", "black");
-    // text.setAttribute("rotate", "-90");
-    console.log("deleteMe yUnit is: " + yUnit);
-    text.setAttribute("font-size", String(0.25 * yUnit));
+    // text.setAttribute("font-size", String(rectWidthPlusPadding / 2.5));
+    text.setAttribute("font-size", String(fontSize));
     text.setAttribute("text-anchor", "start");
-    // const xPosition = xOffset + (idx + 1) * xPadding + idx * rectWidth;
-    // const yPosition = height - yOffset;
-    // text.setAttribute(
-    //   "rotate",
-    //   "90," + String(xPosition) + "," + String(yPosition)
-    // );
     text.setAttribute(
       "transform",
       "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
     );
-    // text.setAttribute("transform", "rotate(90)");
-    // text.setAttribute("rotate", "45");
     // text.setAttribute(
     //   "transform",
-    //   "translate(" + xPosition + "," + yPosition + ") rotate(90)"
+    //   "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
     // );
     text.textContent = name;
     svgMap.nativeElement.appendChild(text);
