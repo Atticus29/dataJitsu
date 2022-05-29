@@ -41,19 +41,16 @@ export class GraphingService {
       },
       0
     );
-    // const yOffset: number = height * 0.1;
-
-    // const yOffset: number = height / longestText;
-    const yOffset: number = ((fontSize * 12) / 16) * longestText;
-    console.log("deleteMe longestText is: " + longestText);
-    console.log("deleteMe yOffset is: " + yOffset);
-    this.drawAxes(svgMap, width, height, xOffset, yOffset);
+    const yOffsetBottom: number = ((fontSize * 12) / 16) * longestText;
+    const yOffsetTop: number = (((fontSize * 12) / 16) * longestText) / 3;
+    this.drawAxes(svgMap, width, height, xOffset, yOffsetBottom, yOffsetTop);
     this.drawStackedBarChart(
       svgMap,
       width,
       height,
       xOffset,
-      yOffset,
+      yOffsetBottom,
+      yOffsetTop,
       finalHistogram,
       rectWidthPlusPadding,
       fontSize
@@ -65,26 +62,27 @@ export class GraphingService {
     width: number,
     height: number,
     xOffset: number,
-    yOffset: number
+    yOffsetBottom: number,
+    yOffsetTop: number
   ) {
     const yAxis: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "line"
     );
-    yAxis.setAttribute("x1", String(0 + xOffset));
-    yAxis.setAttribute("y1", String(0 + yOffset));
-    yAxis.setAttribute("x2", String(0 + xOffset));
-    yAxis.setAttribute("y2", String(0 + height - yOffset));
+    yAxis.setAttribute("x1", String(xOffset));
+    yAxis.setAttribute("y1", String(yOffsetTop));
+    yAxis.setAttribute("x2", String(xOffset));
+    yAxis.setAttribute("y2", String(height - yOffsetBottom));
     yAxis.setAttribute("stroke", "black");
     svgMap.nativeElement.appendChild(yAxis);
     const xAxis: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "line"
     );
-    xAxis.setAttribute("x1", String(0 + xOffset));
-    xAxis.setAttribute("y1", String(0 + height - yOffset));
-    xAxis.setAttribute("x2", String(0 + width - xOffset));
-    xAxis.setAttribute("y2", String(0 + height - yOffset));
+    xAxis.setAttribute("x1", String(xOffset));
+    xAxis.setAttribute("y1", String(height - yOffsetBottom));
+    xAxis.setAttribute("x2", String(width - xOffset));
+    xAxis.setAttribute("y2", String(height - yOffsetBottom));
     xAxis.setAttribute("stroke", "black");
     svgMap.nativeElement.appendChild(xAxis);
   }
@@ -94,22 +92,12 @@ export class GraphingService {
     width: number,
     height: number,
     xOffset: number,
-    yOffset: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
     finalHistogram: {}[],
     rectWidthPlusPadding: number,
     fontSize: number
   ) {
-    // const formattedHistogram =
-    //   this.dataFormattingService.tranformDataToHistogram(data, {
-    //     appendSuccesses: true,
-    //   });
-    // const maxVal: number = reduce(
-    //   formattedHistogram,
-    //   (memo, entry) => {
-    //     return get(entry, "attempts") > memo ? get(entry, "attempts") : memo;
-    //   },
-    //   0
-    // );
     const maxVal: number = reduce(
       finalHistogram,
       (memo, entry) => {
@@ -117,25 +105,9 @@ export class GraphingService {
       },
       0
     );
-    // const numEvents = formattedHistogram ? formattedHistogram.length : 0;
-    // let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
-    // const tooManyValues = rectWidthPlusPadding < minWidth;
-    // const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
-    // let truncatedLength: number;
-    // if (tooManyValues) {
-    //   rectWidthPlusPadding = minWidth;
-    //   truncatedLength = Math.floor((width - 2 * xOffset) / minWidth);
-    //   console.log("deleteMe truncatedLength: is");
-    //   console.log(truncatedLength);
-    // }
-    // const finalHistogram = tooManyValues
-    //   ? sortedHistogram.slice(0, truncatedLength)
-    //   : sortedHistogram;
-    // console.log("deleteMe rectWidthPlusPadding is: ");
-    // console.log(rectWidthPlusPadding);
     const xPadding: number = rectWidthPlusPadding * 0.33;
     const rectWidth: number = rectWidthPlusPadding * 0.67;
-    const yUnit: number = (height - 2 * yOffset) / maxVal;
+    const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
     finalHistogram.forEach((entry, idx) => {
       this.drawAttemptRect(
         xOffset,
@@ -143,7 +115,8 @@ export class GraphingService {
         xPadding,
         rectWidth,
         height,
-        yOffset,
+        yOffsetBottom,
+        yOffsetTop,
         entry,
         yUnit,
         svgMap
@@ -154,7 +127,8 @@ export class GraphingService {
         xPadding,
         rectWidth,
         height,
-        yOffset,
+        yOffsetBottom,
+        yOffsetTop,
         entry,
         yUnit,
         svgMap
@@ -166,7 +140,8 @@ export class GraphingService {
         xPadding,
         rectWidth,
         height,
-        yOffset,
+        yOffsetBottom,
+        yOffsetTop,
         entry,
         yUnit,
         svgMap,
@@ -182,7 +157,8 @@ export class GraphingService {
     xPadding: number,
     rectWidth: number,
     height: number,
-    yOffset: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
     entry: {},
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>
@@ -198,7 +174,7 @@ export class GraphingService {
     attemptRect.setAttribute("width", String(rectWidth));
     attemptRect.setAttribute(
       "y",
-      String(height - yOffset - get(entry, "attempts") * yUnit)
+      String(height - yOffsetBottom - get(entry, "attempts") * yUnit)
     );
     attemptRect.setAttribute("height", String(get(entry, "attempts") * yUnit));
     attemptRect.setAttribute("stroke", "black");
@@ -211,7 +187,8 @@ export class GraphingService {
     xPadding: number,
     rectWidth: number,
     height: number,
-    yOffset: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
     entry: {},
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>
@@ -227,7 +204,7 @@ export class GraphingService {
     successRect.setAttribute("width", String(rectWidth));
     successRect.setAttribute(
       "y",
-      String(height - yOffset - get(entry, "successes") * yUnit)
+      String(height - yOffsetBottom - get(entry, "successes") * yUnit)
     );
     successRect.setAttribute("height", String(get(entry, "successes") * yUnit));
     successRect.setAttribute("fill", "grey");
@@ -240,7 +217,8 @@ export class GraphingService {
     xPadding: number,
     rectWidth: number,
     height: number,
-    yOffset: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
     entry: {},
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
@@ -254,10 +232,9 @@ export class GraphingService {
     );
     const xPosition = xOffset + (idx + 1) * xPadding + idx * rectWidth;
     text.setAttribute("x", String(xPosition));
-    const yPosition = height - yOffset + xPadding;
+    const yPosition = height - yOffsetBottom + xPadding;
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", "black");
-    // text.setAttribute("font-size", String(rectWidthPlusPadding / 2.5));
     text.setAttribute("font-size", String(fontSize));
     text.setAttribute("text-anchor", "start");
     text.setAttribute(
