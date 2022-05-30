@@ -4,6 +4,18 @@ import { ElementRef, Injectable } from "@angular/core";
 import { DataFormattingService } from "./data-formatting.service";
 import { EventInVideo } from "./eventInVideo.model";
 
+export interface Options {
+  xOffsetWidthFraction?: number;
+  minWidthOfBarPlusPadding?: number;
+  yOffsetTopAsFractionOfYoffsetBottom?: number;
+  fractionOfxPaddingInRectWidthPlusPadding?: number;
+  attemptFillColor?: string;
+  successFillColor?: string;
+  textColor?: string;
+  yLabIncrement?: number;
+  yAxisLabel: string;
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -13,18 +25,23 @@ export class GraphingService {
   drawGraph(
     svgMap: ElementRef<SVGSVGElement>,
     data: EventInVideo[],
-    xOffsetWidthFraction: number = 0.1,
-    minWidthOfBarPlusPadding: number = 13,
-    yOffsetTopAsFractionOfYoffsetBottom: number = 0.33,
-    fractionOfxPaddingInRectWidthPlusPadding: number = 0.33,
-    attemptFillColor: string = "black",
-    successFillColor: string = "grey",
-    textColor: string = "black",
-    yLabIncrement: number = 10
+    options: Options
+    //     export interface Options {
+    //   xOffsetWidthFraction?: number = 0.1,
+    //   minWidthOfBarPlusPadding?: number = 13,
+    //     yOffsetTopAsFractionOfYoffsetBottom?: number = 0.33,
+    //     fractionOfxPaddingInRectWidthPlusPadding?: number = 0.33,
+    //     attemptFillColor?: string = "black",
+    //     successFillColor?: string = "grey",
+    //     textColor?: string = "black",
+    //     yLabIncrement?: number = 10
+    // }
   ) {
+    console.log("deleteMe got here and options are: ");
+    console.log(options);
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
-    const xOffset: number = width * xOffsetWidthFraction;
+    const xOffset: number = width * get(options, "xOffsetWidthFraction", 0.1);
     const formattedHistogram =
       this.dataFormattingService.tranformDataToHistogram(data, {
         appendSuccesses: true,
@@ -32,13 +49,13 @@ export class GraphingService {
     const numEvents = formattedHistogram ? formattedHistogram.length : 0;
     let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
     const tooManyValues: boolean =
-      rectWidthPlusPadding < minWidthOfBarPlusPadding;
+      rectWidthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
     const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
     let truncatedLength: number;
     if (tooManyValues) {
-      rectWidthPlusPadding = minWidthOfBarPlusPadding;
+      rectWidthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
       truncatedLength = Math.floor(
-        (width - 2 * xOffset) / minWidthOfBarPlusPadding
+        (width - 2 * xOffset) / get(options, "minWidthOfBarPlusPadding", 13)
       );
     }
     const fontSize = rectWidthPlusPadding / 2.5;
@@ -58,7 +75,7 @@ export class GraphingService {
     const yOffsetTop: number =
       ((fontSize * 12) / 16) *
       longestText *
-      yOffsetTopAsFractionOfYoffsetBottom;
+      get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
     this.drawAxes(svgMap, width, height, xOffset, yOffsetBottom, yOffsetTop);
     this.drawStackedBarChart(
       svgMap,
@@ -69,11 +86,16 @@ export class GraphingService {
       finalHistogram,
       rectWidthPlusPadding,
       fontSize,
-      fractionOfxPaddingInRectWidthPlusPadding,
-      attemptFillColor,
-      successFillColor,
-      textColor,
-      yLabIncrement
+      get(options, "fractionOfxPaddingInRectWidthPlusPadding", 0.33),
+      get(options, "attemptFillColor", "black"),
+      get(options, "successFillColor", "grey"),
+      get(options, "textColor", "black"),
+      get(options, "yLabIncrement", 10),
+      get(
+        options,
+        "yAxisLabel",
+        "Number of attempted/successful moves in the current data set"
+      )
     );
   }
 
@@ -120,7 +142,8 @@ export class GraphingService {
     attemptFillColor: string,
     successFillColor: string,
     textColor: string,
-    yLabIncrement: number
+    yLabIncrement: number,
+    yAxisLabel: string
   ) {
     const maxVal: number = reduce(
       finalHistogram,
@@ -172,7 +195,7 @@ export class GraphingService {
         textColor
       );
     });
-    this.drawYLabel(
+    this.drawYScale(
       maxVal,
       xOffset,
       xPadding,
@@ -183,6 +206,19 @@ export class GraphingService {
       fontSize,
       yLabIncrement,
       textColor
+    );
+    this.drawYAxisLabel(
+      maxVal,
+      xOffset,
+      xPadding,
+      height,
+      yOffsetBottom,
+      yUnit,
+      svgMap,
+      fontSize,
+      yLabIncrement,
+      textColor,
+      yAxisLabel
     );
   }
 
@@ -267,6 +303,8 @@ export class GraphingService {
       String(height - yOffsetBottom - get(entry, entryAccessor) * yUnit)
     );
     rect.setAttribute("height", String(get(entry, entryAccessor) * yUnit));
+    rect.setAttribute("stroke-width", String(1));
+    rect.setAttribute("stroke", "black");
     rect.setAttribute("fill", fillColor);
     svgMap.nativeElement.appendChild(rect);
   }
@@ -303,7 +341,7 @@ export class GraphingService {
     svgMap.nativeElement.appendChild(text);
   }
 
-  drawYLabel(
+  drawYScale(
     maxVal: number,
     xOffset: number,
     xPadding: number,
@@ -332,5 +370,38 @@ export class GraphingService {
       text.textContent = String(Math.floor(i));
       svgMap.nativeElement.appendChild(text);
     }
+  }
+
+  drawYAxisLabel(
+    maxVal: number,
+    xOffset: number,
+    xPadding: number,
+    height: number,
+    yOffsetBottom: number,
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>,
+    fontSize: number,
+    numDelimiters: number = maxVal,
+    textColor: string,
+    yAxisLabel: string
+  ) {
+    const xOffsetLeft = (String(maxVal).length + 4) * ((fontSize * 12) / 16);
+    const text: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+    const xPosition = xOffset - xOffsetLeft - xPadding;
+    text.setAttribute("x", String(xPosition));
+    const yPosition = height - yOffsetBottom - (maxVal / 2) * yUnit;
+    text.setAttribute("y", String(yPosition));
+    text.setAttribute("fill", textColor);
+    text.setAttribute("font-size", String(fontSize));
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute(
+      "transform",
+      "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
+    );
+    text.textContent = yAxisLabel;
+    svgMap.nativeElement.appendChild(text);
   }
 }

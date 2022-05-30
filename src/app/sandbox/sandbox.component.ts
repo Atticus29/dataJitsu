@@ -59,7 +59,11 @@ export class SandboxComponent extends BaseComponent implements OnInit {
               return [...memo, ...currentEventsInVideo];
             },
             []
-          )
+          ),
+          {
+            attemptFillColor: "#673AB7",
+            successFillColor: "#69F0AE",
+          }
         );
       });
 
