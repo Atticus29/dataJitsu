@@ -13,7 +13,7 @@ export interface Options {
   successFillColor?: string;
   textColor?: string;
   yLabIncrement?: number;
-  yAxisLabel: string;
+  yAxisLabel?: string;
 }
 
 @Injectable({
@@ -26,19 +26,7 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     data: EventInVideo[],
     options: Options
-    //     export interface Options {
-    //   xOffsetWidthFraction?: number = 0.1,
-    //   minWidthOfBarPlusPadding?: number = 13,
-    //     yOffsetTopAsFractionOfYoffsetBottom?: number = 0.33,
-    //     fractionOfxPaddingInRectWidthPlusPadding?: number = 0.33,
-    //     attemptFillColor?: string = "black",
-    //     successFillColor?: string = "grey",
-    //     textColor?: string = "black",
-    //     yLabIncrement?: number = 10
-    // }
   ) {
-    console.log("deleteMe got here and options are: ");
-    console.log(options);
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
     const xOffset: number = width * get(options, "xOffsetWidthFraction", 0.1);
@@ -48,6 +36,7 @@ export class GraphingService {
       });
     const numEvents = formattedHistogram ? formattedHistogram.length : 0;
     let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
+    console.log("deleteMe rectWidthPlusPadding is: " + rectWidthPlusPadding);
     const tooManyValues: boolean =
       rectWidthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
     const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
@@ -58,7 +47,17 @@ export class GraphingService {
         (width - 2 * xOffset) / get(options, "minWidthOfBarPlusPadding", 13)
       );
     }
-    const fontSize = rectWidthPlusPadding / 2.5;
+    const fractionOfxPaddingInRectWidthPlusPadding = get(
+      options,
+      "fractionOfxPaddingInRectWidthPlusPadding",
+      0.33
+    );
+    const xPadding: number =
+      rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+    const rectWidth: number =
+      rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+    const fontSize = Math.min((rectWidth * 12) / 16, 32);
+    console.log("deleteMe fontSize is: " + fontSize);
     const finalHistogram = tooManyValues
       ? sortedHistogram.slice(0, truncatedLength)
       : sortedHistogram;
@@ -71,22 +70,24 @@ export class GraphingService {
       },
       0
     );
-    const yOffsetBottom: number = ((fontSize * 12) / 16) * longestText;
+    const yOffsetBottom: number = Math.min(
+      ((fontSize * 10) / 16) * longestText,
+      height * 0.25
+    );
     const yOffsetTop: number =
-      ((fontSize * 12) / 16) *
-      longestText *
-      get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
+      yOffsetBottom * get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
     this.drawAxes(svgMap, width, height, xOffset, yOffsetBottom, yOffsetTop);
     this.drawStackedBarChart(
       svgMap,
       height,
+      width,
       xOffset,
       yOffsetBottom,
       yOffsetTop,
       finalHistogram,
-      rectWidthPlusPadding,
       fontSize,
-      get(options, "fractionOfxPaddingInRectWidthPlusPadding", 0.33),
+      xPadding,
+      rectWidth,
       get(options, "attemptFillColor", "black"),
       get(options, "successFillColor", "grey"),
       get(options, "textColor", "black"),
@@ -132,13 +133,14 @@ export class GraphingService {
   drawStackedBarChart(
     svgMap: ElementRef<SVGSVGElement>,
     height: number,
+    width: number,
     xOffset: number,
     yOffsetBottom: number,
     yOffsetTop: number = yOffsetBottom,
     finalHistogram: {}[],
-    rectWidthPlusPadding: number,
     fontSize: number,
-    fractionOfxPaddingInRectWidthPlusPadding: number,
+    xPadding: number,
+    rectWidth: number,
     attemptFillColor: string,
     successFillColor: string,
     textColor: string,
@@ -152,11 +154,20 @@ export class GraphingService {
       },
       0
     );
-    const xPadding: number =
-      rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
-    const rectWidth: number =
-      rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
-    const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
+    // const xPadding: number =
+    //   rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+    // const rectWidth: number =
+    //   rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+    console.log("deleteMe height is: " + height);
+    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
+    console.log("deleteMe yOffsetTop is: " + yOffsetTop);
+    console.log("deleteMe maxVal is: " + maxVal);
+    const yUnit: number = Math.min(
+      (height - yOffsetBottom - yOffsetTop) / maxVal,
+      height / 10
+    );
+    console.log("deleteMe yUnit up here is: ");
+    console.log(yUnit);
     finalHistogram.forEach((entry, idx) => {
       this.drawAttemptRect(
         xOffset,
@@ -216,9 +227,20 @@ export class GraphingService {
       yUnit,
       svgMap,
       fontSize,
-      yLabIncrement,
       textColor,
       yAxisLabel
+    );
+    this.drawLegend(
+      svgMap,
+      width,
+      yOffsetBottom,
+      yOffsetTop,
+      fontSize,
+      attemptFillColor,
+      successFillColor,
+      textColor,
+      yUnit,
+      xPadding
     );
   }
 
@@ -289,6 +311,8 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     fillColor: string
   ) {
+    console.log("deleteMe yUnit is: ");
+    console.log(yUnit);
     const rect: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
@@ -335,7 +359,7 @@ export class GraphingService {
     text.setAttribute("text-anchor", "start");
     text.setAttribute(
       "transform",
-      "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
+      "rotate(45," + String(xPosition) + "," + String(yPosition) + ")"
     );
     text.textContent = name;
     svgMap.nativeElement.appendChild(text);
@@ -381,11 +405,10 @@ export class GraphingService {
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
     fontSize: number,
-    numDelimiters: number = maxVal,
     textColor: string,
     yAxisLabel: string
   ) {
-    const xOffsetLeft = (String(maxVal).length + 4) * ((fontSize * 12) / 16);
+    const xOffsetLeft = (String(maxVal).length + 3) * ((fontSize * 12) / 16);
     const text: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text"
@@ -403,5 +426,68 @@ export class GraphingService {
     );
     text.textContent = yAxisLabel;
     svgMap.nativeElement.appendChild(text);
+  }
+
+  drawLegend(
+    svgMap: ElementRef<SVGSVGElement>,
+    width: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
+    fontSize: number,
+    attemptFillColor: string,
+    successFillColor: string,
+    textColor: string,
+    yUnit: number,
+    xPadding: number
+  ) {
+    const rect: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    rect.setAttribute("x", String(0.75 * width));
+    rect.setAttribute("width", String(yUnit));
+    rect.setAttribute("y", String(yOffsetTop * 0.33));
+    rect.setAttribute("height", String(yUnit));
+    rect.setAttribute("stroke-width", String(1));
+    rect.setAttribute("stroke", "black");
+    rect.setAttribute("fill", attemptFillColor);
+    svgMap.nativeElement.appendChild(rect);
+
+    const text: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+    text.setAttribute("x", String(0.75 * width + yUnit + xPadding));
+    text.setAttribute("y", String(yOffsetTop * 0.33 + yUnit * 0.75));
+    text.setAttribute("fill", textColor);
+    text.setAttribute("font-size", String(fontSize));
+    text.setAttribute("text-anchor", "start");
+    text.textContent = "Move attempts";
+    svgMap.nativeElement.appendChild(text);
+
+    const rect2: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    rect2.setAttribute("x", String(0.75 * width));
+    rect2.setAttribute("width", String(yUnit));
+    rect2.setAttribute("y", String(yOffsetTop * 0.67));
+    rect2.setAttribute("height", String(yUnit));
+    rect2.setAttribute("stroke-width", String(1));
+    rect2.setAttribute("stroke", "black");
+    rect2.setAttribute("fill", successFillColor);
+    svgMap.nativeElement.appendChild(rect2);
+
+    const text2: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+    text2.setAttribute("x", String(0.75 * width + yUnit + xPadding));
+    text2.setAttribute("y", String(yOffsetTop * 0.67 + yUnit * 0.75));
+    text2.setAttribute("fill", textColor);
+    text2.setAttribute("font-size", String(fontSize));
+    text2.setAttribute("text-anchor", "start");
+    text2.textContent = "Move successes";
+    svgMap.nativeElement.appendChild(text2);
   }
 }

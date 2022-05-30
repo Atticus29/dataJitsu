@@ -20,6 +20,7 @@ import { DatabaseService } from "../database.service";
 import { TrackerService } from "../tracker.service";
 import { GraphingService } from "app/graphing.service";
 import { EventInVideo } from "app/eventInVideo.model";
+import { DataFormattingService } from "../data-formatting.service";
 import { Video } from "app/video.model";
 
 @Component({
@@ -39,7 +40,8 @@ export class SandboxComponent extends BaseComponent implements OnInit {
     private formProcessingService: FormProcessingService,
     public snackBar: MatSnackBar,
     private trackerService: TrackerService,
-    private graphingService: GraphingService
+    private graphingService: GraphingService,
+    private dataFormattingService: DataFormattingService
   ) {
     super();
   }
@@ -50,21 +52,24 @@ export class SandboxComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((videoObjs) => {
         const videos: Video[] = Object.values(videoObjs).map(Video.fromJson);
-        this.graphingService.drawGraph(
-          this.svgMap,
-          reduce(
-            videos,
-            (memo, video) => {
-              const currentEventsInVideo = get(video, "eventsInVideo");
-              return [...memo, ...currentEventsInVideo];
-            },
-            []
-          ),
-          {
-            attemptFillColor: "#673AB7",
-            successFillColor: "#69F0AE",
-          }
+        const eventsInVideo: EventInVideo[] = reduce(
+          videos,
+          (memo, video) => {
+            const currentEventsInVideo = get(video, "eventsInVideo");
+            return [...memo, ...currentEventsInVideo];
+          },
+          []
         );
+        const movesToGraph =
+          this.dataFormattingService.removeUnimportantMoves(eventsInVideo);
+        console.log("deleteMe movesToGraph are: ");
+        console.log(movesToGraph);
+        this.graphingService.drawGraph(this.svgMap, movesToGraph, {
+          minWidthOfBarPlusPadding: 20,
+          yOffsetTopAsFractionOfYoffsetBottom: 0.75,
+          attemptFillColor: "#673AB7",
+          successFillColor: "#69F0AE",
+        });
       });
 
     // this.questionService

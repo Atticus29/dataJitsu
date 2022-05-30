@@ -12,6 +12,28 @@ export interface Options {
 export class DataFormattingService {
   constructor() {}
 
+  removeUnimportantMoves(inputData: EventInVideo[]): EventInVideo[] {
+    const movesToOmit = ["Win", "Match Start", "Match End", "Pause"];
+    const pointScoringCategories = [
+      "Positional Changes That Score Points In Most Rule Sets",
+      "Sweeps or Sweep Attempts",
+      "Take Downs or Take Down Attempts",
+    ];
+    return filter(
+      inputData,
+      (event: EventInVideo) => {
+        return (
+          get(event, "eventCategory") !== "Event Logistics" &&
+          !movesToOmit.includes(get(event, "eventName", "").trim()) &&
+          // (get(event, "points") > 0 ||
+          pointScoringCategories.includes(get(event, "eventCategory")) //)
+          // get(event, "actor") === "Deodara, Dirt"
+        );
+      },
+      []
+    );
+  }
+
   tranformDataToHistogram(inputData: EventInVideo[], options?: Options): any[] {
     const eventNames: string[] = map(
       inputData,
@@ -23,7 +45,7 @@ export class DataFormattingService {
       const successfulEvents: EventInVideo[] = filter(
         inputData,
         (event: EventInVideo) => {
-          const successfulAttempts = get(event, "isSuccessfulAttempt", true);
+          // const successfulAttempts = get(event, "isSuccessfulAttempt", true);
           return get(event, "isSuccessfulAttempt", true);
         },
         []
