@@ -251,27 +251,24 @@ export class GraphingService {
     entry: {},
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
-    successFillColor: string
+    fillColor: string
   ) {
-    const successRect: SVGElement = document.createElementNS(
+    const rect: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
     );
-    successRect.setAttribute(
+    rect.setAttribute(
       "x",
       String(xOffset + (idx + 1) * xPadding + idx * rectWidth)
     );
-    successRect.setAttribute("width", String(rectWidth));
-    successRect.setAttribute(
+    rect.setAttribute("width", String(rectWidth));
+    rect.setAttribute(
       "y",
       String(height - yOffsetBottom - get(entry, entryAccessor) * yUnit)
     );
-    successRect.setAttribute(
-      "height",
-      String(get(entry, entryAccessor) * yUnit)
-    );
-    successRect.setAttribute("fill", successFillColor);
-    svgMap.nativeElement.appendChild(successRect);
+    rect.setAttribute("height", String(get(entry, entryAccessor) * yUnit));
+    rect.setAttribute("fill", fillColor);
+    svgMap.nativeElement.appendChild(rect);
   }
 
   drawXLabel(
