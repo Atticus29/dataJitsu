@@ -62,13 +62,25 @@ export class SandboxComponent extends BaseComponent implements OnInit {
         );
         const movesToGraph =
           this.dataFormattingService.removeUnimportantMoves(eventsInVideo);
-        console.log("deleteMe movesToGraph are: ");
-        console.log(movesToGraph);
+        const formattedHistogram =
+          this.dataFormattingService.tranformDataToHistogram(movesToGraph, {
+            appendSuccesses: true,
+          });
+        const maxVal: number = reduce(
+          formattedHistogram,
+          (memo, entry) => {
+            return get(entry, "attempts") > memo
+              ? get(entry, "attempts")
+              : memo;
+          },
+          0
+        );
         this.graphingService.drawGraph(this.svgMap, movesToGraph, {
           minWidthOfBarPlusPadding: 20,
+          yLabIncrement: Math.min(maxVal, 10),
           yOffsetTopAsFractionOfYoffsetBottom: 0.75,
-          attemptFillColor: "#673AB7",
-          successFillColor: "#69F0AE",
+          // attemptFillColor: "#673AB7",
+          // successFillColor: "#69F0AE",
         });
       });
 

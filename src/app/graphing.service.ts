@@ -1,4 +1,4 @@
-import { reduce, get, orderBy } from "lodash";
+import { reduce, get, orderBy, map } from "lodash";
 
 import { ElementRef, Injectable } from "@angular/core";
 import { DataFormattingService } from "./data-formatting.service";
@@ -14,6 +14,7 @@ export interface Options {
   textColor?: string;
   yLabIncrement?: number;
   yAxisLabel?: string;
+  legendLabels?: {}[];
 }
 
 @Injectable({
@@ -27,6 +28,13 @@ export class GraphingService {
     data: EventInVideo[],
     options: Options
   ) {
+    const attemptFillColor = get(options, "attemptFillColor", "white");
+    const successFillColor = get(options, "successFillColor", "black");
+    const legendLabels: {}[] = get(options, "legendLabels", [
+      { label: "Move attempts", color: attemptFillColor },
+      { label: "Move successes", color: successFillColor },
+    ]);
+    const fontToPixelRatio: number = 12 / 16;
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
     const xOffset: number = width * get(options, "xOffsetWidthFraction", 0.1);
@@ -56,7 +64,7 @@ export class GraphingService {
       rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
     const rectWidth: number =
       rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
-    const fontSize = Math.min((rectWidth * 12) / 16, 32);
+    const fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
     console.log("deleteMe fontSize is: " + fontSize);
     const finalHistogram = tooManyValues
       ? sortedHistogram.slice(0, truncatedLength)
@@ -71,13 +79,15 @@ export class GraphingService {
       0
     );
     const yOffsetBottom: number = Math.min(
-      ((fontSize * 10) / 16) * longestText,
+      fontSize * fontToPixelRatio * longestText,
       height * 0.25
     );
     const yOffsetTop: number =
       yOffsetBottom * get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
     this.drawAxes(svgMap, width, height, xOffset, yOffsetBottom, yOffsetTop);
-    this.drawStackedBarChart(
+    this.drawVerticalStackedBarChart(
+      legendLabels,
+      fontToPixelRatio,
       svgMap,
       height,
       width,
@@ -88,8 +98,8 @@ export class GraphingService {
       fontSize,
       xPadding,
       rectWidth,
-      get(options, "attemptFillColor", "black"),
-      get(options, "successFillColor", "grey"),
+      attemptFillColor,
+      successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
       get(
@@ -130,7 +140,9 @@ export class GraphingService {
     svgMap.nativeElement.appendChild(xAxis);
   }
 
-  drawStackedBarChart(
+  drawVerticalStackedBarChart(
+    legendLabels: {}[],
+    fontToPixelRatio: number,
     svgMap: ElementRef<SVGSVGElement>,
     height: number,
     width: number,
@@ -162,10 +174,15 @@ export class GraphingService {
     console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
     console.log("deleteMe yOffsetTop is: " + yOffsetTop);
     console.log("deleteMe maxVal is: " + maxVal);
-    const yUnit: number = Math.min(
-      (height - yOffsetBottom - yOffsetTop) / maxVal,
-      height / 10
-    );
+    // const yUnit: number = Math.min(
+    //   (height - yOffsetBottom - yOffsetTop) / maxVal,
+    //   height / 10
+    // );
+    // const yUnit: number = Math.min(
+    //   (height - yOffsetBottom - yOffsetTop) / maxVal,
+    //   (height - yOffsetBottom - yOffsetTop) / 8
+    // );
+    const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
     console.log("deleteMe yUnit up here is: ");
     console.log(yUnit);
     finalHistogram.forEach((entry, idx) => {
@@ -207,6 +224,7 @@ export class GraphingService {
       );
     });
     this.drawYScale(
+      fontToPixelRatio,
       maxVal,
       xOffset,
       xPadding,
@@ -219,6 +237,7 @@ export class GraphingService {
       textColor
     );
     this.drawYAxisLabel(
+      fontToPixelRatio,
       maxVal,
       xOffset,
       xPadding,
@@ -232,12 +251,13 @@ export class GraphingService {
     );
     this.drawLegend(
       svgMap,
+      fontToPixelRatio,
+      xOffset,
       width,
       yOffsetBottom,
       yOffsetTop,
       fontSize,
-      attemptFillColor,
-      successFillColor,
+      legendLabels,
       textColor,
       yUnit,
       xPadding
@@ -366,6 +386,7 @@ export class GraphingService {
   }
 
   drawYScale(
+    fontToPixelRatio: number,
     maxVal: number,
     xOffset: number,
     xPadding: number,
@@ -378,7 +399,7 @@ export class GraphingService {
     textColor: string
   ) {
     const incrementBy = maxVal / numDelimiters;
-    const xOffsetLeft = String(maxVal).length * ((fontSize * 12) / 16);
+    const xOffsetLeft = String(maxVal).length * (fontSize * fontToPixelRatio);
     for (let i = 0; i < maxVal + 1; i += incrementBy) {
       const text: SVGElement = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -397,6 +418,7 @@ export class GraphingService {
   }
 
   drawYAxisLabel(
+    fontToPixelRatio: number,
     maxVal: number,
     xOffset: number,
     xPadding: number,
@@ -408,7 +430,8 @@ export class GraphingService {
     textColor: string,
     yAxisLabel: string
   ) {
-    const xOffsetLeft = (String(maxVal).length + 3) * ((fontSize * 12) / 16);
+    const xOffsetLeft =
+      (String(maxVal).length + 3) * (fontSize * fontToPixelRatio);
     const text: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text"
@@ -430,64 +453,122 @@ export class GraphingService {
 
   drawLegend(
     svgMap: ElementRef<SVGSVGElement>,
+    fontToPixelRatio: number,
+    xOffset: number,
     width: number,
     yOffsetBottom: number,
     yOffsetTop: number = yOffsetBottom,
     fontSize: number,
-    attemptFillColor: string,
-    successFillColor: string,
+    legendLabels: {}[],
     textColor: string,
     yUnit: number,
     xPadding: number
   ) {
+    legendLabels.forEach((legendLabel, idx) => {
+      const legendUnit: number = 1 / (legendLabels.length + 1);
+      const currentYLegendOffset: number = (idx + 1) * legendUnit;
+      const yPosition: number = yOffsetTop * currentYLegendOffset;
+      const yUnitScaledForLegend: number = Math.min(yUnit, 20);
+      const textYPosition: number = yPosition + yUnitScaledForLegend;
+      const desiredPercentageOfTheGraphWidth: number = 0.5;
+      this.drawSingleLegendLabeledSquare(
+        svgMap,
+        fontToPixelRatio,
+        xOffset,
+        yPosition,
+        width,
+        yOffsetBottom,
+        yOffsetTop,
+        fontSize,
+        get(legendLabel, "color"),
+        textColor,
+        yUnitScaledForLegend,
+        xPadding,
+        get(legendLabel, "label"),
+        map(legendLabels, (legendLab: {}) => get(legendLab, "label")),
+        String(textYPosition),
+        desiredPercentageOfTheGraphWidth
+      );
+    });
+  }
+
+  drawSingleLegendLabeledSquare(
+    svgMap: ElementRef<SVGSVGElement>,
+    fontToPixelRatio: number,
+    xOffset: number,
+    yPosition: number,
+    width: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
+    fontSize: number,
+    fillColor: string,
+    textColor: string,
+    yUnitScaledForLegend: number,
+    xPadding: number,
+    textContent: string,
+    textArray: string[],
+    textYPosition: string,
+    desiredPercentageOfTheGraphWidth: number
+  ) {
+    const legendFontSize: number = Math.min(fontSize, 24);
+    const lengths: number[] = map(textArray, (item: string) => item.length);
+    const maxLetterLength: number = Math.max(
+      ...map(textArray, (item: string) => item.length)
+    );
+    console.log("deleteMe maxLetterLength is: " + maxLetterLength);
+    console.log("deleteMe yUnitScaledForLegend is: " + yUnitScaledForLegend);
+    const spaceBetweenSquareAndText: number = yUnitScaledForLegend; // TODO deleteMe  * 2
+    const totalLengthOfLabeledSquare: number =
+      yUnitScaledForLegend +
+      spaceBetweenSquareAndText +
+      legendFontSize * maxLetterLength * fontToPixelRatio;
+    const graphWidth: number = width - 2 * xOffset;
+    const isTooBig: boolean =
+      graphWidth * desiredPercentageOfTheGraphWidth <
+      totalLengthOfLabeledSquare;
+    console.log("deleteMe isTooBig is: " + isTooBig);
+    const scaledWeight: number = isTooBig
+      ? (graphWidth * desiredPercentageOfTheGraphWidth) /
+        totalLengthOfLabeledSquare
+      : 1;
+    console.log("deleteMe scaledWeight is: " + scaledWeight);
+    // const scaledWeight: number = 1; // TODO deleteMe
     const rect: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
     );
-    rect.setAttribute("x", String(0.75 * width));
-    rect.setAttribute("width", String(yUnit));
-    rect.setAttribute("y", String(yOffsetTop * 0.33));
-    rect.setAttribute("height", String(yUnit));
+    rect.setAttribute(
+      "x",
+      String(width - xOffset - totalLengthOfLabeledSquare * scaledWeight)
+    );
+    rect.setAttribute("width", String(yUnitScaledForLegend * scaledWeight));
+    rect.setAttribute(
+      "y",
+      String(yPosition + (1 - scaledWeight) * yUnitScaledForLegend)
+    );
+    rect.setAttribute("height", String(yUnitScaledForLegend * scaledWeight));
     rect.setAttribute("stroke-width", String(1));
     rect.setAttribute("stroke", "black");
-    rect.setAttribute("fill", attemptFillColor);
+    rect.setAttribute("fill", fillColor);
     svgMap.nativeElement.appendChild(rect);
 
     const text: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text"
     );
-    text.setAttribute("x", String(0.75 * width + yUnit + xPadding));
-    text.setAttribute("y", String(yOffsetTop * 0.33 + yUnit * 0.75));
+    text.setAttribute(
+      "x",
+      String(
+        width -
+          xOffset -
+          legendFontSize * maxLetterLength * fontToPixelRatio * scaledWeight
+      ) //deleteMe + xPadding
+    );
+    text.setAttribute("y", textYPosition);
     text.setAttribute("fill", textColor);
-    text.setAttribute("font-size", String(fontSize));
+    text.setAttribute("font-size", String(legendFontSize * scaledWeight));
     text.setAttribute("text-anchor", "start");
-    text.textContent = "Move attempts";
+    text.textContent = textContent;
     svgMap.nativeElement.appendChild(text);
-
-    const rect2: SVGElement = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "rect"
-    );
-    rect2.setAttribute("x", String(0.75 * width));
-    rect2.setAttribute("width", String(yUnit));
-    rect2.setAttribute("y", String(yOffsetTop * 0.67));
-    rect2.setAttribute("height", String(yUnit));
-    rect2.setAttribute("stroke-width", String(1));
-    rect2.setAttribute("stroke", "black");
-    rect2.setAttribute("fill", successFillColor);
-    svgMap.nativeElement.appendChild(rect2);
-
-    const text2: SVGElement = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
-    );
-    text2.setAttribute("x", String(0.75 * width + yUnit + xPadding));
-    text2.setAttribute("y", String(yOffsetTop * 0.67 + yUnit * 0.75));
-    text2.setAttribute("fill", textColor);
-    text2.setAttribute("font-size", String(fontSize));
-    text2.setAttribute("text-anchor", "start");
-    text2.textContent = "Move successes";
-    svgMap.nativeElement.appendChild(text2);
   }
 }

@@ -28,6 +28,7 @@ export class DataFormattingService {
           // (get(event, "points") > 0 ||
           pointScoringCategories.includes(get(event, "eventCategory")) //)
           // get(event, "actor") === "Deodara, Dirt"
+          // get(event, "actor") === "Ryan, Gordon"
         );
       },
       []
