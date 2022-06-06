@@ -242,6 +242,7 @@ export class GraphingService {
       xOffset,
       xPadding,
       height,
+      yOffsetTop,
       yOffsetBottom,
       yUnit,
       svgMap,
@@ -372,7 +373,10 @@ export class GraphingService {
     );
     const xPosition = xOffset + (idx + 1) * xPadding + idx * rectWidth;
     text.setAttribute("x", String(xPosition));
-    const yPosition = height - yOffsetBottom + xPadding;
+    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
+    console.log("deleteMe xPadding is: " + xPadding);
+    const yPosition =
+      height - yOffsetBottom + Math.min(xPadding, yOffsetBottom * 0.25);
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", textColor);
     text.setAttribute("font-size", String(fontSize));
@@ -423,6 +427,7 @@ export class GraphingService {
     xOffset: number,
     xPadding: number,
     height: number,
+    yOffsetTop: number,
     yOffsetBottom: number,
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
@@ -436,12 +441,37 @@ export class GraphingService {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    const xPosition = xOffset - xOffsetLeft - xPadding;
+    const xPosition = Math.max(xOffset - xOffsetLeft - xPadding, 5);
+    console.log("deleteMe xOffset is: " + xOffset);
+    console.log("deleteMe xPadding is: " + xPadding);
+    // const xPosition = Math.max(xOffset - xPadding, 0);
+    console.log("deleteMe xPosition in drawYAxisLabel is: " + xPosition);
     text.setAttribute("x", String(xPosition));
+    console.log("deleteMe maxVal is: " + maxVal);
+    console.log("deleteMe yUnit is: " + yUnit);
+    console.log("deleteMe height is: " + height);
+    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
     const yPosition = height - yOffsetBottom - (maxVal / 2) * yUnit;
+    // const yPosition = height;
+    const graphHeight: number = height - yOffsetBottom - yOffsetTop;
+    console.log("deleteMe graphHeight is: " + graphHeight);
+    const desiredPercentageOfTheGraphHeight: number = 1;
+    console.log("deleteMe fontSize is: " + fontSize);
+    const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
+    console.log("deletMe totalLengthOfLabel is " + totalLengthOfLabel);
+    const isTooBig: boolean =
+      graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
+    console.log("deleteMe isTooBig for drawYAxis is: " + isTooBig);
+    const scaledHeight: number = isTooBig
+      ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
+      : 1;
+    console.log("deleteMe yPosition is: " + yPosition);
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", textColor);
-    text.setAttribute("font-size", String(fontSize));
+    text.setAttribute(
+      "font-size",
+      String((fontSize * scaledHeight) / fontToPixelRatio)
+    );
     text.setAttribute("text-anchor", "middle");
     text.setAttribute(
       "transform",
