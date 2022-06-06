@@ -33,6 +33,7 @@ export class SandboxComponent extends BaseComponent implements OnInit {
   private svgMap: ElementRef<SVGSVGElement>;
   private localTestQuestionConfigOptions: DynamicFormConfiguration;
   private localTestQuestions: FormQuestionBase<any>[];
+  private scrollDesired: boolean;
 
   constructor(
     private databaseService: DatabaseService,
@@ -44,6 +45,7 @@ export class SandboxComponent extends BaseComponent implements OnInit {
     private dataFormattingService: DataFormattingService
   ) {
     super();
+    this.scrollDesired = true;
   }
 
   ngOnInit() {

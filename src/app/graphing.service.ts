@@ -42,6 +42,8 @@ export class GraphingService {
       this.dataFormattingService.tranformDataToHistogram(data, {
         appendSuccesses: true,
       });
+    console.log("deleteMe formattedHistogram is: ");
+    console.log(formattedHistogram);
     const numEvents = formattedHistogram ? formattedHistogram.length : 0;
     let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
     console.log("deleteMe rectWidthPlusPadding is: " + rectWidthPlusPadding);
@@ -185,6 +187,14 @@ export class GraphingService {
     const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
     console.log("deleteMe yUnit up here is: ");
     console.log(yUnit);
+    const graphHeight: number = height - yOffsetBottom - yOffsetTop;
+    const desiredPercentageOfTheGraphHeight: number = 1;
+    const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
+    const isTooBig: boolean =
+      graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
+    const scaledHeight: number = isTooBig
+      ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
+      : 1;
     finalHistogram.forEach((entry, idx) => {
       this.drawAttemptRect(
         xOffset,
@@ -220,9 +230,12 @@ export class GraphingService {
         entry,
         svgMap,
         fontSize,
-        textColor
+        textColor,
+        scaledHeight,
+        fontToPixelRatio
       );
     });
+
     this.drawYScale(
       fontToPixelRatio,
       maxVal,
@@ -234,7 +247,8 @@ export class GraphingService {
       svgMap,
       fontSize,
       yLabIncrement,
-      textColor
+      textColor,
+      scaledHeight
     );
     this.drawYAxisLabel(
       fontToPixelRatio,
@@ -242,13 +256,14 @@ export class GraphingService {
       xOffset,
       xPadding,
       height,
-      yOffsetTop,
+      // yOffsetTop,
       yOffsetBottom,
       yUnit,
       svgMap,
       fontSize,
       textColor,
-      yAxisLabel
+      yAxisLabel,
+      scaledHeight
     );
     this.drawLegend(
       svgMap,
@@ -364,7 +379,9 @@ export class GraphingService {
     entry: {},
     svgMap: ElementRef<SVGSVGElement>,
     fontSize: number,
-    textColor: string
+    textColor: string,
+    scaledHeight: number,
+    fontToPixelRatio: number
   ) {
     const name = get(entry, "name");
     const text: SVGElement = document.createElementNS(
@@ -379,7 +396,10 @@ export class GraphingService {
       height - yOffsetBottom + Math.min(xPadding, yOffsetBottom * 0.25);
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", textColor);
-    text.setAttribute("font-size", String(fontSize));
+    text.setAttribute(
+      "font-size",
+      String((fontSize * scaledHeight) / fontToPixelRatio)
+    );
     text.setAttribute("text-anchor", "start");
     text.setAttribute(
       "transform",
@@ -400,21 +420,34 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     fontSize: number,
     numDelimiters: number = maxVal,
-    textColor: string
+    textColor: string,
+    scaledHeight: number
   ) {
-    const incrementBy = maxVal / numDelimiters;
+    console.log("deleteMe maxVal in drawYScale is: " + maxVal);
+    const incrementBy = Math.floor(maxVal / numDelimiters);
+    console.log("deleteMe incrementBy is: " + incrementBy);
     const xOffsetLeft = String(maxVal).length * (fontSize * fontToPixelRatio);
+    console.log("deleteMe xOffsetLeft is: " + xOffsetLeft);
+    console.log("deleteMe xOffset is: " + xOffset);
+    console.log("deleteMe xPadding is: " + xPadding);
     for (let i = 0; i < maxVal + 1; i += incrementBy) {
       const text: SVGElement = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "text"
       );
-      const xPosition = xOffset - xOffsetLeft - xPadding;
+      const xPosition =
+        xOffset - xOffsetLeft - xPadding > 0
+          ? xOffset - xOffsetLeft - xPadding
+          : xOffset - xOffsetLeft;
+      console.log("deleteMe xPosition in drawYScale is: " + xPosition);
       text.setAttribute("x", String(xPosition));
       const yPosition = height - yOffsetBottom - i * yUnit;
       text.setAttribute("y", String(yPosition));
       text.setAttribute("fill", textColor);
-      text.setAttribute("font-size", String(fontSize));
+      text.setAttribute(
+        "font-size",
+        String((fontSize * scaledHeight) / fontToPixelRatio)
+      );
       text.setAttribute("text-anchor", "start");
       text.textContent = String(Math.floor(i));
       svgMap.nativeElement.appendChild(text);
@@ -427,13 +460,14 @@ export class GraphingService {
     xOffset: number,
     xPadding: number,
     height: number,
-    yOffsetTop: number,
+    // yOffsetTop: number,
     yOffsetBottom: number,
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
     fontSize: number,
     textColor: string,
-    yAxisLabel: string
+    yAxisLabel: string,
+    scaledHeight: number
   ) {
     const xOffsetLeft =
       (String(maxVal).length + 3) * (fontSize * fontToPixelRatio);
@@ -442,30 +476,16 @@ export class GraphingService {
       "text"
     );
     const xPosition = Math.max(xOffset - xOffsetLeft - xPadding, 5);
-    console.log("deleteMe xOffset is: " + xOffset);
-    console.log("deleteMe xPadding is: " + xPadding);
-    // const xPosition = Math.max(xOffset - xPadding, 0);
-    console.log("deleteMe xPosition in drawYAxisLabel is: " + xPosition);
     text.setAttribute("x", String(xPosition));
-    console.log("deleteMe maxVal is: " + maxVal);
-    console.log("deleteMe yUnit is: " + yUnit);
-    console.log("deleteMe height is: " + height);
-    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
     const yPosition = height - yOffsetBottom - (maxVal / 2) * yUnit;
-    // const yPosition = height;
-    const graphHeight: number = height - yOffsetBottom - yOffsetTop;
-    console.log("deleteMe graphHeight is: " + graphHeight);
-    const desiredPercentageOfTheGraphHeight: number = 1;
-    console.log("deleteMe fontSize is: " + fontSize);
-    const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
-    console.log("deletMe totalLengthOfLabel is " + totalLengthOfLabel);
-    const isTooBig: boolean =
-      graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
-    console.log("deleteMe isTooBig for drawYAxis is: " + isTooBig);
-    const scaledHeight: number = isTooBig
-      ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
-      : 1;
-    console.log("deleteMe yPosition is: " + yPosition);
+    // const graphHeight: number = height - yOffsetBottom - yOffsetTop;
+    // const desiredPercentageOfTheGraphHeight: number = 1;
+    // const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
+    // const isTooBig: boolean =
+    //   graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
+    // const scaledHeight: number = isTooBig
+    //   ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
+    //   : 1;
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", textColor);
     text.setAttribute(

@@ -19,6 +19,7 @@ export class DataFormattingService {
       "Sweeps or Sweep Attempts",
       "Take Downs or Take Down Attempts",
     ];
+    // return inputData;
     return filter(
       inputData,
       (event: EventInVideo) => {
@@ -28,8 +29,8 @@ export class DataFormattingService {
           // (get(event, "points") > 0 ||
           // pointScoringCategories.includes(get(event, "eventCategory")) //)
           // get(event, "actor") === "Deodara, Dirt"
-          get(event, "actor") === "Hansen, John"
-          // get(event, "actor") === "Ryan, Gordon"
+          // get(event, "actor") === "Hansen, John"
+          get(event, "actor") === "Ryan, Gordon"
         );
       },
       []
