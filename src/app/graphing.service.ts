@@ -15,6 +15,7 @@ export interface Options {
   yLabIncrement?: number;
   yAxisLabel?: string;
   legendLabels?: {}[];
+  horizontalDesired?: boolean;
 }
 
 @Injectable({
@@ -24,6 +25,19 @@ export class GraphingService {
   constructor(private dataFormattingService: DataFormattingService) {}
 
   drawGraph(
+    svgMap: ElementRef<SVGSVGElement>,
+    data: EventInVideo[],
+    options: Options
+  ) {
+    const horizontalDesired = get(options, "horizontalDesired", false);
+    console.log("deleteMe horizontalDesired is: " + horizontalDesired);
+    if (horizontalDesired) {
+      this.drawHorizontalGraph(svgMap, data, options);
+    } else {
+      this.drawVerticalGraph(svgMap, data, options);
+    }
+  }
+  drawVerticalGraph(
     svgMap: ElementRef<SVGSVGElement>,
     data: EventInVideo[],
     options: Options
@@ -112,6 +126,86 @@ export class GraphingService {
     );
   }
 
+  drawHorizontalGraph(
+    svgMap: ElementRef<SVGSVGElement>,
+    data: EventInVideo[],
+    options: Options
+  ) {
+    const attemptFillColor = get(options, "attemptFillColor", "white");
+    const successFillColor = get(options, "successFillColor", "black");
+    const legendLabels: {}[] = get(options, "legendLabels", [
+      { label: "Move attempts", color: attemptFillColor },
+      { label: "Move successes", color: successFillColor },
+    ]);
+    const fontToPixelRatio: number = 12 / 16;
+    const width: number = svgMap.nativeElement.viewBox.baseVal.width;
+    const height: number = svgMap.nativeElement.viewBox.baseVal.height;
+    const xOffset: number = width * get(options, "xOffsetWidthFraction", 0.1);
+    const formattedHistogram =
+      this.dataFormattingService.tranformDataToHistogram(data, {
+        appendSuccesses: true,
+      });
+    const numEvents = formattedHistogram ? formattedHistogram.length : 0;
+    let rectWidthPlusPadding: number = (width - 2 * xOffset) / numEvents;
+    const fractionOfxPaddingInRectWidthPlusPadding = get(
+      options,
+      "fractionOfxPaddingInRectWidthPlusPadding",
+      0.33
+    );
+    const xPadding: number =
+      rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+    const rectWidth: number =
+      rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+    const fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
+    const tooManyValues: boolean =
+      rectWidthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
+    const yOffsetBottom: number = Math.min(
+      fontSize * fontToPixelRatio * 3,
+      height * 0.25
+    );
+    const yOffsetTop: number =
+      yOffsetBottom * get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
+
+    const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
+    let truncatedLength: number;
+    if (tooManyValues) {
+      rectWidthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
+      const horizontalTruncatedLength = Math.floor(
+        (height - yOffsetBottom - yOffsetTop) /
+          get(options, "minWidthOfBarPlusPadding", 13)
+      );
+      truncatedLength = horizontalTruncatedLength;
+    }
+    const finalHistogram = tooManyValues
+      ? sortedHistogram.slice(0, truncatedLength)
+      : sortedHistogram;
+
+    this.drawAxes(svgMap, width, height, xOffset, yOffsetBottom, yOffsetTop);
+    this.drawHorizontalStackedBarChart(
+      legendLabels,
+      fontToPixelRatio,
+      svgMap,
+      height,
+      width,
+      xOffset,
+      yOffsetBottom,
+      yOffsetTop,
+      finalHistogram,
+      fontSize,
+      xPadding,
+      rectWidth,
+      attemptFillColor,
+      successFillColor,
+      get(options, "textColor", "black"),
+      get(options, "yLabIncrement", 10),
+      get(
+        options,
+        "yAxisLabel",
+        "Number of attempted/successful moves in the current data set"
+      )
+    );
+  }
+
   drawAxes(
     svgMap: ElementRef<SVGSVGElement>,
     width: number,
@@ -142,6 +236,123 @@ export class GraphingService {
     svgMap.nativeElement.appendChild(xAxis);
   }
 
+  drawHorizontalStackedBarChart(
+    legendLabels: {}[],
+    fontToPixelRatio: number,
+    svgMap: ElementRef<SVGSVGElement>,
+    height: number,
+    width: number,
+    xOffset: number,
+    yOffsetBottom: number,
+    yOffsetTop: number = yOffsetBottom,
+    finalHistogram: {}[],
+    fontSize: number,
+    xPadding: number,
+    rectWidth: number,
+    attemptFillColor: string,
+    successFillColor: string,
+    textColor: string,
+    yLabIncrement: number,
+    yAxisLabel: string
+  ) {
+    const maxVal: number = reduce(
+      finalHistogram,
+      (memo, entry) => {
+        return get(entry, "attempts") > memo ? get(entry, "attempts") : memo;
+      },
+      0
+    );
+    const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
+    const graphHeight: number = height - yOffsetBottom - yOffsetTop;
+    const desiredPercentageOfTheGraphHeight: number = 1;
+    const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
+    const isTooBig: boolean =
+      graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
+    const scaledHeight: number = isTooBig
+      ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
+      : 1;
+    finalHistogram.forEach((entry, idx) => {
+      this.drawHorizontalAttemptRect(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        yOffsetTop,
+        entry,
+        yUnit,
+        svgMap,
+        attemptFillColor
+      );
+      this.drawHorizontalSuccessRect(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        yOffsetTop,
+        entry,
+        yUnit,
+        svgMap,
+        successFillColor
+      );
+      this.drawXLabel(
+        xOffset,
+        idx,
+        xPadding,
+        rectWidth,
+        height,
+        yOffsetBottom,
+        entry,
+        svgMap,
+        fontSize,
+        textColor,
+        scaledHeight,
+        fontToPixelRatio
+      );
+    });
+
+    this.drawYScale(
+      fontToPixelRatio,
+      maxVal,
+      xOffset,
+      xPadding,
+      height,
+      yOffsetBottom,
+      yUnit,
+      svgMap,
+      fontSize,
+      yLabIncrement,
+      textColor,
+      scaledHeight
+    );
+    this.drawYAxisLabel(
+      fontToPixelRatio,
+      maxVal,
+      xOffset,
+      xPadding,
+      height,
+      yOffsetBottom,
+      yUnit,
+      svgMap,
+      fontSize,
+      textColor,
+      yAxisLabel,
+      scaledHeight
+    );
+    this.drawLegend(
+      svgMap,
+      fontToPixelRatio,
+      xOffset,
+      width,
+      yOffsetBottom,
+      yOffsetTop,
+      fontSize,
+      legendLabels,
+      textColor,
+      yUnit,
+      xPadding
+    );
+  }
+
   drawVerticalStackedBarChart(
     legendLabels: {}[],
     fontToPixelRatio: number,
@@ -168,25 +379,7 @@ export class GraphingService {
       },
       0
     );
-    // const xPadding: number =
-    //   rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
-    // const rectWidth: number =
-    //   rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
-    console.log("deleteMe height is: " + height);
-    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
-    console.log("deleteMe yOffsetTop is: " + yOffsetTop);
-    console.log("deleteMe maxVal is: " + maxVal);
-    // const yUnit: number = Math.min(
-    //   (height - yOffsetBottom - yOffsetTop) / maxVal,
-    //   height / 10
-    // );
-    // const yUnit: number = Math.min(
-    //   (height - yOffsetBottom - yOffsetTop) / maxVal,
-    //   (height - yOffsetBottom - yOffsetTop) / 8
-    // );
     const yUnit: number = (height - yOffsetBottom - yOffsetTop) / maxVal;
-    console.log("deleteMe yUnit up here is: ");
-    console.log(yUnit);
     const graphHeight: number = height - yOffsetBottom - yOffsetTop;
     const desiredPercentageOfTheGraphHeight: number = 1;
     const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
@@ -196,7 +389,7 @@ export class GraphingService {
       ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
       : 1;
     finalHistogram.forEach((entry, idx) => {
-      this.drawAttemptRect(
+      this.drawVerticalAttemptRect(
         xOffset,
         idx,
         xPadding,
@@ -208,7 +401,7 @@ export class GraphingService {
         svgMap,
         attemptFillColor
       );
-      this.drawSuccessRect(
+      this.drawVerticalSuccessRect(
         xOffset,
         idx,
         xPadding,
@@ -256,7 +449,6 @@ export class GraphingService {
       xOffset,
       xPadding,
       height,
-      // yOffsetTop,
       yOffsetBottom,
       yUnit,
       svgMap,
@@ -280,7 +472,7 @@ export class GraphingService {
     );
   }
 
-  drawAttemptRect(
+  drawVerticalAttemptRect(
     xOffset: number,
     idx: number,
     xPadding: number,
@@ -292,7 +484,7 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     attemptFillColor: string
   ) {
-    this.drawRectCore(
+    this.drawVerticalRectCore(
       "attempts",
       xOffset,
       idx,
@@ -307,7 +499,57 @@ export class GraphingService {
     );
   }
 
-  drawSuccessRect(
+  drawHorizontalAttemptRect(
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    yOffsetTop: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>,
+    attemptFillColor: string
+  ) {
+    this.drawHorizontalRectCore(
+      "attempts",
+      xOffset,
+      idx,
+      xPadding,
+      rectWidth,
+      yOffsetTop,
+      entry,
+      yUnit,
+      svgMap,
+      attemptFillColor
+    );
+  }
+
+  drawHorizontalSuccessRect(
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    yOffsetTop: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>,
+    successFillColor: string
+  ) {
+    this.drawHorizontalRectCore(
+      "successes",
+      xOffset,
+      idx,
+      xPadding,
+      rectWidth,
+      yOffsetTop,
+      entry,
+      yUnit,
+      svgMap,
+      successFillColor
+    );
+  }
+
+  drawVerticalSuccessRect(
     xOffset: number,
     idx: number,
     xPadding: number,
@@ -319,7 +561,7 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     successFillColor: string
   ) {
-    this.drawRectCore(
+    this.drawVerticalRectCore(
       "successes",
       xOffset,
       idx,
@@ -334,7 +576,37 @@ export class GraphingService {
     );
   }
 
-  drawRectCore(
+  drawHorizontalRectCore(
+    entryAccessor: string,
+    xOffset: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    yOffsetTop: number,
+    entry: {},
+    yUnit: number,
+    svgMap: ElementRef<SVGSVGElement>,
+    fillColor: string
+  ) {
+    const rect: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+
+    rect.setAttribute("x", String(xOffset));
+    rect.setAttribute("width", String(get(entry, entryAccessor) * yUnit));
+    rect.setAttribute(
+      "y",
+      String(yOffsetTop + (idx + 1) * xPadding + idx * rectWidth)
+    );
+    rect.setAttribute("height", String(rectWidth));
+    rect.setAttribute("stroke-width", String(1));
+    rect.setAttribute("stroke", "black");
+    rect.setAttribute("fill", fillColor);
+    svgMap.nativeElement.appendChild(rect);
+  }
+
+  drawVerticalRectCore(
     entryAccessor: string,
     xOffset: number,
     idx: number,
@@ -347,8 +619,6 @@ export class GraphingService {
     svgMap: ElementRef<SVGSVGElement>,
     fillColor: string
   ) {
-    console.log("deleteMe yUnit is: ");
-    console.log(yUnit);
     const rect: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
