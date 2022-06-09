@@ -322,23 +322,23 @@ export class GraphingService {
         svgMap,
         successFillColor
       );
-      this.drawXLabelForVerticalChart(
-        xOffsetLeft,
-        idx,
-        xPadding,
-        rectWidth,
-        height,
-        yOffsetBottom,
-        entry,
-        svgMap,
-        fontSize,
-        textColor,
-        scaledHeight,
-        fontToPixelRatio
-      );
+      // this.drawXLabelForVerticalChart(
+      //   xOffsetLeft,
+      //   idx,
+      //   xPadding,
+      //   rectWidth,
+      //   height,
+      //   yOffsetBottom,
+      //   entry,
+      //   svgMap,
+      //   fontSize,
+      //   textColor,
+      //   scaledHeight,
+      //   fontToPixelRatio
+      // );
     });
-
-    this.drawYScaleForVerticalChart(
+    const isHorizontal: Boolean = true;
+    this.drawChartScale(
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
@@ -350,7 +350,8 @@ export class GraphingService {
       fontSize,
       yLabIncrement,
       textColor,
-      scaledHeight
+      scaledHeight,
+      isHorizontal
     );
     this.drawYAxisLabel(
       fontToPixelRatio,
@@ -459,7 +460,7 @@ export class GraphingService {
       );
     });
 
-    this.drawYScaleForVerticalChart(
+    this.drawChartScale(
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
@@ -728,7 +729,7 @@ export class GraphingService {
     fontToPixelRatio: number
   ) {
     const isHorizontal: boolean = true;
-    this.drawYScaleForVerticalChart(
+    this.drawChartScale(
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
@@ -769,7 +770,7 @@ export class GraphingService {
     // svgMap.nativeElement.appendChild(text);
   }
 
-  drawYScaleForVerticalChart(
+  drawChartScale(
     fontToPixelRatio: number,
     maxValInChart: number,
     xOffsetLeft: number,
@@ -782,33 +783,27 @@ export class GraphingService {
     numDelimiters: number = maxValInChart,
     textColor: string,
     scaledHeight: number,
-    isHorizontal?: boolean
+    isHorizontal?: Boolean
   ) {
-    console.log(
-      "deleteMe maxValInChart in drawYScaleForVerticalChart is: " +
-        maxValInChart
-    );
     const incrementBy = Math.floor(maxValInChart / numDelimiters);
-    console.log("deleteMe incrementBy is: " + incrementBy);
-    const xOffsetLeftLeft =
+    const pxlCountOfScaleNumbers =
       String(maxValInChart).length * (fontSize * fontToPixelRatio);
-    console.log("deleteMe xOffsetLeftLeft is: " + xOffsetLeftLeft);
-    console.log("deleteMe xOffsetLeft is: " + xOffsetLeft);
-    console.log("deleteMe xPadding is: " + xPadding);
     for (let i = 0; i < maxValInChart + 1; i += incrementBy) {
       const text: SVGElement = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "text"
       );
-      const xPosition =
-        xOffsetLeft - xOffsetLeftLeft - xPadding > 0
-          ? xOffsetLeft - xOffsetLeftLeft - xPadding
-          : xOffsetLeft - xOffsetLeftLeft;
-      console.log(
-        "deleteMe xPosition in drawYScaleForVerticalChart is: " + xPosition
-      );
+      // const xPosition =
+      //   xOffsetLeft - pxlCountOfScaleNumbers - xPadding > 0
+      //     ? xOffsetLeft - pxlCountOfScaleNumbers - xPadding
+      //     : xOffsetLeft - pxlCountOfScaleNumbers;
+      const xPosition = isHorizontal
+        ? xOffsetLeft + i * yUnit
+        : xOffsetLeft - pxlCountOfScaleNumbers;
       text.setAttribute("x", String(xPosition));
-      const yPosition = height - yOffsetBottom - i * yUnit;
+      const yPosition = isHorizontal
+        ? height - yOffsetBottom + pxlCountOfScaleNumbers
+        : height - yOffsetBottom - i * yUnit;
       text.setAttribute("y", String(yPosition));
       text.setAttribute("fill", textColor);
       text.setAttribute(
@@ -836,13 +831,16 @@ export class GraphingService {
     yAxisLabel: string,
     scaledHeight: number
   ) {
-    const xOffsetLeftLeft =
+    const pxlCountOfScaleNumbers =
       (String(maxValInChart).length + 3) * (fontSize * fontToPixelRatio);
     const text: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text"
     );
-    const xPosition = Math.max(xOffsetLeft - xOffsetLeftLeft - xPadding, 5);
+    const xPosition = Math.max(
+      xOffsetLeft - pxlCountOfScaleNumbers - xPadding,
+      5
+    );
     text.setAttribute("x", String(xPosition));
     const yPosition = height - yOffsetBottom - (maxValInChart / 2) * yUnit;
     // const graphHeight: number = height - yOffsetBottom - yOffsetTop;
