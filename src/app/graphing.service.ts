@@ -33,6 +33,7 @@ export class GraphingService {
     const horizontalDesired = get(options, "horizontalDesired", false);
     console.log("deleteMe horizontalDesired is: " + horizontalDesired);
     if (horizontalDesired) {
+      // TODO refactor with horizontalDesired as another option in a generalized drawGraph
       this.drawHorizontalGraph(svgMap, data, options);
     } else {
       this.drawVerticalGraph(svgMap, data, options);
@@ -121,6 +122,7 @@ export class GraphingService {
       width,
       graphWidth,
       xOffsetLeft,
+      xOffsetRight,
       yOffsetBottom,
       yOffsetTop,
       finalHistogram,
@@ -131,11 +133,7 @@ export class GraphingService {
       successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
-      get(
-        options,
-        "yAxisLabel",
-        "Number of attempted/successful moves in the current data set"
-      )
+      get(options, "yAxisLabel", "Number of attempted/successful moves")
     );
   }
 
@@ -144,6 +142,7 @@ export class GraphingService {
     data: EventInVideo[],
     options: Options
   ) {
+    const horizontalDesired = get(options, "horizontalDesired", false);
     const attemptFillColor = get(options, "attemptFillColor", "white");
     const successFillColor = get(options, "successFillColor", "black");
     const legendLabels: {}[] = get(options, "legendLabels", [
@@ -215,6 +214,7 @@ export class GraphingService {
       width,
       graphWidth,
       xOffsetLeft,
+      xOffsetRight,
       yOffsetBottom,
       yOffsetTop,
       finalHistogram,
@@ -225,11 +225,8 @@ export class GraphingService {
       successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
-      get(
-        options,
-        "yAxisLabel",
-        "Number of attempted/successful moves in the current data set"
-      )
+      get(options, "yAxisLabel", "Number of attempted/successful moves"),
+      horizontalDesired
     );
   }
 
@@ -272,6 +269,7 @@ export class GraphingService {
     width: number,
     graphWidth: number,
     xOffsetLeft: number,
+    xOffsetRight: number,
     yOffsetBottom: number,
     yOffsetTop: number = yOffsetBottom,
     finalHistogram: {}[],
@@ -282,7 +280,8 @@ export class GraphingService {
     successFillColor: string,
     textColor: string,
     yLabIncrement: number,
-    yAxisLabel: string
+    yAxisLabel: string,
+    horizontalDesired: Boolean
   ) {
     const maxValInChart: number = reduce(
       finalHistogram,
@@ -337,7 +336,8 @@ export class GraphingService {
       //   fontToPixelRatio
       // );
     });
-    const isHorizontal: Boolean = true;
+    // const isHorizontal: Boolean = true;
+    // const horizontalDesired = get(options, "horizontalDesired", false);
     this.drawChartScale(
       fontToPixelRatio,
       maxValInChart,
@@ -351,21 +351,25 @@ export class GraphingService {
       yLabIncrement,
       textColor,
       scaledHeight,
-      isHorizontal
+      horizontalDesired
     );
-    this.drawYAxisLabel(
+    this.drawScaleLabel(
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
+      xOffsetRight,
       xPadding,
       height,
+      width,
       yOffsetBottom,
       yUnit,
       svgMap,
       fontSize,
       textColor,
       yAxisLabel,
-      scaledHeight
+      scaledHeight,
+      horizontalDesired,
+      graphWidth
     );
     this.drawLegend(
       svgMap,
@@ -392,6 +396,7 @@ export class GraphingService {
     width: number,
     graphWidth: number,
     xOffsetLeft: number,
+    xOffsetRight: number,
     yOffsetBottom: number,
     yOffsetTop: number = yOffsetBottom,
     finalHistogram: {}[],
@@ -402,7 +407,8 @@ export class GraphingService {
     successFillColor: string,
     textColor: string,
     yLabIncrement: number,
-    yAxisLabel: string
+    yAxisLabel: string,
+    horizontalDesired: Boolean
   ) {
     const maxValInChart: number = reduce(
       finalHistogram,
@@ -474,19 +480,23 @@ export class GraphingService {
       textColor,
       scaledHeight
     );
-    this.drawYAxisLabel(
+    this.drawScaleLabel(
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
+      xOffsetRight,
       xPadding,
       height,
+      width,
       yOffsetBottom,
       yUnit,
       svgMap,
       fontSize,
       textColor,
       yAxisLabel,
-      scaledHeight
+      scaledHeight,
+      horizontalDesired,
+      graphWidth
     );
     this.drawLegend(
       svgMap,
@@ -816,20 +826,23 @@ export class GraphingService {
     }
   }
 
-  drawYAxisLabel(
+  drawScaleLabel(
     fontToPixelRatio: number,
     maxValInChart: number,
     xOffsetLeft: number,
+    xOffsetRight: number, // TODO add to signature
     xPadding: number,
     height: number,
-    // yOffsetTop: number,
+    width: number, // TODO add to signature
     yOffsetBottom: number,
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
     fontSize: number,
     textColor: string,
     yAxisLabel: string,
-    scaledHeight: number
+    scaledHeight: number,
+    horizontalDesired: Boolean,
+    graphWidth: number
   ) {
     const pxlCountOfScaleNumbers =
       (String(maxValInChart).length + 3) * (fontSize * fontToPixelRatio);
@@ -837,15 +850,31 @@ export class GraphingService {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    const xPosition = Math.max(
-      xOffsetLeft - pxlCountOfScaleNumbers - xPadding,
-      5
-    );
+
+    const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
+    const distanceInFromBeginningOfAxis =
+      (graphWidth - totalLengthOfLabel * scaledHeight) / 2;
+    console.log("deleteMe distanceInFromBeginningOfAxis is: ");
+    console.log(distanceInFromBeginningOfAxis);
+    const xPosition = horizontalDesired
+      ? distanceInFromBeginningOfAxis + xOffsetLeft
+      : Math.max(xOffsetLeft - pxlCountOfScaleNumbers - xPadding, 5);
+    console.log("deleteMe xPosition for drawScaleLabel is: ");
+    console.log(xPosition);
+    // const xPosition = horizontalDesired
+    //   ? width - xOffsetRight - (maxValInChart / 2) * yUnit
+    //   : Math.max(xOffsetLeft - pxlCountOfScaleNumbers - xPadding, 5);
     text.setAttribute("x", String(xPosition));
-    const yPosition = height - yOffsetBottom - (maxValInChart / 2) * yUnit;
+    const yPosition = horizontalDesired
+      ? Math.max(height - yOffsetBottom + pxlCountOfScaleNumbers, 5)
+      : height - yOffsetBottom - (maxValInChart / 2) * yUnit;
+    console.log("deleteMe yPosition for drawScaleLabel is: ");
+    console.log(yPosition);
+    // const yPosition = horizontalDesired
+    //   ? Math.max(height - yOffsetBottom + pxlCountOfScaleNumbers + xPadding, 5)
+    //   : height - yOffsetBottom - (maxValInChart / 2) * yUnit;
     // const graphHeight: number = height - yOffsetBottom - yOffsetTop;
     // const desiredPercentageOfTheGraphHeight: number = 1;
-    // const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
     // const isTooBig: boolean =
     //   graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
     // const scaledHeight: number = isTooBig
@@ -857,11 +886,19 @@ export class GraphingService {
       "font-size",
       String((fontSize * scaledHeight) / fontToPixelRatio)
     );
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute(
-      "transform",
-      "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
-    );
+    if (!horizontalDesired) {
+      text.setAttribute(
+        "transform",
+        "rotate(90," + String(xPosition) + "," + String(yPosition) + ")"
+      );
+      text.setAttribute("text-anchor", "middle");
+    } else {
+      text.setAttribute("text-anchor", "start");
+      // text.setAttribute(
+      //   "transform",
+      //   "rotate(0," + String(xPosition) + "," + String(yPosition) + ")"
+      // );
+    }
     text.textContent = yAxisLabel;
     svgMap.nativeElement.appendChild(text);
   }

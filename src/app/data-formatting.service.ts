@@ -27,8 +27,8 @@ export class DataFormattingService {
           get(event, "eventCategory") !== "Event Logistics" &&
           !movesToOmit.includes(get(event, "eventName", "").trim()) &&
           // (get(event, "points") > 0 ||
-          pointScoringCategories.includes(get(event, "eventCategory")) //)
-          // get(event, "actor") === "Deodara, Dirt"
+          // pointScoringCategories.includes(get(event, "eventCategory")) //)
+          get(event, "actor") === "Deodara, Dirt"
           // get(event, "actor") === "Hansen, John"
           // get(event, "actor") === "Ryan, Gordon"
         );
