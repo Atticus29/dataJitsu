@@ -82,7 +82,7 @@ export class SandboxComponent extends BaseComponent implements OnInit {
           yLabIncrement: Math.min(maxVal, 10),
           yOffsetTopAsFractionOfYoffsetBottom: 0.75,
           horizontalDesired: true,
-          // attemptFillColor: "#673AB7",
+          attemptFillColor: "grey",
           // successFillColor: "#69F0AE",
         });
       });

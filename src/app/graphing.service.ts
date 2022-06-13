@@ -5,8 +5,9 @@ import { DataFormattingService } from "./data-formatting.service";
 import { EventInVideo } from "./eventInVideo.model";
 
 export interface Options {
-  xOffsetLeftWidthFraction?: number;
-  minWidthOfBarPlusPadding?: number;
+  xOffsetLeftWidthFraction?: number; // what percent of the total width should be left padding when you want a vertical bar chart?
+  yOffsetBottomWidthFraction?: number; // what percent of the total heigth should be bottom padding when you want a horizontal bar chart?
+  minWidthOfBarPlusPadding?: number; //min width in pixels of a par plus the padding between it and another bar
   yOffsetTopAsFractionOfYoffsetBottom?: number;
   xRightAsFractionOfXLeft?: number;
   fractionOfxPaddingInRectWidthPlusPadding?: number;
@@ -17,6 +18,7 @@ export interface Options {
   yAxisLabel?: string;
   legendLabels?: {}[];
   horizontalDesired?: boolean;
+  maxCharacterLengthOfEventName?: number;
 }
 
 @Injectable({
@@ -39,11 +41,113 @@ export class GraphingService {
       this.drawVerticalGraph(svgMap, data, options);
     }
   }
+
+  // drawGraphV2(
+  //   svgMap: ElementRef<SVGSVGElement>,
+  //   data: EventInVideo[],
+  //   options: Options
+  // ) {
+  //   const horizontalDesired = get(options, "horizontalDesired", false);
+  //   const attemptFillColor = get(options, "attemptFillColor", "white");
+  //   const successFillColor = get(options, "successFillColor", "black");
+  //   const legendLabels: {}[] = get(options, "legendLabels", [
+  //     { label: "Move attempts", color: attemptFillColor },
+  //     { label: "Move successes", color: successFillColor },
+  //   ]);
+  //   const fontToPixelRatio: number = 12 / 16;
+  //   const width: number = svgMap.nativeElement.viewBox.baseVal.width;
+  //   const height: number = svgMap.nativeElement.viewBox.baseVal.height;
+  //   const xOffsetLeft: number =
+  //     width * get(options, "xOffsetLeftWidthFraction", 0.1);
+  //   const xOffsetRight: number =
+  //     xOffsetLeft * get(options, "xRightAsFractionOfXLeft", 0.33);
+  //   const graphWidth = width - xOffsetLeft - xOffsetRight;
+  //   const formattedHistogram =
+  //     this.dataFormattingService.tranformDataToHistogram(data, {
+  //       appendSuccesses: true,
+  //     });
+  //   const numEvents = formattedHistogram ? formattedHistogram.length : 0;
+  //   let rectLengthPlusPadding: number = graphWidth / numEvents;
+  //   console.log("deleteMe rectLengthPlusPadding is: " + rectLengthPlusPadding);
+  //   const tooManyValues: boolean =
+  //     rectLengthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
+  //   const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
+  //   let truncatedLength: number;
+  //   if (tooManyValues) {
+  //     rectLengthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
+  //     truncatedLength = Math.floor(
+  //       graphWidth / get(options, "minWidthOfBarPlusPadding", 13)
+  //     );
+  //   }
+  //   const fractionOfxPaddingInRectWidthPlusPadding = get(
+  //     options,
+  //     "fractionOfxPaddingInRectWidthPlusPadding",
+  //     0.33
+  //   );
+  //   const xPadding: number =
+  //     rectLengthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+  //   const rectWidth: number =
+  //     rectLengthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+  //   const fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
+  //   console.log("deleteMe fontSize is: " + fontSize);
+  //   const finalHistogram = tooManyValues
+  //     ? sortedHistogram.slice(0, truncatedLength)
+  //     : sortedHistogram;
+  //   const longestText = reduce(
+  //     finalHistogram,
+  //     (memo, entry) => {
+  //       return get(entry, "name", "").length > memo
+  //         ? get(entry, "name").length
+  //         : memo;
+  //     },
+  //     0
+  //   );
+  //   const yOffsetBottom: number = Math.min(
+  //     fontSize * fontToPixelRatio * longestText,
+  //     height * 0.25
+  //   );
+  //   const yOffsetTop: number =
+  //     yOffsetBottom * get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
+  //   const graphHeight = height - yOffsetBottom - yOffsetTop;
+  //   this.drawAxes(
+  //     svgMap,
+  //     width,
+  //     height,
+  //     xOffsetLeft,
+  //     yOffsetBottom,
+  //     yOffsetTop
+  //   );
+  //   this.drawVerticalStackedBarChart(
+  //     legendLabels,
+  //     fontToPixelRatio,
+  //     svgMap,
+  //     height,
+  //     graphHeight,
+  //     width,
+  //     graphWidth,
+  //     xOffsetLeft,
+  //     xOffsetRight,
+  //     yOffsetBottom,
+  //     yOffsetTop,
+  //     finalHistogram,
+  //     fontSize,
+  //     xPadding,
+  //     rectWidth,
+  //     attemptFillColor,
+  //     successFillColor,
+  //     get(options, "textColor", "black"),
+  //     get(options, "yLabIncrement", 10),
+  //     get(options, "yAxisLabel", "Number of attempted/successful moves"),
+  //     horizontalDesired,
+  //   );
+  // }
+
   drawVerticalGraph(
     svgMap: ElementRef<SVGSVGElement>,
     data: EventInVideo[],
     options: Options
   ) {
+    const horizontalDesired = get(options, "horizontalDesired", false);
     const attemptFillColor = get(options, "attemptFillColor", "white");
     const successFillColor = get(options, "successFillColor", "black");
     const legendLabels: {}[] = get(options, "legendLabels", [
@@ -63,14 +167,14 @@ export class GraphingService {
         appendSuccesses: true,
       });
     const numEvents = formattedHistogram ? formattedHistogram.length : 0;
-    let rectWidthPlusPadding: number = graphWidth / numEvents;
-    console.log("deleteMe rectWidthPlusPadding is: " + rectWidthPlusPadding);
+    let rectLengthPlusPadding: number = graphWidth / numEvents;
+    console.log("deleteMe rectLengthPlusPadding is: " + rectLengthPlusPadding);
     const tooManyValues: boolean =
-      rectWidthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
+      rectLengthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
     const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
     let truncatedLength: number;
     if (tooManyValues) {
-      rectWidthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
+      rectLengthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
       truncatedLength = Math.floor(
         graphWidth / get(options, "minWidthOfBarPlusPadding", 13)
       );
@@ -81,11 +185,10 @@ export class GraphingService {
       0.33
     );
     const xPadding: number =
-      rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+      rectLengthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
     const rectWidth: number =
-      rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+      rectLengthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
     const fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
-    console.log("deleteMe fontSize is: " + fontSize);
     const finalHistogram = tooManyValues
       ? sortedHistogram.slice(0, truncatedLength)
       : sortedHistogram;
@@ -133,7 +236,8 @@ export class GraphingService {
       successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
-      get(options, "yAxisLabel", "Number of attempted/successful moves")
+      get(options, "yAxisLabel", "Number of attempted/successful moves"),
+      horizontalDesired
     );
   }
 
@@ -142,7 +246,12 @@ export class GraphingService {
     data: EventInVideo[],
     options: Options
   ) {
-    const horizontalDesired = get(options, "horizontalDesired", false);
+    const horizontalDesired: Boolean = get(options, "horizontalDesired", false);
+    const maxCharacterLengthOfEventName: number = get(
+      options,
+      "maxCharacterLengthOfEventName",
+      20
+    );
     const attemptFillColor = get(options, "attemptFillColor", "white");
     const successFillColor = get(options, "successFillColor", "black");
     const legendLabels: {}[] = get(options, "legendLabels", [
@@ -150,11 +259,12 @@ export class GraphingService {
       { label: "Move successes", color: successFillColor },
     ]);
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
-    const xOffsetLeft: number =
-      width * get(options, "xOffsetLeftWidthFraction", 0.1);
-    const xOffsetRight: number =
-      xOffsetLeft * get(options, "xRightAsFractionOfXLeft", 0.33);
-    const graphWidth = width - xOffsetLeft - xOffsetRight;
+    // const xOffsetLeft: number = horizontalDesired
+    //   ? Math.min(fontSize * fontToPixelRatio * longestText)
+    //   : width * get(options, "xOffsetLeftWidthFraction", 0.1);
+    // const xOffsetRight: number =
+    //   xOffsetLeft * get(options, "xRightAsFractionOfXLeft", 0.33);
+    // const graphWidth = width - xOffsetLeft - xOffsetRight;
     const fontToPixelRatio: number = 12 / 16;
     const formattedHistogram =
       this.dataFormattingService.tranformDataToHistogram(data, {
@@ -166,7 +276,7 @@ export class GraphingService {
       "fractionOfxPaddingInRectWidthPlusPadding",
       0.33
     );
-    let fontSize = 32; //breaks a circularity
+    let fontSize = 32; //TODO breaks a circularity; improve this
     const height: number = svgMap.nativeElement.viewBox.baseVal.height;
     const yOffsetBottom: number = Math.min(
       fontSize * fontToPixelRatio * 3,
@@ -175,27 +285,56 @@ export class GraphingService {
     const yOffsetTop: number =
       yOffsetBottom * get(options, "yOffsetTopAsFractionOfYoffsetBottom", 0.33);
     const graphHeight = height - yOffsetBottom - yOffsetTop;
-    let rectWidthPlusPadding: number = graphHeight / numEvents;
-    const rectWidth: number =
-      rectWidthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
-    fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
-    const xPadding: number =
-      rectWidthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
+    let rectLengthPlusPadding: number = graphHeight / numEvents;
+    console.log(
+      "deleteMe rectLengthPlusPadding if you include all of the data is: "
+    );
+    console.log(rectLengthPlusPadding);
+    console.log("deleteMe graphHeight is: " + graphHeight);
+
     const tooManyValues: boolean =
-      rectWidthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
+      rectLengthPlusPadding < get(options, "minWidthOfBarPlusPadding", 13);
+    console.log("deleteMe but are there tooManyValues?: " + tooManyValues);
     const sortedHistogram = orderBy(formattedHistogram, ["attempts"], ["desc"]);
     let truncatedLength: number;
     if (tooManyValues) {
-      rectWidthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
-      const horizontalTruncatedLength = Math.floor(
-        (height - yOffsetBottom - yOffsetTop) /
-          get(options, "minWidthOfBarPlusPadding", 13)
+      rectLengthPlusPadding = get(options, "minWidthOfBarPlusPadding", 13);
+      console.log(
+        "deleteMe rectLengthPlusPadding has now been adjusted to: " +
+          rectLengthPlusPadding
       );
+      const horizontalTruncatedLength = Math.floor(
+        graphHeight / rectLengthPlusPadding
+      );
+      console.log(
+        "deleteMe horizontalTruncatedLength is: " + horizontalTruncatedLength
+      );
+      console.log("deleteMe whereas numEvents is: " + numEvents);
       truncatedLength = horizontalTruncatedLength;
     }
+    const rectWidth: number =
+      rectLengthPlusPadding * (1 - fractionOfxPaddingInRectWidthPlusPadding);
+    fontSize = Math.min(rectWidth * fontToPixelRatio, 32);
+    const xPadding: number =
+      rectLengthPlusPadding * fractionOfxPaddingInRectWidthPlusPadding;
     const finalHistogram = tooManyValues
       ? sortedHistogram.slice(0, truncatedLength)
       : sortedHistogram;
+    const longestText: number = reduce(
+      finalHistogram,
+      (memo, entry) => {
+        return get(entry, "name", "").length > memo
+          ? get(entry, "name").length
+          : memo;
+      },
+      0
+    );
+    const xOffsetLeft: number = horizontalDesired
+      ? Math.min(fontSize * fontToPixelRatio * longestText, width * 0.25)
+      : width * get(options, "xOffsetLeftWidthFraction", 0.1);
+    const xOffsetRight: number =
+      xOffsetLeft * get(options, "xRightAsFractionOfXLeft", 0.33);
+    const graphWidth = width - xOffsetLeft - xOffsetRight;
 
     this.drawAxes(
       svgMap,
@@ -226,7 +365,9 @@ export class GraphingService {
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
       get(options, "yAxisLabel", "Number of attempted/successful moves"),
-      horizontalDesired
+      horizontalDesired,
+      longestText,
+      maxCharacterLengthOfEventName
     );
   }
 
@@ -281,7 +422,9 @@ export class GraphingService {
     textColor: string,
     yLabIncrement: number,
     yAxisLabel: string,
-    horizontalDesired: Boolean
+    horizontalDesired: Boolean,
+    longestText: number,
+    maxCharacterLengthOfEventName: number
   ) {
     const maxValInChart: number = reduce(
       finalHistogram,
@@ -321,20 +464,24 @@ export class GraphingService {
         svgMap,
         successFillColor
       );
-      // this.drawXLabelForVerticalChart(
-      //   xOffsetLeft,
-      //   idx,
-      //   xPadding,
-      //   rectWidth,
-      //   height,
-      //   yOffsetBottom,
-      //   entry,
-      //   svgMap,
-      //   fontSize,
-      //   textColor,
-      //   scaledHeight,
-      //   fontToPixelRatio
-      // );
+      this.drawEventLabel(
+        xOffsetLeft,
+        idx,
+        xPadding,
+        rectWidth,
+        height,
+        yOffsetBottom,
+        yOffsetTop,
+        entry,
+        svgMap,
+        fontSize,
+        textColor,
+        scaledHeight,
+        fontToPixelRatio,
+        horizontalDesired,
+        longestText,
+        maxCharacterLengthOfEventName
+      );
     });
     // const isHorizontal: Boolean = true;
     // const horizontalDesired = get(options, "horizontalDesired", false);
@@ -357,10 +504,8 @@ export class GraphingService {
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
-      xOffsetRight,
       xPadding,
       height,
-      width,
       yOffsetBottom,
       yUnit,
       svgMap,
@@ -484,10 +629,8 @@ export class GraphingService {
       fontToPixelRatio,
       maxValInChart,
       xOffsetLeft,
-      xOffsetRight,
       xPadding,
       height,
-      width,
       yOffsetBottom,
       yUnit,
       svgMap,
@@ -681,6 +824,76 @@ export class GraphingService {
     svgMap.nativeElement.appendChild(rect);
   }
 
+  drawEventLabel(
+    xOffsetLeft: number,
+    idx: number,
+    xPadding: number,
+    rectWidth: number,
+    height: number,
+    yOffsetBottom: number,
+    yOffsetTop: number,
+    entry: {},
+    svgMap: ElementRef<SVGSVGElement>,
+    fontSize: number,
+    textColor: string,
+    scaledHeight: number,
+    fontToPixelRatio: number,
+    horizontalDesired: Boolean,
+    longestText: number,
+    maxCharacterLengthOfEventName: number
+  ) {
+    const name = get(entry, "name");
+    const text: SVGElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+    // TODO left off here; return here once you redefine xOffsetLeft and yOffsetBottom
+    // const xPosition = xOffsetLeft + (idx + 1) * xPadding + idx * rectWidth;
+
+    const xPosition = horizontalDesired
+      ? xPadding
+      : xOffsetLeft + (idx + 1) * xPadding + idx * rectWidth;
+    text.setAttribute("x", String(xPosition));
+    console.log("deleteMe yOffsetBottom is: " + yOffsetBottom);
+    console.log("deleteMe xPadding is: " + xPadding);
+    const yPosition = horizontalDesired
+      ? yOffsetTop + (idx + 1) * xPadding + (idx + 1) * rectWidth
+      : height - yOffsetBottom + Math.min(xPadding, yOffsetBottom * 0.25);
+    const longestPermittedText = Math.min(
+      longestText,
+      maxCharacterLengthOfEventName
+    );
+    const scaledWidth = Math.min(
+      xOffsetLeft / (longestPermittedText * fontSize * fontToPixelRatio),
+      1
+    );
+    console.log("deleteMe got here a1 scaledWidth is: " + scaledWidth);
+    text.setAttribute("y", String(yPosition));
+    text.setAttribute("fill", textColor);
+    text.setAttribute(
+      "font-size",
+      String((fontSize * scaledWidth) / fontToPixelRatio)
+    );
+    // text.setAttribute(
+    //   "font-size",
+    //   String((fontSize * scaledHeight) / fontToPixelRatio)
+    // );
+    text.setAttribute("text-anchor", "start");
+    if (horizontalDesired) {
+      text.setAttribute(
+        "transform",
+        "rotate(0," + String(xPosition) + "," + String(yPosition) + ")"
+      );
+    } else {
+      text.setAttribute(
+        "transform",
+        "rotate(45," + String(xPosition) + "," + String(yPosition) + ")"
+      );
+    }
+    text.textContent = name.slice(0, longestPermittedText);
+    svgMap.nativeElement.appendChild(text);
+  }
+
   drawXLabelForVerticalChart(
     xOffsetLeft: number,
     idx: number,
@@ -830,10 +1043,8 @@ export class GraphingService {
     fontToPixelRatio: number,
     maxValInChart: number,
     xOffsetLeft: number,
-    xOffsetRight: number, // TODO add to signature
     xPadding: number,
     height: number,
-    width: number, // TODO add to signature
     yOffsetBottom: number,
     yUnit: number,
     svgMap: ElementRef<SVGSVGElement>,
@@ -845,41 +1056,36 @@ export class GraphingService {
     graphWidth: number
   ) {
     const pxlCountOfScaleNumbers =
-      (String(maxValInChart).length + 3) * (fontSize * fontToPixelRatio);
+      String(maxValInChart).length * (fontSize * fontToPixelRatio);
+    const howManyTimesPxlCountOfScaleNumbersFitInOffset = horizontalDesired
+      ? yOffsetBottom / pxlCountOfScaleNumbers
+      : xOffsetLeft / pxlCountOfScaleNumbers;
+    const safeIncrementOfPxlCounts =
+      (howManyTimesPxlCountOfScaleNumbersFitInOffset - 1) / 2 + 1;
     const text: SVGElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text"
     );
-
     const totalLengthOfLabel = yAxisLabel.length * fontSize * fontToPixelRatio;
     const distanceInFromBeginningOfAxis =
       (graphWidth - totalLengthOfLabel * scaledHeight) / 2;
-    console.log("deleteMe distanceInFromBeginningOfAxis is: ");
-    console.log(distanceInFromBeginningOfAxis);
     const xPosition = horizontalDesired
       ? distanceInFromBeginningOfAxis + xOffsetLeft
-      : Math.max(xOffsetLeft - pxlCountOfScaleNumbers - xPadding, 5);
-    console.log("deleteMe xPosition for drawScaleLabel is: ");
-    console.log(xPosition);
-    // const xPosition = horizontalDesired
-    //   ? width - xOffsetRight - (maxValInChart / 2) * yUnit
-    //   : Math.max(xOffsetLeft - pxlCountOfScaleNumbers - xPadding, 5);
+      : Math.max(
+          xOffsetLeft -
+            pxlCountOfScaleNumbers * safeIncrementOfPxlCounts -
+            xPadding,
+          5
+        ); // TODO deleteMe test whether I can get rid of the max
     text.setAttribute("x", String(xPosition));
     const yPosition = horizontalDesired
-      ? Math.max(height - yOffsetBottom + pxlCountOfScaleNumbers, 5)
+      ? Math.max(
+          height -
+            yOffsetBottom +
+            pxlCountOfScaleNumbers * safeIncrementOfPxlCounts,
+          5
+        )
       : height - yOffsetBottom - (maxValInChart / 2) * yUnit;
-    console.log("deleteMe yPosition for drawScaleLabel is: ");
-    console.log(yPosition);
-    // const yPosition = horizontalDesired
-    //   ? Math.max(height - yOffsetBottom + pxlCountOfScaleNumbers + xPadding, 5)
-    //   : height - yOffsetBottom - (maxValInChart / 2) * yUnit;
-    // const graphHeight: number = height - yOffsetBottom - yOffsetTop;
-    // const desiredPercentageOfTheGraphHeight: number = 1;
-    // const isTooBig: boolean =
-    //   graphHeight * desiredPercentageOfTheGraphHeight < totalLengthOfLabel;
-    // const scaledHeight: number = isTooBig
-    //   ? (graphHeight * desiredPercentageOfTheGraphHeight) / totalLengthOfLabel
-    //   : 1;
     text.setAttribute("y", String(yPosition));
     text.setAttribute("fill", textColor);
     text.setAttribute(
@@ -894,10 +1100,6 @@ export class GraphingService {
       text.setAttribute("text-anchor", "middle");
     } else {
       text.setAttribute("text-anchor", "start");
-      // text.setAttribute(
-      //   "transform",
-      //   "rotate(0," + String(xPosition) + "," + String(yPosition) + ")"
-      // );
     }
     text.textContent = yAxisLabel;
     svgMap.nativeElement.appendChild(text);
