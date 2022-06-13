@@ -81,7 +81,7 @@ export class SandboxComponent extends BaseComponent implements OnInit {
           minWidthOfBarPlusPadding: 20,
           yLabIncrement: Math.min(maxVal, 10),
           yOffsetTopAsFractionOfYoffsetBottom: 0.75,
-          horizontalDesired: true,
+          // horizontalDesired: true,
           attemptFillColor: "grey",
           // successFillColor: "#69F0AE",
         });
