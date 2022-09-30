@@ -135,7 +135,7 @@ export class GraphingService {
       successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
-      get(options, "yAxisLabel", "Number of attempted/successful moves"),
+      get(options, "yAxisLabel", "# of moves"),
       horizontalDesired
     );
   }
@@ -158,7 +158,7 @@ export class GraphingService {
       { label: "Move successes", color: successFillColor },
     ]);
     const width: number = svgMap.nativeElement.viewBox.baseVal.width;
-    const fontToPixelRatio: number = 12 / 16;
+    const fontToPixelRatio: number = 12 / 16; //TODO I think this should be an argument, perhaps coming from a constant
     const formattedHistogram =
       this.dataFormattingService.tranformDataToHistogram(data, {
         appendSuccesses: true,
@@ -242,7 +242,7 @@ export class GraphingService {
       successFillColor,
       get(options, "textColor", "black"),
       get(options, "yLabIncrement", 10),
-      get(options, "yAxisLabel", "Number of attempted/successful moves"),
+      get(options, "yAxisLabel", "# of moves"),
       horizontalDesired,
       longestText,
       maxCharacterLengthOfEventName
@@ -862,7 +862,7 @@ export class GraphingService {
         : xOffsetLeft - pxlCountOfScaleNumbers;
       text.setAttribute("x", String(xPosition));
       const yPosition = isHorizontal
-        ? height - yOffsetBottom + pxlCountOfScaleNumbers
+        ? height - yOffsetBottom + 1.5 * pxlCountOfScaleNumbers
         : height - yOffsetBottom - i * yUnit;
       text.setAttribute("y", String(yPosition));
       text.setAttribute("fill", textColor);
@@ -919,7 +919,7 @@ export class GraphingService {
       ? Math.max(
           height -
             yOffsetBottom +
-            pxlCountOfScaleNumbers * safeIncrementOfPxlCounts,
+            1.5 * pxlCountOfScaleNumbers * safeIncrementOfPxlCounts,
           5
         )
       : height - yOffsetBottom - (maxValInChart / 2) * yUnit;
